@@ -1,0 +1,200 @@
+[
+  {
+    "id": "NVIDIA_Blog_f20277653f33a69a",
+    "title": "Code, Compute and Connection: Inside the Inaugural NVIDIA AI Day São Paulo",
+    "description": "The worldwide tour of NVIDIA AI Days — bringing together AI enthusiasts, developers, researchers and startups — made its latest stop in São Paulo, Brazil.",
+    "url": "https://blogs.nvidia.com/blog/ai-day-sao-paulo/",
+    "publishedAt": "2026-02-12T22:00:58.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2026/02/sao-paulo-featured-1920x1080-2.jpg",
+    "author": "Angie Lee"
+  },
+  {
+    "id": "NVIDIA_Blog_dc04beeb1d90e7a3",
+    "title": "Leading Inference Providers Cut AI Costs by up to 10x With Open Source Models on NVIDIA Blackwell",
+    "description": "A diagnostic insight in healthcare. A character’s dialogue in an interactive game. An autonomous resolution from a customer service agent. Each of these AI-powered interactions is built on the same unit of intelligence: a token. Scaling these AI interactions requires businesses to consider whether they can afford more tokens. The answer lies in better tokenomics Read Article",
+    "url": "https://blogs.nvidia.com/blog/inference-open-source-models-blackwell-reduce-cost-per-token/",
+    "publishedAt": "2026-02-12T16:00:46.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2026/02/inference-press-moe-x-tokenomics-think-smart-blog-4779150-1280x680-1.jpg",
+    "author": "Shruti Koparkar"
+  },
+  {
+    "id": "NVIDIA_Blog_42df330dbefa6d9a",
+    "title": "NVIDIA DGX Spark Powers Big Projects in Higher Education",
+    "description": "At leading institutions across the globe, the NVIDIA DGX Spark desktop supercomputer is bringing data‑center‑class AI to lab benches, faculty offices and students’ systems. There’s even a DGX Spark hard at work in the South Pole, at the IceCube Neutrino Observatory run by the University of Wisconsin-Madison. The compact supercomputer’s petaflop‑class performance enables local deployment Read Article",
+    "url": "https://blogs.nvidia.com/blog/dgx-spark-higher-education/",
+    "publishedAt": "2026-02-12T15:00:23.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2026/02/dgx-spark-higher-ed-featured-1280x680-1.jpg",
+    "author": "Max Starubinskiy"
+  },
+  {
+    "id": "NVIDIA_Blog_c493875a84b848b2",
+    "title": "GeForce NOW Turns Screens Into a Gaming Machine",
+    "description": "The GeForce NOW sixth-anniversary festivities roll on this February, continuing a monthlong celebration of NVIDIA’s cloud gaming service. This week brings even more reasons to join the party, as GeForce NOW launches on a new platform with support for Amazon Fire TV devices, and eight new games to keep the streaming going strong. The new Read Article",
+    "url": "https://blogs.nvidia.com/blog/geforce-now-thursday-amazon-fire-tv-app/",
+    "publishedAt": "2026-02-12T14:00:58.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2026/02/gfn-thursday-ecosystem-nv-blog-1280x680-logo.jpg",
+    "author": "GeForce NOW Community"
+  },
+  {
+    "id": "NVIDIA_Blog_ee380ffe3c6abb3b",
+    "title": "GeForce NOW Celebrates Six Years of Streaming With 24 Games in February",
+    "description": "Break out the cake and green sprinkles — GeForce NOW is turning six. Since launch, members have streamed over 1 billion hours, and the party’s just getting started. Throughout February, members can look forward to new games, fresh ways to play across more devices and even more ways to bring RTX power to every screen Read Article",
+    "url": "https://blogs.nvidia.com/blog/geforce-now-thursday-feb-2026-games-list/",
+    "publishedAt": "2026-02-05T14:00:53.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2026/02/gfn-thursday-6yr-anniversary-nv-blog-1280x680-logo.jpg",
+    "author": "GeForce NOW Community"
+  },
+  {
+    "id": "NVIDIA_Blog_3ab3ff1c9285f054",
+    "title": "Nemotron Labs: How AI Agents Are Turning Documents Into Real-Time Business Intelligence",
+    "description": "Businesses today face the challenge of uncovering valuable insights buried within a wide variety of documents — including reports, presentations, PDFs, web pages and spreadsheets.",
+    "url": "https://blogs.nvidia.com/blog/ai-agents-intelligent-document-processing/",
+    "publishedAt": "2026-02-04T16:00:36.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2026/02/nemotron-labs-featured.jpg",
+    "author": "Moon Chung"
+  },
+  {
+    "id": "NVIDIA_Blog_60c35ce1dff9da79",
+    "title": "Everything Will Be Represented in a Virtual Twin, NVIDIA CEO Jensen Huang Says at 3DEXPERIENCE World",
+    "description": "NVIDIA founder and CEO Jensen Huang and Dassault Systèmes CEO Pascal Daloz announced a partnership to build a shared industrial AI architecture, merging virtual twins with physics-based AI to redefine the future of design, engineering and manufacturing.",
+    "url": "https://blogs.nvidia.com/blog/huang-3dexperience-2026/",
+    "publishedAt": "2026-02-03T22:14:51.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2026/02/dassault-jhh-email-1280x680-28.jpg",
+    "author": "Brian Caulfield"
+  },
+  {
+    "id": "NVIDIA_Blog_7ad541ccf9a3461d",
+    "title": "Mercedes-Benz Unveils New S-Class Built on NVIDIA DRIVE AV, Which Enables an L4-Ready Architecture",
+    "description": "Mercedes-Benz is marking 140 years of automotive innovation with a new S-Class built for the AI era, bringing together automotive safety and NVIDIA’s advanced autonomous driving platform to enable a level 4-ready architecture designed for trust. The new S-Class with MB.OS, which will be equipped with the NVIDIA DRIVE Hyperion architecture and full-stack NVIDIA DRIVE Read Article",
+    "url": "https://blogs.nvidia.com/blog/mercedes-benz-l4-s-class-drive-av-platform/",
+    "publishedAt": "2026-01-29T18:00:31.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2026/01/benz-nv-1280x680-1.jpg",
+    "author": "Jessica Soares"
+  },
+  {
+    "id": "NVIDIA_Blog_55fceb95d8034d54",
+    "title": "Into the Omniverse: Physical AI Open Models and Frameworks Advance Robots and Autonomous Systems",
+    "description": "Open source has become essential for driving innovation in robotics and autonomy. By providing access to critical infrastructure — from simulation frameworks to AI models — NVIDIA is enabling collaborative development that accelerates the path to safer, more capable autonomous systems.",
+    "url": "https://blogs.nvidia.com/blog/physical-ai-open-models-robot-autonomous-systems-omniverse/",
+    "publishedAt": "2026-01-29T17:00:21.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2026/01/ito-jan-2026-1280x680-1.jpg",
+    "author": "Akhil Docca"
+  },
+  {
+    "id": "NVIDIA_Blog_21f2c775cad78f14",
+    "title": "GeForce NOW Brings GeForce RTX Gaming to Linux PCs",
+    "description": "Get ready to game — the native GeForce NOW app for Linux PCs is now available in beta, letting Linux desktops tap directly into GeForce RTX performance from the cloud. Alongside the expansion comes ten new games, including The Bard’s Tale IV: Director’s Cut and The Bard’s Tale Trilogy for a leveled-up gaming weekend. And Read Article",
+    "url": "https://blogs.nvidia.com/blog/geforce-now-thursday-linux/",
+    "publishedAt": "2026-01-29T14:00:49.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2026/01/gfn-thursday-1-6-nv-blog-1280x680-logo-1.jpg",
+    "author": "GeForce NOW Community"
+  },
+  {
+    "id": "NVIDIA_Blog_ccc19b811fdace36",
+    "title": "Accelerating Science: A Blueprint for a Renewed National Quantum Initiative",
+    "description": "Quantum technologies are rapidly emerging as foundational capabilities for economic competitiveness, national security and scientific leadership in the 21st century. Sustained U.S. leadership in quantum information science is critical to ensuring that breakthroughs in computing, sensing, networking and materials translate into secure technologies and industries, a skilled domestic workforce and long-term strategic advantage. To secure Read Article",
+    "url": "https://blogs.nvidia.com/blog/national-quantum-initiative/",
+    "publishedAt": "2026-01-28T18:17:53.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2025/09/nvidiaheadquarters.jpg",
+    "author": "Krysta Svore"
+  },
+  {
+    "id": "NVIDIA_Blog_3a1c866ed9060184",
+    "title": "NVIDIA Launches Earth-2 Family of Open Models — the World’s First Fully Open, Accelerated Set of Models and Tools for AI Weather",
+    "description": "At the American Meteorological Society’s Annual Meeting, NVIDIA today unveiled a new NVIDIA Earth-2 family of open models, libraries and frameworks for weather and climate AI, offering the world’s first fully open, production-ready weather AI software stack.",
+    "url": "https://blogs.nvidia.com/blog/nvidia-earth-2-open-models/",
+    "publishedAt": "2026-01-26T14:00:53.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2026/01/hpc-corp-blog-earth-2-model-1920x1080-1.jpg",
+    "author": "Mike Pritchard"
+  },
+  {
+    "id": "NVIDIA_Blog_a6896847cd1d9d95",
+    "title": "NVIDIA DRIVE AV Raises the Bar for Vehicle Safety as Mercedes-Benz CLA Earns Top Euro NCAP Award",
+    "description": "AI-powered driver assistance technologies are becoming standard equipment, fundamentally changing how vehicle safety is assessed and validated. The recent recognition of the Mercedes-Benz CLA as Euro NCAP’s Best Performer of 2025 underscores this shift, as the vehicle combines traditional passive safety features with NVIDIA DRIVE AV software to achieve the highest overall safety score of Read Article",
+    "url": "https://blogs.nvidia.com/blog/drive-av-mercedes-benz-cla-euro-ncap-safety-award/",
+    "publishedAt": "2026-01-22T18:21:49.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2026/01/mb-cla-euro-ncap-2.jpg",
+    "author": "Ali Kani"
+  },
+  {
+    "id": "NVIDIA_Blog_9d0f4477a28098e7",
+    "title": "How to Get Started With Visual Generative AI on NVIDIA RTX PCs",
+    "description": "AI-powered content generation is now embedded in everyday tools like Adobe and Canva, with a slew of agencies and studios incorporating the technology into their workflows. Image models now deliver photorealistic results consistently, video models can generate long and coherent clips, and both can follow creative directions. Creators are increasingly running these workflows locally on Read Article",
+    "url": "https://blogs.nvidia.com/blog/rtx-ai-garage-comfyui-tutorial/",
+    "publishedAt": "2026-01-22T14:00:57.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2026/01/2026-01-22-nv-blog-1280x680-1.jpg",
+    "author": "Joel Pennington"
+  },
+  {
+    "id": "NVIDIA_Blog_6519153ce82aa190",
+    "title": "From Pilot to Profit: Survey Reveals the Financial Services Industry Is Doubling Down on AI Investment and Open Source",
+    "description": "AI has taken center stage in financial services, automating the research and execution behind algorithmic trading and helping banks more accurately detect fraud and money laundering — all while improving risk management practices and expediting document processing. The sixth annual “NVIDIA State of AI in Financial Services” report, based on a survey of more than Read Article",
+    "url": "https://blogs.nvidia.com/blog/ai-in-financial-services-survey-2026/",
+    "publishedAt": "2026-01-22T14:00:54.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2026/01/fsi-corp-blog-state-of-ai-report-2026-1280x680-1.jpg",
+    "author": "Kevin Levitt"
+  },
+  {
+    "id": "NVIDIA_Blog_b87b5fc73a4c8a1b",
+    "title": "Flight Controls Are Cleared for Takeoff on GeForce NOW",
+    "description": "The wait is over, pilots. Flight control support — one of the most community-requested features for GeForce NOW — is live starting today, following its announcement at CES earlier this month. Virtual captains can now bring dedicated flight gear into the cloud and feel every roll, yaw and throttle change with even more precision, starting Read Article",
+    "url": "https://blogs.nvidia.com/blog/geforce-now-thursday-flight-controls/",
+    "publishedAt": "2026-01-22T14:00:53.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2026/01/gfn-thursday-1-22-nv-blog-1280x680-logo.jpg",
+    "author": "GeForce NOW Community"
+  },
+  {
+    "id": "NVIDIA_Blog_249b3be254f5f869",
+    "title": "‘Largest Infrastructure Buildout in Human History’: Jensen Huang on AI’s ‘Five-Layer Cake’ at Davos",
+    "description": "AI is becoming the foundation of the “largest infrastructure buildout in human history,” spanning energy and computing infrastructure, AI models and applications, NVIDIA founder and CEO Jensen Huang said during a World Economic Forum discussion with BlackRock CEO Larry Fink.",
+    "url": "https://blogs.nvidia.com/blog/davos-wef-blackrock-ceo-larry-fink-jensen-huang/",
+    "publishedAt": "2026-01-21T12:50:16.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2026/01/wef26-davos-fireside-chat-jhh-larry-fink-corp-blog-1280x680-2.png",
+    "author": "Brian Caulfield"
+  },
+  {
+    "id": "NVIDIA_Blog_e36b93adc5b16679",
+    "title": "Survive the Quarantine Zone and More With Devolver Digital Games on GeForce NOW",
+    "description": "NVIDIA kicked off the year at CES, where the crowd buzzed about the latest gaming announcements — including the native GeForce NOW app for Linux and Amazon Fire TV sticks, community-requested flight-control support and a stacked AAA lineup for the year. Check out what the creators of the YouTube channels Cloud Gaming Battle and Anytime Read Article",
+    "url": "https://blogs.nvidia.com/blog/geforce-now-thursday-quarantine-zone/",
+    "publishedAt": "2026-01-15T14:00:35.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA Blog",
+    "imageUrl": "https://blogs.nvidia.com/wp-content/uploads/2026/01/gfn-thursday-1-15-nv-blog-1280x680-logo.jpg",
+    "author": "GeForce NOW Community"
+  }
+]

@@ -1,0 +1,222 @@
+[
+  {
+    "id": "Last_Week_in_AI_1503a63b4426484d",
+    "title": "LWiAI Podcast #233 - Moltbot, Genie 3, Qwen3-Max-Thinking",
+    "description": "Google adds Gemini AI-powered ‘auto browse’ to Chrome, Users flock to open source Moltbot for always-on AI, Qwen3-Max-Thinking debuts, and more!",
+    "url": "https://lastweekin.ai/p/lwiai-podcast-233-moltbot-genie-3",
+    "publishedAt": "2026-02-06T05:06:04.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://api.substack.com/feed/podcast/187055359/1b1788af35173711fede9f983272e056.mp3",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_b776200aed9f7561",
+    "title": "Last Week in AI #334 - Kimi K2.5 & Code, Genie 3, OpenClaw & Moltbook",
+    "description": "China’s Moonshot releases a new open source model Kimi K2.5 and a coding agent, Google Brings Genie 3’s Interactive World-Building Prototype to AI Ultra Subscribers, and more!",
+    "url": "https://lastweekin.ai/p/last-week-in-ai-334-kimi-k25-and",
+    "publishedAt": "2026-02-04T05:25:56.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://substackcdn.com/image/fetch/$s_!5B17!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe07b0dd2-5a8f-4e0b-9fff-c7dc39bd26b3_2192x950.png",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_417912ebe9fe83df",
+    "title": "LWiAI Podcast #232 - ChatGPT Ads, Thinking Machines Drama, STEM",
+    "description": "OpenAI to test ads in ChatGPT as it burns through billions, The Drama at Thinking Machines, STEM: Scaling Transformers with Embedding Modules",
+    "url": "https://lastweekin.ai/p/lwiai-podcast-232-chatgpt-ads-thinking",
+    "publishedAt": "2026-01-28T09:51:53.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://api.substack.com/feed/podcast/186060980/2acf6ee93fa745346dedfd59f9d3bc8f.mp3",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_597ace8dd8df72c9",
+    "title": "Last Week in AI #333 - ChatGPT Ads, Zhipu+Huawei, Drama at Thinking Machines",
+    "description": "OpenAI to test ads in ChatGPT as it burns through billions, Sequoia to invest in Anthropic, Zhipu AI breaks US chip reliance, The Drama at Thinking Machines Is Riveting Silicon Valley",
+    "url": "https://lastweekin.ai/p/last-week-in-ai-333-chatgpt-ads-zhipuhuawei",
+    "publishedAt": "2026-01-23T05:14:53.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://substackcdn.com/image/fetch/$s_!aUOs!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F1db40b23-0fe4-4051-b254-001fbcba3f8d_3840x2160.webp",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_362903ff3172381a",
+    "title": "LWiAI Podcast #231 - Claude Cowork, Anthropic $10B, Deep Delta Learning",
+    "description": "Anthropic’s new Cowork tool, Anthropic Raising $10 Billion at $350 Billion Value, Deep Delta Learning",
+    "url": "https://lastweekin.ai/p/lwiai-podcast-231-claude-cowork-anthropic",
+    "publishedAt": "2026-01-21T03:22:53.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://api.substack.com/feed/podcast/185260815/8c63a58bf2eeb427beeb925e96ff7ea0.mp3",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_908ea3d178bf253b",
+    "title": "Last Week in AI #332 - Apple + Gemini, OpenAI + Cerebras, Claude Cowork",
+    "description": "Google’s Gemini to power Apple’s AI features like Siri, OpenAI signs deal worth $10B for compute from Cerebras, and more!",
+    "url": "https://lastweekin.ai/p/last-week-in-ai-332-apple-gemini",
+    "publishedAt": "2026-01-15T07:06:16.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://substackcdn.com/image/fetch/$s_!yTUp!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F69d3b3b4-a53a-4be2-ae1c-1b4f1bc4437a_1920x1080.webp",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_82b4c9afab12ea5c",
+    "title": "LWiAI Podcast #230 - 2025 Retrospective, Nvidia buys Groq, GLM 4.7, METR ",
+    "description": "Nvidia buying AI chip startup Groq for about $20 billion, Meta Buys AI Startup Manus, Z.AI launches GLM-4.7",
+    "url": "https://lastweekin.ai/p/lwiai-podcast-230-2025-retrospective",
+    "publishedAt": "2026-01-07T06:59:29.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://api.substack.com/feed/podcast/183763653/9dad1b835a5178a4fe49a8417ea67d3c.mp3",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_557ec8081e83d3fe",
+    "title": "Last Week in AI #331 - Nvidia announcements, Grok bikini prompts, RAISE Act",
+    "description": "Nvidia Details New A.I. Chips and Autonomous Car Project, Grok is undressing anyone, NY passes AI regulation",
+    "url": "https://lastweekin.ai/p/last-week-in-ai-331-nvidia-announcements",
+    "publishedAt": "2026-01-06T11:56:58.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://substackcdn.com/image/fetch/$s_!Hy8F!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F17528d28-7475-48f5-acb0-8fa90ed24b66_2560x1439.png",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_1a456c412c510cdb",
+    "title": "LWiAI Podcast #229 - Gemini 3 Flash, ChatGPT Apps, Nemotron 3 ",
+    "description": "Google launches Gemini 3 Flash, ChatGPT launches an app store, Introducing GPT-5.2-Codex",
+    "url": "https://lastweekin.ai/p/lwiai-podcast-229-gemini-3-flash",
+    "publishedAt": "2025-12-25T21:29:26.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://api.substack.com/feed/podcast/182591125/90aa3c10d0056581c7df3cce104cdaba.mp3",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_de0866020025db79",
+    "title": "Last Week in AI #330 - Groq->Nvidia , ChatGPT Apps, US AI Genesis Mission",
+    "description": "Nvidia buying AI chip startup Groq’s assets for about $20 billion in largest deal on record, OpenAI opens ChatGPT to third-party apps via its Platform, and more!",
+    "url": "https://lastweekin.ai/p/last-week-in-ai-330-groq-nvidia-chatgpt",
+    "publishedAt": "2025-12-25T08:51:51.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://substackcdn.com/image/fetch/$s_!KVkX!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F06be9f63-ea22-4aef-a4f1-9b52fe3a4cac_1200x620.jpeg",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_905a63ea4c0346f3",
+    "title": "LWiAI Podcast #228 - GPT 5.2, Scaling Agents, Weird Generalization ",
+    "description": "GPT-5.2 is OpenAI’s latest move in the agentic AI battle, Towards a Science of Scaling Agent Systems, and more!",
+    "url": "https://lastweekin.ai/p/lwiai-podcast-228-gpt-52-scaling",
+    "publishedAt": "2025-12-17T22:31:17.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://api.substack.com/feed/podcast/181935684/6ebd645d102e0cb5fca5c5d6436e6ad2.mp3",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_7882e2bc84f71e86",
+    "title": "Last Week in AI #329 - GPT 5.2, GenAI.mil, Disney in Sora",
+    "description": "GPT-5.2 is OpenAI’s latest move in the agentic AI battle, Google is powering a new US military AI platform, Trump Moves to Stop States From Regulating AI",
+    "url": "https://lastweekin.ai/p/last-week-in-ai-329-gpt-52-genaimil",
+    "publishedAt": "2025-12-16T07:45:13.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://substackcdn.com/image/fetch/$s_!auPx!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd588ba73-f9ce-4b22-b0a6-f2d1025d1b46_1598x1192.png",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_7ce022c914a70b67",
+    "title": "LWiAI Podcast #227 - Jeremie is back! DeepSeek 3.2, TPUs, Nested Learning ",
+    "description": "Deepseek 3.2 New AI Model is Faster, Cheaper and Smarter, NVIDIA’s Partners Are Beginning to Tilt Toward Google’s TPU Ecosystem, Nested Learning: The Illusion of Deep Learning Architecture",
+    "url": "https://lastweekin.ai/p/lwiai-podcast-227-jeremie-is-back",
+    "publishedAt": "2025-12-09T08:41:54.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://api.substack.com/feed/podcast/181123939/0fdc2256ab76b015ec94c5c107c5c546.mp3",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_0d275c8d89043d12",
+    "title": "Last Week in AI #328 - DeepSeek 3.2, Mistral 3, Trainium3, Runway Gen-4.5",
+    "description": "DeepSeek Releases New Reasoning Models, Mistral closes in on Big AI rivals with new open-weight frontier and small models, and more!",
+    "url": "https://lastweekin.ai/p/last-week-in-ai-328-deepseek-32-mistral",
+    "publishedAt": "2025-12-08T04:44:04.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://substackcdn.com/image/fetch/$s_!fWgB!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F975b65a8-c9c3-412b-9dc8-ef6af08d692b_1080x602.webp",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_740f21b870dad4fc",
+    "title": "LWiAI Podcast #226 - Gemini 3, Claude Opus 4.5, Nano Banana Pro, LeJEPA ",
+    "description": "Google launches Gemini 3 & Nano Banana Pro, Anthropic releases Opus 4.5, and more!",
+    "url": "https://lastweekin.ai/p/lwiai-podcast-226-gemini-3-claude",
+    "publishedAt": "2025-11-30T08:20:26.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://api.substack.com/feed/podcast/180302349/17bf746a80bf9fffcf6e2d42c30dee5e.mp3",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_e9792627d65c6f55",
+    "title": "Last Week in AI #327 - Gemini 3, Opus 4.5, Nano Banana Pro, GPT-5.1-Codex-Max",
+    "description": "It's a big week! Lots of exciting releases, plus nvidia earnings and a whole bunch of cool research.",
+    "url": "https://lastweekin.ai/p/last-week-in-ai-327-gemini-3-opus",
+    "publishedAt": "2025-11-25T19:21:47.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://substackcdn.com/image/youtube/w_728,c_limit/UQsJIo46ZR8",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_2af473dd9a1018a2",
+    "title": "LWiAI Podcast #225 - GPT 5.1, Kimi K2 Thinking, Remote Labor Index ",
+    "description": "OpenAI says the brand-new GPT-5.1 is ‘warmer’, Baidu Unveils ERNIE 5.0, and more!",
+    "url": "https://lastweekin.ai/p/lwiai-podcast-225-gpt-51-kimi-k2",
+    "publishedAt": "2025-11-22T08:27:26.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://api.substack.com/feed/podcast/179629436/c53e22fe2c509deae8ce1406f2b73c37.mp3",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_85e682501ebfb84d",
+    "title": "Last Week in AI #326 - Qualcomm AI Chips, MiniMax M2, Kimi K2 Thinking",
+    "description": "Qualcomm announces AI chips to compete with AMD and Nvidia, MiniMax Releases MiniMax M2, Universal partners with Udio, and more!",
+    "url": "https://lastweekin.ai/p/last-week-in-ai-326-qualcomm-ai-chips",
+    "publishedAt": "2025-11-09T18:57:47.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://substackcdn.com/image/fetch/$s_!tkew!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F2773e195-7d24-4120-a6dd-031adf1542e8_800x418.jpeg",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_9209aba6c79fe41b",
+    "title": "LWiAI Podcast #224 - OpenAI is for-profit! Cursor 2, Minimax M2, Udio copyright",
+    "description": "Cursor 2.0 shifts to in-house AI with Composer model and parallel agents, OpenAI completed its for-profit restructuring, and more!",
+    "url": "https://lastweekin.ai/p/lwiai-podcast-224-openai-is-for-profit",
+    "publishedAt": "2025-11-05T22:58:01.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://api.substack.com/feed/podcast/178131785/f131e008d0aea09687e8c6a280fc22b9.mp3",
+    "author": "Last Week in AI"
+  },
+  {
+    "id": "Last_Week_in_AI_36916072a63d50da",
+    "title": "Last Week in AI #325 - OpenAI is for-profit, ChatGPT Atlas, Copilot Mico",
+    "description": "OpenAI completed its for-profit restructuring, OpenAI’s AI-powered browser is here, Google and Anthropic announce cloud deal worth tens of billions of dollars, and more!",
+    "url": "https://lastweekin.ai/p/last-week-in-ai-325-openai-is-for",
+    "publishedAt": "2025-10-29T15:02:31.000Z",
+    "category": "AI新闻",
+    "source": "Last Week in AI",
+    "imageUrl": "https://substackcdn.com/image/fetch/$s_!YzlV!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F1d8d48cc-fdce-4ee6-a9af-cfa56ba6fcb8_1200x624.jpeg",
+    "author": "Last Week in AI"
+  }
+]

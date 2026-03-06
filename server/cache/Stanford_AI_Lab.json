@@ -1,0 +1,167 @@
+[
+  {
+    "id": "Stanford_AI_Lab_8d2be1f94ee570e0",
+    "title": "LinkBERT: Improving Language Model Training with Document Link",
+    "description": "Language Model Pretraining Language models (LMs), like BERT 1 and the GPT series 2, achieve remarkable performance on many natural language processing (NLP) tasks. They are now the foundation of today’s NLP systems. 3 These models serve important roles in products and tools that we use every day, such as search engines like Google 4 and personal assistants like Alexa 5. These LMs are powerful because they can be pretrained via self-supervised learning on massive amounts of text data on the web w",
+    "url": "/blog/linkbert/",
+    "publishedAt": "2022-05-31T07:00:00.000Z",
+    "category": "新思路",
+    "source": "Stanford AI Lab",
+    "imageUrl": "/blog/assets/img/posts/2022-05-31-linkbert/intro.png",
+    "author": "Stanford AI Lab"
+  },
+  {
+    "id": "Stanford_AI_Lab_2f566ab4d910099d",
+    "title": "Stanford AI Lab Papers and Talks at ACL 2022",
+    "description": "The 60th Annual Meeting of the Association for Computational Linguistics (ACL) 2022 is taking place May 22nd - May 27th. We’re excited to share all the work from SAIL that’s being presented, and you’ll find links to papers, videos and blogs below. Feel free to reach out to the contact authors directly to learn more about the work that’s happening at Stanford! List of Accepted Papers LinkBERT: Pretraining Language Models with Document Links Authors: Michihiro Yasunaga, Jure Leskovec*, Percy Liang",
+    "url": "/blog/acl-2022/",
+    "publishedAt": "2022-05-25T07:00:00.000Z",
+    "category": "新思路",
+    "source": "Stanford AI Lab",
+    "imageUrl": "/blog/assets/img/posts/2022-05-25-acl-2022/logo.png",
+    "author": "Stanford AI Lab"
+  },
+  {
+    "id": "Stanford_AI_Lab_46f4c7717a464b58",
+    "title": "Stanford AI Lab Papers and Talks at ICLR 2022",
+    "description": "The International Conference on Learning Representations (ICLR) 2022 is being hosted virtually from April 25th - April 29th. We’re excited to share all the work from SAIL that’s being presented, and you’ll find links to papers, videos and blogs below. Feel free to reach out to the contact authors directly to learn more about the work that’s happening at Stanford! List of Accepted Papers Autonomous Reinforcement Learning: Formalism and Benchmarking Authors: Archit Sharma*, Kelvin Xu*, Nikhil Sard",
+    "url": "/blog/iclr-2022/",
+    "publishedAt": "2022-04-25T07:00:00.000Z",
+    "category": "新思路",
+    "source": "Stanford AI Lab",
+    "imageUrl": "/blog/assets/img/posts/2022-04-25-iclr-2022/logo.png",
+    "author": "Stanford AI Lab"
+  },
+  {
+    "id": "Stanford_AI_Lab_b8ed8f9fd41c570a",
+    "title": "Discovering the systematic errors made by machine learning models",
+    "description": "Discovering systematic errors with cross-modal embeddings In this blog post, we introduce Domino, a new approach for discovering systematic errors made by machine learning models. We also discuss a framework for quantitatively evaluating methods like Domino. Links: 📄 Paper (ICLR 2022) 🌍 Longer Walkthrough 💻 GitHub 📘 Docs 📒 Google Colab Machine learning models that achieve high overall accuracy often make systematic errors on coherent slices of validation data. What is a slice? A slice is a ",
+    "url": "/blog/domino/",
+    "publishedAt": "2022-04-07T07:00:00.000Z",
+    "category": "新思路",
+    "source": "Stanford AI Lab",
+    "imageUrl": "/blog/assets/img/posts/2022-04-07-domino/image1.png",
+    "author": "Stanford AI Lab"
+  },
+  {
+    "id": "Stanford_AI_Lab_e5e5eb6a56084b97",
+    "title": "Grading Complex Interactive Coding Programs with Reinforcement Learning",
+    "description": "[Summary] tl;dr: A tremendous amount of effort has been poured into training AI algorithms to competitively play games that computers have traditionally had trouble with, such as the retro games published by Atari, Go, DotA, and StarCraft II. The practical machine learning knowledge accumulated in developing these algorithms has paved the way for people to now routinely train game-playing AI agents for many games. Following this line of work, we focus on a specific category of games – those deve",
+    "url": "/blog/play-to-grade/",
+    "publishedAt": "2022-03-28T07:00:00.000Z",
+    "category": "新思路",
+    "source": "Stanford AI Lab",
+    "imageUrl": "https://media.giphy.com/media/LhC4oRHFahkxvryfQA/giphy.gif",
+    "author": "Stanford AI Lab"
+  },
+  {
+    "id": "Stanford_AI_Lab_ffb61f9ff60a38e1",
+    "title": "Understanding Deep Learning Algorithms that Leverage Unlabeled Data, Part 1: Self-training",
+    "description": "Deep models require a lot of training examples, but labeled data is difficult to obtain. This motivates an important line of research on leveraging unlabeled data, which is often more readily available. For example, large quantities of unlabeled image data can be obtained by crawling the web, whereas labeled datasets such as ImageNet require expensive labeling procedures. In recent empirical developments, models trained with unlabeled data have begun to approach fully-supervised performance (e.g",
+    "url": "/blog/understanding-self-training/",
+    "publishedAt": "2022-02-24T08:00:00.000Z",
+    "category": "新思路",
+    "source": "Stanford AI Lab",
+    "imageUrl": "/blog/assets/img/posts/2022-02-24-understanding-self-training/image2.png",
+    "author": "Stanford AI Lab"
+  },
+  {
+    "id": "Stanford_AI_Lab_fe3e2af9a585d85d",
+    "title": "Stanford AI Lab Papers and Talks at AAAI 2022",
+    "description": "The 36th AAAI Conference on Artificial Intelligence (AAAI 2022) is being hosted virtually from February 22th - March 1st. We’re excited to share all the work from SAIL that’s being presented, and you’ll find links to papers, videos and blogs below. Feel free to reach out to the contact authors directly to learn more about the work that’s happening at Stanford. List of Accepted Papers Partner-Aware Algorithms in Decentralized Cooperative Bandit Teams Authors: Erdem Bıyık, Anusha Lalitha, Rajarshi",
+    "url": "/blog/aaai-2022/",
+    "publishedAt": "2022-02-22T08:00:00.000Z",
+    "category": "新思路",
+    "source": "Stanford AI Lab",
+    "imageUrl": "/blog/assets/img/posts/2022-02-22-aaai-2022/logo.png",
+    "author": "Stanford AI Lab"
+  },
+  {
+    "id": "Stanford_AI_Lab_3dee9ebac106f0d2",
+    "title": "How to Improve User Experience (and Behavior): Three Papers from Stanford's Alexa Prize Team",
+    "description": "Introduction In 2019, Stanford entered the Alexa Prize Socialbot Grand Challenge 3 for the first time, with its bot Chirpy Cardinal, which went on to win 2nd place in the competition. In our previous post, we discussed the technical structure of our socialbot and how developers can use our open-source code to develop their own. In this post we share further research conducted while developing Chirpy Cardinal to discover common pain points that users encounter when interacting with socialbots, an",
+    "url": "/blog/alexa-sigdial/",
+    "publishedAt": "2022-02-01T08:00:00.000Z",
+    "category": "新思路",
+    "source": "Stanford AI Lab",
+    "imageUrl": "/blog/assets/img/posts/2022-02-01-alexa-sigdial/images/image8.png",
+    "author": "Stanford AI Lab"
+  },
+  {
+    "id": "Stanford_AI_Lab_823b302a0d6065c9",
+    "title": "Reward Isn't Free: Supervising Robot Learning with Language and Video from the Web",
+    "description": "This work was conducted as part of SAIL and CRFM. Deep learning has enabled improvements in the capabilities of robots on a range of problems such as grasping 1 and locomotion 2 in recent years. However, building the quintessential home robot that can perform a range of interactive tasks, from cooking to cleaning, in novel environments has remained elusive. While a number of hardware and software challenges remain, a necessary component is robots that can generalize their prior knowledge to new ",
+    "url": "/blog/reward-isnt-free/",
+    "publishedAt": "2022-01-21T08:00:00.000Z",
+    "category": "新思路",
+    "source": "Stanford AI Lab",
+    "imageUrl": "/blog/assets/img/posts/2022-01-21-reward-isnt-free/image9.png",
+    "author": "Stanford AI Lab"
+  },
+  {
+    "id": "Stanford_AI_Lab_2a2ddf15decc75be",
+    "title": "BanditPAM: Almost Linear-Time k-medoids Clustering via Multi-Armed Bandits",
+    "description": "TL;DR Want something better than \\(k\\)-means? Our state-of-the-art \\(k\\)-medoids algorithm from NeurIPS, BanditPAM, is now publicly available! \\(\\texttt{pip install banditpam}\\) and you're good to go! Like the \\(k\\)-means problem, the \\(k\\)-medoids problem is a clustering problem in which our objective is to partition a dataset into disjoint subsets. In \\(k\\)-medoids, however, we require that the cluster centers must be actual datapoints, which permits greater interpretability of the cluster cen",
+    "url": "/blog/banditpam/",
+    "publishedAt": "2021-12-17T08:00:00.000Z",
+    "category": "新思路",
+    "source": "Stanford AI Lab",
+    "imageUrl": "/blog/assets/img/posts/2021-12-17-banditpam/feature.png",
+    "author": "Stanford AI Lab"
+  },
+  {
+    "id": "Stanford_AI_Lab_1f2854c344b1cb2f",
+    "title": "Stanford AI Lab Papers and Talks at NeurIPS 2021",
+    "description": "The thirty-fifth Conference on Neural Information Processing Systems (NeurIPS) 2021 is being hosted virtually from Dec 6th - 14th. We’re excited to share all the work from SAIL that’s being presented at the main conference, at the Datasets and Benchmarks track and the various workshops, and you’ll find links to papers, videos and blogs below. Some of the members in our SAIL community also serve as co-organizers of several exciting workshops that will take place on Dec 13-14, so we hope you will ",
+    "url": "/blog/neurips-2021/",
+    "publishedAt": "2021-12-06T08:00:00.000Z",
+    "category": "新思路",
+    "source": "Stanford AI Lab",
+    "imageUrl": "/blog/assets/img/posts/2021-12-06-neurips-2021/logo.png",
+    "author": "Stanford AI Lab"
+  },
+  {
+    "id": "Stanford_AI_Lab_a8390b47c9bf323d",
+    "title": "Stanford AI Lab Papers at EMNLP/CoNLL 2021",
+    "description": "The 2021 Conference on Empirical Methods in Natural Language Processing (EMNLP 2021) will take place next week, colocated with CoNLL 2021. We’re excited to share all the work from SAIL that will be presented, and you’ll find links to papers, videos and blogs below. Feel free to reach out to the contact authors directly to learn more about the work that’s happening at Stanford! List of Accepted Papers Calibrate your listeners! Robust communication-based training for pragmatic speakers Authors: Ro",
+    "url": "/blog/emnlp-2021/",
+    "publishedAt": "2021-11-05T07:00:00.000Z",
+    "category": "新思路",
+    "source": "Stanford AI Lab",
+    "imageUrl": "/blog/assets/img/posts/2021-11-05-emnlp-2021/logo.png",
+    "author": "Stanford AI Lab"
+  },
+  {
+    "id": "Stanford_AI_Lab_7517df2981dfecab",
+    "title": "Stanford AI Lab Papers at CoRL 2021",
+    "description": "The Conference on Robot Learning (CoRL 2021) will take place next week. We’re excited to share all the work from SAIL that will be presented, and you’ll find links to papers, videos and blogs below. Feel free to reach out to the contact authors directly to learn more about the work that’s happening at Stanford! List of Accepted Papers LILA: Language-Informed Latent Actions Authors: Siddharth Karamcheti*, Megha Srivastava*, Percy Liang, Dorsa Sadigh Contact: skaramcheti@cs.stanford.edu, megha@cs.",
+    "url": "/blog/corl-2021/",
+    "publishedAt": "2021-11-05T07:00:00.000Z",
+    "category": "新思路",
+    "source": "Stanford AI Lab",
+    "imageUrl": "/blog/assets/img/posts/2021-11-05-corl-2021/logo.png",
+    "author": "Stanford AI Lab"
+  },
+  {
+    "id": "Stanford_AI_Lab_e0119da7ee69fd47",
+    "title": "Selective Classification Can Magnify Disparities Across Groups",
+    "description": "Selective classification, where models are allowed to “abstain” when they are uncertain about a prediction, is a useful approach for deploying models in settings where errors are costly. For example, in medicine, model errors can have life-or-death ramifications, but abstentions can be easily handled by backing off to a doctor, who then makes a diagnosis. Across a range of applications from vision 123 and NLP 45, even simple selective classifiers, relying only on model logits, routinely and ofte",
+    "url": "/blog/sc-magnifies-disparities/",
+    "publishedAt": "2021-10-13T07:00:00.000Z",
+    "category": "新思路",
+    "source": "Stanford AI Lab",
+    "imageUrl": "/blog/assets/img/posts/2021-10-13-sc-magnifies-disparities/image2.png",
+    "author": "Stanford AI Lab"
+  },
+  {
+    "id": "Stanford_AI_Lab_332cfbf84b10b10e",
+    "title": "Stanford AI Lab Papers at ICCV 2021",
+    "description": "The International Conference on Computer Vision (ICCV 2021) will be hosted virtually next week. We’re excited to share all the work from SAIL that will be presented, and you’ll find links to papers, videos and blogs below. Feel free to reach out to the contact authors directly to learn more about the work that’s happening at Stanford! List of Accepted Papers GLoRIA: A Multimodal Global-Local Representation Learning Framework for Label-efficient Medical Image Recognition Authors: Mars Huang Conta",
+    "url": "/blog/iccv-2021/",
+    "publishedAt": "2021-10-08T07:00:00.000Z",
+    "category": "新思路",
+    "source": "Stanford AI Lab",
+    "imageUrl": "/blog/assets/img/posts/2021-10-08-iccv-2021/logo.png",
+    "author": "Stanford AI Lab"
+  }
+]

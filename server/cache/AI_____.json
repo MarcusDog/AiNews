@@ -1,0 +1,222 @@
+[
+  {
+    "id": "AI科技大本营_dcd9cccad75876c8",
+    "title": "演讲 | 强化学习之父 Sutton 隔空回应 Hinton：目前的 AI “理解不足，调参有余”",
+    "description": "此外，虽然出现了许多新的实际应用，催生了全新的产业和经济价值，但这其中绝大部分，其实是超大规模计算和超大规模模式识别的应用。它们是非常具体的功能，并不代表智能的全部。在这个充满学术气息的礼堂里，Sutton 面对着一群顶尖的数学家和科学家，发表了这篇名为《AI 的未来》（The Future of AI）的最新演讲。他甚至将 AI 视为宇宙演化的必然阶段，邀请我们以“特殊的复制者”的身份，骄傲地开启属于“设计”的第四个伟大时代。意思是，为了通过不同的路径达成同一个你想要的结果，你需要灵活调整你的行为。",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/158047170",
+    "publishedAt": "2026-02-13T08:13:52.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_b1ec6ed7a403388e",
+    "title": "5 月共赴巴黎之约！GOSIM Paris 2026 正式启动，全球讲师与赞助招募全面开启",
+    "description": "任何一个全球性的、创新的、草根的和开源的项目，都能找到在 GOSIM 的家。Meta、NVIDIA、阿里巴巴、Hugging Face、BAAI（智源）、MiniMax、Neo4j、Dify、MetaGPT、智谱 AI、Eigent.AI、Docker、英飞流、北京大学、德国 Fraunhofer 研究所、牛津大学、法国 openLLM 社区。硬核技术演讲，内容覆盖 AI 模型、基础设施、应用、具身智能、PyTorch、OpenHarmony 等关键议题，拒绝空谈，直击技术深水区。模型性能优化与推理效率；",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/158046933",
+    "publishedAt": "2026-02-13T08:13:52.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_fe71b7896b20fc8b",
+    "title": "AI产品用户留存仅三个月周期？对话王咏刚：“不和AI协作过项目，你就不是合格程序员” | 万有引力",
+    "description": "举例来说，如果你要教授英语中某个动词的用法，传统教学可能比较枯燥，但用 Mootion 或其他 AI 工具生成一个小故事，让小兔子或木偶来做一件事情，其中用了该动词的各种时态，只要教学目的达到，至于故事动画是不是很生动，兔子是不是缺一个耳朵，其实没那么关键。我们大概在两年前开始进入这个领域，主要聚焦在动画和视频生成方向，用 AI 技术去帮助专业端的内容生产，同时也做了 Mootion.com 这样一个面向 C 端的工具，让没有任何专业背景的人，只需要输入一句提示词，就能生成相对简单的短视频。",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/158014583",
+    "publishedAt": "2026-02-12T10:08:31.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_37589018b74b941f",
+    "title": "陶哲轩的“下山”：当数学界的莫扎特决定给 AI 立规矩",
+    "description": "过去两年，“AI for Science”虽然喊得震天响，但科学界始终弥漫着一种尴尬的“割裂感”：一派是 AI 极客，他们用大模型生成看似完美的论文摘要，却对背后的物理机制一窍不通；现在的数学几乎完全是理论推导，但在未来，AI 可能会提出一个假设（比如某个公式对所有自然数都成立），然后它自己去设计实验，测试几个数值案例，或者检查它是否与文献中已有的结果兼容。以前我的兴趣主要在纯数学，但最近几年，我越来越深入地参与到利用 AI 和其他新技术来做数学，或者更广泛地说，做科学研究的新方法中。",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/157981531",
+    "publishedAt": "2026-02-11T08:16:52.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_6270f0f0434f3c9c",
+    "title": "仅凭“动作剪影“，打通视频生成与机器人世界模型！BridgeV2W让机器人学会“预演未来“",
+    "description": "为了解决上述问题，中科第五纪联合中科院自动化所团队推出 BridgeV2W，它通过一个极为优雅的设计，具身掩码（Embodiment Mask），一种由机器人动作渲染出的“动作剪影”，将坐标空间的动作无缝映射到像素空间，从而真正打通预训练视频生成模型与世界模型之间的桥梁，让机器人学会可靠地“预演未来”。技术上，BridgeV2W 采用 ControlNet 式的旁路注入，将掩码作为条件信号融入预训练视频生成模型，在保留其强大视觉先验的同时，赋予其理解机器人动作的能力。视角一变，世界就“崩”。",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/158046609",
+    "publishedAt": "2026-02-11T06:30:36.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_ec8fc601fc54a0f2",
+    "title": "仅凭“动作剪影“，打通视频生成与机器人世界模型！BridgeV2W让机器人学会“预演未来“",
+    "description": "为了解决上述问题，中科第五纪联合中科院自动化所团队推出 BridgeV2W，它通过一个极为优雅的设计，具身掩码（Embodiment Mask），一种由机器人动作渲染出的“动作剪影”，将坐标空间的动作无缝映射到像素空间，从而真正打通预训练视频生成模型与世界模型之间的桥梁，让机器人学会可靠地“预演未来”。技术上，BridgeV2W 采用 ControlNet 式的旁路注入，将掩码作为条件信号融入预训练视频生成模型，在保留其强大视觉先验的同时，赋予其理解机器人动作的能力。视角一变，世界就“崩”。",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/158014422",
+    "publishedAt": "2026-02-11T06:30:36.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_c7950e58409f127c",
+    "title": "仅凭“动作剪影“，打通视频生成与机器人世界模型！BridgeV2W让机器人学会“预演未来“",
+    "description": "为了解决上述问题，中科第五纪联合中科院自动化所团队推出 BridgeV2W，它通过一个极为优雅的设计，具身掩码（Embodiment Mask），一种由机器人动作渲染出的“动作剪影”，将坐标空间的动作无缝映射到像素空间，从而真正打通预训练视频生成模型与世界模型之间的桥梁，让机器人学会可靠地“预演未来”。技术上，BridgeV2W 采用 ControlNet 式的旁路注入，将掩码作为条件信号融入预训练视频生成模型，在保留其强大视觉先验的同时，赋予其理解机器人动作的能力。视角一变，世界就“崩”。",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/157981505",
+    "publishedAt": "2026-02-11T06:30:36.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_beb66175462f7668",
+    "title": "Reorx：OpenClaw 正在重塑我的数字生活，以及为什么我退订了所有 SaaS",
+    "description": "当所有人都在讨论 Mac Mini 的二手价格暴涨时，知名技术博主 Reorx 发布了一篇长文，详细记录了他利用 OpenClaw 将自己的工作流从“云端租赁”彻底迁移回“本地私有”的全过程。十年前，我们把所有的数据都交给了云巨头，换取便捷；以前用 ChatGPT，我需要把代码复制出来，粘贴进去，问它哪里错了，再复制回来。：有一次，OpenClaw 误解了我的指令，把一个重要的测试数据库删除了。AI 正在从一个昂贵的、按次收费的云端服务，变成像电力和自来水一样，流淌在我们本地硬件里的基础设施。",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/157948418",
+    "publishedAt": "2026-02-10T02:11:20.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_86129d7cc4c023a0",
+    "title": "YC 专访 OpenClaw 创始人：80% 的 App 将会消失，我们还剩下什么？",
+    "description": "一开始我就想：“哦，我又把它重做了一遍。然后我想转录它，但我没有安装 Whisper，但我四处看了看，发现有这个 OpenAI 的密钥，所以我就用 curl 把它发送给了 OpenAI，然后得到了文本，现在我在这里。现在想象一下，如果我有多个机器人，也许我有各种专家：一个负责我的私人生活，一个负责我的工作，也许还有一个是我们的关系机器人，处理我们之间的所有事情。我想是 Summarize，它是一个小的命令行工具，你可以给它任何东西，比如一个播客，或者像这样的讨论，它会进行总结，但它也会在终端里显示幻灯片。",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/157948239",
+    "publishedAt": "2026-02-10T02:11:20.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_70765e78bbf82ec3",
+    "title": "警钟敲响！Hinton 最新万字演讲：怒怼乔姆斯基、定义“不朽计算”、揭示人类唯一生路",
+    "description": "编译 | 王启隆出品丨AI 科技大本营（ID：rgznai100）2026 年的冬天，安大略省金斯顿的寒风似乎比往年更凛冽一些。在女王大学（Queen's University）的礼堂里，气氛却呈现出一种奇特的庄重与躁动。这里通常是讨论中微子、暗物质或者宇宙起源的地方——麦克唐纳研究所的物理学家们习惯于在这里观测宇宙中最微小的粒子，试图解开最宏大的谜题。但今晚，讲台属于一位计算机科学家。Geoffrey Hinton，这位 78 岁的老人走上讲台时，背显得有些佝偻，但眼神依然锐利。对于科技圈而言，Hinto",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/157913680",
+    "publishedAt": "2026-02-09T04:01:43.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_cbe26d56ec67c22b",
+    "title": "告别“对讲机”时代：面壁智能给 AI 装上了“神经末梢”",
+    "description": "名为 OpenClaw（以及其前身 Moltbot）的开源项目在 GitHub 上爆火，一夜之间，全球的开发者和极客们似乎达成了一种共识：我们不再满足于在网页框里和 ChatGPT 聊天，我们需要一个 Agent（智能体），一个能接管我的鼠标键盘、能帮我整理本地文件、能像私人管家一样处理繁杂事务的“数字分身”。这一招其实是“阳谋”。当开发者习惯了在松果派上开发，当车企习惯了 MiniCPM 的低延迟，当机器人厂商习惯了 1Hz 的智能分层，面壁智能就不再只是一个卖模型的公司，而是成为了端侧生态的基础设施。",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/157780431",
+    "publishedAt": "2026-02-05T04:05:07.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_a2cbc199e59535f0",
+    "title": "退隐3年后回归，周末写的AI一夜刷屏、一周拿下10万Star增速超Linux，Clawdbot之父首次长谈：如今几乎不看自己发布的代码",
+    "description": "作者 | Gergely Orosz 责编 | 屠敏出品 | CSDN（ID：CSDNnews）仅用不到一周的时间，10 万颗 Star，GitHub 热榜被它牢牢占据，Fork 数迅速攀升到 2.2 万，增长曲线甚至跑赢了 Linux 内核、Vue、React 这样的经典项目。这个项目如今叫 OpenClaw，在不少开发者口中，它还有一个更早、更响亮的名字——Clawdbot。最近，它几乎在一夜之间刷遍了技术社区，成为最炙手可热的个人 AI 助理项目之一。但在走红之前，它的名字并不固定。最早，",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/157743194",
+    "publishedAt": "2026-02-04T10:02:03.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_9254a1ce4c478eaa",
+    "title": "2026 奇点智能技术大会上海站来袭，解码AI Agent、世界模型与氛围编程等新范式",
+    "description": "至今，在 ICLR、NeurIPS、ICML、OOPSLA、COLM、 ACL、EMNLP、NAACL、WWW、SIGIR、IJCAI、AAAI 和 CIKM 等国际顶级会议上发表超过 80 篇学术论文，其中 Rho-1 获得 NeurIPS 2024 最佳论文亚军奖, 和Autoverus 获得 OOPSLA 2025 杰出技术成果奖。王佳琦，京东探索研究院研究总监，多模态理解大模型研发团队负责人，研究方向包括多模态理解大模型、多模态生成模型以及相关领域的基准与数据集构建。",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/157685210",
+    "publishedAt": "2026-02-02T08:44:25.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_aa0b55bb5cc06884",
+    "title": "谷歌AI掌门人、诺奖得主Demis：AGI 需要打破“金鱼记忆”，而谷歌无论泡沫破裂与否都将是赢家",
+    "description": "因为即使明天 AI 的进步突然停止（虽然我认为这不可能），仅仅是现有的技术，就已经足够让我们的搜索、YouTube、办公套件等业务产生巨大的效率提升和体验变革。DeepMind 的优势在于，我们有足够深厚的研究底蕴，可以双管齐下：一边将现有的 Transformer 架构推向极致，一边探索那些全新的、蓝天般的架构创新。去年年底我采访 Sam Altman 时，他说 AGI 的定义其实很模糊，他甚至希望大家能达成一个共识：既然定义不清，不如这就当做我们已经“嗖”地一下经过了 AGI，直接迈向超级智能了。",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/157519817",
+    "publishedAt": "2026-01-29T10:01:19.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_12d227dfaec09332",
+    "title": "空间智能爆发只需24个月？群核科技首席科学家唐睿预言：具身智能才是AGI终极形态 | 万有引力",
+    "description": "你可能自己没办法去训练一个这样的模型，但是我把 API 做好，甚至我把我们已经训练好的模型先放出来，然后你自己有一些数据以后，也能够在我的模型基础上去微调出一个符合你业务场景的模型，让更多的人参与到这个游戏里面来。但是，真实数据的采集，第一，它的许可很难获取，或者在家里采集的话，会涉及到用户隐私。由于现在具身智能会考虑到数据不足的问题，所以会需要基于一些 2D 的交互视频，或者 3D 的可交互场景，再加上仿真计算这样的方式，去产生大量的数据，用于具身智能未来和真实物理世界交互的训练，甚至是验证。",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/157481196",
+    "publishedAt": "2026-01-28T10:59:34.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_7e851406f5797505",
+    "title": "用人类脑电波教 AI 开车，这位清华 90 后学者直言隐式信号里藏着 AGI 的关键 | 万有引力",
+    "description": "作者 | 唐小引出品 | CSDN（ID：CSDNnews）想象一下：什么是“老司机”的直觉？你正在开车经过一个繁忙的路口。右侧停着一辆公交车，挡住了你的视线。突然，你的脚不自觉地放在了刹车上。为什么？你的眼睛并没有看到行人，也没有看到红灯。几秒钟后，一个骑着电动车的人从公交车头“鬼探头”冲了出来。你从容踩下刹车，避免了一场事故。这就是我们常说的“车感”或者“驾驶直觉”。它不是教科书上死记硬背的规则，而是一种基于经验的、潜意识的风险预判。这种能力，是人类大脑在处理了无数次复杂路况后进化出的“超级算法”。现在",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/157403755",
+    "publishedAt": "2026-01-26T10:00:48.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_272255da3e6d529d",
+    "title": "从 DeepMind 到投身具身智能，王佳楠：算法最终还是要服务真实世界｜万有引力",
+    "description": "对话 | 唐小引 嘉宾 | 王佳楠责编 | 梦依丹出品 | CSDN（ID：CSDNnews）通往 AGI 的终点，是代码，还是身体？在王佳楠看来，答案明确指向了——具身智能。她曾在牛津大学完成学业，加入 DeepMind，从事强化学习与持续学习研究，亲历了 AlphaStar 等标志性项目的诞生，也在国内生成式 AI 尚处早期阶段时，参与过统一生成框架的探索，走在 AIGC 爆发之前的科研前沿。无论是在“纯算法”的巅峰，还是在生成式模型的起点，她都站在浪潮内部。2024 年，她加入星尘智能，选择直面",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/157301410",
+    "publishedAt": "2026-01-23T10:04:53.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_db47e5fa1902c880",
+    "title": "OpenAI CFO 摊牌：算力即营收，而 90% 的企业正被卷死在“能力鸿沟”里",
+    "description": "我想大胆猜测，在今天使用 AI 的人里——不管是个人还是企业——可能只有个位数百分比的人用到了 AI 30% 的能力。我们将探讨 AI 生态系统的现状，讨论我们是否处于泡沫之中，以及随着 AI 的演进，创业公司和投资者该如何突围。但在今天的消费端，规划一次旅行依然是个麻烦事。我最喜欢的例子是一家叫 Slash 的公司，ARR 大约 1.5 亿美元，但会计部门只有一个人，只有一个财务总监。我最近遇到一位大型咨询公司的管理者，她现在的后台系统描述为“人 + 智能体”，比例是 1 比 5，一个人对应五个智能体。",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/157186363",
+    "publishedAt": "2026-01-20T09:07:53.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_a7e126ad98a91093",
+    "title": "一文看懂 TritonNext 2026：FlagOS 亮点详解、语言扩展新趋势、AI 生成更加“底层”、芯片软件生态或迎“新拐点”！",
+    "description": "作者 | CSDN 编辑部出品丨AI 科技大本营（ID：rgznai100）算力已成为 AI 时代的“石油”，但如何高效挖掘异构算力的潜能，打破单一硬件架构的软件壁垒，是全行业面临的共同考题。过去二十年，CUDA 几乎定义了 GPU 编程的主流路径。但在 2026 年，随着更多国内 AI 芯片算力崛起与异构计算的普及，Triton 正从一个学术界的编程语言，演变为工业界打破 CUDA 垄断、连接上层算法与底层芯片的关键“通用语”。然而，语言的繁荣也带来了新的挑战：算子开发如何平衡易用性与极致性能？如何解决碎",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/156809131",
+    "publishedAt": "2026-01-10T02:35:07.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  },
+  {
+    "id": "AI科技大本营_0d29f2477f522bc9",
+    "title": "那个固执的法国老头走了，带走了硅谷最后的理想主义",
+    "description": "可能是 DeepSeek 烧了一把火，开源不再是独属于 Meta 的优势，御三家 OpenAI、Anthropic 和 Google 也在这一年推出了一个比一个牛的模型，不再有人谈论“AI 向善”，不再有人谈论“可解释性”，此外还有个词叫“对齐”，也没人再聊了。如果智能的本质真的不仅仅是预测下一个词，如果我们现在这条疯狂烧钱的路真的走错了，那么未来某一天，当我们在一堆废话生成的垃圾山上迷路时，会不会有人想起，曾有一个倔强的法国老头，指着另一条长满荆棘的小路说：“嘿，真理可能在那边。于是，FAIR 诞生了。",
+    "url": "https://blog.csdn.net/dQCFKyQDXYm3F8rB0/article/details/156619865",
+    "publishedAt": "2026-01-05T10:09:57.000Z",
+    "category": "AI新闻",
+    "source": "AI科技大本营",
+    "imageUrl": null,
+    "author": "dQCFKyQDXYm3F8rB0"
+  }
+]

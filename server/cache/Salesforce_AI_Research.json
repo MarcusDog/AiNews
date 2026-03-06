@@ -1,0 +1,112 @@
+[
+  {
+    "id": "Salesforce_AI_Research_d2821e38f9cb933b",
+    "title": "AI: The Best New Tool for Disaster Management",
+    "description": "From predicting floods to detecting wildfires early, AI’s a game changer for preventing disasters and providing relief.",
+    "url": "https://www.salesforce.com/blog/how-ai-is-being-used-in-disaster-management/",
+    "publishedAt": "2026-02-13T22:56:42.000Z",
+    "category": "新算法",
+    "source": "Salesforce AI Research",
+    "imageUrl": "https://www.salesforce.com/blog/wp-content/uploads/sites/2/2026/02/1.jpg?w=2880",
+    "author": "Laura Hilgers"
+  },
+  {
+    "id": "Salesforce_AI_Research_34d48e50d6accb32",
+    "title": "How to increase conversions with Launch Locations, the newest feature from Agentforce Commerce",
+    "description": "High-impact areas of your website (like your search bar and the content on your product detail pages) do major legwork to increase conversions for your business. The experiences shoppers have at these moments…",
+    "url": "https://www.salesforce.com/blog/agentforce-commerce-launch-locations/",
+    "publishedAt": "2026-02-13T18:19:45.000Z",
+    "category": "新算法",
+    "source": "Salesforce AI Research",
+    "imageUrl": "https://salesforce.vidyard.com/watch/TXG6b4GunMewAm962JCkJH",
+    "author": "Warren Holmes"
+  },
+  {
+    "id": "Salesforce_AI_Research_d9c8953225e53b9d",
+    "title": "Welcome to Your New Sales Workspace — And Lots More In Our Latest Release",
+    "description": "Level up with AI agents thanks to these new features from Agentforce Sales and Agentforce Revenue Management.",
+    "url": "https://www.salesforce.com/blog/sales-cloud-product-release/",
+    "publishedAt": "2026-02-13T15:18:24.000Z",
+    "category": "新算法",
+    "source": "Salesforce AI Research",
+    "imageUrl": "https://www.salesforce.com/blog/wp-content/themes/salesforce-blog/dist/images/offer-block/offer-illustration-layout-one.png",
+    "author": "Saxton Randle-Sims"
+  },
+  {
+    "id": "Salesforce_AI_Research_d50a9647da1f82b4",
+    "title": "Top 5 Ecommerce Tools For Small Business in 2026",
+    "description": "Launching an online store is just the beginning of your ecommerce journey. To turn a good idea into a thriving business, you need the right digital ecosystem. The days of simply selling products…",
+    "url": "https://www.salesforce.com/blog/best-ecommerce-tools-for-small-business/",
+    "publishedAt": "2026-02-13T15:00:00.000Z",
+    "category": "新算法",
+    "source": "Salesforce AI Research",
+    "imageUrl": "https://www.salesforce.com/blog/wp-content/uploads/sites/2/2025/04/Screenshot-2025-05-21-at-12.41.52 PM.png",
+    "author": "Lauren Wallace, Caylin White"
+  },
+  {
+    "id": "Salesforce_AI_Research_0bdd47c97a3e7d98",
+    "title": "AI Literacy For Startups and Small Businesses: Applications + Tips",
+    "description": "Learn how to apply AI to your business with these literacy tips.",
+    "url": "https://www.salesforce.com/blog/ai-literacy-for-small-business/",
+    "publishedAt": "2026-02-12T15:00:00.000Z",
+    "category": "新算法",
+    "source": "Salesforce AI Research",
+    "imageUrl": "https://www.salesforce.com/blog/wp-content/uploads/sites/2/2025/01/Screenshot-2026-01-08-at-3.51.44-PM.png",
+    "author": "Kavea S. Abhishek"
+  },
+  {
+    "id": "Salesforce_AI_Research_757018fc3c813bfd",
+    "title": "Architecting Inbound Governance with External Client Apps",
+    "description": "Learn how to enforce the principle of least privilege across inbound integrations by leveraging the multi-layered governance provided by external client apps.",
+    "url": "https://www.salesforce.com/blog/architecting-inbound-governance-external-client-apps/",
+    "publishedAt": "2026-02-12T14:58:35.000Z",
+    "category": "新算法",
+    "source": "Salesforce AI Research",
+    "imageUrl": "https://www.salesforce.com/blog/wp-content/themes/salesforce-blog/dist/images/related-trail-cloud-layout-astro.png",
+    "author": "David Nava"
+  },
+  {
+    "id": "Salesforce_AI_Research_7ff0c85740a961fe",
+    "title": "Healthcare Is Short on People, But AI Is Closing the Gap",
+    "description": "AI agents in healthcare relieve clinicians of administrative burdens and improve access for underserved communities. Here are four examples.",
+    "url": "https://www.salesforce.com/blog/ai-agents-in-healthcare/",
+    "publishedAt": "2026-02-11T16:55:40.000Z",
+    "category": "新算法",
+    "source": "Salesforce AI Research",
+    "imageUrl": "https://www.salesforce.com/blog/wp-content/uploads/sites/2/2025/08/1_1-1440x1440-1.png",
+    "author": "Lisa Lee"
+  },
+  {
+    "id": "Salesforce_AI_Research_cfe285286f084cc4",
+    "title": "7 ServiceNow Alternatives for Small Businesses and Startups",
+    "description": "We rounded up the best, budget-friendly alternatives to ServiceNow for your SMB.",
+    "url": "https://www.salesforce.com/blog/servicenow-alternatives-for-small-business/",
+    "publishedAt": "2026-02-11T15:00:00.000Z",
+    "category": "新算法",
+    "source": "Salesforce AI Research",
+    "imageUrl": "https://www.salesforce.com/blog/wp-content/uploads/sites/2/2025/05/Screenshot-2025-06-17-at-12.17.15 PM.png",
+    "author": "Salesforce SMB Team"
+  },
+  {
+    "id": "Salesforce_AI_Research_9b212277bb23ee30",
+    "title": "How to Ground Agentforce in External Documentation",
+    "description": "A recap of episode one of the Think Like an Architect series, breaking down a real-world scenario for grounding Agentforce in evolving external unstructured data.",
+    "url": "https://www.salesforce.com/blog/ground-agentforce-in-external-documentation/",
+    "publishedAt": "2026-02-10T21:35:59.000Z",
+    "category": "新算法",
+    "source": "Salesforce AI Research",
+    "imageUrl": "https://www.salesforce.com/blog/wp-content/themes/salesforce-blog/dist/images/offer-block/offer-illustration-layout-one.png",
+    "author": "Miriam McCabe"
+  },
+  {
+    "id": "Salesforce_AI_Research_403b5f8cae474d17",
+    "title": "eVerse: CRMArena Org Data Generator",
+    "description": "AI agents are increasingly used today to automate complex enterprise tasks, ranging from customer service interactions to sophisticated data analysis and workflow management. Their importance lies in their ability to drive significant efficiency…",
+    "url": "https://www.salesforce.com/blog/org-data-generator/",
+    "publishedAt": "2026-02-10T17:22:01.000Z",
+    "category": "新算法",
+    "source": "Salesforce AI Research",
+    "imageUrl": "https://www.salesforce.com/blog/wp-content/uploads/sites/2/2026/02/crmarena_gif_video-ezgif.com-video-to-gif-converter.gif?strip=all&#038;quality=95",
+    "author": "Onkar Thorat, Harish Dintakurthi, Vaibhav Vats, Daniel Lee, Jason Wu"
+  }
+]

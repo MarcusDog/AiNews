@@ -1,0 +1,167 @@
+[
+  {
+    "id": "LangChain_Blog_6afd92f18064bdf7",
+    "title": "On Agent Frameworks and Agent Observability",
+    "description": "Every time LLMs get better, the same question comes back: \"Do you still need an agent framework?\" It's a fair question. The best way to build agents changes as the models get more performant and evolve, but fundamentally, the agent is a system around the model,",
+    "url": "https://blog.langchain.com/on-agent-frameworks-and-agent-observability/",
+    "publishedAt": "2026-02-13T02:23:40.000Z",
+    "category": "AI框架",
+    "source": "LangChain Blog",
+    "imageUrl": "https://blog.langchain.com/content/images/2026/02/On-Agent-Frameworks--1-.png",
+    "author": "LangChain Accounts"
+  },
+  {
+    "id": "LangChain_Blog_f18881fe600f6249",
+    "title": "Join us for Interrupt: The Agent Conference",
+    "description": "Interrupt - The Agent Conference by LangChain - is where builders come to learn what's actually working in production. This year, we're bringing together more than 1,000 developers, product leaders, researchers, and founders to share what's coming next for agents—and how",
+    "url": "https://blog.langchain.com/join-us-for-interrupt-the-agent-conference/",
+    "publishedAt": "2026-02-12T17:42:03.000Z",
+    "category": "AI框架",
+    "source": "LangChain Blog",
+    "imageUrl": "https://blog.langchain.com/content/images/2026/02/interrupt-on-sale.png",
+    "author": "LangChain Accounts"
+  },
+  {
+    "id": "LangChain_Blog_484c47ee634d9f45",
+    "title": "The two patterns by which agents connect sandboxes",
+    "description": "Thank you to Nuno Campos from Witan Labs, Tomas Beran and Mikayel Harutyunyan from E2B, Jonathan Wall from Runloop, and Ben Guo from Zo Computer for their review and comments. TL;DR: More and more agents need a workspace: a computer where they can run code, install packages, and access",
+    "url": "https://blog.langchain.com/the-two-patterns-by-which-agents-connect-sandboxes/",
+    "publishedAt": "2026-02-10T16:32:35.000Z",
+    "category": "AI框架",
+    "source": "LangChain Blog",
+    "imageUrl": "https://blog.langchain.com/content/images/2026/02/Screenshot-2026-02-09-at-9.30.02---PM.png",
+    "author": "Harrison Chase"
+  },
+  {
+    "id": "LangChain_Blog_0f1cd2076a697865",
+    "title": "LangSmith is Now Available in Google Cloud Marketplace",
+    "description": "Today, we're thrilled to announce that LangSmith, the agent engineering platform from LangChain, is available in Google Cloud Marketplace. Google Cloud customers can now procure LangSmith through their existing Google Cloud accounts, enabling seamless billing, simplified procurement, and the ability to draw down on existing Google Cloud commitments.",
+    "url": "https://blog.langchain.com/langsmith-is-now-available-in-google-cloud-marketplace/",
+    "publishedAt": "2026-02-10T02:47:44.000Z",
+    "category": "AI框架",
+    "source": "LangChain Blog",
+    "imageUrl": "https://blog.langchain.com/content/images/2026/02/header2.png",
+    "author": "LangChain Accounts"
+  },
+  {
+    "id": "LangChain_Blog_f5dbceb1e96c6e4a",
+    "title": "January 2026: LangChain Newsletter",
+    "description": "Read about the latest product updates, events, and content from the LangChain team",
+    "url": "https://blog.langchain.com/january-2026-langchain-newsletter/",
+    "publishedAt": "2026-01-30T02:27:28.000Z",
+    "category": "AI框架",
+    "source": "LangChain Blog",
+    "imageUrl": "https://blog.langchain.com/content/images/2026/01/Jan-Newsletter-2026---Ghost.png",
+    "author": "LangChain"
+  },
+  {
+    "id": "LangChain_Blog_8b7bf4a7bb07872b",
+    "title": "Context Management for Deep Agents",
+    "description": "By Chester Curme and Mason Daugherty As the addressable task length of AI agents continues to grow, effective context management becomes critical to prevent context rot and to manage LLMs’ finite memory constraints. The Deep Agents SDK is LangChain’s open source, batteries-included agent harness. It provides an",
+    "url": "https://blog.langchain.com/context-management-for-deepagents/",
+    "publishedAt": "2026-01-28T16:11:29.000Z",
+    "category": "AI框架",
+    "source": "LangChain Blog",
+    "imageUrl": "https://blog.langchain.com/content/images/2026/01/Screenshot-2026-01-23-at-3.03.57---PM-1.png",
+    "author": "LangChain Accounts"
+  },
+  {
+    "id": "LangChain_Blog_9205126061851413",
+    "title": "Deploy agents instantly with Agent Builder templates",
+    "description": "Introducing the Agent Builder Template Library: a collection of ready-to-deploy agents for common tasks, equipped with the tools you already use.",
+    "url": "https://blog.langchain.com/introducing-agent-builder-template-library/",
+    "publishedAt": "2026-01-21T17:00:00.000Z",
+    "category": "AI框架",
+    "source": "LangChain Blog",
+    "imageUrl": "https://blog.langchain.com/content/images/2026/01/LangSmith-Agent-Builder.png",
+    "author": "LangChain Accounts"
+  },
+  {
+    "id": "LangChain_Blog_b6f1d785c24d195d",
+    "title": "Building Multi-Agent Applications with Deep Agents",
+    "description": "Breaking down complex tasks across specialized agents is one of the most effective approaches to building capable AI systems. In this post, we'll show you how to build multi-agent systems with Deep Agents.",
+    "url": "https://blog.langchain.com/building-multi-agent-applications-with-deep-agents/",
+    "publishedAt": "2026-01-21T16:30:00.000Z",
+    "category": "AI框架",
+    "source": "LangChain Blog",
+    "imageUrl": "https://blog.langchain.com/content/images/2026/01/Multi-Agent-Apps.png",
+    "author": "Sydney Runkle"
+  },
+  {
+    "id": "LangChain_Blog_30470c2ea23bdffc",
+    "title": "From Traces to Insights: Understanding Agent Behavior at Scale",
+    "description": "Visibility is the easiest piece. The hard part is analyzing and understanding what you’re observing. I’ve spoken to teams recording 100k+ traces every single day. What are they doing with those traces? Literally nothing. Because it’s impossible to read and summarize 100,000 traces",
+    "url": "https://blog.langchain.com/from-traces-to-insights-understanding-agent-behavior-at-scale/",
+    "publishedAt": "2026-01-20T17:16:56.000Z",
+    "category": "AI框架",
+    "source": "LangChain Blog",
+    "imageUrl": "https://blog.langchain.com/content/images/2026/01/Screenshot-2026-01-20-at-6.59.15---AM-1.png",
+    "author": "Harrison Chase"
+  },
+  {
+    "id": "LangChain_Blog_ba551bae1a6ae782",
+    "title": "How Remote uses LangChain and LangGraph to onboard thousands of customers with AI",
+    "description": "Guest post written by José Mussa (Staff Software Engineer @ Remote) Remote is a fast-growing startup helping companies hire, manage, and pay employees globally from a single platform. Remote’s customers operate across many countries and regulatory environments, and they trust Remote as the system of record for their",
+    "url": "https://blog.langchain.com/customers-remote/",
+    "publishedAt": "2026-01-19T16:00:07.000Z",
+    "category": "AI框架",
+    "source": "LangChain Blog",
+    "imageUrl": "https://blog.langchain.com/content/images/2026/01/Remote-case-study.png",
+    "author": "LangChain"
+  },
+  {
+    "id": "LangChain_Blog_62d6d65780fd881a",
+    "title": "Choosing the Right Multi-Agent Architecture",
+    "description": "In this post, we’ll explore when multi-agent architectures become necessary, the four main patterns we’ve observed, and how LangChain empowers you to effectively build multi-agent systems.",
+    "url": "https://blog.langchain.com/choosing-the-right-multi-agent-architecture/",
+    "publishedAt": "2026-01-14T18:06:14.000Z",
+    "category": "AI框架",
+    "source": "LangChain Blog",
+    "imageUrl": "https://blog.langchain.com/content/images/2026/01/Multi-agent-architecture.png",
+    "author": "Sydney Runkle"
+  },
+  {
+    "id": "LangChain_Blog_1e83495a5537295a",
+    "title": "Now GA: LangSmith Agent Builder",
+    "description": "LangSmith Agent Builder is now generally available—enabling anyone to build agents for complex daily tasks, without writing code.",
+    "url": "https://blog.langchain.com/langsmith-agent-builder-generally-available/",
+    "publishedAt": "2026-01-13T16:00:38.000Z",
+    "category": "AI框架",
+    "source": "LangChain Blog",
+    "imageUrl": "https://blog.langchain.com/content/images/2026/01/LangSmith-Agent-Builder---GA-Blog.png",
+    "author": "LangChain Accounts"
+  },
+  {
+    "id": "LangChain_Blog_bfab87e674b37c0e",
+    "title": "In software, the code documents the app. In AI, the traces do.",
+    "description": "TL;DR In traditional software, you read the code to understand what the app does - the decision logic lives in your codebase In AI agents, the code is just scaffolding - the actual decision-making happens in the model at runtime Because of this, the source of truth for what",
+    "url": "https://blog.langchain.com/in-software-the-code-documents-the-app-in-ai-the-traces-do/",
+    "publishedAt": "2026-01-10T17:39:27.000Z",
+    "category": "AI框架",
+    "source": "LangChain Blog",
+    "imageUrl": "https://blog.langchain.com/content/images/2026/01/Screenshot-2026-01-10-at-9.38.50---AM.png",
+    "author": "Harrison Chase"
+  },
+  {
+    "id": "LangChain_Blog_16b21e3dd7285f48",
+    "title": "Fastweb + Vodafone: Transforming Customer Experience with AI Agents using LangGraph and LangSmith",
+    "description": "See how Fastweb + Vodafone revolutionized customer service and call center operations with their agents, Super TOBi and Super Agent.",
+    "url": "https://blog.langchain.com/customers-vodafone-italy/",
+    "publishedAt": "2025-12-16T20:50:55.000Z",
+    "category": "AI框架",
+    "source": "LangChain Blog",
+    "imageUrl": "https://blog.langchain.com/content/images/2025/10/Vodafone-Italy---Oct-2025--1-.png",
+    "author": "LangChain"
+  },
+  {
+    "id": "LangChain_Blog_edd040a8a7a27a8f",
+    "title": "Debugging Deep Agents with LangSmith",
+    "description": "Debugging is the process of finding and fixing errors. This is a critical step in software engineering, and even more critical in agent engineering. One of the key capabilities of LangSmith is tooling to debug LLM applications. Today we are doubling down on solving that problem for the new wave",
+    "url": "https://blog.langchain.com/debugging-deep-agents-with-langsmith/",
+    "publishedAt": "2025-12-10T17:08:19.000Z",
+    "category": "AI框架",
+    "source": "LangChain Blog",
+    "imageUrl": "https://blog.langchain.com/content/images/2025/12/Debugging-deep-agents-blog-header.png",
+    "author": "LangChain Accounts"
+  }
+]

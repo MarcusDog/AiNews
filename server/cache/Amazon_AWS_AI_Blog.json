@@ -1,0 +1,222 @@
+[
+  {
+    "id": "Amazon_AWS_AI_Blog_c620a3c3aac8a9de",
+    "title": "Customize AI agent browsing with proxies, profiles, and extensions in Amazon Bedrock AgentCore Browser",
+    "description": "Today, we are announcing three new capabilities that address these requirements: proxy configuration, browser profiles, and browser extensions. Together, these features give you fine-grained control over how your AI agents interact with the web. This post will walk through each capability with configuration examples and practical use cases to help you get started.",
+    "url": "https://aws.amazon.com/blogs/machine-learning/customize-ai-agent-browsing-with-proxies-profiles-and-extensions-in-amazon-bedrock-agentcore-browser/",
+    "publishedAt": "2026-02-13T22:57:34.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/02/13/ML-20506-image001.jpg",
+    "author": "Joshua Samuel"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_59bd4cf86c17fb12",
+    "title": "AI meets HR: Transforming talent acquisition with Amazon Bedrock",
+    "description": "In this post, we show how to create an AI-powered recruitment system using Amazon Bedrock, Amazon Bedrock Knowledge Bases, AWS Lambda, and other AWS services to enhance job description creation, candidate communication, and interview preparation while maintaining human oversight.",
+    "url": "https://aws.amazon.com/blogs/machine-learning/ai-meets-hr-transforming-talent-acquisition-with-amazon-bedrock/",
+    "publishedAt": "2026-02-12T20:18:58.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/01/26/image-1-2.jpg",
+    "author": "Sai Jeedigunta"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_1174287ee45f25fa",
+    "title": "Build long-running MCP servers on Amazon Bedrock AgentCore with Strands Agents integration",
+    "description": "In this post, we provide you with a comprehensive approach to achieve this. First, we introduce a context message strategy that maintains continuous communication between servers and clients during extended operations. Next, we develop an asynchronous task management framework that allows your AI agents to initiate long-running processes without blocking other operations. Finally, we demonstrate how to bring these strategies together with Amazon Bedrock AgentCore and Strands Agents to build prod",
+    "url": "https://aws.amazon.com/blogs/machine-learning/build-long-running-mcp-servers-on-amazon-bedrock-agentcore-with-strands-agents-integration/",
+    "publishedAt": "2026-02-12T20:16:20.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/02/07/image-1-1.png",
+    "author": "Haochen Xie"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_5db63d9713b1b20e",
+    "title": "NVIDIA Nemotron 3 Nano 30B MoE model is now available in Amazon SageMaker JumpStart",
+    "description": "Today we’re excited to announce that the NVIDIA Nemotron 3 Nano 30B model with 3B active parameters is now generally available in the Amazon SageMaker JumpStart model catalog. You can accelerate innovation and deliver tangible business value with Nemotron 3 Nano on Amazon Web Services (AWS) without having to manage model deployment complexities. You can power your generative AI applications with Nemotron capabilities using the managed deployment capabilities offered by SageMaker JumpStart.",
+    "url": "https://aws.amazon.com/blogs/machine-learning/nvidia-nemotron-3-nano-30b-is-now-available-in-amazon-sagemaker-jumpstart/",
+    "publishedAt": "2026-02-11T19:38:47.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/02/11/Screenshot-2026-02-11-at-9.09.51 AM-1024x935.png",
+    "author": "Dan Ferguson"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_8ccf35ea31b3aba5",
+    "title": "Mastering Amazon Bedrock throttling and service availability: A comprehensive guide",
+    "description": "This post shows you how to implement robust error handling strategies that can help improve application reliability and user experience when using Amazon Bedrock. We'll dive deep into strategies for optimizing performances for the application with these errors. Whether this is for a fairly new application or matured AI application, in this post you will be able to find the practical guidelines to operate with on these errors.",
+    "url": "https://aws.amazon.com/blogs/machine-learning/mastering-amazon-bedrock-throttling-and-service-availability-a-comprehensive-guide/",
+    "publishedAt": "2026-02-11T15:52:54.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/02/03/Image-from-iOS-1-98x150.jpg",
+    "author": "Farzin Bagheri"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_76942261db029638",
+    "title": "Swann provides Generative AI to millions of IoT Devices using Amazon Bedrock",
+    "description": "This post shows you how to implement intelligent notification filtering using Amazon Bedrock and its gen-AI capabilities. You'll learn model selection strategies, cost optimization techniques, and architectural patterns for deploying gen-AI at IoT scale, based on Swann Communications deployment across millions of devices.",
+    "url": "https://aws.amazon.com/blogs/machine-learning/swann-provides-generative-ai-to-millions-of-iot-devices-using-amazon-bedrock/",
+    "publishedAt": "2026-02-11T15:48:15.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/artifacts/DBSBlogs/ML-19700/Swann_NotifyMe.mp4",
+    "author": "Aman Sharma"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_17bbe88f4be46776",
+    "title": "How LinqAlpha assesses investment theses using Devil’s Advocate on Amazon Bedrock",
+    "description": "LinqAlpha is a Boston-based multi-agent AI system built specifically for institutional investors. The system supports and streamlines agentic workflows across company screening, primer generation, stock price catalyst mapping, and now, pressure-testing investment ideas through a new AI agent called Devil’s Advocate. In this post, we share how LinqAlpha uses Amazon Bedrock to build and scale Devil’s Advocate.",
+    "url": "https://aws.amazon.com/blogs/machine-learning/how-linqalpha-assesses-investment-theses-using-devils-advocate-on-amazon-bedrock/",
+    "publishedAt": "2026-02-11T15:45:30.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/02/04/image-1.png",
+    "author": "Suyeol Yun, Jaeseon Ha, Subeen Pang, Jacob (Chanyeol) Choi"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_f494c746d85f4eec",
+    "title": "How Amazon uses Amazon Nova models to automate operational readiness testing for new fulfillment centers",
+    "description": "In this post, we discuss how Amazon Nova in Amazon Bedrock can be used to implement an AI-powered image recognition solution that automates the detection and validation of module components, significantly reducing manual verification efforts and improving accuracy.",
+    "url": "https://aws.amazon.com/blogs/machine-learning/how-amazon-uses-amazon-nova-models-to-automate-operational-readiness-testing-for-new-fulfillment-centers/",
+    "publishedAt": "2026-02-10T18:34:09.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/01/14/ml-19222-2-architecture-1.png",
+    "author": "Bishesh Adhikari"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_49659f826058b2fb",
+    "title": "Iberdrola enhances IT operations using Amazon Bedrock AgentCore",
+    "description": "Iberdrola, one of the world’s largest utility companies, has embraced cutting-edge AI technology to revolutionize its IT operations in ServiceNow. Through its partnership with AWS, Iberdrola implemented different agentic architectures using Amazon Bedrock AgentCore, targeting three key areas: optimizing change request validation in the draft phase, enriching incident management with contextual intelligence, and simplifying change model selection using conversational AI. These innovations reduce ",
+    "url": "https://aws.amazon.com/blogs/machine-learning/iberdrola-enhances-it-operations-using-amazon-bedrock-agentcore/",
+    "publishedAt": "2026-02-10T18:31:57.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/02/02/image-1.jpg",
+    "author": "Talha Chattha"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_9f6d8cb677272c24",
+    "title": "Building real-time voice assistants with Amazon Nova Sonic compared to cascading architectures",
+    "description": "Amazon Nova Sonic delivers real-time, human-like voice conversations through the bidirectional streaming interface. In this post, you learn how Amazon Nova Sonic can solve some of the challenges faced by cascaded approaches, simplify building voice AI agents, and provide natural conversational capabilities. We also provide guidance on when to choose each approach to help you make informed decisions for your voice AI projects.",
+    "url": "https://aws.amazon.com/blogs/machine-learning/building-real-time-voice-assistants-with-amazon-nova-sonic-compared-to-cascading-architectures/",
+    "publishedAt": "2026-02-10T18:29:05.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/01/26/ml-19206-image-2.jpg",
+    "author": "Daniel Wirjo"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_f9449ffbfde8a5da",
+    "title": "Automated Reasoning checks rewriting chatbot reference implementation",
+    "description": "This blog post dives deeper into the implementation architecture for the Automated Reasoning checks rewriting chatbot.",
+    "url": "https://aws.amazon.com/blogs/machine-learning/automated-reasoning-checks-rewriting-chatbot-reference-implementation/",
+    "publishedAt": "2026-02-09T19:34:05.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/02/06/ML-20387-image-1.png",
+    "author": "Stefano Buliani"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_75e3c3c0f121b161",
+    "title": "Scale LLM fine-tuning with Hugging Face and Amazon SageMaker AI",
+    "description": "In this post, we show how this integrated approach transforms enterprise LLM fine-tuning from a complex, resource-intensive challenge into a streamlined, scalable solution for achieving better model performance in domain-specific applications.",
+    "url": "https://aws.amazon.com/blogs/machine-learning/scale-llm-fine-tuning-with-hugging-face-and-amazon-sagemaker-ai/",
+    "publishedAt": "2026-02-09T16:48:46.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/02/04/Picture1-2.png",
+    "author": "Florent Gbelidji"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_edfc0b2f23e41fed",
+    "title": "New Relic transforms productivity with generative AI on AWS",
+    "description": "Working with the Generative AI Innovation Center, New Relic NOVA (New Relic Omnipresence Virtual Assistant) evolved from a knowledge assistant into a comprehensive productivity engine. We explore the technical architecture, development journey, and key lessons learned in building an enterprise-grade AI solution that delivers measurable productivity gains at scale.",
+    "url": "https://aws.amazon.com/blogs/machine-learning/new-relic-transforms-productivity-with-generative-ai-on-aws/",
+    "publishedAt": "2026-02-09T16:45:16.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/02/03/new-relic-aws-blog-figure-1.png",
+    "author": "Yicheng Shen, Sarathy Varadarajan"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_572885b951808dfc",
+    "title": "Accelerate agentic application development with a full-stack starter template for Amazon Bedrock AgentCore",
+    "description": "In this post, you will learn how to deploy Fullstack AgentCore Solution Template (FAST) to your Amazon Web Services (AWS) account, understand its architecture, and see how to extend it for your requirements. You will learn how to build your own agent while FAST handles authentication, infrastructure as code (IaC), deployment pipelines, and service integration.",
+    "url": "https://aws.amazon.com/blogs/machine-learning/accelerate-agentic-application-development-with-a-full-stack-starter-template-for-amazon-bedrock-agentcore/",
+    "publishedAt": "2026-02-09T16:40:58.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/02/03/ML-20357-1.png",
+    "author": "David Kaleko"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_88f5e8237c69355b",
+    "title": "Agent-to-agent collaboration: Using Amazon Nova 2 Lite and Amazon Nova Act for multi-agent systems",
+    "description": "This post walks through how agent-to-agent collaboration on Amazon Bedrock works in practice, using Amazon Nova 2 Lite for planning and Amazon Nova Act for browser interaction, to turn a fragile single-agent setup into a predictable multi-agent system.",
+    "url": "https://aws.amazon.com/blogs/machine-learning/agent-to-agent-collaboration-using-amazon-nova-2-lite-and-amazon-nova-act-for-multi-agent-systems/",
+    "publishedAt": "2026-02-09T16:00:28.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/02/02/ML-20141-image-1.png",
+    "author": "Yoav Fishman"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_d008ae8e84adb9bd",
+    "title": "Structured outputs on Amazon Bedrock: Schema-compliant AI responses",
+    "description": "Today, we're announcing structured outputs on Amazon Bedrock—a capability that fundamentally transforms how you can obtain validated JSON responses from foundation models through constrained decoding for schema compliance. In this post, we explore the challenges of traditional JSON generation and how structured outputs solves them. We cover the two core mechanisms—JSON Schema output format and strict tool use—along with implementation details, best practices, and practical code examples.",
+    "url": "https://aws.amazon.com/blogs/machine-learning/structured-outputs-on-amazon-bedrock-schema-compliant-ai-responses/",
+    "publishedAt": "2026-02-06T20:12:14.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/02/06/jeffzeng.jpeg",
+    "author": "Jeffrey Zeng"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_165b8aeeadf5fe1d",
+    "title": "Manage Amazon SageMaker HyperPod clusters using the HyperPod CLI and SDK",
+    "description": "In this post, we demonstrate how to use the CLI and the SDK to create and manage SageMaker HyperPod clusters in your AWS account. We walk through a practical example and dive deeper into the user workflow and parameter choices.",
+    "url": "https://aws.amazon.com/blogs/machine-learning/manage-amazon-sagemaker-hyperpod-clusters-using-the-hyperpod-cli-and-sdk/",
+    "publishedAt": "2026-02-06T19:27:45.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/02/06/ML-19564-image-1.jpeg",
+    "author": "Nicolas Jourdan"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_95427589e0480ede",
+    "title": "Evaluate generative AI models with an Amazon Nova rubric-based LLM judge on Amazon SageMaker AI (Part 2)",
+    "description": "In this post, we explore the Amazon Nova rubric-based judge feature: what a rubric-based judge is, how the judge is trained, what metrics to consider, and how to calibrate the judge. We chare notebook code of the Amazon Nova rubric-based LLM-as-a-judge methodology to evaluate and compare the outputs of two different LLMs using SageMaker training jobs.",
+    "url": "https://aws.amazon.com/blogs/machine-learning/evaluate-generative-ai-models-with-an-amazon-nova-rubric-based-llm-judge-on-amazon-sagemaker-ai-part-2/",
+    "publishedAt": "2026-02-06T16:29:45.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/01/28/ML202154.png",
+    "author": "Surya Kari"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_284aeb03e27afea1",
+    "title": "How Associa transforms document classification with the GenAI IDP Accelerator and Amazon Bedrock",
+    "description": "Associa collaborated with the AWS Generative AI Innovation Center to build a generative AI-powered document classification system aligning with Associa’s long-term vision of using generative AI to achieve operational efficiencies in document management. The solution automatically categorizes incoming documents with high accuracy, processes documents efficiently, and provides substantial cost savings while maintaining operational excellence. The document classification system, developed using the",
+    "url": "https://aws.amazon.com/blogs/machine-learning/how-associa-transforms-document-classification-with-the-genai-idp-accelerator-and-amazon-bedrock/",
+    "publishedAt": "2026-02-05T20:41:52.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/02/02/image-1-13.png",
+    "author": "David Meredith, Josh Zacharias"
+  },
+  {
+    "id": "Amazon_AWS_AI_Blog_6932255f797596f1",
+    "title": "A practical guide to Amazon Nova Multimodal Embeddings",
+    "description": "In this post, you will learn how to configure and use Amazon Nova Multimodal Embeddings for media asset search systems, product discovery experiences, and document retrieval applications.",
+    "url": "https://aws.amazon.com/blogs/machine-learning/a-practical-guide-to-amazon-nova-multimodal-embeddings/",
+    "publishedAt": "2026-02-05T20:35:34.000Z",
+    "category": "AI框架",
+    "source": "Amazon AWS AI Blog",
+    "imageUrl": "https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2026/01/20/ML-20106-image-1.png",
+    "author": "Yunyi Gao"
+  }
+]

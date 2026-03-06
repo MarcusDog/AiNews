@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI模型架构与算法框架详解</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #e0e0e0;
+            padding-bottom: 0;
+        }
+        
+        .tab {
+            padding: 15px 30px;
+            cursor: pointer;
+            border: none;
+            background: #f5f5f5;
+            border-radius: 10px 10px 0 0;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #666;
+        }
+        
+        .tab:hover {
+            background: #e0e0e0;
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Architecture Section */
+        .architecture-overview {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        /* Flowchart Styles */
+        .flowchart {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        
+        .flowchart-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+        }
+        
+        /* Step Box */
+        .step-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s;
+        }
+        
+        .step:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+        
+        .step-description {
+            color: #666;
+            font-size: 0.95em;
+        }
+        
+        .step-visual {
+            margin-top: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            color: #333;
+            border: 1px solid #e0e0e0;
+        }
+        
+        /* Framework Cards */
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .framework-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .framework-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+        
+        .framework-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .framework-name {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .framework-english {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .framework-body {
+            padding: 20px;
+        }
+        
+        .framework-section {
+            margin-bottom: 15px;
+        }
+        
+        .framework-section-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+        
+        .framework-section-content {
+            color: #555;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        
+        .framework-example {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 3px solid #667eea;
+        }
+        
+        .framework-example-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        
+        /* Architecture Specific Styles */
+        .arch-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border: 2px solid #e8e8e8;
+        }
+        
+        .arch-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .arch-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2em;
+        }
+        
+        .arch-english {
+            color: #667eea;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+        }
+        
+        .arch-description {
+            color: #555;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        /* Process Diagram */
+        .process-diagram {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        
+        .process-node {
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            font-weight: 600;
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .process-arrow {
+            font-size: 1.5em;
+            color: #667eea;
+        }
+        
+        /* Code Block */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        
+        .code-comment {
+            color: #6a9955;
+        }
+        
+        .code-keyword {
+            color: #569cd6;
+        }
+        
+        .code-string {
+            color: #ce9178;
+        }
+        
+        .code-function {
+            color: #dcdcaa;
+        }
+        
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+        
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 30px;
+            transition: all 0.3s;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .info-box-title {
+            font-weight: bold;
+            color: #1565c0;
+            margin-bottom: 10px;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-left: 4px solid #ff9800;
+        }
+        
+        .warning-box .info-box-title {
+            color: #e65100;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 AI模型架构与算法框架详解</h1>
+        <p class="subtitle">深入了解神经网络架构和主流深度学习框架</p>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('architecture')">模型架构</button>
+            <button class="tab" onclick="showTab('framework')">算法框架</button>
+        </div>
+        
+        <!-- 模型架构 Tab -->
+        <div id="architecture" class="tab-content active">
+            <div class="architecture-overview">
+                <h2 style="text-align: center; margin-bottom: 20px;">神经网络架构总览</h2>
+                <div class="process-diagram">
+                    <div class="process-node">输入层</div>
+                    <span class="process-arrow">→</span>
+                    <div class="process-node">隐藏层</div>
+                    <span class="process-arrow">→</span>
+                    <div class="process-node">隐藏层</div>
+                    <span class="process-arrow">→</span>
+                    <div class="process-node">...</div>
+                    <span class="process-arrow">→</span>
+                    <div class="process-node">输出层</div>
+                </div>
+            </div>
+            
+            <!-- Transformer 架构 -->
+            <div class="arch-card">
+                <div class="arch-title">
+                    <div class="arch-icon">⚡</div>
+                    Transformer 架构
+                </div>
+                <div class="arch-english">Attention Is All You Need (2017)</div>
+                <div class="arch-description">
+                    Transformer是一种基于注意力机制的深度学习架构，彻底改变了自然语言处理领域。它完全摒弃了RNN和CNN，只使用注意力机制来捕捉输入序列中的全局依赖关系。
+                </div>
+                
+                <div class="flowchart">
+                    <div class="flowchart-title">Transformer 工作流程详解</div>
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">输入嵌入 (Input Embedding)</div>
+                                <div class="step-description">
+                                    将输入的词汇转换为高维向量表示。每个词被映射为一个固定长度的向量，包含了词的语义信息。
+                                </div>
+                                <div class="step-visual">
+                                    "你好" → [0.2, -0.5, 0.8, ..., 0.3]  # 512维或768维向量
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">位置编码 (Positional Encoding)</div>
+                                <div class="step-description">
+                                    由于Transformer没有循环或卷积结构，需要显式添加位置信息。使用正弦和余弦函数为每个位置生成独特的编码。
+                                </div>
+                                <div class="step-visual">
+                                    PE(pos, 2i) = sin(pos / 10000^(2i/d))<br>
+                                    PE(pos, 2i+1) = cos(pos / 10000^(2i/d))
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">多头自注意力 (Multi-Head Self-Attention)</div>
+                                <div class="step-description">
+                                    核心机制！让序列中的每个位置都能关注到其他所有位置。使用多个注意力头从不同角度捕捉信息。
+                                </div>
+                                <div class="step-visual">
+                                    Attention(Q,K,V) = softmax(QK^T/√d_k) × V<br>
+                                    其中 Q=查询, K=键, V=值
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <div class="step-title">前馈神经网络 (Feed Forward)</div>
+                                <div class="step-description">
+                                    每个位置独立应用相同的前馈网络，通常包含两个线性变换和ReLU激活函数。
+                                </div>
+                                <div class="step-visual">
+                                    FFN(x) = max(0, xW₁ + b₁)W₂ + b₂
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <div class="step-title">层归一化与残差连接</div>
+                                <div class="step-description">
+                                    每个子层后都应用层归一化(Layer Normalization)和残差连接，帮助梯度流动并加速训练。
+                                </div>
+                                <div class="step-visual">
+                                    Output = LayerNorm(x + Sublayer(x))
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">6</div>
+                            <div class="step-content">
+                                <div class="step-title">编码器-解码器结构</div>
+                                <div class="step-description">
+                                    <strong>编码器：</strong>处理输入序列，生成上下文表示<br>
+                                    <strong>解码器：</strong>基于编码器输出和已生成内容，逐步生成目标序列
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-box-title">💡 关键创新点</div>
+                    <ul style="margin-left: 20px; color: #333;">
+                        <li><strong>自注意力机制：</strong>能直接建模序列中任意两个位置的关系，无论距离多远</li>
+                        <li><strong>并行计算：</strong>不像RNN需要顺序处理，可以高度并行化，训练速度快</li>
+                        <li><strong>可扩展性：</strong>容易扩展到非常大的模型和数据规模</li>
+                        <li><strong>多头注意力：</strong>从多个角度学习不同的特征表示</li>
+                    </ul>
+                </div>
+                
+                <div class="framework-example">
+                    <div class="framework-example-title">🎯 实际应用</div>
+                    <ul>
+                        <li><strong>GPT系列：</strong>仅使用解码器，从左到右生成文本</li>
+                        <li><strong>BERT：</strong>仅使用编码器，双向理解文本</li>
+                        <li><strong>T5：</strong>同时使用编码器-解码器，适合翻译和摘要</li>
+                        <li><strong>Vision Transformer：</strong>将图像切分为patches，应用Transformer处理图像</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- CNN 架构 -->
+            <div class="arch-card">
+                <div class="arch-title">
+                    <div class="arch-icon">🖼️</div>
+                    CNN 卷积神经网络
+                </div>
+                <div class="arch-english">Convolutional Neural Network</div>
+                <div class="arch-description">
+                    CNN是专门处理具有网格结构数据（如图像）的神经网络。通过卷积操作自动提取局部特征，并通过池化减少计算量，是计算机视觉的基石。
+                </div>
+                
+                <div class="flowchart">
+                    <div class="flowchart-title">CNN 工作流程详解</div>
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">卷积层 (Convolution Layer)</div>
+                                <div class="step-description">
+                                    使用卷积核（滤波器）在输入图像上滑动，提取局部特征如边缘、纹理、形状等。每个卷积核学习检测特定的特征。
+                                </div>
+                                <div class="step-visual">
+                                    输入: 32×32×3 (RGB图像)<br>
+                                    卷积核: 5×5×3<br>
+                                    输出特征图: 28×28×N (N个滤波器)
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">激活函数 (Activation)</div>
+                                <div class="step-description">
+                                    引入非线性，让网络能学习复杂的模式。ReLU是最常用的激活函数。
+                                </div>
+                                <div class="step-visual">
+                                    ReLU(x) = max(0, x)<br>
+                                    负值归零，正值保持不变
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">池化层 (Pooling)</div>
+                                <div class="step-description">
+                                    降低特征图的空间尺寸，减少计算量和参数量，同时保持主要特征。最大池化取区域内的最大值。
+                                </div>
+                                <div class="step-visual">
+                                    Max Pooling (2×2):<br>
+                                    [1, 3; 2, 4] → [4]<br>
+                                    尺寸减半，通道数不变
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <div class="step-title">堆叠多层</div>
+                                <div class="step-description">
+                                    重复卷积-激活-池化操作，逐渐提取更高级、更抽象的特征。浅层学习边缘，深层学习整体形状和物体部分。
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <div class="step-title">全连接层 (Fully Connected)</div>
+                                <div class="step-description">
+                                    将提取的特征展平并映射到最终的分类输出。每个神经元与前一层的所有神经元相连。
+                                </div>
+                                <div class="step-visual">
+                                    展平: 7×7×512 → 25088维<br>
+                                    全连接 → 4096 → 4096 → 1000 (分类数)
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">6</div>
+                            <div class="step-content">
+                                <div class="step-title">Softmax输出</div>
+                                <div class="step-description">
+                                    将输出转换为概率分布，所有类别的概率和为1。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-box-title">🔑 CNN 核心特性</div>
+                    <ul style="margin-left: 20px; color: #333;">
+                        <li><strong>局部连接：</strong>每个神经元只连接输入的局部区域，减少参数量</li>
+                        <li><strong>权重共享：</strong>同一卷积核在整个输入上共享权重，提高效率</li>
+                        <li><strong>平移不变性：</strong>物体在图像中位置变化时仍能识别</li>
+                        <li><strong>层次化特征：</strong>浅层学习简单特征，深层学习复杂组合</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- RNN/LSTM 架构 -->
+            <div class="arch-card">
+                <div class="arch-title">
+                    <div class="arch-icon">🔄</div>
+                    RNN / LSTM 循环神经网络
+                </div>
+                <div class="arch-english">Recurrent Neural Network / Long Short-Term Memory</div>
+                <div class="arch-description">
+                    RNN适合处理序列数据（如文本、时间序列），具有记忆能力，能利用历史信息。LSTM是RNN的改进版，解决了长期依赖问题。
+                </div>
+                
+                <div class="flowchart">
+                    <div class="flowchart-title">RNN 工作原理</div>
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">循环结构</div>
+                                <div class="step-description">
+                                    RNN的核心是循环连接：当前时刻的输出不仅依赖当前输入，还依赖前一时刻的隐藏状态。
+                                </div>
+                                <div class="step-visual">
+                                    h_t = tanh(W_hh × h_{t-1} + W_xh × x_t + b)<br>
+                                    y_t = W_hy × h_t + b
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">时间展开</div>
+                                <div class="step-description">
+                                    将RNN按时间步展开，形成深层网络结构。但这也导致了梯度消失/爆炸问题。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flowchart">
+                    <div class="flowchart-title">LSTM 门控机制详解</div>
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">遗忘门 (Forget Gate)</div>
+                                <div class="step-description">
+                                    决定从细胞状态中丢弃哪些信息。使用sigmoid函数输出0-1之间的值。
+                                </div>
+                                <div class="step-visual">
+                                    f_t = σ(W_f · [h_{t-1}, x_t] + b_f)
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">输入门 (Input Gate)</div>
+                                <div class="step-description">
+                                    决定哪些新信息存储到细胞状态中。包含sigmoid层（决定更新哪些值）和tanh层（创建候选值）。
+                                </div>
+                                <div class="step-visual">
+                                    i_t = σ(W_i · [h_{t-1}, x_t] + b_i)<br>
+                                    C̃_t = tanh(W_C · [h_{t-1}, x_t] + b_C)
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">更新细胞状态</div>
+                                <div class="step-description">
+                                    将旧状态乘以遗忘门结果，加上新候选值乘以输入门结果。
+                                </div>
+                                <div class="step-visual">
+                                    C_t = f_t × C_{t-1} + i_t × C̃_t
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <div class="step-title">输出门 (Output Gate)</div>
+                                <div class="step-description">
+                                    决定输出什么值。基于细胞状态，但经过一个过滤。
+                                </div>
+                                <div class="step-visual">
+                                    o_t = σ(W_o · [h_{t-1}, x_t] + b_o)<br>
+                                    h_t = o_t × tanh(C_t)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 算法框架 Tab -->
+        <div id="framework" class="tab-content">
+            <div class="architecture-overview">
+                <h2 style="text-align: center; margin-bottom: 20px;">主流深度学习框架对比</h2>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>框架</th>
+                            <th>开发方</th>
+                            <th>主要特点</th>
+                            <th>适用场景</th>
+                            <th>学习曲线</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>TensorFlow</strong></td>
+                            <td>Google</td>
+                            <td>生产级部署、TensorBoard可视化、TFX流水线</td>
+                            <td>大规模生产环境、移动端、边缘设备</td>
+                            <td>中等</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PyTorch</strong></td>
+                            <td>Meta (Facebook)</td>
+                            <td>动态图、调试友好、研究首选</td>
+                            <td>学术研究、原型开发、深度学习研究</td>
+                            <td>平缓</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Keras</strong></td>
+                            <td>独立 (现为TF高层API)</td>
+                            <td>用户友好、快速原型、多后端支持</td>
+                            <td>初学者入门、快速原型</td>
+                            <td>平缓</td>
+                        </tr>
+                        <tr>
+                            <td><strong>JAX</strong></td>
+                            <td>Google</td>
+                            <td>高性能、函数变换、自动并行</td>
+                            <td>科研计算、大规模训练</td>
+                            <td>陡峭</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PaddlePaddle</strong></td>
+                            <td>百度</td>
+                            <td>中文文档好、工业级应用</td>
+                            <td>中文开发者、国产化场景</td>
+                            <td>平缓</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="framework-grid">
+                <!-- PyTorch -->
+                <div class="framework-card">
+                    <div class="framework-header">
+                        <div class="framework-name">🔥 PyTorch</div>
+                        <div class="framework-english">Python + Torch</div>
+                    </div>
+                    <div class="framework-body">
+                        <div class="framework-section">
+                            <div class="framework-section-title">核心优势</div>
+                            <div class="framework-section-content">
+                                • <strong>动态计算图：</strong>即时执行，调试方便<br>
+                                • <strong>Pythonic：</strong>代码直观，符合Python习惯<br>
+                                • <strong>研究友好：</strong>学术界首选，论文实现多<br>
+                                • <strong>强大的生态：</strong>TorchVision、TorchAudio等
+                            </div>
+                        </div>
+                        
+                        <div class="framework-section">
+                            <div class="framework-section-title">工作流程</div>
+                            <div class="step-container" style="margin-top: 10px;">
+                                <div class="step" style="padding: 10px;">
+                                    <div class="step-number" style="width: 30px; height: 30px; font-size: 0.9em;">1</div>
+                                    <div class="step-content">
+                                        <div class="step-title">定义模型</div>
+                                        <div class="step-description">继承nn.Module，定义__init__和forward</div>
+                                    </div>
+                                </div>
+                                <div class="step" style="padding: 10px;">
+                                    <div class="step-number" style="width: 30px; height: 30px; font-size: 0.9em;">2</div>
+                                    <div class="step-content">
+                                        <div class="step-title">准备数据</div>
+                                        <div class="step-description">使用Dataset和DataLoader加载数据</div>
+                                    </div>
+                                </div>
+                                <div class="step" style="padding: 10px;">
+                                    <div class="step-number" style="width: 30px; height: 30px; font-size: 0.9em;">3</div>
+                                    <div class="step-content">
+                                        <div class="step-title">训练循环</div>
+                                        <div class="step-description">前向传播 → 计算损失 → 反向传播 → 更新参数</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="code-block">
+<span class="code-keyword">import</span> torch
+<span class="code-keyword">import</span> torch.nn <span class="code-keyword">as</span> nn
+
+<span class="code-comment"># 定义模型</span>
+<span class="code-keyword">class</span> <span class="code-function">Net</span>(nn.Module):
+    <span class="code-keyword">def</span> <span class="code-function">__init__</span>(self):
+        super().__init__()
+        self.fc1 = nn.Linear(784, 256)
+        self.fc2 = nn.Linear(256, 10)
+    
+    <span class="code-keyword">def</span> <span class="code-function">forward</span>(self, x):
+        x = torch.relu(self.fc1(x))
+        return self.fc2(x)
+
+<span class="code-comment"># 训练</span>
+model = Net()
+optimizer = torch.optim.Adam(model.parameters())
+<span class="code-keyword">for</span> data, target <span class="code-keyword">in</span> dataloader:
+    output = model(data)
+    loss = criterion(output, target)
+    loss.backward()  <span class="code-comment"># 自动求导</span>
+    optimizer.step()
+    optimizer.zero_grad()
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- TensorFlow -->
+                <div class="framework-card">
+                    <div class="framework-header">
+                        <div class="framework-name">📊 TensorFlow</div>
+                        <div class="framework-english">Data Flow Graphs</div>
+                    </div>
+                    <div class="framework-body">
+                        <div class="framework-section">
+                            <div class="framework-section-title">核心优势</div>
+                            <div class="framework-section-content">
+                                • <strong>生产级部署：</strong>TF Serving、TensorFlow Lite<br>
+                                • <strong>可视化：</strong>强大的TensorBoard工具<br>
+                                • <strong>TPU支持：</strong>谷歌TPU加速训练<br>
+                                • <strong>跨平台：</strong>移动端、浏览器、嵌入式
+                            </div>
+                        </div>
+                        
+                        <div class="framework-section">
+                            <div class="framework-section-title">工作流程</div>
+                            <div class="step-container" style="margin-top: 10px;">
+                                <div class="step" style="padding: 10px;">
+                                    <div class="step-number" style="width: 30px; height: 30px; font-size: 0.9em;">1</div>
+                                    <div class="step-content">
+                                        <div class="step-title">构建图</div>
+                                        <div class="step-description">定义张量操作和数据流</div>
+                                    </div>
+                                </div>
+                                <div class="step" style="padding: 10px;">
+                                    <div class="step-number" style="width: 30px; height: 30px; font-size: 0.9em;">2</div>
+                                    <div class="step-content">
+                                        <div class="step-title">创建会话</div>
+                                        <div class="step-description">分配资源，运行图</div>
+                                    </div>
+                                </div>
+                                <div class="step" style="padding: 10px;">
+                                    <div class="step-number" style="width: 30px; height: 30px; font-size: 0.9em;">3</div>
+                                    <div class="step-content">
+                                        <div class="step-title">执行训练</div>
+                                        <div class="step-description"> feed数据，优化参数</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="code-block">
+<span class="code-keyword">import</span> tensorflow <span class="code-keyword">as</span> tf
+
+<span class="code-comment"># Keras API (推荐)</span>
+model = tf.keras.Sequential([
+    tf.keras.layers.Dense(256, activation=<span class="code-string">'relu'</span>),
+    tf.keras.layers.Dense(10, activation=<span class="code-string">'softmax'</span>)
+])
+
+model.compile(optimizer=<span class="code-string">'adam'</span>,
+              loss=<span class="code-string">'sparse_categorical_crossentropy'</span>,
+              metrics=[<span class="code-string">'accuracy'</span>])
+
+<span class="code-comment"># 训练</span>
+model.fit(train_data, train_labels, 
+          epochs=10, 
+          validation_split=0.2)
+
+<span class="code-comment"># 保存模型</span>
+model.save(<span class="code-string">'my_model'</span>)
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hugging Face -->
+                <div class="framework-card">
+                    <div class="framework-header">
+                        <div class="framework-name">🤗 Transformers</div>
+                        <div class="framework-english">Hugging Face</div>
+                    </div>
+                    <div class="framework-body">
+                        <div class="framework-section">
+                            <div class="framework-section-title">核心优势</div>
+                            <div class="framework-section-content">
+                                • <strong>模型库：</strong>超过10万个预训练模型<br>
+                                • <strong>多模态：</strong>NLP、CV、语音全覆盖<br>
+                                • <strong>易用API：</strong>Pipeline一键推理<br>
+                                • <strong>社区活跃：</strong>开源协作生态好
+                            </div>
+                        </div>
+                        
+                        <div class="framework-section">
+                            <div class="framework-section-title">核心组件</div>
+                            <div class="framework-section-content">
+                                <strong>Transformers:</strong> 预训练模型库<br>
+                                <strong>Datasets:</strong> 数据集加载<br>
+                                <strong>Tokenizers:</strong> 文本分词<br>
+                                <strong>Accelerate:</strong> 分布式训练<br>
+                                <strong>PEFT:</strong> 高效微调(Lora等)
+                            </div>
+                        </div>
+                        
+                        <div class="code-block">
+<span class="code-keyword">from</span> transformers <span class="code-keyword">import</span> (
+    AutoTokenizer, 
+    AutoModelForSequenceClassification,
+    pipeline
+)
+
+<span class="code-comment"># 使用Pipeline (最简单)</span>
+classifier = pipeline(
+    <span class="code-string">"sentiment-analysis"</span>,
+    model=<span class="code-string">"distilbert-base-uncased"</span>
+)
+result = classifier(<span class="code-string">"I love this product!"</span>)
+
+<span class="code-comment"># 加载特定模型</span>
+tokenizer = AutoTokenizer.from_pretrained(
+    <span class="code-string">"bert-base-chinese"</span>)
+model = AutoModelForSequenceClassification.from_pretrained(
+    <span class="code-string">"bert-base-chinese"</span>)
+
+<span class="code-comment"># 微调模型</span>
+<span class="code-keyword">from</span> transformers <span class="code-keyword">import</span> TrainingArguments, Trainer
+training_args = TrainingArguments(
+    output_dir=<span class="code-string">"./results"</span>,
+    num_train_epochs=3,
+    per_device_train_batch_size=16
+)
+trainer = Trainer(model=model, args=training_args)
+trainer.train()
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- LangChain -->
+                <div class="framework-card">
+                    <div class="framework-header">
+                        <div class="framework-name">🔗 LangChain</div>
+                        <div class="framework-english">LLM Applications</div>
+                    </div>
+                    <div class="framework-body">
+                        <div class="framework-section">
+                            <div class="framework-section-title">核心优势</div>
+                            <div class="framework-section-content">
+                                • <strong>链式调用：</strong>组合多个组件形成工作流<br>
+                                • <strong>工具集成：</strong>搜索引擎、数据库、API<br>
+                                • <strong>记忆功能：</strong>维护对话上下文<br>
+                                • <strong>RAG支持：</strong>检索增强生成
+                            </div>
+                        </div>
+                        
+                        <div class="framework-section">
+                            <div class="framework-section-title">核心概念</div>
+                            <div class="framework-section-content">
+                                <strong>Chains:</strong> 组合LLM和提示的序列<br>
+                                <strong>Agents:</strong> 自主决策使用工具的LLM<br>
+                                <strong>Memory:</strong> 持久化对话历史<br>
+                                <strong>Retrieval:</strong> 从外部数据检索<br>
+                                <strong>Tools:</strong> 外部功能调用
+                            </div>
+                        </div>
+                        
+                        <div class="code-block">
+<span class="code-keyword">from</span> langchain <span class="code-keyword">import</span> OpenAI, LLMChain, PromptTemplate
+<span class="code-keyword">from</span> langchain.memory <span class="code-keyword">import</span> ConversationBufferMemory
+
+<span class="code-comment"># 创建提示模板</span>
+template = <span class="code-string">"""你是一个AI助手。
+历史对话: {history}
+人类: {input}
+AI:"""</span>
+prompt = PromptTemplate(
+    input_variables=[<span class="code-string">"history"</span>, <span class="code-string">"input"</span>], 
+    template=template
+)
+
+<span class="code-comment"># 添加记忆</span>
+memory = ConversationBufferMemory(
+    memory_key=<span class="code-string">"history"</span>)
+
+<span class="code-comment"># 构建Chain</span>
+llm = OpenAI(temperature=0)
+chain = LLMChain(
+    llm=llm, 
+    prompt=prompt, 
+    memory=memory
+)
+
+<span class="code-comment"># 运行</span>
+response = chain.predict(<span class="code-string">"你好"</span>)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-box warning-box" style="margin-top: 30px;">
+                <div class="info-box-title">⚠️ 框架选择建议</div>
+                <div style="color: #333;">
+                    <strong>初学者：</strong>推荐 PyTorch 或 Keras，API直观易懂<br>
+                    <strong>研究人员：</strong>PyTorch 是首选，论文复现多<br>
+                    <strong>生产环境：</strong>TensorFlow 部署生态更成熟<br>
+                    <strong>大模型应用：</strong>Hugging Face + LangChain 组合<br>
+                    <strong>国产化需求：</strong>PaddlePaddle 中文支持好
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="http://localhost/glossary" class="back-button">
+                ← 返回 AI知识库
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        function showTab(tabName) {
+            // 隐藏所有内容
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 移除所有按钮激活状态
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // 显示选中内容
+            document.getElementById(tabName).classList.add('active');
+            
+            // 激活对应按钮
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

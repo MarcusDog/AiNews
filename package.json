@@ -1,0 +1,19 @@
+{
+  "name": "ainews-platform",
+  "version": "1.0.0",
+  "description": "AI资讯平台 - 实时获取并分析AI科技新闻",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "server:dev": "cd server && npm run dev",
+    "client:dev": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start"
+  },
+  "keywords": ["ai", "news", "tech", "platform"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

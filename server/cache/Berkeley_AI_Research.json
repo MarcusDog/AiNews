@@ -1,0 +1,112 @@
+[
+  {
+    "id": "Berkeley_AI_Research_108b6b1fb654c361",
+    "title": "RL without TD learning",
+    "description": "In this post, I’ll introduce a reinforcement learning (RL) algorithm based on an “alternative” paradigm: divide and conquer. Unlike traditional methods, this algorithm is not based on temporal difference (TD) learning (which has scalability challenges), and scales well to long-horizon tasks. We can do Reinforcement Learning (RL) based on divide and conquer, instead of temporal difference (TD) learning. Problem setting: off-policy RL Our problem setting is off-policy RL. Let’s briefly review what",
+    "url": "http://bair.berkeley.edu/blog/2025/11/01/rl-without-td-learning/",
+    "publishedAt": "2025-11-01T09:00:00.000Z",
+    "category": "新思路",
+    "source": "Berkeley AI Research",
+    "imageUrl": "https://bair.berkeley.edu/static/blog/rl-without-td-learning/teaser_short.png",
+    "author": "Berkeley AI Research"
+  },
+  {
+    "id": "Berkeley_AI_Research_d65aa29ea5310fe6",
+    "title": "What exactly does word2vec learn?",
+    "description": "What exactly does word2vec learn, and how? Answering this question amounts to understanding representation learning in a minimal yet interesting language modeling task. Despite the fact that word2vec is a well-known precursor to modern language models, for many years, researchers lacked a quantitative and predictive theory describing its learning process. In our new paper, we finally provide such a theory. We prove that there are realistic, practical regimes in which the learning problem reduces",
+    "url": "http://bair.berkeley.edu/blog/2025/09/01/qwem-word2vec-theory/",
+    "publishedAt": "2025-09-01T09:00:00.000Z",
+    "category": "新思路",
+    "source": "Berkeley AI Research",
+    "imageUrl": "https://bair.berkeley.edu/static/blog/qwem-word2vec-theory/fig1.c8u1a3E7_Z23iPso.webp",
+    "author": "Berkeley AI Research"
+  },
+  {
+    "id": "Berkeley_AI_Research_6d670208db810624",
+    "title": "Whole-Body Conditioned Egocentric Video Prediction",
+    "description": ".modal { display: none; position: fixed; z-index: 9999; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.9); } .modal-content { margin: auto; display: block; max-width: 90%; max-height: 90%; } .close { position: absolute; top: 15px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; transition: 0.3s; cursor: pointer; } .close:hover, .close:focus { color: #bbb; text-decoration: none; cursor: pointer; } .clickable-img { cur",
+    "url": "http://bair.berkeley.edu/blog/2025/07/01/peva/",
+    "publishedAt": "2025-07-01T09:00:00.000Z",
+    "category": "新思路",
+    "source": "Berkeley AI Research",
+    "imageUrl": "https://bair.berkeley.edu/static/blog/peva/teaserv3_web.png",
+    "author": "Berkeley AI Research"
+  },
+  {
+    "id": "Berkeley_AI_Research_06676d40d9dd3f05",
+    "title": "Defending against Prompt Injection with Structured Queries (StruQ) and Preference Optimization (SecAlign)",
+    "description": "Recent advances in Large Language Models (LLMs) enable exciting LLM-integrated applications. However, as LLMs have improved, so have the attacks against them. Prompt injection attack is listed as the #1 threat by OWASP to LLM-integrated applications, where an LLM input contains a trusted prompt (instruction) and an untrusted data. The data may contain injected instructions to arbitrarily manipulate the LLM. As an example, to unfairly promote “Restaurant A”, its owner could use prompt injection t",
+    "url": "http://bair.berkeley.edu/blog/2025/04/11/prompt-injection-defense/",
+    "publishedAt": "2025-04-11T10:00:00.000Z",
+    "category": "新思路",
+    "source": "Berkeley AI Research",
+    "imageUrl": "https://bair.berkeley.edu/static/blog/defending-injection/Picture2.png",
+    "author": "Berkeley AI Research"
+  },
+  {
+    "id": "Berkeley_AI_Research_498bdb48747d7142",
+    "title": "Repurposing Protein Folding Models for Generation with Latent Diffusion",
+    "description": "PLAID is a multimodal generative model that simultaneously generates protein 1D sequence and 3D structure, by learning the latent space of protein folding models. The awarding of the 2024 Nobel Prize to AlphaFold2 marks an important moment of recognition for the of AI role in biology. What comes next after protein folding? In PLAID, we develop a method that learns to sample from the latent space of protein folding models to generate new proteins. It can accept compositional function and organism",
+    "url": "http://bair.berkeley.edu/blog/2025/04/08/plaid/",
+    "publishedAt": "2025-04-08T10:30:00.000Z",
+    "category": "新思路",
+    "source": "Berkeley AI Research",
+    "imageUrl": "https://bair.berkeley.edu/static/blog/plaid/image1.jpg",
+    "author": "Berkeley AI Research"
+  },
+  {
+    "id": "Berkeley_AI_Research_01159876f4884949",
+    "title": "Scaling Up Reinforcement Learning for Traffic Smoothing: A 100-AV Highway Deployment",
+    "description": "Training Diffusion Models with Reinforcement Learning We deployed 100 reinforcement learning (RL)-controlled cars into rush-hour highway traffic to smooth congestion and reduce fuel consumption for everyone. Our goal is to tackle \"stop-and-go\" waves, those frustrating slowdowns and speedups that usually have no clear cause but lead to congestion and significant energy waste. To train efficient flow-smoothing controllers, we built fast, data-driven simulations that RL agents interact with, learni",
+    "url": "http://bair.berkeley.edu/blog/2025/03/25/rl-av-smoothing/",
+    "publishedAt": "2025-03-25T09:00:00.000Z",
+    "category": "新思路",
+    "source": "Berkeley AI Research",
+    "imageUrl": "https://bair.berkeley.edu/static/blog/rl_av_smoothing/highway_wave.gif",
+    "author": "Berkeley AI Research"
+  },
+  {
+    "id": "Berkeley_AI_Research_672a565620abde6e",
+    "title": "Virtual Personas for Language Models via an Anthology of Backstories",
+    "description": "Anthology, a method for conditioning LLMs to representative, consistent, and diverse virtual personas by generating and utilizing naturalistic backstories with rich details of individual values and experience. --> We introduce Anthology, a method for conditioning LLMs to representative, consistent, and diverse virtual personas by generating and utilizing naturalistic backstories with rich details of individual values and experience. What does it mean for large language models (LLMs) to be traine",
+    "url": "http://bair.berkeley.edu/blog/2024/11/12/virutal-persona-llm/",
+    "publishedAt": "2024-11-12T09:00:00.000Z",
+    "category": "新思路",
+    "source": "Berkeley AI Research",
+    "imageUrl": "/blog/assets/virtual_personas/header.png",
+    "author": "Berkeley AI Research"
+  },
+  {
+    "id": "Berkeley_AI_Research_578032e591648860",
+    "title": "Linguistic Bias in ChatGPT: Language Models Reinforce Dialect Discrimination",
+    "description": "Sample language model responses to different varieties of English and native speaker reactions. ChatGPT does amazingly well at communicating with people in English. But whose English? Only 15% of ChatGPT users are from the US, where Standard American English is the default. But the model is also commonly used in countries and communities where people speak other varieties of English. Over 1 billion people around the world speak varieties such as Indian English, Nigerian English, Irish English, a",
+    "url": "http://bair.berkeley.edu/blog/2024/09/20/linguistic-bias/",
+    "publishedAt": "2024-09-20T09:00:00.000Z",
+    "category": "新思路",
+    "source": "Berkeley AI Research",
+    "imageUrl": "https://bair.berkeley.edu/static/blog/linguistic-bias/image1.png",
+    "author": "Berkeley AI Research"
+  },
+  {
+    "id": "Berkeley_AI_Research_ff0fb648914db0d4",
+    "title": "How to Evaluate Jailbreak Methods: A Case Study with the StrongREJECT Benchmark",
+    "description": "When we began studying jailbreak evaluations, we found a fascinating paper claiming that you could jailbreak frontier LLMs simply by translating forbidden prompts into obscure languages. Excited by this result, we attempted to reproduce it and found something unexpected. The paper in question claimed an impressive 43% success rate in jailbreaking GPT-4 by translating forbidden prompts into Scots Gaelic (Yong et al., 2023). To showcase their method, the authors asked GPT-4 to provide instructions",
+    "url": "http://bair.berkeley.edu/blog/2024/08/28/strong-reject/",
+    "publishedAt": "2024-08-28T15:30:00.000Z",
+    "category": "新思路",
+    "source": "Berkeley AI Research",
+    "imageUrl": "https://bair.berkeley.edu/static/blog/strongreject/strongreject-draft-figure-1.png",
+    "author": "Berkeley AI Research"
+  },
+  {
+    "id": "Berkeley_AI_Research_e81fea05c1674185",
+    "title": "Are We Ready for Multi-Image Reasoning? Launching VHs: The Visual Haystacks Benchmark!",
+    "description": "Humans excel at processing vast arrays of visual information, a skill that is crucial for achieving artificial general intelligence (AGI). Over the decades, AI researchers have developed Visual Question Answering (VQA) systems to interpret scenes within single images and answer related questions. While recent advancements in foundation models have significantly closed the gap between human and machine visual processing, conventional VQA has been restricted to reason about only single images at a",
+    "url": "http://bair.berkeley.edu/blog/2024/07/20/visual-haystacks/",
+    "publishedAt": "2024-07-20T09:00:00.000Z",
+    "category": "新思路",
+    "source": "Berkeley AI Research",
+    "imageUrl": "https://bair.berkeley.edu/static/blog/visual-haystacks/visual_haystacks.jpg",
+    "author": "Berkeley AI Research"
+  }
+]

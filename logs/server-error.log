@@ -1,0 +1,472 @@
+2026-02-06 17:27:29: arXiv AI 第1次失败: timeout of 30000ms exceeded
+2026-02-06 17:27:29: arXiv Computation and Language 第1次失败: timeout of 30000ms exceeded
+2026-02-06 17:27:46: arXiv Machine Learning 第1次失败: Client network socket disconnected before secure TLS connection was established
+2026-02-06 17:28:07: 主解析器失败，尝试备用: DeepMind Blog
+2026-02-06 17:28:07: DeepMind Blog 第1次失败: RSS feed为空
+2026-02-06 17:28:13: 主解析器失败，尝试备用: DeepMind Blog
+2026-02-06 17:28:13: DeepMind Blog 第2次失败: RSS feed为空
+2026-02-06 17:28:13: RSS源 DeepMind Blog 更新失败: RSS feed为空
+2026-02-06 17:28:18: 主解析器失败，尝试备用: Meta AI Blog
+2026-02-06 17:28:18: Meta AI Blog 第1次失败: RSS feed为空
+2026-02-06 17:28:23: 主解析器失败，尝试备用: Meta AI Blog
+2026-02-06 17:28:23: Meta AI Blog 第2次失败: RSS feed为空
+2026-02-06 17:28:23: RSS源 Meta AI Blog 更新失败: RSS feed为空
+2026-02-06 17:28:32: 主解析器失败，尝试备用: Anthropic Research
+2026-02-06 17:28:32: Anthropic Research 第1次失败: RSS feed为空
+2026-02-06 17:28:39: 主解析器失败，尝试备用: Anthropic Research
+2026-02-06 17:28:39: Anthropic Research 第2次失败: RSS feed为空
+2026-02-06 17:28:39: RSS源 Anthropic Research 更新失败: RSS feed为空
+2026-02-06 17:28:42: WIRED AI 第1次失败: Cannot read properties of undefined (reading 'url')
+2026-02-06 17:28:46: WIRED AI 第2次失败: Cannot read properties of undefined (reading 'url')
+2026-02-06 17:28:46: RSS源 WIRED AI 更新失败: Cannot read properties of undefined (reading 'url')
+2026-02-06 17:29:13: 机器之心 第1次失败: timeout of 20000ms exceeded
+2026-02-06 17:29:36: 机器之心 第2次失败: timeout of 20000ms exceeded
+2026-02-06 17:29:36: RSS源 机器之心 更新失败: timeout of 20000ms exceeded
+2026-02-06 17:29:58: PaperWeekly 第1次失败: timeout of 20000ms exceeded
+2026-02-06 17:30:21: PaperWeekly 第2次失败: timeout of 20000ms exceeded
+2026-02-06 17:30:21: RSS源 PaperWeekly 更新失败: timeout of 20000ms exceeded
+2026-02-06 17:30:40: 主解析器失败，尝试备用: Mistral AI Blog
+2026-02-06 17:30:40: Mistral AI Blog 第1次失败: RSS feed为空
+2026-02-06 17:30:40: 主解析器失败，尝试备用: Cohere Blog
+2026-02-06 17:30:41: Cohere Blog 第1次失败: RSS feed为空
+2026-02-06 17:30:44: 主解析器失败，尝试备用: Mistral AI Blog
+2026-02-06 17:30:44: Mistral AI Blog 第2次失败: RSS feed为空
+2026-02-06 17:30:44: RSS源 Mistral AI Blog 更新失败: RSS feed为空
+2026-02-06 17:30:47: 主解析器失败，尝试备用: Cohere Blog
+2026-02-06 17:30:47: Cohere Blog 第2次失败: RSS feed为空
+2026-02-06 17:30:47: RSS源 Cohere Blog 更新失败: RSS feed为空
+2026-02-06 17:30:50: 主解析器失败，尝试备用: Stability AI Blog
+2026-02-06 17:30:50: Stability AI Blog 第1次失败: RSS feed为空
+2026-02-06 17:30:50: 主解析器失败，尝试备用: Apple Machine Learning
+2026-02-06 17:30:50: Apple Machine Learning 第1次失败: RSS feed为空
+2026-02-06 17:30:54: 主解析器失败，尝试备用: Apple Machine Learning
+2026-02-06 17:30:54: Apple Machine Learning 第2次失败: RSS feed为空
+2026-02-06 17:30:54: RSS源 Apple Machine Learning 更新失败: RSS feed为空
+2026-02-06 17:30:55: 主解析器失败，尝试备用: Stability AI Blog
+2026-02-06 17:30:55: Stability AI Blog 第2次失败: RSS feed为空
+2026-02-06 17:30:55: RSS源 Stability AI Blog 更新失败: RSS feed为空
+2026-02-06 17:30:59: 主解析器失败，尝试备用: AI2 Blog
+2026-02-06 17:30:59: AI2 Blog 第1次失败: RSS feed为空
+2026-02-06 17:31:06: 主解析器失败，尝试备用: AI2 Blog
+2026-02-06 17:31:06: AI2 Blog 第2次失败: RSS feed为空
+2026-02-06 17:31:06: RSS源 AI2 Blog 更新失败: RSS feed为空
+2026-02-06 17:31:09: 主解析器失败，尝试备用: EleutherAI Blog
+2026-02-06 17:31:09: EleutherAI Blog 第1次失败: RSS feed为空
+2026-02-06 17:31:13: 主解析器失败，尝试备用: EleutherAI Blog
+2026-02-06 17:31:13: EleutherAI Blog 第2次失败: RSS feed为空
+2026-02-06 17:31:13: RSS源 EleutherAI Blog 更新失败: RSS feed为空
+2026-02-06 17:31:17: 主解析器失败，尝试备用: LlamaIndex Blog
+2026-02-06 17:31:17: LlamaIndex Blog 第1次失败: RSS feed为空
+2026-02-06 17:31:22: 主解析器失败，尝试备用: Weights & Biases
+2026-02-06 17:31:22: Weights & Biases 第1次失败: RSS feed为空
+2026-02-06 17:31:22: 主解析器失败，尝试备用: LlamaIndex Blog
+2026-02-06 17:31:22: LlamaIndex Blog 第2次失败: RSS feed为空
+2026-02-06 17:31:22: RSS源 LlamaIndex Blog 更新失败: RSS feed为空
+2026-02-06 17:31:31: 主解析器失败，尝试备用: Weights & Biases
+2026-02-06 17:31:31: Weights & Biases 第2次失败: RSS feed为空
+2026-02-06 17:31:31: RSS源 Weights & Biases 更新失败: RSS feed为空
+2026-02-06 17:31:34: 主解析器失败，尝试备用: Oxford AI Research
+2026-02-06 17:31:34: Oxford AI Research 第1次失败: RSS feed为空
+2026-02-06 17:31:38: 主解析器失败，尝试备用: MIT CSAIL
+2026-02-06 17:31:38: MIT CSAIL 第1次失败: RSS feed为空
+2026-02-06 17:31:39: 主解析器失败，尝试备用: Oxford AI Research
+2026-02-06 17:31:39: Oxford AI Research 第2次失败: RSS feed为空
+2026-02-06 17:31:39: RSS源 Oxford AI Research 更新失败: RSS feed为空
+2026-02-06 17:31:50: 主解析器失败，尝试备用: MIT CSAIL
+2026-02-06 17:31:50: MIT CSAIL 第2次失败: RSS feed为空
+2026-02-06 17:31:50: RSS源 MIT CSAIL 更新失败: RSS feed为空
+2026-02-06 17:31:55: 主解析器失败，尝试备用: Google DeepMind Safety
+2026-02-06 17:31:55: Google DeepMind Safety 第1次失败: RSS feed为空
+2026-02-06 17:32:00: 主解析器失败，尝试备用: Google DeepMind Safety
+2026-02-06 17:32:00: Google DeepMind Safety 第2次失败: RSS feed为空
+2026-02-06 17:32:00: RSS源 Google DeepMind Safety 更新失败: RSS feed为空
+2026-02-06 17:32:08: 主解析器失败，尝试备用: The Batch (deeplearning.ai)
+2026-02-06 17:32:08: The Batch (deeplearning.ai) 第1次失败: RSS feed为空
+2026-02-06 17:32:13: 主解析器失败，尝试备用: The Batch (deeplearning.ai)
+2026-02-06 17:32:13: The Batch (deeplearning.ai) 第2次失败: RSS feed为空
+2026-02-06 17:32:13: RSS源 The Batch (deeplearning.ai) 更新失败: RSS feed为空
+2026-02-06 17:32:24: AI Tools Weekly 第1次失败: Client network socket disconnected before secure TLS connection was established
+2026-02-06 17:32:24: 主解析器失败，尝试备用: AI Weekly
+2026-02-06 17:32:24: AI Weekly 第1次失败: RSS feed为空
+2026-02-06 17:32:28: AI Tools Weekly 第2次失败: Client network socket disconnected before secure TLS connection was established
+2026-02-06 17:32:28: RSS源 AI Tools Weekly 更新失败: Client network socket disconnected before secure TLS connection was established
+2026-02-06 17:32:29: 主解析器失败，尝试备用: AI Weekly
+2026-02-06 17:32:29: AI Weekly 第2次失败: RSS feed为空
+2026-02-06 17:32:29: RSS源 AI Weekly 更新失败: RSS feed为空
+2026-02-06 17:32:37: 主解析器失败，尝试备用: Chroma Blog
+2026-02-06 17:32:37: Chroma Blog 第1次失败: RSS feed为空
+2026-02-06 17:32:38: 主解析器失败，尝试备用: Pinecone Blog
+2026-02-06 17:32:38: Pinecone Blog 第1次失败: RSS feed为空
+2026-02-06 17:32:42: 主解析器失败，尝试备用: Chroma Blog
+2026-02-06 17:32:42: Chroma Blog 第2次失败: RSS feed为空
+2026-02-06 17:32:42: RSS源 Chroma Blog 更新失败: RSS feed为空
+2026-02-06 17:32:44: 主解析器失败，尝试备用: Pinecone Blog
+2026-02-06 17:32:44: Pinecone Blog 第2次失败: RSS feed为空
+2026-02-06 17:32:44: RSS源 Pinecone Blog 更新失败: RSS feed为空
+2026-02-06 17:32:49: 主解析器失败，尝试备用: Ollama Blog
+2026-02-06 17:32:49: Ollama Blog 第1次失败: RSS feed为空
+2026-02-06 17:32:53: 主解析器失败，尝试备用: AI Tool Report
+2026-02-06 17:32:53: AI Tool Report 第1次失败: RSS feed为空
+2026-02-06 17:32:55: 主解析器失败，尝试备用: Ollama Blog
+2026-02-06 17:32:55: Ollama Blog 第2次失败: RSS feed为空
+2026-02-06 17:32:55: RSS源 Ollama Blog 更新失败: RSS feed为空
+2026-02-06 17:33:01: 主解析器失败，尝试备用: AI Tool Report
+2026-02-06 17:33:01: AI Tool Report 第2次失败: RSS feed为空
+2026-02-06 17:33:01: RSS源 AI Tool Report 更新失败: RSS feed为空
+2026-02-06 17:33:05: 主解析器失败，尝试备用: FutureTools AI
+2026-02-06 17:33:05: FutureTools AI 第1次失败: RSS feed为空
+2026-02-06 17:33:11: 主解析器失败，尝试备用: FutureTools AI
+2026-02-06 17:33:11: FutureTools AI 第2次失败: RSS feed为空
+2026-02-06 17:33:11: RSS源 FutureTools AI 更新失败: RSS feed为空
+2026-02-07 00:00:22: 主解析器失败，尝试备用: DeepMind Blog
+2026-02-07 00:00:22: DeepMind Blog 第1次失败: RSS feed为空
+2026-02-07 00:00:28: 主解析器失败，尝试备用: DeepMind Blog
+2026-02-07 00:00:28: DeepMind Blog 第2次失败: RSS feed为空
+2026-02-07 00:00:28: RSS源 DeepMind Blog 更新失败: RSS feed为空
+2026-02-07 00:00:33: 主解析器失败，尝试备用: Meta AI Blog
+2026-02-07 00:00:33: Meta AI Blog 第1次失败: RSS feed为空
+2026-02-07 00:00:38: 主解析器失败，尝试备用: Meta AI Blog
+2026-02-07 00:00:38: Meta AI Blog 第2次失败: RSS feed为空
+2026-02-07 00:00:38: RSS源 Meta AI Blog 更新失败: RSS feed为空
+2026-02-07 00:00:50: 主解析器失败，尝试备用: Anthropic Research
+2026-02-07 00:00:50: Anthropic Research 第1次失败: RSS feed为空
+2026-02-07 00:00:57: 主解析器失败，尝试备用: Anthropic Research
+2026-02-07 00:00:57: Anthropic Research 第2次失败: RSS feed为空
+2026-02-07 00:00:57: RSS源 Anthropic Research 更新失败: RSS feed为空
+2026-02-07 00:01:00: WIRED AI 第1次失败: Cannot read properties of undefined (reading 'url')
+2026-02-07 00:01:05: WIRED AI 第2次失败: Cannot read properties of undefined (reading 'url')
+2026-02-07 00:01:05: RSS源 WIRED AI 更新失败: Cannot read properties of undefined (reading 'url')
+2026-02-07 00:01:31: 机器之心 第1次失败: timeout of 20000ms exceeded
+2026-02-07 00:01:54: 机器之心 第2次失败: timeout of 20000ms exceeded
+2026-02-07 00:01:54: RSS源 机器之心 更新失败: timeout of 20000ms exceeded
+2026-02-07 00:02:16: PaperWeekly 第1次失败: timeout of 20000ms exceeded
+2026-02-07 00:02:39: PaperWeekly 第2次失败: timeout of 20000ms exceeded
+2026-02-07 00:02:39: RSS源 PaperWeekly 更新失败: timeout of 20000ms exceeded
+2026-02-07 00:02:59: 主解析器失败，尝试备用: Mistral AI Blog
+2026-02-07 00:02:59: Mistral AI Blog 第1次失败: RSS feed为空
+2026-02-07 00:02:59: 主解析器失败，尝试备用: Cohere Blog
+2026-02-07 00:02:59: Cohere Blog 第1次失败: RSS feed为空
+2026-02-07 00:03:04: 主解析器失败，尝试备用: Mistral AI Blog
+2026-02-07 00:03:04: Mistral AI Blog 第2次失败: RSS feed为空
+2026-02-07 00:03:04: RSS源 Mistral AI Blog 更新失败: RSS feed为空
+2026-02-07 00:03:05: 主解析器失败，尝试备用: Cohere Blog
+2026-02-07 00:03:05: Cohere Blog 第2次失败: RSS feed为空
+2026-02-07 00:03:05: RSS源 Cohere Blog 更新失败: RSS feed为空
+2026-02-07 00:03:09: 主解析器失败，尝试备用: Apple Machine Learning
+2026-02-07 00:03:09: Apple Machine Learning 第1次失败: RSS feed为空
+2026-02-07 00:03:09: 主解析器失败，尝试备用: Stability AI Blog
+2026-02-07 00:03:09: Stability AI Blog 第1次失败: RSS feed为空
+2026-02-07 00:03:13: 主解析器失败，尝试备用: Apple Machine Learning
+2026-02-07 00:03:13: Apple Machine Learning 第2次失败: RSS feed为空
+2026-02-07 00:03:13: RSS源 Apple Machine Learning 更新失败: RSS feed为空
+2026-02-07 00:03:13: 主解析器失败，尝试备用: Stability AI Blog
+2026-02-07 00:03:13: Stability AI Blog 第2次失败: RSS feed为空
+2026-02-07 00:03:13: RSS源 Stability AI Blog 更新失败: RSS feed为空
+2026-02-07 00:03:18: 主解析器失败，尝试备用: AI2 Blog
+2026-02-07 00:03:18: AI2 Blog 第1次失败: RSS feed为空
+2026-02-07 00:03:24: 主解析器失败，尝试备用: AI2 Blog
+2026-02-07 00:03:24: AI2 Blog 第2次失败: RSS feed为空
+2026-02-07 00:03:24: RSS源 AI2 Blog 更新失败: RSS feed为空
+2026-02-07 00:03:28: 主解析器失败，尝试备用: EleutherAI Blog
+2026-02-07 00:03:28: EleutherAI Blog 第1次失败: RSS feed为空
+2026-02-07 00:03:32: 主解析器失败，尝试备用: EleutherAI Blog
+2026-02-07 00:03:32: EleutherAI Blog 第2次失败: RSS feed为空
+2026-02-07 00:03:32: RSS源 EleutherAI Blog 更新失败: RSS feed为空
+2026-02-07 00:03:36: 主解析器失败，尝试备用: LlamaIndex Blog
+2026-02-07 00:03:36: LlamaIndex Blog 第1次失败: RSS feed为空
+2026-02-07 00:03:42: 主解析器失败，尝试备用: LlamaIndex Blog
+2026-02-07 00:03:42: LlamaIndex Blog 第2次失败: RSS feed为空
+2026-02-07 00:03:42: RSS源 LlamaIndex Blog 更新失败: RSS feed为空
+2026-02-07 00:03:42: 主解析器失败，尝试备用: Weights & Biases
+2026-02-07 00:03:42: Weights & Biases 第1次失败: RSS feed为空
+2026-02-07 00:03:51: 主解析器失败，尝试备用: Weights & Biases
+2026-02-07 00:03:51: Weights & Biases 第2次失败: RSS feed为空
+2026-02-07 00:03:51: RSS源 Weights & Biases 更新失败: RSS feed为空
+2026-02-07 00:03:54: 主解析器失败，尝试备用: Oxford AI Research
+2026-02-07 00:03:54: Oxford AI Research 第1次失败: RSS feed为空
+2026-02-07 00:03:59: 主解析器失败，尝试备用: Oxford AI Research
+2026-02-07 00:03:59: Oxford AI Research 第2次失败: RSS feed为空
+2026-02-07 00:03:59: RSS源 Oxford AI Research 更新失败: RSS feed为空
+2026-02-07 00:04:01: 主解析器失败，尝试备用: MIT CSAIL
+2026-02-07 00:04:01: MIT CSAIL 第1次失败: RSS feed为空
+2026-02-07 00:04:11: 主解析器失败，尝试备用: MIT CSAIL
+2026-02-07 00:04:11: MIT CSAIL 第2次失败: RSS feed为空
+2026-02-07 00:04:11: RSS源 MIT CSAIL 更新失败: RSS feed为空
+2026-02-07 00:04:15: 主解析器失败，尝试备用: Google DeepMind Safety
+2026-02-07 00:04:15: Google DeepMind Safety 第1次失败: RSS feed为空
+2026-02-07 00:04:21: 主解析器失败，尝试备用: Google DeepMind Safety
+2026-02-07 00:04:21: Google DeepMind Safety 第2次失败: RSS feed为空
+2026-02-07 00:04:21: RSS源 Google DeepMind Safety 更新失败: RSS feed为空
+2026-02-07 00:04:28: 主解析器失败，尝试备用: The Batch (deeplearning.ai)
+2026-02-07 00:04:28: The Batch (deeplearning.ai) 第1次失败: RSS feed为空
+2026-02-07 00:04:32: 主解析器失败，尝试备用: The Batch (deeplearning.ai)
+2026-02-07 00:04:32: The Batch (deeplearning.ai) 第2次失败: RSS feed为空
+2026-02-07 00:04:32: RSS源 The Batch (deeplearning.ai) 更新失败: RSS feed为空
+2026-02-07 00:04:54: KDnuggets 第1次失败: timeout of 20000ms exceeded
+2026-02-07 00:04:54: Distill.pub 第1次失败: timeout of 20000ms exceeded
+2026-02-07 00:05:06: AI Tools Weekly 第1次失败: Client network socket disconnected before secure TLS connection was established
+2026-02-07 00:05:06: 主解析器失败，尝试备用: AI Weekly
+2026-02-07 00:05:06: AI Weekly 第1次失败: RSS feed为空
+2026-02-07 00:05:11: AI Tools Weekly 第2次失败: Client network socket disconnected before secure TLS connection was established
+2026-02-07 00:05:11: RSS源 AI Tools Weekly 更新失败: Client network socket disconnected before secure TLS connection was established
+2026-02-07 00:05:12: 主解析器失败，尝试备用: AI Weekly
+2026-02-07 00:05:12: AI Weekly 第2次失败: RSS feed为空
+2026-02-07 00:05:12: RSS源 AI Weekly 更新失败: RSS feed为空
+2026-02-07 00:05:20: 主解析器失败，尝试备用: Chroma Blog
+2026-02-07 00:05:20: Chroma Blog 第1次失败: RSS feed为空
+2026-02-07 00:05:20: 主解析器失败，尝试备用: Pinecone Blog
+2026-02-07 00:05:20: Pinecone Blog 第1次失败: RSS feed为空
+2026-02-07 00:05:25: 主解析器失败，尝试备用: Chroma Blog
+2026-02-07 00:05:25: Chroma Blog 第2次失败: RSS feed为空
+2026-02-07 00:05:25: RSS源 Chroma Blog 更新失败: RSS feed为空
+2026-02-07 00:05:26: 主解析器失败，尝试备用: Pinecone Blog
+2026-02-07 00:05:26: Pinecone Blog 第2次失败: RSS feed为空
+2026-02-07 00:05:26: RSS源 Pinecone Blog 更新失败: RSS feed为空
+2026-02-07 00:05:30: 主解析器失败，尝试备用: Ollama Blog
+2026-02-07 00:05:30: Ollama Blog 第1次失败: RSS feed为空
+2026-02-07 00:05:33: 主解析器失败，尝试备用: AI Tool Report
+2026-02-07 00:05:33: AI Tool Report 第1次失败: RSS feed为空
+2026-02-07 00:05:35: 主解析器失败，尝试备用: Ollama Blog
+2026-02-07 00:05:35: Ollama Blog 第2次失败: RSS feed为空
+2026-02-07 00:05:35: RSS源 Ollama Blog 更新失败: RSS feed为空
+2026-02-07 00:05:41: 主解析器失败，尝试备用: AI Tool Report
+2026-02-07 00:05:41: AI Tool Report 第2次失败: RSS feed为空
+2026-02-07 00:05:41: RSS源 AI Tool Report 更新失败: RSS feed为空
+2026-02-07 00:05:46: 主解析器失败，尝试备用: FutureTools AI
+2026-02-07 00:05:46: FutureTools AI 第1次失败: RSS feed为空
+2026-02-07 00:05:51: 主解析器失败，尝试备用: FutureTools AI
+2026-02-07 00:05:51: FutureTools AI 第2次失败: RSS feed为空
+2026-02-07 00:05:51: RSS源 FutureTools AI 更新失败: RSS feed为空
+2026-02-07 08:00:29: 主解析器失败，尝试备用: DeepMind Blog
+2026-02-07 08:00:29: DeepMind Blog 第1次失败: RSS feed为空
+2026-02-07 08:00:34: 主解析器失败，尝试备用: DeepMind Blog
+2026-02-07 08:00:34: DeepMind Blog 第2次失败: RSS feed为空
+2026-02-07 08:00:34: RSS源 DeepMind Blog 更新失败: RSS feed为空
+2026-02-07 08:00:38: 主解析器失败，尝试备用: Meta AI Blog
+2026-02-07 08:00:38: Meta AI Blog 第1次失败: RSS feed为空
+2026-02-07 08:00:43: 主解析器失败，尝试备用: Meta AI Blog
+2026-02-07 08:00:43: Meta AI Blog 第2次失败: RSS feed为空
+2026-02-07 08:00:43: RSS源 Meta AI Blog 更新失败: RSS feed为空
+2026-02-07 08:00:51: 主解析器失败，尝试备用: Anthropic Research
+2026-02-07 08:00:51: Anthropic Research 第1次失败: RSS feed为空
+2026-02-07 08:00:55: 主解析器失败，尝试备用: Anthropic Research
+2026-02-07 08:00:55: Anthropic Research 第2次失败: RSS feed为空
+2026-02-07 08:00:55: RSS源 Anthropic Research 更新失败: RSS feed为空
+2026-02-07 08:00:58: WIRED AI 第1次失败: Cannot read properties of undefined (reading 'url')
+2026-02-07 08:01:02: WIRED AI 第2次失败: Cannot read properties of undefined (reading 'url')
+2026-02-07 08:01:02: RSS源 WIRED AI 更新失败: Cannot read properties of undefined (reading 'url')
+2026-02-07 08:01:28: 机器之心 第1次失败: timeout of 20000ms exceeded
+2026-02-07 08:01:51: 机器之心 第2次失败: timeout of 20000ms exceeded
+2026-02-07 08:01:51: RSS源 机器之心 更新失败: timeout of 20000ms exceeded
+2026-02-07 08:02:14: PaperWeekly 第1次失败: timeout of 20000ms exceeded
+2026-02-07 08:02:37: PaperWeekly 第2次失败: timeout of 20000ms exceeded
+2026-02-07 08:02:37: RSS源 PaperWeekly 更新失败: timeout of 20000ms exceeded
+2026-02-07 08:03:00: 主解析器失败，尝试备用: Mistral AI Blog
+2026-02-07 08:03:00: Mistral AI Blog 第1次失败: RSS feed为空
+2026-02-07 08:03:01: 主解析器失败，尝试备用: Cohere Blog
+2026-02-07 08:03:01: Cohere Blog 第1次失败: RSS feed为空
+2026-02-07 08:03:05: 主解析器失败，尝试备用: Mistral AI Blog
+2026-02-07 08:03:05: Mistral AI Blog 第2次失败: RSS feed为空
+2026-02-07 08:03:05: RSS源 Mistral AI Blog 更新失败: RSS feed为空
+2026-02-07 08:03:06: 主解析器失败，尝试备用: Cohere Blog
+2026-02-07 08:03:06: Cohere Blog 第2次失败: RSS feed为空
+2026-02-07 08:03:06: RSS源 Cohere Blog 更新失败: RSS feed为空
+2026-02-07 08:03:09: 主解析器失败，尝试备用: Apple Machine Learning
+2026-02-07 08:03:09: Apple Machine Learning 第1次失败: RSS feed为空
+2026-02-07 08:03:10: 主解析器失败，尝试备用: Stability AI Blog
+2026-02-07 08:03:10: Stability AI Blog 第1次失败: RSS feed为空
+2026-02-07 08:03:13: 主解析器失败，尝试备用: Apple Machine Learning
+2026-02-07 08:03:13: Apple Machine Learning 第2次失败: RSS feed为空
+2026-02-07 08:03:13: RSS源 Apple Machine Learning 更新失败: RSS feed为空
+2026-02-07 08:03:14: 主解析器失败，尝试备用: Stability AI Blog
+2026-02-07 08:03:14: Stability AI Blog 第2次失败: RSS feed为空
+2026-02-07 08:03:14: RSS源 Stability AI Blog 更新失败: RSS feed为空
+2026-02-07 08:03:19: 主解析器失败，尝试备用: AI2 Blog
+2026-02-07 08:03:19: AI2 Blog 第1次失败: RSS feed为空
+2026-02-07 08:03:25: 主解析器失败，尝试备用: AI2 Blog
+2026-02-07 08:03:25: AI2 Blog 第2次失败: RSS feed为空
+2026-02-07 08:03:25: RSS源 AI2 Blog 更新失败: RSS feed为空
+2026-02-07 08:03:28: 主解析器失败，尝试备用: EleutherAI Blog
+2026-02-07 08:03:28: EleutherAI Blog 第1次失败: RSS feed为空
+2026-02-07 08:03:32: 主解析器失败，尝试备用: EleutherAI Blog
+2026-02-07 08:03:32: EleutherAI Blog 第2次失败: RSS feed为空
+2026-02-07 08:03:32: RSS源 EleutherAI Blog 更新失败: RSS feed为空
+2026-02-07 08:03:37: 主解析器失败，尝试备用: LlamaIndex Blog
+2026-02-07 08:03:37: LlamaIndex Blog 第1次失败: RSS feed为空
+2026-02-07 08:03:42: 主解析器失败，尝试备用: Weights & Biases
+2026-02-07 08:03:42: Weights & Biases 第1次失败: RSS feed为空
+2026-02-07 08:03:42: 主解析器失败，尝试备用: LlamaIndex Blog
+2026-02-07 08:03:42: LlamaIndex Blog 第2次失败: RSS feed为空
+2026-02-07 08:03:42: RSS源 LlamaIndex Blog 更新失败: RSS feed为空
+2026-02-07 08:03:50: 主解析器失败，尝试备用: Weights & Biases
+2026-02-07 08:03:50: Weights & Biases 第2次失败: RSS feed为空
+2026-02-07 08:03:50: RSS源 Weights & Biases 更新失败: RSS feed为空
+2026-02-07 08:03:54: 主解析器失败，尝试备用: Oxford AI Research
+2026-02-07 08:03:54: Oxford AI Research 第1次失败: RSS feed为空
+2026-02-07 08:03:58: 主解析器失败，尝试备用: Oxford AI Research
+2026-02-07 08:03:58: Oxford AI Research 第2次失败: RSS feed为空
+2026-02-07 08:03:58: RSS源 Oxford AI Research 更新失败: RSS feed为空
+2026-02-07 08:04:13: 主解析器失败，尝试备用: MIT CSAIL
+2026-02-07 08:04:13: MIT CSAIL 第1次失败: RSS feed为空
+2026-02-07 08:04:41: MIT CSAIL 第2次失败: timeout of 25000ms exceeded
+2026-02-07 08:04:41: RSS源 MIT CSAIL 更新失败: timeout of 25000ms exceeded
+2026-02-07 08:04:46: 主解析器失败，尝试备用: Google DeepMind Safety
+2026-02-07 08:04:46: Google DeepMind Safety 第1次失败: RSS feed为空
+2026-02-07 08:04:51: 主解析器失败，尝试备用: Google DeepMind Safety
+2026-02-07 08:04:51: Google DeepMind Safety 第2次失败: RSS feed为空
+2026-02-07 08:04:52: RSS源 Google DeepMind Safety 更新失败: RSS feed为空
+2026-02-07 08:04:59: 主解析器失败，尝试备用: The Batch (deeplearning.ai)
+2026-02-07 08:04:59: The Batch (deeplearning.ai) 第1次失败: RSS feed为空
+2026-02-07 08:05:03: 主解析器失败，尝试备用: The Batch (deeplearning.ai)
+2026-02-07 08:05:03: The Batch (deeplearning.ai) 第2次失败: RSS feed为空
+2026-02-07 08:05:03: RSS源 The Batch (deeplearning.ai) 更新失败: RSS feed为空
+2026-02-07 08:05:14: AI Tools Weekly 第1次失败: Client network socket disconnected before secure TLS connection was established
+2026-02-07 08:05:14: 主解析器失败，尝试备用: AI Weekly
+2026-02-07 08:05:14: AI Weekly 第1次失败: RSS feed为空
+2026-02-07 08:05:19: AI Tools Weekly 第2次失败: Client network socket disconnected before secure TLS connection was established
+2026-02-07 08:05:19: RSS源 AI Tools Weekly 更新失败: Client network socket disconnected before secure TLS connection was established
+2026-02-07 08:05:20: 主解析器失败，尝试备用: AI Weekly
+2026-02-07 08:05:20: AI Weekly 第2次失败: RSS feed为空
+2026-02-07 08:05:20: RSS源 AI Weekly 更新失败: RSS feed为空
+2026-02-07 08:05:28: 主解析器失败，尝试备用: Chroma Blog
+2026-02-07 08:05:28: Chroma Blog 第1次失败: RSS feed为空
+2026-02-07 08:05:28: 主解析器失败，尝试备用: Pinecone Blog
+2026-02-07 08:05:28: Pinecone Blog 第1次失败: RSS feed为空
+2026-02-07 08:05:33: 主解析器失败，尝试备用: Chroma Blog
+2026-02-07 08:05:33: Chroma Blog 第2次失败: RSS feed为空
+2026-02-07 08:05:33: RSS源 Chroma Blog 更新失败: RSS feed为空
+2026-02-07 08:05:34: 主解析器失败，尝试备用: Pinecone Blog
+2026-02-07 08:05:34: Pinecone Blog 第2次失败: RSS feed为空
+2026-02-07 08:05:34: RSS源 Pinecone Blog 更新失败: RSS feed为空
+2026-02-07 08:05:38: 主解析器失败，尝试备用: Ollama Blog
+2026-02-07 08:05:38: Ollama Blog 第1次失败: RSS feed为空
+2026-02-07 08:05:42: 主解析器失败，尝试备用: AI Tool Report
+2026-02-07 08:05:42: AI Tool Report 第1次失败: RSS feed为空
+2026-02-07 08:05:43: 主解析器失败，尝试备用: Ollama Blog
+2026-02-07 08:05:43: Ollama Blog 第2次失败: RSS feed为空
+2026-02-07 08:05:43: RSS源 Ollama Blog 更新失败: RSS feed为空
+2026-02-07 08:05:49: 主解析器失败，尝试备用: AI Tool Report
+2026-02-07 08:05:49: AI Tool Report 第2次失败: RSS feed为空
+2026-02-07 08:05:49: RSS源 AI Tool Report 更新失败: RSS feed为空
+2026-02-07 08:05:54: 主解析器失败，尝试备用: FutureTools AI
+2026-02-07 08:05:54: FutureTools AI 第1次失败: RSS feed为空
+2026-02-07 08:05:59: 主解析器失败，尝试备用: FutureTools AI
+2026-02-07 08:05:59: FutureTools AI 第2次失败: RSS feed为空
+2026-02-07 08:05:59: RSS源 FutureTools AI 更新失败: RSS feed为空
+2026-02-07 12:00:21: 主解析器失败，尝试备用: DeepMind Blog
+2026-02-07 12:00:21: DeepMind Blog 第1次失败: RSS feed为空
+2026-02-07 12:00:27: 主解析器失败，尝试备用: DeepMind Blog
+2026-02-07 12:00:27: DeepMind Blog 第2次失败: RSS feed为空
+2026-02-07 12:00:27: RSS源 DeepMind Blog 更新失败: RSS feed为空
+2026-02-07 12:00:31: 主解析器失败，尝试备用: Meta AI Blog
+2026-02-07 12:00:31: Meta AI Blog 第1次失败: RSS feed为空
+2026-02-07 12:00:35: 主解析器失败，尝试备用: Meta AI Blog
+2026-02-07 12:00:35: Meta AI Blog 第2次失败: RSS feed为空
+2026-02-07 12:00:35: RSS源 Meta AI Blog 更新失败: RSS feed为空
+2026-02-07 12:00:43: 主解析器失败，尝试备用: Anthropic Research
+2026-02-07 12:00:43: Anthropic Research 第1次失败: RSS feed为空
+2026-02-07 12:00:47: 主解析器失败，尝试备用: Anthropic Research
+2026-02-07 12:00:47: Anthropic Research 第2次失败: RSS feed为空
+2026-02-07 12:00:47: RSS源 Anthropic Research 更新失败: RSS feed为空
+2026-02-07 12:00:50: WIRED AI 第1次失败: Cannot read properties of undefined (reading 'url')
+2026-02-07 12:00:54: WIRED AI 第2次失败: Cannot read properties of undefined (reading 'url')
+2026-02-07 12:00:54: RSS源 WIRED AI 更新失败: Cannot read properties of undefined (reading 'url')
+2026-02-07 12:01:20: 机器之心 第1次失败: timeout of 20000ms exceeded
+2026-02-07 12:01:43: 机器之心 第2次失败: timeout of 20000ms exceeded
+2026-02-07 12:01:44: RSS源 机器之心 更新失败: timeout of 20000ms exceeded
+2026-02-07 12:02:06: PaperWeekly 第1次失败: timeout of 20000ms exceeded
+2026-02-07 12:02:29: PaperWeekly 第2次失败: timeout of 20000ms exceeded
+2026-02-07 12:02:29: RSS源 PaperWeekly 更新失败: timeout of 20000ms exceeded
+2026-02-07 12:02:47: 主解析器失败，尝试备用: Mistral AI Blog
+2026-02-07 12:02:47: Mistral AI Blog 第1次失败: RSS feed为空
+2026-02-07 12:02:48: 主解析器失败，尝试备用: Cohere Blog
+2026-02-07 12:02:48: Cohere Blog 第1次失败: RSS feed为空
+2026-02-07 12:02:52: 主解析器失败，尝试备用: Mistral AI Blog
+2026-02-07 12:02:52: Mistral AI Blog 第2次失败: RSS feed为空
+2026-02-07 12:02:52: RSS源 Mistral AI Blog 更新失败: RSS feed为空
+2026-02-07 12:02:54: 主解析器失败，尝试备用: Cohere Blog
+2026-02-07 12:02:54: Cohere Blog 第2次失败: RSS feed为空
+2026-02-07 12:02:54: RSS源 Cohere Blog 更新失败: RSS feed为空
+2026-02-07 12:02:57: 主解析器失败，尝试备用: Apple Machine Learning
+2026-02-07 12:02:57: Apple Machine Learning 第1次失败: RSS feed为空
+2026-02-07 12:02:57: 主解析器失败，尝试备用: Stability AI Blog
+2026-02-07 12:02:57: Stability AI Blog 第1次失败: RSS feed为空
+2026-02-07 12:03:01: 主解析器失败，尝试备用: Apple Machine Learning
+2026-02-07 12:03:01: Apple Machine Learning 第2次失败: RSS feed为空
+2026-02-07 12:03:01: RSS源 Apple Machine Learning 更新失败: RSS feed为空
+2026-02-07 12:03:01: 主解析器失败，尝试备用: Stability AI Blog
+2026-02-07 12:03:01: Stability AI Blog 第2次失败: RSS feed为空
+2026-02-07 12:03:01: RSS源 Stability AI Blog 更新失败: RSS feed为空
+2026-02-07 12:03:06: 主解析器失败，尝试备用: AI2 Blog
+2026-02-07 12:03:06: AI2 Blog 第1次失败: RSS feed为空
+2026-02-07 12:03:11: 主解析器失败，尝试备用: AI2 Blog
+2026-02-07 12:03:11: AI2 Blog 第2次失败: RSS feed为空
+2026-02-07 12:03:11: RSS源 AI2 Blog 更新失败: RSS feed为空
+2026-02-07 12:03:15: 主解析器失败，尝试备用: EleutherAI Blog
+2026-02-07 12:03:15: EleutherAI Blog 第1次失败: RSS feed为空
+2026-02-07 12:03:18: 主解析器失败，尝试备用: EleutherAI Blog
+2026-02-07 12:03:18: EleutherAI Blog 第2次失败: RSS feed为空
+2026-02-07 12:03:18: RSS源 EleutherAI Blog 更新失败: RSS feed为空
+2026-02-07 12:03:23: 主解析器失败，尝试备用: LlamaIndex Blog
+2026-02-07 12:03:23: LlamaIndex Blog 第1次失败: RSS feed为空
+2026-02-07 12:03:28: 主解析器失败，尝试备用: Weights & Biases
+2026-02-07 12:03:28: Weights & Biases 第1次失败: RSS feed为空
+2026-02-07 12:03:28: 主解析器失败，尝试备用: LlamaIndex Blog
+2026-02-07 12:03:28: LlamaIndex Blog 第2次失败: RSS feed为空
+2026-02-07 12:03:28: RSS源 LlamaIndex Blog 更新失败: RSS feed为空
+2026-02-07 12:03:36: 主解析器失败，尝试备用: Weights & Biases
+2026-02-07 12:03:36: Weights & Biases 第2次失败: RSS feed为空
+2026-02-07 12:03:36: RSS源 Weights & Biases 更新失败: RSS feed为空
+2026-02-07 12:03:39: 主解析器失败，尝试备用: Oxford AI Research
+2026-02-07 12:03:39: Oxford AI Research 第1次失败: RSS feed为空
+2026-02-07 12:03:40: 主解析器失败，尝试备用: MIT CSAIL
+2026-02-07 12:03:40: MIT CSAIL 第1次失败: RSS feed为空
+2026-02-07 12:03:43: 主解析器失败，尝试备用: Oxford AI Research
+2026-02-07 12:03:43: Oxford AI Research 第2次失败: RSS feed为空
+2026-02-07 12:03:44: RSS源 Oxford AI Research 更新失败: RSS feed为空
+2026-02-07 12:03:46: 主解析器失败，尝试备用: MIT CSAIL
+2026-02-07 12:03:46: MIT CSAIL 第2次失败: RSS feed为空
+2026-02-07 12:03:46: RSS源 MIT CSAIL 更新失败: RSS feed为空
+2026-02-07 12:03:50: 主解析器失败，尝试备用: Google DeepMind Safety
+2026-02-07 12:03:50: Google DeepMind Safety 第1次失败: RSS feed为空
+2026-02-07 12:03:55: 主解析器失败，尝试备用: Google DeepMind Safety
+2026-02-07 12:03:55: Google DeepMind Safety 第2次失败: RSS feed为空
+2026-02-07 12:03:55: RSS源 Google DeepMind Safety 更新失败: RSS feed为空
+2026-02-07 12:04:02: 主解析器失败，尝试备用: The Batch (deeplearning.ai)
+2026-02-07 12:04:02: The Batch (deeplearning.ai) 第1次失败: RSS feed为空
+2026-02-07 12:04:06: 主解析器失败，尝试备用: The Batch (deeplearning.ai)
+2026-02-07 12:04:06: The Batch (deeplearning.ai) 第2次失败: RSS feed为空
+2026-02-07 12:04:06: RSS源 The Batch (deeplearning.ai) 更新失败: RSS feed为空
+2026-02-07 12:04:17: AI Tools Weekly 第1次失败: Client network socket disconnected before secure TLS connection was established
+2026-02-07 12:04:17: 主解析器失败，尝试备用: AI Weekly
+2026-02-07 12:04:17: AI Weekly 第1次失败: RSS feed为空
+2026-02-07 12:04:22: AI Tools Weekly 第2次失败: Client network socket disconnected before secure TLS connection was established
+2026-02-07 12:04:22: RSS源 AI Tools Weekly 更新失败: Client network socket disconnected before secure TLS connection was established
+2026-02-07 12:04:22: 主解析器失败，尝试备用: AI Weekly
+2026-02-07 12:04:22: AI Weekly 第2次失败: RSS feed为空
+2026-02-07 12:04:22: RSS源 AI Weekly 更新失败: RSS feed为空
+2026-02-07 12:04:30: 主解析器失败，尝试备用: Chroma Blog
+2026-02-07 12:04:30: Chroma Blog 第1次失败: RSS feed为空
+2026-02-07 12:04:33: 主解析器失败，尝试备用: Pinecone Blog
+2026-02-07 12:04:33: Pinecone Blog 第1次失败: RSS feed为空
+2026-02-07 12:04:35: 主解析器失败，尝试备用: Chroma Blog
+2026-02-07 12:04:35: Chroma Blog 第2次失败: RSS feed为空
+2026-02-07 12:04:35: RSS源 Chroma Blog 更新失败: RSS feed为空
+2026-02-07 12:04:39: 主解析器失败，尝试备用: Pinecone Blog
+2026-02-07 12:04:39: Pinecone Blog 第2次失败: RSS feed为空
+2026-02-07 12:04:39: RSS源 Pinecone Blog 更新失败: RSS feed为空
+2026-02-07 12:04:44: 主解析器失败，尝试备用: Ollama Blog
+2026-02-07 12:04:44: Ollama Blog 第1次失败: RSS feed为空
+2026-02-07 12:04:46: 主解析器失败，尝试备用: AI Tool Report
+2026-02-07 12:04:46: AI Tool Report 第1次失败: RSS feed为空
+2026-02-07 12:04:49: 主解析器失败，尝试备用: Ollama Blog
+2026-02-07 12:04:49: Ollama Blog 第2次失败: RSS feed为空
+2026-02-07 12:04:49: RSS源 Ollama Blog 更新失败: RSS feed为空
+2026-02-07 12:04:54: 主解析器失败，尝试备用: AI Tool Report
+2026-02-07 12:04:54: AI Tool Report 第2次失败: RSS feed为空
+2026-02-07 12:04:54: RSS源 AI Tool Report 更新失败: RSS feed为空
+2026-02-07 12:04:59: 主解析器失败，尝试备用: FutureTools AI
+2026-02-07 12:04:59: FutureTools AI 第1次失败: RSS feed为空
+2026-02-07 12:05:05: 主解析器失败，尝试备用: FutureTools AI
+2026-02-07 12:05:05: FutureTools AI 第2次失败: RSS feed为空
+2026-02-07 12:05:05: RSS源 FutureTools AI 更新失败: RSS feed为空

@@ -1,0 +1,243 @@
+[Proxy] 使用代理: http://172.27.128.1:10809
+🚀 AI资讯服务器 v2.0 运行在端口 3002
+📱 健康检查: http://localhost:3002/health
+🔌 WebSocket: ws://localhost:3002
+📅 定时更新: 每日8:00 + 每30分钟增量
+🧹 数据清理: 每日2:00
+🔄 初始化系统...
+SQLite数据库连接成功: /home/tian/clawdbot/work/Ainews/server/data/ainews.db
+✅ 数据库初始化完成
+WebSocket已连接到NewsService
+🔄 获取初始新闻数据...
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 310 条重复文章
+跳过 177 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 194 条重复文章
+跳过 395 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: OpenAI Blog (第1次尝试)
+跳过 7 条重复文章
+跳过 10 条重复文章
+获取RSS: Google AI Blog (第1次尝试)
+获取RSS: DeepMind Blog (第1次尝试)
+主解析器失败，尝试备用: DeepMind Blog
+DeepMind Blog 第1次失败: RSS feed为空
+获取RSS: DeepMind Blog (第2次尝试)
+主解析器失败，尝试备用: DeepMind Blog
+DeepMind Blog 第2次失败: RSS feed为空
+RSS源 DeepMind Blog 更新失败: RSS feed为空
+跳过 8 条重复文章
+获取RSS: Meta AI Blog (第1次尝试)
+获取RSS: Microsoft AI Blog (第1次尝试)
+主解析器失败，尝试备用: Meta AI Blog
+Meta AI Blog 第1次失败: RSS feed为空
+获取RSS: Meta AI Blog (第2次尝试)
+主解析器失败，尝试备用: Meta AI Blog
+Meta AI Blog 第2次失败: RSS feed为空
+RSS源 Meta AI Blog 更新失败: RSS feed为空
+获取RSS: NVIDIA Blog (第1次尝试)
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+跳过 6 条重复文章
+跳过 10 条重复文章
+获取RSS: Anthropic Research (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+主解析器失败，尝试备用: Anthropic Research
+Anthropic Research 第1次失败: RSS feed为空
+获取RSS: Anthropic Research (第2次尝试)
+主解析器失败，尝试备用: Anthropic Research
+Anthropic Research 第2次失败: RSS feed为空
+RSS源 Anthropic Research 更新失败: RSS feed为空
+跳过 7 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+WIRED AI 第1次失败: Cannot read properties of undefined (reading 'url')
+获取RSS: WIRED AI (第2次尝试)
+WIRED AI 第2次失败: Cannot read properties of undefined (reading 'url')
+RSS源 WIRED AI 更新失败: Cannot read properties of undefined (reading 'url')
+跳过 11 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 15 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 机器之心 (第1次尝试)
+机器之心 第1次失败: timeout of 20000ms exceeded
+获取RSS: 机器之心 (第2次尝试)
+机器之心 第2次失败: timeout of 20000ms exceeded
+RSS源 机器之心 更新失败: timeout of 20000ms exceeded
+跳过 7 条重复文章
+获取RSS: 量子位 (第1次尝试)
+获取RSS: PaperWeekly (第1次尝试)
+PaperWeekly 第1次失败: timeout of 20000ms exceeded
+获取RSS: PaperWeekly (第2次尝试)
+PaperWeekly 第2次失败: timeout of 20000ms exceeded
+RSS源 PaperWeekly 更新失败: timeout of 20000ms exceeded
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 3 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 1 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: CMU Machine Learning (第1次尝试)
+获取RSS: Cohere Blog (第1次尝试)
+获取RSS: Mistral AI Blog (第1次尝试)
+主解析器失败，尝试备用: Mistral AI Blog
+Mistral AI Blog 第1次失败: RSS feed为空
+主解析器失败，尝试备用: Cohere Blog
+Cohere Blog 第1次失败: RSS feed为空
+获取RSS: Mistral AI Blog (第2次尝试)
+获取RSS: Cohere Blog (第2次尝试)
+主解析器失败，尝试备用: Mistral AI Blog
+Mistral AI Blog 第2次失败: RSS feed为空
+RSS源 Mistral AI Blog 更新失败: RSS feed为空
+主解析器失败，尝试备用: Cohere Blog
+Cohere Blog 第2次失败: RSS feed为空
+RSS源 Cohere Blog 更新失败: RSS feed为空
+获取RSS: Stability AI Blog (第1次尝试)
+获取RSS: Apple Machine Learning (第1次尝试)
+主解析器失败，尝试备用: Apple Machine Learning
+Apple Machine Learning 第1次失败: RSS feed为空
+主解析器失败，尝试备用: Stability AI Blog
+Stability AI Blog 第1次失败: RSS feed为空
+获取RSS: Apple Machine Learning (第2次尝试)
+获取RSS: Stability AI Blog (第2次尝试)
+主解析器失败，尝试备用: Apple Machine Learning
+Apple Machine Learning 第2次失败: RSS feed为空
+RSS源 Apple Machine Learning 更新失败: RSS feed为空
+主解析器失败，尝试备用: Stability AI Blog
+Stability AI Blog 第2次失败: RSS feed为空
+RSS源 Stability AI Blog 更新失败: RSS feed为空
+获取RSS: Salesforce AI Research (第1次尝试)
+获取RSS: AI2 Blog (第1次尝试)
+主解析器失败，尝试备用: AI2 Blog
+AI2 Blog 第1次失败: RSS feed为空
+获取RSS: AI2 Blog (第2次尝试)
+AI2 Blog 第2次失败: aborted
+RSS源 AI2 Blog 更新失败: aborted
+跳过 10 条重复文章
+获取RSS: EleutherAI Blog (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+主解析器失败，尝试备用: EleutherAI Blog
+EleutherAI Blog 第1次失败: RSS feed为空
+获取RSS: EleutherAI Blog (第2次尝试)
+主解析器失败，尝试备用: EleutherAI Blog
+EleutherAI Blog 第2次失败: RSS feed为空
+RSS源 EleutherAI Blog 更新失败: RSS feed为空
+获取RSS: Weights & Biases (第1次尝试)
+获取RSS: LlamaIndex Blog (第1次尝试)
+主解析器失败，尝试备用: LlamaIndex Blog
+LlamaIndex Blog 第1次失败: RSS feed为空
+获取RSS: LlamaIndex Blog (第2次尝试)
+主解析器失败，尝试备用: Weights & Biases
+Weights & Biases 第1次失败: RSS feed为空
+主解析器失败，尝试备用: LlamaIndex Blog
+LlamaIndex Blog 第2次失败: RSS feed为空
+RSS源 LlamaIndex Blog 更新失败: RSS feed为空
+获取RSS: Weights & Biases (第2次尝试)
+主解析器失败，尝试备用: Weights & Biases
+Weights & Biases 第2次失败: RSS feed为空
+RSS源 Weights & Biases 更新失败: RSS feed为空
+获取RSS: MIT CSAIL (第1次尝试)
+获取RSS: Oxford AI Research (第1次尝试)
+主解析器失败，尝试备用: Oxford AI Research
+Oxford AI Research 第1次失败: RSS feed为空
+主解析器失败，尝试备用: MIT CSAIL
+MIT CSAIL 第1次失败: RSS feed为空
+获取RSS: Oxford AI Research (第2次尝试)
+获取RSS: MIT CSAIL (第2次尝试)
+主解析器失败，尝试备用: Oxford AI Research
+Oxford AI Research 第2次失败: RSS feed为空
+RSS源 Oxford AI Research 更新失败: RSS feed为空
+主解析器失败，尝试备用: MIT CSAIL
+MIT CSAIL 第2次失败: RSS feed为空
+RSS源 MIT CSAIL 更新失败: RSS feed为空
+获取RSS: Google DeepMind Safety (第1次尝试)
+获取RSS: AI科技大本营 (第1次尝试)
+主解析器失败，尝试备用: Google DeepMind Safety
+Google DeepMind Safety 第1次失败: RSS feed为空
+获取RSS: Google DeepMind Safety (第2次尝试)
+主解析器失败，尝试备用: Google DeepMind Safety
+Google DeepMind Safety 第2次失败: RSS feed为空
+RSS源 Google DeepMind Safety 更新失败: RSS feed为空
+跳过 3 条重复文章
+获取RSS: Towards Data Science (第1次尝试)
+获取RSS: Machine Learning Mastery (第1次尝试)
+跳过 20 条重复文章
+跳过 5 条重复文章
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+获取RSS: Analytics Vidhya (第1次尝试)
+主解析器失败，尝试备用: The Batch (deeplearning.ai)
+The Batch (deeplearning.ai) 第1次失败: RSS feed为空
+获取RSS: The Batch (deeplearning.ai) (第2次尝试)
+主解析器失败，尝试备用: The Batch (deeplearning.ai)
+The Batch (deeplearning.ai) 第2次失败: RSS feed为空
+RSS源 The Batch (deeplearning.ai) 更新失败: RSS feed为空
+跳过 10 条重复文章
+获取RSS: KDnuggets (第1次尝试)
+获取RSS: Distill.pub (第1次尝试)
+跳过 10 条重复文章
+获取RSS: OpenCV Blog (第1次尝试)
+获取RSS: Product Hunt AI (第1次尝试)
+跳过 2 条重复文章
+跳过 37 条重复文章
+获取RSS: AI Tools Weekly (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+AI Tools Weekly 第1次失败: Client network socket disconnected before secure TLS connection was established
+主解析器失败，尝试备用: AI Weekly
+AI Weekly 第1次失败: RSS feed为空
+获取RSS: AI Tools Weekly (第2次尝试)
+获取RSS: AI Weekly (第2次尝试)
+AI Tools Weekly 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 AI Tools Weekly 更新失败: Client network socket disconnected before secure TLS connection was established
+主解析器失败，尝试备用: AI Weekly
+AI Weekly 第2次失败: RSS feed为空
+RSS源 AI Weekly 更新失败: RSS feed为空
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 1 条重复文章
+跳过 1 条重复文章
+获取RSS: Pinecone Blog (第1次尝试)
+获取RSS: Chroma Blog (第1次尝试)
+主解析器失败，尝试备用: Chroma Blog
+Chroma Blog 第1次失败: RSS feed为空
+主解析器失败，尝试备用: Pinecone Blog
+Pinecone Blog 第1次失败: RSS feed为空
+获取RSS: Chroma Blog (第2次尝试)
+获取RSS: Pinecone Blog (第2次尝试)
+主解析器失败，尝试备用: Chroma Blog
+Chroma Blog 第2次失败: RSS feed为空
+RSS源 Chroma Blog 更新失败: RSS feed为空
+主解析器失败，尝试备用: Pinecone Blog
+Pinecone Blog 第2次失败: RSS feed为空
+RSS源 Pinecone Blog 更新失败: RSS feed为空
+获取RSS: Ollama Blog (第1次尝试)
+获取RSS: AI Tool Report (第1次尝试)
+主解析器失败，尝试备用: Ollama Blog
+Ollama Blog 第1次失败: RSS feed为空
+获取RSS: Ollama Blog (第2次尝试)
+主解析器失败，尝试备用: AI Tool Report
+AI Tool Report 第1次失败: RSS feed为空
+主解析器失败，尝试备用: Ollama Blog
+Ollama Blog 第2次失败: RSS feed为空
+RSS源 Ollama Blog 更新失败: RSS feed为空
+获取RSS: AI Tool Report (第2次尝试)
+主解析器失败，尝试备用: AI Tool Report
+AI Tool Report 第2次失败: RSS feed为空
+RSS源 AI Tool Report 更新失败: RSS feed为空
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: FutureTools AI (第1次尝试)
+主解析器失败，尝试备用: FutureTools AI
+FutureTools AI 第1次失败: RSS feed为空
+获取RSS: FutureTools AI (第2次尝试)
+主解析器失败，尝试备用: FutureTools AI
+FutureTools AI 第2次失败: RSS feed为空
+RSS源 FutureTools AI 更新失败: RSS feed为空
+跳过 4 条重复文章
+跳过 1 条重复文章
+新闻更新完成: 36个源成功, 保存1970条, 25个错误
+✅ 新闻数据初始化完成

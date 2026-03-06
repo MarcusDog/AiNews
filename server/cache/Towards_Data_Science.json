@@ -1,0 +1,222 @@
+[
+  {
+    "id": "Towards_Data_Science_fef2f53e7946ce03",
+    "title": "Your First 90 Days as a Data Scientist",
+    "description": "A practical onboarding checklist for building trust, business fluency, and data intuition The post Your First 90 Days as a Data Scientist appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/your-first-90-days-as-a-data-scientist/",
+    "publishedAt": "2026-02-14T11:25:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "Yu Dong"
+  },
+  {
+    "id": "Towards_Data_Science_950b82c67bd7cd03",
+    "title": "The Evolving Role of the ML Engineer",
+    "description": "Stephanie Kirmer on the $200 billion investment bubble, how AI companies can rebuild trust, and how her day-to-day work changed with the rise of LLMs. The post The Evolving Role of the ML Engineer appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/the-evolving-role-of-the-ml-engineer/",
+    "publishedAt": "2026-02-13T15:00:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "TDS Editors"
+  },
+  {
+    "id": "Towards_Data_Science_f94a6b7d11d8c786",
+    "title": "AI in Multiple GPUs: Point-to-Point and Collective Operations",
+    "description": "Learn PyTorch distributed operations for multi GPU AI workloads The post AI in Multiple GPUs: Point-to-Point and Collective Operations appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/point-to-point-and-collective-operations/",
+    "publishedAt": "2026-02-13T13:00:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "Lorenzo Cesconetto"
+  },
+  {
+    "id": "Towards_Data_Science_6bfaf5cbaa7c86f0",
+    "title": "How to Leverage Explainable AI for Better Business Decisions",
+    "description": "Moving beyond the black box to turn complex model outputs into actionable organizational strategies. The post How to Leverage Explainable AI for Better Business Decisions appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/how-to-leverage-explainable-ai-for-better-business-decisions/",
+    "publishedAt": "2026-02-12T15:00:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "Rodrigo Almeida"
+  },
+  {
+    "id": "Towards_Data_Science_e5eafa33bc731929",
+    "title": "AI in Multiple GPUs: Understanding the Host and Device Paradigm",
+    "description": "Learn how CPU and GPUs interact in the host-device paradigm The post AI in Multiple GPUs: Understanding the Host and Device Paradigm appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/understanding-the-host-and-device-paradigm/",
+    "publishedAt": "2026-02-12T13:00:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "Lorenzo Cesconetto"
+  },
+  {
+    "id": "Towards_Data_Science_b1f70012902d21e4",
+    "title": "Building an AI Agent to Detect and Handle Anomalies in Time-Series Data",
+    "description": "Combining statistical detection with agentic decision-making The post Building an AI Agent to Detect and Handle Anomalies in Time-Series Data appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/building-an-ai-agent-to-detect-and-handle-anomalies-in-time-series-data/",
+    "publishedAt": "2026-02-11T15:00:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "MADHURA RAUT"
+  },
+  {
+    "id": "Towards_Data_Science_990e6c07d61612be",
+    "title": "Not All RecSys Problems Are Created Equal",
+    "description": "How baseline strength, churn, and subjectivity determine complexity The post Not All RecSys Problems Are Created Equal appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/not-all-recsys-problems-are-created-equal/",
+    "publishedAt": "2026-02-11T13:00:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "Diogo Leitão"
+  },
+  {
+    "id": "Towards_Data_Science_ecdc63c22fcb92ac",
+    "title": "How to Model The Expected Value of Marketing Campaigns",
+    "description": "The approach that takes companies to the next level of data maturity The post How to Model The Expected Value of Marketing Campaigns appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/how-to-model-the-expected-value-of-marketing-campaigns/",
+    "publishedAt": "2026-02-10T15:00:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "Rodrigo Almeida"
+  },
+  {
+    "id": "Towards_Data_Science_e5c9730d0e35e411",
+    "title": "Implementing the Snake Game in Python",
+    "description": "An easy step-by-step guide to building the snake game from scratch The post Implementing the Snake Game in Python appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/implementing-the-snake-game-in-python/",
+    "publishedAt": "2026-02-10T13:30:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "Mahnoor Javed"
+  },
+  {
+    "id": "Towards_Data_Science_58d0476c62f77698",
+    "title": "How to Personalize Claude Code",
+    "description": "Learn how to get more out of Claude code by giving it access to more information. The post How to Personalize Claude Code appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/how-to-personalize-claude-code/",
+    "publishedAt": "2026-02-10T12:00:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "Eivind Kjosbakken"
+  },
+  {
+    "id": "Towards_Data_Science_aaa85d641aadb21f",
+    "title": "The Machine Learning Lessons I’ve Learned Last Month",
+    "description": "Delayed January: deadlines, downtimes, and flow times The post The Machine Learning Lessons I’ve Learned Last Month appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/the-machine-learning-lessons-ive-learned-last-month/",
+    "publishedAt": "2026-02-09T20:38:42.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "Pascal Janetzky"
+  },
+  {
+    "id": "Towards_Data_Science_50e931325329d1ae",
+    "title": "The Death of the “Everything Prompt”: Google’s Move Toward Structured AI",
+    "description": "How the new Interactions API enables deep-reasoning, stateful, agentic workflows. The post The Death of the “Everything Prompt”: Google’s Move Toward Structured AI appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/the-death-of-the-everything-prompt-googles-move-toward-structured-ai/",
+    "publishedAt": "2026-02-09T13:00:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "Thomas Reid"
+  },
+  {
+    "id": "Towards_Data_Science_a840279cca2e4344",
+    "title": "What I Am Doing to Stay Relevant as a Senior Analytics Consultant in 2026",
+    "description": "Learn how to work with AI, while strengthening your unique human skills that technology cannot replace The post What I Am Doing to Stay Relevant as a Senior Analytics Consultant in 2026 appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/what-i-am-doing-to-stay-relevant-as-a-senior-analytics-consultant-in-2026/",
+    "publishedAt": "2026-02-07T15:00:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "Rashi Desai"
+  },
+  {
+    "id": "Towards_Data_Science_922eed6bcd2837a3",
+    "title": "Pydantic Performance: 4 Tips on How to Validate Large Amounts of Data Efficiently",
+    "description": "The real value lies in writing clearer code and using your tools right The post Pydantic Performance: 4 Tips on How to Validate Large Amounts of Data Efficiently appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/pydantic-performance-4-tips-on-how-to-validate-large-amounts-of-data-efficiently/",
+    "publishedAt": "2026-02-06T15:00:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "Mike Huls"
+  },
+  {
+    "id": "Towards_Data_Science_61e715197507d448",
+    "title": "Prompt Fidelity: Measuring How Much of Your Intent an AI Agent Actually Executes",
+    "description": "How much of your AI agent's output is real data versus confident guesswork? The post Prompt Fidelity: Measuring How Much of Your Intent an AI Agent Actually Executes appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/prompt-fidelity-measuring-how-much-of-your-intent-an-ai-agent-actually-executes/",
+    "publishedAt": "2026-02-06T12:00:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "James Barney"
+  },
+  {
+    "id": "Towards_Data_Science_0400174cabfdc5df",
+    "title": "TDS Newsletter: Vibe Coding Is Great. Until It’s Not.",
+    "description": "Sorting through the good, bad, and ambiguous aspects of vibe coding The post TDS Newsletter: Vibe Coding Is Great. Until It’s Not. appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/tds-newsletter-vibe-coding-is-great-until-its-not/",
+    "publishedAt": "2026-02-05T17:09:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "TDS Editors"
+  },
+  {
+    "id": "Towards_Data_Science_f2c37720bdea0845",
+    "title": "Mechanistic Interpretability: Peeking Inside an LLM",
+    "description": "Are the human-like cognitive abilities of LLMs real or fake? How does information travel through the neural network? Is there hidden knowledge inside an LLM? The post Mechanistic Interpretability: Peeking Inside an LLM appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/mechanistic-interpretability-peeking-inside-an-llm/",
+    "publishedAt": "2026-02-05T15:00:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "Julian Mendel"
+  },
+  {
+    "id": "Towards_Data_Science_78dd15a6851b0b14",
+    "title": "Why Is My Code So Slow? A Guide to Py-Spy Python Profiling",
+    "description": "Stop guessing and start diagnosing performance issues using Py-Spy The post Why Is My Code So Slow? A Guide to Py-Spy Python Profiling appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/why-is-my-code-so-slow-a-guide-to-py-spy-python-profiling/",
+    "publishedAt": "2026-02-05T13:30:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "Kenneth McCarthy"
+  },
+  {
+    "id": "Towards_Data_Science_62859d8eca911f0a",
+    "title": "The Rule Everyone Misses: How to Stop Confusing loc and iloc in Pandas",
+    "description": "A simple mental model to remember when each one works (with examples that finally click). The post The Rule Everyone Misses: How to Stop Confusing loc and iloc in Pandas appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/stop-confusing-loc-and-iloc-in-pandas-the-rule-everyone-misses/",
+    "publishedAt": "2026-02-05T12:00:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "Ibrahim Salami"
+  },
+  {
+    "id": "Towards_Data_Science_4d513cb9d977768e",
+    "title": "AWS vs. Azure: A Deep Dive into Model Training – Part 2",
+    "description": "This article covers how Azure ML's persistent, workspace-centric compute resources differ from AWS SageMaker's on-demand, job-specific approach. Additionally, we explored environment customization options, from Azure's curated environments and custom environments to SageMaker's three level of customizations. The post AWS vs. Azure: A Deep Dive into Model Training – Part 2 appeared first on Towards Data Science.",
+    "url": "https://towardsdatascience.com/aws-vs-azure-a-deep-dive-into-model-training-part-2/",
+    "publishedAt": "2026-02-04T16:30:00.000Z",
+    "category": "新算法",
+    "source": "Towards Data Science",
+    "imageUrl": null,
+    "author": "Destin Gong"
+  }
+]

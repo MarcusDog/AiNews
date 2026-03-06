@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI模型架构与算法框架详细教程</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            line-height: 1.8;
+            color: #333;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        h1 { text-align: center; color: #1a1a2e; margin-bottom: 10px; font-size: 2.5em; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 50px; }
+        
+        /* Navigation */
+        .nav { 
+            display: flex; 
+            justify-content: center; 
+            gap: 15px; 
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .nav-item {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        /* Content Sections */
+        .content { display: none; }
+        .content.active { display: block; }
+        
+        /* Card Style */
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .card-title {
+            font-size: 1.8em;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5em;
+        }
+        
+        /* Workflow */
+        .workflow {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+        .workflow-title { font-weight: bold; color: #667eea; margin-bottom: 10px; }
+        .workflow-steps { color: #555; font-size: 0.95em; }
+        
+        /* Step Box */
+        .step-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .step-title { font-weight: bold; color: #333; margin-bottom: 8px; }
+        .step-desc { color: #666; margin-bottom: 10px; }
+        .formula {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        
+        /* Feature List */
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .feature-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+        .feature-title { font-weight: bold; color: #667eea; margin-bottom: 5px; }
+        
+        /* Visualization */
+        .visual-box {
+            background: #1a1a2e;
+            color: #00ff88;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        
+        /* Code Block */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9em;
+        }
+        .code-keyword { color: #569cd6; }
+        .code-string { color: #ce9178; }
+        .code-comment { color: #6a9955; }
+        
+        /* Architecture Grid */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .arch-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 1.8em; }
+        }
+        
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .highlight-title {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        /* Comparison Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        tr:hover { background: #f5f5f5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 AI模型架构与算法框架详细教程</h1>
+        <p class="subtitle">深入理解神经网络架构和主流深度学习框架的工作原理</p>
+        
+        <div class="nav">
+            <div class="nav-item active" onclick="showContent('architecture')">模型架构</div>
+            <div class="nav-item" onclick="showContent('framework')">算法框架</div>
+        </div>
+        
+        <!-- 模型架构内容 -->
+        <div id="architecture" class="content active">
+            <div class="arch-grid">
+                
+                <!-- 神经网络基础 -->
+                <div class="card">
+                    <div class="card-title">
+                        <div class="card-icon">🔗</div>
+                        神经网络 (Neural Network)
+                    </div>
+                    <p style="color: #667eea; margin-bottom: 20px;">深度学习的基石，由相互连接的神经元组成</p>
+                    
+                    <div class="workflow">
+                        <div class="workflow-title">📊 工作流程</div>
+                        <div class="workflow-steps">
+                            输入数据 → 加权求和 → 激活函数 → 输出传递 → 反向传播 → 权重更新
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px; color: #333;">详细步骤解析</h3>
+                    
+                    <div class="step-box">
+                        <div class="step-number">1</div>
+                        <div class="step-title">输入层接收数据</div>
+                        <div class="step-desc">原始数据（如图像像素、文本编码）进入网络的第一层</div>
+                        <div class="formula">x = [x₁, x₂, x₃, ..., xₙ]</div>
+                    </div>
+                    
+                    <div class="step-box">
+                        <div class="step-number">2</div>
+                        <div class="step-title">加权求和</div>
+                        <div class="step-desc">每个神经元将输入与权重相乘后求和，加上偏置项</div>
+                        <div class="formula">z = Σ(wᵢ × xᵢ) + b</div>
+                    </div>
+                    
+                    <div class="step-box">
+                        <div class="step-number">3</div>
+                        <div class="step-title">激活函数</div>
+                        <div class="step-desc">通过非线性函数引入非线性，使网络能学习复杂模式</div>
+                        <div class="formula">a = σ(z) = 1 / (1 + e^(-z))  # Sigmoid示例</div>
+                    </div>
+                    
+                    <div class="step-box">
+                        <div class="step-number">4</div>
+                        <div class="step-title">前向传播</div>
+                        <div class="step-desc">数据逐层传递，直到输出层产生预测结果</div>
+                        <div class="visual-box">
+Input Layer → Hidden Layer 1 → Hidden Layer 2 → Output Layer
+    (784)         (256)            (128)          (10)
+                        </div>
+                    </div>
+                    
+                    <div class="step-box">
+                        <div class="step-number">5</div>
+                        <div class="step-title">计算损失</div>
+                        <div class="step-desc">比较预测结果与真实值的差异</div>
+                        <div class="formula">Loss = Σ(y_pred - y_true)² / 2  # 均方误差</div>
+                    </div>
+                    
+                    <div class="step-box">
+                        <div class="step-number">6</div>
+                        <div class="step-title">反向传播</div>
+                        <div class="step-desc">计算梯度，将误差从输出层传回输入层</div>
+                        <div class="formula">∂L/∂w = ∂L/∂a × ∂a/∂z × ∂z/∂w</div>
+                    </div>
+                    
+                    <div class="step-box">
+                        <div class="step-number">7</div>
+                        <div class="step-title">权重更新</div>
+                        <div class="step-desc">使用梯度下降优化权重</div>
+                        <div class="formula">w_new = w_old - α × ∂L/∂w</div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px; color: #333;">核心特性</h3>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div class="feature-title">非线性映射能力</div>
+                            <div>能学习任意复杂函数</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-title">并行计算</div>
+                            <div>可高效利用GPU加速</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-title">自适应学习</div>
+                            <div>自动调整参数优化性能</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-title">泛化能力</div>
+                            <div>能处理未见过的数据</div>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px; color: #333;">代码示例 (PyTorch)</h3>
+                    <div class="code-block">
+<span class="code-keyword">import</span> torch
+<span class="code-keyword">import</span> torch.nn <span class="code-keyword">as</span> nn
+
+<span class="code-comment"># 定义神经网络</span>
+<span class="code-keyword">class</span> NeuralNetwork(nn.Module):
+    <span class="code-keyword">def</span> <span class="code-string">__init__</span>(self, input_size, hidden_size, num_classes):
+        super(NeuralNetwork, self).__init__()
+        self.fc1 = nn.Linear(input_size, hidden_size)
+        self.relu = nn.ReLU()
+        self.fc2 = nn.Linear(hidden_size, num_classes)
+    
+    <span class="code-keyword">def</span> forward(self, x):
+        x = self.fc1(x)
+        x = self.relu(x)
+        x = self.fc2(x)
+        return x
+
+<span class="code-comment"># 创建网络实例</span>
+model = NeuralNetwork(784, 256, 10)
+
+<span class="code-comment"># 训练过程</span>
+<span class="code-keyword">for</span> epoch <span class="code-keyword">in</span> range(100):
+    outputs = model(inputs)
+    loss = criterion(outputs, labels)
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()</div>
+                </div>
+                
+                <!-- Transformer -->
+                <div class="card">
+                    <div class="card-title">
+                        <div class="card-icon">⚡</div>
+                        Transformer
+                    </div>
+                    <p style="color: #667eea; margin-bottom: 20px;">革命性的注意力机制架构</p>
+                    
+                    <div class="workflow">
+                        <div class="workflow-title">📊 工作流程</div>
+                        <div class="workflow-steps">
+                            输入嵌入 → 位置编码 → 多头自注意力 → 残差连接&层归一化 → 前馈网络 → 输出
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px; color: #333;">核心机制：注意力</h3>
+                    <div class="highlight-box">
+                        <div class="highlight-title">注意力计算公式</div>
+                        <div class="formula" style="margin: 0;">
+Attention(Q,K,V) = softmax(QK^T / √d_k) × V
+                        </div>
+                        <p style="margin-top: 10px; color: #666;">Q=查询, K=键, V=值。通过计算Q和K的相似度，加权聚合V的信息。</p>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px; color: #333;">详细步骤解析</h3>
+                    
+                    <div class="step-box">
+                        <div class="step-number">1</div>
+                        <div class="step-title">输入嵌入</div>
+                        <div class="step-desc">将词汇转换为高维向量</div>
+                        <div class="formula">E = Embedding(x)</div>
+                    </div>
+                    
+                    <div class="step-box">
+                        <div class="step-number">2</div>
+                        <div class="step-title">位置编码</div>
+                        <div class="step-desc">为序列添加位置信息</div>
+                        <div class="formula">PE(pos, 2i) = sin(pos / 10000^(2i/d_model))</div>
+                    </div>
+                    
+                    <div class="step-box">
+                        <div class="step-number">3</div>
+                        <div class="step-title">多头自注意力</div>
+                        <div class="step-desc">从多个角度捕捉信息关系</div>
+                        <div class="formula">MultiHead(Q,K,V) = Concat(head₁,...,head₈)W</div>
+                    </div>
+                    
+                    <div class="step-box">
+                        <div class="step-number">4</div>
+                        <div class="step-title">残差连接与层归一化</div>
+                        <div class="step-desc">稳定训练，加速收敛</div>
+                        <div class="formula">LayerNorm(x + Sublayer(x))</div>
+                    </div>
+                    
+                    <div class="step-box">
+                        <div class="step-number">5</div>
+                        <div class="step-title">前馈神经网络</div>
+                        <div class="step-desc">每个位置独立的全连接网络</div>
+                        <div class="formula">FFN(x) = max(0, xW₁ + b₁)W₂ + b₂</div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px; color: #333;">架构可视化</h3>
+                    <div class="visual-box">
+┌─────────────────────────────────────────────────┐
+│                Transformer 架构                  │
+├─────────────────────────────────────────────────┤
+│  输入: "你好 世界"                               │
+│         ↓                                        │
+│  ┌─────────────┐    ┌─────────────┐            │
+│  │   编码器     │    │   解码器     │            │
+│  │ ┌─────────┐ │    │ ┌─────────┐ │            │
+│  │ │多头注意力│ │ ×N │ │掩码注意力│ │            │
+│  │ └────┬────┘ │    │ └────┬────┘ │            │
+│  │ ┌────┴────┐ │    │ ┌────┴────┐ │            │
+│  │ │前馈网络 │ │    │ │交叉注意力│ │            │
+│  │ └────┬────┘ │    │ └────┬────┘ │            │
+│  │      ↓      │    │      ↓      │            │
+│  └──────┼──────┘    │ ┌─────────┐ │            │
+│         │            │ │前馈网络 │ │            │
+│         │            │ └─────────┘ │            │
+│         └────────────→             │ ×N         │
+│                      └──────┬──────┘            │
+│                             ↓                    │
+│  输出: "Hello World"                             │
+└─────────────────────────────────────────────────┘
+                    </div>
+                </div>
+                
+                <!-- CNN -->
+                <div class="card">
+                    <div class="card-title">
+                        <div class="card-icon">🖼️</div>
+                        CNN 卷积神经网络
+                    </div>
+                    <p style="color: #667eea; margin-bottom: 20px;">计算机视觉的基石</p>
+                    
+                    <div class="workflow">
+                        <div class="workflow-title">📊 工作流程</div>
+                        <div class="workflow-steps">
+                            输入图像 → 卷积层 → 激活函数 → 池化层 → (重复) → 展平 → 全连接层 → 输出
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px; color: #333;">卷积操作可视化</h3>
+                    <div class="visual-box">
+输入特征图 (5×5)      卷积核 (3×3)      输出特征图 (3×3)
+┌──┬──┬──┬──┬──┐     ┌──┬──┬──┐
+│ 1│ 1│ 1│ 0│ 0│     │ 1│ 0│ 1│
+├──┼──┼──┼──┼──┤     ├──┼──┼──┤
+│ 0│ 1│ 1│ 1│ 0│  ×  │ 0│ 1│ 0│  =  
+├──┼──┼──┼──┼──┤     ├──┼──┼──┤
+│ 0│ 0│ 1│ 1│ 1│     │ 1│ 0│ 1│
+├──┼──┼──┼──┼──┤     └──┴──┴──┘
+│ 0│ 0│ 1│ 1│ 0│
+├──┼──┼──┼──┼──┤
+│ 0│ 1│ 1│ 0│ 0│
+└──┴──┴──┴──┴──┘
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px; color: #333;">层次化特征学习</h3>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div class="feature-title">第1层</div>
+                            <div>边缘、颜色、简单纹理</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-title">第2-3层</div>
+                            <div>形状、部件、复杂纹理</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-title">第4层+</div>
+                            <div>完整物体、语义信息</div>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px; color: #333;">代码示例</h3>
+                    <div class="code-block">
+<span class="code-keyword">class</span> CNN(nn.Module):
+    <span class="code-keyword">def</span> <span class="code-string">__init__</span>(self):
+        super(CNN, self).__init__()
+        <span class="code-comment"># 第一层卷积</span>
+        self.conv1 = nn.Conv2d(1, 32, 3, padding=1)
+        self.pool = nn.MaxPool2d(2, 2)
+        <span class="code-comment"># 第二层卷积</span>
+        self.conv2 = nn.Conv2d(32, 64, 3, padding=1)
+        <span class="code-comment"># 全连接层</span>
+        self.fc1 = nn.Linear(64 * 7 * 7, 128)
+        self.fc2 = nn.Linear(128, 10)
+    
+    <span class="code-keyword">def</span> forward(self, x):
+        x = self.pool(F.relu(self.conv1(x)))  <span class="code-comment"># 28x28 -> 14x14</span>
+        x = self.pool(F.relu(self.conv2(x)))  <span class="code-comment"># 14x14 -> 7x7</span>
+        x = x.view(x.size(0), -1)             <span class="code-comment"># 展平</span>
+        x = F.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x</div>
+                </div>
+                
+                <!-- RNN/LSTM -->
+                <div class="card">
+                    <div class="card-title">
+                        <div class="card-icon">🔄</div>
+                        RNN / LSTM
+                    </div>
+                    <p style="color: #667eea; margin-bottom: 20px;">序列数据处理专家</p>
+                    
+                    <div class="workflow">
+                        <div class="workflow-title">📊 RNN工作流程</div>
+                        <div class="workflow-steps">
+                            输入序列 → 时间步1 → 传递隐藏状态 → 时间步2 → ... → 时间步N → 输出
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px; color: #333;">RNN vs LSTM</h3>
+                    <table>
+                        <tr>
+                            <th>特性</th>
+                            <th>RNN</th>
+                            <th>LSTM</th>
+                        </tr>
+                        <tr>
+                            <td>长期依赖</td>
+                            <td>❌ 困难（梯度消失）</td>
+                            <td>✅ 优秀</td>
+                        </tr>
+                        <tr>
+                            <td>门控机制</td>
+                            <td>无</td>
+                            <td>遗忘门、输入门、输出门</td>
+                        </tr>
+                        <tr>
+                            <td>细胞状态</td>
+                            <td>无</td>
+                            <td>有（直接传递信息）</td>
+                        </tr>
+                        <tr>
+                            <td>参数量</td>
+                            <td>少</td>
+                            <td>多（约4倍）</td>
+                        </tr>
+                    </table>
+                    
+                    <h3 style="margin: 30px 0 15px; color: #333;">LSTM门控机制</h3>
+                    <div class="step-box">
+                        <div class="step-title">遗忘门：决定丢弃哪些信息</div>
+                        <div class="formula">f_t = σ(W_f · [h_{t-1}, x_t] + b_f)</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-title">输入门：决定存储哪些新信息</div>
+                        <div class="formula">i_t = σ(W_i · [h_{t-1}, x_t] + b_i)</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-title">细胞状态更新</div>
+                        <div class="formula">C_t = f_t × C_{t-1} + i_t × C̃_t</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-title">输出门：决定输出什么</div>
+                        <div class="formula">o_t = σ(W_o · [h_{t-1}, x_t] + b_o), h_t = o_t × tanh(C_t)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 算法框架内容 -->
+        <div id="framework" class="content">
+            <div class="card">
+                <h2 style="margin-bottom: 30px; text-align: center;">主流深度学习框架对比</h2>
+                <table>
+                    <tr>
+                        <th>框架</th>
+                        <th>开发方</th>
+                        <th>特点</th>
+                        <th>适用场景</th>
+                        <th>学习曲线</th>
+                    </tr>
+                    <tr>
+                        <td><strong>TensorFlow</strong></td>
+                        <td>Google</td>
+                        <td>静态图、生产级、TensorBoard</td>
+                        <td>大规模部署</td>
+                        <td>中等</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PyTorch</strong></td>
+                        <td>Meta</td>
+                        <td>动态图、调试友好</td>
+                        <td>学术研究</td>
+                        <td>平缓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hugging Face</strong></td>
+                        <td>社区</td>
+                        <td>10万+预训练模型</td>
+                        <td>NLP/CV</td>
+                        <td>平缓</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="arch-grid">
+                <!-- PyTorch -->
+                <div class="card">
+                    <div class="card-title">
+                        <div class="card-icon">🔥</div>
+                        PyTorch
+                    </div>
+                    <p style="color: #667eea; margin-bottom: 20px;">研究首选框架，动态计算图</p>
+                    
+                    <div class="workflow">
+                        <div class="workflow-title">📊 PyTorch工作流程</div>
+                        <div class="workflow-steps">
+                            定义模型 → 数据加载 → 前向传播 → 计算损失 → 反向传播 → 优化器更新
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px; color: #333;">训练循环详解</h3>
+                    
+                    <div class="step-box">
+                        <div class="step-number">1</div>
+                        <div class="step-title">定义模型 (nn.Module)</div>
+                        <div class="code-block">
+class Net(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.fc1 = nn.Linear(784, 256)
+        self.fc2 = nn.Linear(256, 10)
+    
+    def forward(self, x):
+        x = F.relu(self.fc1(x))
+        return self.fc2(x)</div>
+                    </div>
+                    
+                    <div class="step-box">
+                        <div class="step-number">2</div>
+                        <div class="step-title">准备数据 (DataLoader)</div>
+                        <div class="code-block">
+train_loader = DataLoader(
+    dataset, 
+    batch_size=64, 
+    shuffle=True
+)</div>
+                    </div>
+                    
+                    <div class="step-box">
+                        <div class="step-number">3</div>
+                        <div class="step-title">训练循环核心代码</div>
+                        <div class="code-block">
+for epoch in range(10):
+    for data, target in train_loader:
+        # 前向传播
+        output = model(data)
+        loss = criterion(output, target)
+        
+        # 反向传播
+        optimizer.zero_grad()  # 清零梯度
+        loss.backward()         # 计算梯度
+        optimizer.step()        # 更新参数</div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px; color: #333;">核心特性</h3>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div class="feature-title">动态计算图</div>
+                            <div>边定义边执行，调试方便</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-title">Pythonic</div>
+                            <div>代码直观自然</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-title">GPU加速</div>
+                            <div>简单调用.cuda()</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-title">自动求导</div>
+                            <div>Autograd自动计算梯度</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- TensorFlow -->
+                <div class="card">
+                    <div class="card-title">
+                        <div class="card-icon">📊</div>
+                        TensorFlow
+                    </div>
+                    <p style="color: #667eea; margin-bottom: 20px;">生产级部署首选</p>
+                    
+                    <div class="workflow">
+                        <div class="workflow-title">📊 TensorFlow工作流程</div>
+                        <div class="workflow-steps">
+                            定义计算图 → 创建会话 → 变量初始化 → 训练循环 → 模型保存
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px; color: #333;">Keras API (推荐)</h3>
+                    <div class="code-block">
+<span class="code-comment"># 定义模型</span>
+model = tf.keras.Sequential([
+    tf.keras.layers.Dense(256, activation=<span class="code-string">'relu'</span>),
+    tf.keras.layers.Dropout(0.2),
+    tf.keras.layers.Dense(10, activation=<span class="code-string">'softmax'</span>)
+])
+
+<span class="code-comment"># 编译模型</span>
+model.compile(
+    optimizer=<span class="code-string">'adam'</span>,
+    loss=<span class="code-string">'sparse_categorical_crossentropy'</span>,
+    metrics=[<span class="code-string">'accuracy'</span>]
+)
+
+<span class="code-comment"># 训练</span>
+model.fit(x_train, y_train, epochs=5, validation_split=0.2)
+
+<span class="code-comment"># 评估</span>
+model.evaluate(x_test, y_test)
+
+<span class="code-comment"># 保存</span>
+model.save(<span class="code-string">'my_model.h5'</span>)</div>
+                    
+                    <h3 style="margin: 30px 0 15px; color: #333;">生态工具</h3>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div class="feature-title">TensorBoard</div>
+                            <div>可视化训练过程</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-title">TF Serving</div>
+                            <div>生产环境部署</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-title">TF Lite</div>
+                            <div>移动端部署</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-title">TPU支持</div>
+                            <div>谷歌TPU加速</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hugging Face -->
+                <div class="card">
+                    <div class="card-title">
+                        <div class="card-icon">🤗</div>
+                        Hugging Face Transformers
+                    </div>
+                    <p style="color: #667eea; margin-bottom: 20px;">预训练模型库之王</p>
+                    
+                    <div class="workflow">
+                        <div class="workflow-title">📊 快速上手</div>
+                        <div class="workflow-steps">
+                            安装 → 加载模型 → 预处理 → 推理 → 微调
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 15px; color: #333;">Pipeline一键使用</h3>
+                    <div class="code-block">
+<span class="code-keyword">from</span> transformers <span class="code-keyword">import</span> pipeline
+
+<span class="code-comment"># 情感分析</span>
+classifier = pipeline(<span class="code-string">"sentiment-analysis"</span>)
+result = classifier(<span class="code-string">"I love this!"</span>)
+
+<span class="code-comment"># 问答</span>
+qa = pipeline(<span class="code-string">"question-answering"</span>)
+qa(question=<span class="code-string">"Who?"</span>, context=<span class="code-string">"Context..."</span>)
+
+<span class="code-comment"># 文本生成</span>
+generator = pipeline(<span class="code-string">"text-generation"</span>, model=<span class="code-string">"gpt2"</span>)
+generator(<span class="code-string">"The future is"</span>)</div>
+                    
+                    <h3 style="margin: 30px 0 15px; color: #333;">模型微调示例</h3>
+                    <div class="code-block">
+<span class="code-keyword">from</span> transformers <span class="code-keyword">import</span> (
+    AutoTokenizer, 
+    AutoModelForSequenceClassification,
+    TrainingArguments, 
+    Trainer
+)
+
+<span class="code-comment"># 加载预训练模型</span>
+model = AutoModelForSequenceClassification.from_pretrained(
+    <span class="code-string">"bert-base-uncased"</span>, 
+    num_labels=2
+)
+
+<span class="code-comment"># 训练参数</span>
+training_args = TrainingArguments(
+    output_dir=<span class="code-string">"./results"</span>,
+    num_train_epochs=3,
+    per_device_train_batch_size=16,
+)
+
+<span class="code-comment"># 训练器</span>
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=train_dataset,
+    eval_dataset=eval_dataset
+)
+
+trainer.train()</div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="http://localhost/glossary" style="
+                display: inline-block;
+                padding: 12px 30px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                text-decoration: none;
+                border-radius: 25px;
+                font-weight: bold;
+            ">← 返回 AI知识库</a>
+        </div>
+    </div>
+    
+    <script>
+        function showContent(type) {
+            // Hide all content
+            document.querySelectorAll('.content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected content
+            document.getElementById(type).classList.add('active');
+            
+            // Add active to clicked nav item
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

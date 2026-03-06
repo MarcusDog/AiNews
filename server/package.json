@@ -1,0 +1,28 @@
+{
+  "name": "ainews-server",
+  "version": "2.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "init-db": "node scripts/init-db.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "better-sqlite3": "^9.2.2",
+    "cheerio": "^1.0.0-rc.12",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0",
+    "https-proxy-agent": "^7.0.6",
+    "node-cron": "^3.0.3",
+    "rss-parser": "^3.13.0",
+    "socket.io": "^4.7.2",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

@@ -1,0 +1,112 @@
+[
+  {
+    "id": "Analytics_Vidhya_26860320c33ab37d",
+    "title": "What is Elasticsearch?",
+    "description": "Suppose you want to locate a particular piece of information in a library that is the size of a city. This is a predicament that businesses have to deal with on a daily basis regarding their electronic data. They contain giant quantities of logs, documents, and user actions. Locating what is important is like trying […] The post What is Elasticsearch? appeared first on Analytics Vidhya.",
+    "url": "https://www.analyticsvidhya.com/blog/2026/02/what-is-elasticsearch/",
+    "publishedAt": "2026-02-14T13:46:56.000Z",
+    "category": "新算法",
+    "source": "Analytics Vidhya",
+    "imageUrl": null,
+    "author": "Harsh Mishra"
+  },
+  {
+    "id": "Analytics_Vidhya_ae5e2227b64da72f",
+    "title": "I Built a Smart Movie Recommender with Collaborative Filtering",
+    "description": "Recommendation systems are the invisible engines that can personalize our social media, OTTs and e-commerce. Whether you are scrolling through Netflix for a new show or browsing Amazon for a gadget, these algorithms are working behind the scenes to predict something for you. One of the most effective ways to do this is by looking […] The post I Built a Smart Movie Recommender with Collaborative Filtering appeared first on Analytics Vidhya.",
+    "url": "https://www.analyticsvidhya.com/blog/2026/02/collaborative-filtering-recommendation-system/",
+    "publishedAt": "2026-02-14T13:44:43.000Z",
+    "category": "新算法",
+    "source": "Analytics Vidhya",
+    "imageUrl": null,
+    "author": "Mounish V"
+  },
+  {
+    "id": "Analytics_Vidhya_00b6c395283e0164",
+    "title": "What is Prompt Chaining?",
+    "description": "You type in a lengthy prompt, well over 500 words, or even 1000 words. It structures everything perfectly. Explains in detail what is to be done, right down to the finer details of each step. And you press enter. Your AI chatbot starts off strong, following every instruction from the top, then trails off slightly […] The post What is Prompt Chaining? appeared first on Analytics Vidhya.",
+    "url": "https://www.analyticsvidhya.com/blog/2026/02/what-is-prompt-chaining/",
+    "publishedAt": "2026-02-13T11:20:57.000Z",
+    "category": "新算法",
+    "source": "Analytics Vidhya",
+    "imageUrl": null,
+    "author": "Sarthak Dogra"
+  },
+  {
+    "id": "Analytics_Vidhya_414a10b493f1e73a",
+    "title": "I Built an AI Agent that Predicts Match Winners in the ICC Men’s T20 World Cup 2026",
+    "description": "The T20 World Cup 2026 brings exciting matches, and fans constantly wonder which team will win. An AI agent answers this by analyzing live data and patterns instead of relying on intuition. Users enter a match date, and the system gathers all scheduled games and relevant context for that day. Built with CrewAI and OpenAI’s […] The post I Built an AI Agent that Predicts Match Winners in the ICC Men’s T20 World Cup 2026 appeared first on Analytics Vidhya.",
+    "url": "https://www.analyticsvidhya.com/blog/2026/02/ai-agent-cricket-prediction/",
+    "publishedAt": "2026-02-13T11:18:20.000Z",
+    "category": "新算法",
+    "source": "Analytics Vidhya",
+    "imageUrl": null,
+    "author": "Vipin Vashisth"
+  },
+  {
+    "id": "Analytics_Vidhya_7d3f08c98dac7d69",
+    "title": "Guide to Build a Data Analysis & Visualization Agent Using Swarm Architecture ",
+    "description": "Swarm architecture brings together specialized AI agents that collaborate to solve complex data problems. Inspired by natural swarms, it pairs a Data Analyst agent for processing with a Visualization agent for chart creation, coordinated to deliver clearer and more efficient insights. This collaborative design mirrors teamwork, where each agent focuses on its strength to improve […] The post Guide to Build a Data Analysis & Visualization Agent Using Swarm Architecture appeared first on Analytics",
+    "url": "https://www.analyticsvidhya.com/blog/2026/02/data-analyst-visualization-agent-using-swarm-architecture/",
+    "publishedAt": "2026-02-12T18:11:16.000Z",
+    "category": "新算法",
+    "source": "Analytics Vidhya",
+    "imageUrl": null,
+    "author": "Vipin Vashisth"
+  },
+  {
+    "id": "Analytics_Vidhya_b134f5025976147f",
+    "title": "How Andrej Karpathy Built a Working Transformer in 243 Lines of Code",
+    "description": "The AI researcher Andrej Karpathy has developed an educational tool microGPT which provides the easiest access to GPT technology according to his research findings. The project uses 243 lines of Python code which does not need any external dependency to show users the fundamental mathematical principles that govern Large Language Model operations because it removes […] The post How Andrej Karpathy Built a Working Transformer in 243 Lines of Code appeared first on Analytics Vidhya.",
+    "url": "https://www.analyticsvidhya.com/blog/2026/02/andrej-karpathy-microgpt/",
+    "publishedAt": "2026-02-12T13:16:03.000Z",
+    "category": "新算法",
+    "source": "Analytics Vidhya",
+    "imageUrl": null,
+    "author": "Riya Bansal"
+  },
+  {
+    "id": "Analytics_Vidhya_dc89bf6aaa349b4b",
+    "title": "Claude Agents Just Built a Fully Functioning C Compiler With Zero Human Input",
+    "description": "Sixteen autonomous AI agents. Two weeks of continuous execution. Nearly 100,000 lines of Rust code. That’s what it took for Anthropic to build a working C compiler capable of compiling large real-world projects like the Linux kernel. There is, however, a kicker here. The project, internally referred to as the Claude “agent teams,” wasn’t written […] The post Claude Agents Just Built a Fully Functioning C Compiler With Zero Human Input appeared first on Analytics Vidhya.",
+    "url": "https://www.analyticsvidhya.com/blog/2026/02/claude-agents-built-c-compiler/",
+    "publishedAt": "2026-02-11T12:41:01.000Z",
+    "category": "新算法",
+    "source": "Analytics Vidhya",
+    "imageUrl": "https://www.youtube.com/embed/iuVNoqiKORg",
+    "author": "Sarthak Dogra"
+  },
+  {
+    "id": "Analytics_Vidhya_3f4579e593f342c8",
+    "title": "I Built a Complete AI Resume with 90+ ATS Score",
+    "description": "A-T-S!! A hurdle that most applicants just can’t cross. Spending hours on Overleaf and resume making websites to create their perfect resumes: just to find out that it has an ATS score of 40! For some it’s a dead end. Regardless of what they try, the score doesn’t seem to get anywhere near the required […] The post I Built a Complete AI Resume with 90+ ATS Score appeared first on Analytics Vidhya.",
+    "url": "https://www.analyticsvidhya.com/blog/2026/02/build-a-complete-ai-resume-with-90-ats-score/",
+    "publishedAt": "2026-02-11T12:39:17.000Z",
+    "category": "新算法",
+    "source": "Analytics Vidhya",
+    "imageUrl": null,
+    "author": "Vasu Deo Sankrityayan"
+  },
+  {
+    "id": "Analytics_Vidhya_91e246a189f13b40",
+    "title": "How to Create Your AI Caricature Using ChatGPT Image?",
+    "description": "Another month, another AI-powered trend taking over the internet, and this one is all about turning yourself into a caricature using ChatGPT Image. From LinkedIn feeds to group chats, people are sharing playful versions of themselves that capture not just their faces, but also their profession, personality, and vibe. The best part is that you don’t need […] The post How to Create Your AI Caricature Using ChatGPT Image? appeared first on Analytics Vidhya.",
+    "url": "https://www.analyticsvidhya.com/blog/2026/02/chatgpt-caricature-image/",
+    "publishedAt": "2026-02-10T18:24:47.000Z",
+    "category": "新算法",
+    "source": "Analytics Vidhya",
+    "imageUrl": null,
+    "author": "Nitika Sharma"
+  },
+  {
+    "id": "Analytics_Vidhya_855a1b07422750c1",
+    "title": "Qwen-Image-2.0 is Here and it Gives Nano Banana a Run for its Money",
+    "description": "Alibaba’s Qwen has been on a roll lately, launching model after model for various use cases. For instance, it recently introduced the Qwen3-Coder-Next as an AI coding assistant for developers. This time, the AI giant is in the news yet again for its latest release – the Qwen-2.0-Image. As the name suggests, this one comes […] The post Qwen-Image-2.0 is Here and it Gives Nano Banana a Run for its Money appeared first on Analytics Vidhya.",
+    "url": "https://www.analyticsvidhya.com/blog/2026/02/qwen-image-2-0-is-here/",
+    "publishedAt": "2026-02-10T18:21:26.000Z",
+    "category": "新算法",
+    "source": "Analytics Vidhya",
+    "imageUrl": null,
+    "author": "Sarthak Dogra"
+  }
+]
