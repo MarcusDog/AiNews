@@ -1,0 +1,5 @@
+2026-02-06 17:27:02:  INFO  Accepting connections at http://localhost:3003
+2026-02-06 17:29:09:  HTTP  2/6/2026 5:29:09 PM ::1 GET /
+2026-02-06 17:29:09:  HTTP  2/6/2026 5:29:09 PM ::1 Returned 200 in 85 ms
+2026-02-07 15:15:23: 
+2026-02-07 15:15:23:  INFO  Gracefully shutting down. Please wait...
