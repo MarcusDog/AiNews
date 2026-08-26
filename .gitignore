@@ -53,4 +53,4 @@ client/public/downloads/
 release/
 
 # skills/aya-news-skill 作为独立仓库管理（已在 MarcusDog/AyaNewsSkill）
-skills/
+skills/*
