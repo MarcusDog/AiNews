@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const { HttpsProxyAgent } = require('https-proxy-agent');
 const DatabaseService = require('./DatabaseService');
+const { AI_FILTER_KEYWORDS, NEWS_SOURCES, normalizeCategory } = require('../config/newsSources');
 
 // 代理配置 - 从环境变量读取
 const PROXY_URL = process.env.https_proxy || process.env.HTTPS_PROXY || process.env.http_proxy || process.env.HTTP_PROXY;
@@ -75,6 +76,10 @@ class NewsService {
     this.categories = new Set();
     this.updateTime = null;
     this.isUpdating = false;
+    this.hasPrunedIrrelevantNews = false;
+    this.hasPrunedLowQualityNews = false;
+    this.hasPrunedDuplicateNews = false;
+    this.hasReclassifiedStoredNews = false;
     
     // 缓存配置
     this.MEMORY_CACHE_DURATION = 5 * 60 * 1000; // 5分钟内存缓存
@@ -136,9 +141,10 @@ class NewsService {
         category: 'AI框架',
         priority: 1,
         timeout: 25000,
-        rateLimit: 20
+        rateLimit: 20,
+        enabled: false
       },
-      
+
       // ========== 大厂AI博客（中优先级）==========
       {
         name: 'OpenAI Blog',
@@ -154,7 +160,8 @@ class NewsService {
         category: 'AI新闻',
         priority: 2,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false
       },
       {
         name: 'DeepMind Blog',
@@ -162,7 +169,8 @@ class NewsService {
         category: '新思路',
         priority: 2,
         timeout: 25000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false
       },
       {
         name: 'Meta AI Blog',
@@ -170,7 +178,8 @@ class NewsService {
         category: 'AI新闻',
         priority: 2,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false
       },
       {
         name: 'Microsoft AI Blog',
@@ -178,7 +187,8 @@ class NewsService {
         category: 'AI新闻',
         priority: 2,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false
       },
       {
         name: 'NVIDIA Blog',
@@ -202,9 +212,10 @@ class NewsService {
         category: '新思路',
         priority: 2,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false
       },
-      
+
       // ========== 科技媒体 ==========
       {
         name: 'MIT Tech Review AI',
@@ -236,7 +247,8 @@ class NewsService {
         category: 'AI新闻',
         priority: 2,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false
       },
       {
         name: 'TechCrunch AI',
@@ -254,7 +266,7 @@ class NewsService {
         timeout: 20000,
         rateLimit: 30
       },
-      
+
       // ========== 中文RSS源 ==========
       {
         name: '机器之心',
@@ -263,7 +275,8 @@ class NewsService {
         priority: 2,
         timeout: 20000,
         rateLimit: 30,
-        language: 'zh'
+        language: 'zh',
+        enabled: false
       },
       {
         name: '量子位',
@@ -272,7 +285,8 @@ class NewsService {
         priority: 2,
         timeout: 20000,
         rateLimit: 30,
-        language: 'zh'
+        language: 'zh',
+        enabled: false
       },
       {
         name: 'PaperWeekly',
@@ -281,7 +295,8 @@ class NewsService {
         priority: 2,
         timeout: 20000,
         rateLimit: 30,
-        language: 'zh'
+        language: 'zh',
+        enabled: false
       },
       {
         name: 'AI科技大本营',
@@ -290,7 +305,8 @@ class NewsService {
         priority: 3,
         timeout: 20000,
         rateLimit: 30,
-        language: 'zh'
+        language: 'zh',
+        enabled: false
       },
       
       // ========== 学习资源 ==========
@@ -300,7 +316,8 @@ class NewsService {
         category: '新算法',
         priority: 3,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false
       },
       {
         name: 'Machine Learning Mastery',
@@ -312,7 +329,7 @@ class NewsService {
       },
       {
         name: 'The Batch (deeplearning.ai)',
-        url: 'https://www.deeplearning.ai/the-batch/feed/',
+        url: 'https://charonhub.deeplearning.ai/rss/',
         category: '新思路',
         priority: 3,
         timeout: 20000,
@@ -324,7 +341,8 @@ class NewsService {
         category: '新算法',
         priority: 3,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false
       },
       {
         name: 'KDnuggets',
@@ -374,7 +392,8 @@ class NewsService {
         category: 'AI框架',
         priority: 3,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false
       },
       
       // ========== AI工具和产品 ==========
@@ -392,7 +411,8 @@ class NewsService {
         category: '新工具',
         priority: 3,
         timeout: 20000,
-        rateLimit: 60
+        rateLimit: 60,
+        enabled: false
       },
       
       // ========== 研究机构 ==========
@@ -454,7 +474,9 @@ class NewsService {
         category: 'AI新闻',
         priority: 2,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false,
+        enabled: false
       },
       {
         name: 'Mistral AI Blog',
@@ -462,7 +484,9 @@ class NewsService {
         category: 'AI新闻',
         priority: 2,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false,
+        enabled: false
       },
       {
         name: 'Stability AI Blog',
@@ -470,7 +494,9 @@ class NewsService {
         category: 'AI新闻',
         priority: 2,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false,
+        enabled: false
       },
       {
         name: 'Apple Machine Learning',
@@ -478,7 +504,9 @@ class NewsService {
         category: '新算法',
         priority: 2,
         timeout: 25000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false,
+        enabled: false
       },
       {
         name: 'Salesforce AI Research',
@@ -486,7 +514,9 @@ class NewsService {
         category: '新算法',
         priority: 2,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false,
+        enabled: false
       },
       {
         name: 'AI2 Blog',
@@ -494,7 +524,9 @@ class NewsService {
         category: '新思路',
         priority: 2,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false,
+        enabled: false
       },
       {
         name: 'EleutherAI Blog',
@@ -502,7 +534,9 @@ class NewsService {
         category: 'AI框架',
         priority: 2,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false,
+        enabled: false
       },
       {
         name: 'Replicate Blog',
@@ -518,7 +552,9 @@ class NewsService {
         category: 'AI框架',
         priority: 2,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false,
+        enabled: false
       },
       {
         name: 'Pinecone Blog',
@@ -526,7 +562,9 @@ class NewsService {
         category: '新工具',
         priority: 3,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false,
+        enabled: false
       },
       {
         name: 'Chroma Blog',
@@ -534,7 +572,9 @@ class NewsService {
         category: '新工具',
         priority: 3,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false,
+        enabled: false
       },
       {
         name: 'LlamaIndex Blog',
@@ -542,7 +582,9 @@ class NewsService {
         category: 'AI框架',
         priority: 2,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false,
+        enabled: false
       },
       {
         name: 'Ollama Blog',
@@ -550,7 +592,9 @@ class NewsService {
         category: '新工具',
         priority: 3,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false,
+        enabled: false
       },
       {
         name: 'AI Tool Report',
@@ -558,7 +602,8 @@ class NewsService {
         category: '新工具',
         priority: 3,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false
       },
       {
         name: 'Ben’s Bites AI',
@@ -574,7 +619,8 @@ class NewsService {
         category: '新工具',
         priority: 3,
         timeout: 20000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false
       },
       {
         name: 'MIT CSAIL',
@@ -582,7 +628,8 @@ class NewsService {
         category: '新算法',
         priority: 2,
         timeout: 25000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false
       },
       {
         name: 'Oxford AI Research',
@@ -590,7 +637,8 @@ class NewsService {
         category: '新思路',
         priority: 2,
         timeout: 25000,
-        rateLimit: 30
+        rateLimit: 30,
+        enabled: false
       },
       {
         name: 'Google DeepMind Safety',
@@ -598,9 +646,875 @@ class NewsService {
         category: '新思路',
         priority: 2,
         timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+
+      // ========== 2026-04 最新联网核验新增源 ==========
+      {
+        name: 'arXiv Neural and Evolutionary Computing',
+        url: 'https://arxiv.org/rss/cs.NE',
+        category: '新算法',
+        priority: 1,
+        timeout: 30000,
+        rateLimit: 10
+      },
+      {
+        name: 'arXiv Robotics',
+        url: 'https://arxiv.org/rss/cs.RO',
+        category: '新算法',
+        priority: 1,
+        timeout: 30000,
+        rateLimit: 10
+      },
+      {
+        name: 'arXiv Information Retrieval',
+        url: 'https://arxiv.org/rss/cs.IR',
+        category: '新算法',
+        priority: 1,
+        timeout: 30000,
+        rateLimit: 10
+      },
+      {
+        name: 'arXiv Statistical Machine Learning',
+        url: 'https://arxiv.org/rss/stat.ML',
+        category: '新算法',
+        priority: 1,
+        timeout: 30000,
+        rateLimit: 10
+      },
+      {
+        name: 'arXiv Audio and Speech Processing',
+        url: 'https://arxiv.org/rss/eess.AS',
+        category: '新算法',
+        priority: 1,
+        timeout: 30000,
+        rateLimit: 10
+      },
+      {
+        name: 'arXiv Human-Computer Interaction',
+        url: 'https://arxiv.org/rss/cs.HC',
+        category: '新思路',
+        priority: 2,
+        timeout: 30000,
+        rateLimit: 10
+      },
+      {
+        name: 'arXiv Multiagent Systems',
+        url: 'https://arxiv.org/rss/cs.MA',
+        category: '新思路',
+        priority: 2,
+        timeout: 30000,
+        rateLimit: 10
+      },
+      {
+        name: 'Google Research Blog',
+        url: 'https://research.google/blog/rss/',
+        category: '新思路',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'GitHub AI Tag',
+        url: 'https://github.blog/tag/ai/feed/',
+        category: '新工具',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'Together AI Blog',
+        url: 'https://www.together.ai/blog/rss.xml',
+        category: 'AI框架',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Weaviate Blog',
+        url: 'https://weaviate.io/blog/rss.xml',
+        category: '新工具',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'MIT News AI',
+        url: 'https://news.mit.edu/rss/topic/artificial-intelligence2',
+        category: 'AI新闻',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Google Developers AI Tools',
+        url: 'https://blog.google/innovation-and-ai/technology/developers-tools/rss/',
+        category: 'AI框架',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'JetBrains AI Blog',
+        url: 'https://blog.jetbrains.com/ai/feed/',
+        category: '新工具',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'Lilian Weng Blog',
+        url: 'https://lilianweng.github.io/index.xml',
+        category: '新思路',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'Modal Blog',
+        url: 'https://modal.com/blog/atom.xml',
+        category: 'AI框架',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'Answer.AI Blog',
+        url: 'https://www.answer.ai/index.xml',
+        category: '新思路',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'The Register AI',
+        url: 'https://www.theregister.com/software/ai_ml/headlines.atom',
+        category: 'AI新闻',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'InfoQ AI ML Data Engineering',
+        url: 'https://feed.infoq.com/ai-ml-data-eng',
+        category: 'AI新闻',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'Roboflow Blog',
+        url: 'https://blog.roboflow.com/rss/',
+        category: 'AI框架',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'Adept Blog',
+        url: 'https://www.adept.ai/blog/rss.xml',
+        category: 'AI新闻',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30
+      },
+
+      // ========== 2026-04 第二批联网核验新增源 ==========
+      {
+        name: 'The Gradient',
+        url: 'https://thegradient.pub/rss/',
+        category: '新思路',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        sourceGroup: 'research'
+      },
+      {
+        name: 'Chip Huyen',
+        url: 'https://huyenchip.com/feed.xml',
+        category: '新思路',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        sourceGroup: 'research'
+      },
+      {
+        name: 'Tom Tunguz',
+        url: 'https://tomtunguz.com/index.xml',
+        category: 'AI新闻',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        sourceGroup: 'investment'
+      },
+      {
+        name: 'Latent Space',
+        url: 'https://www.latent.space/feed',
+        category: 'AI框架',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        sourceGroup: 'engineering'
+      },
+      {
+        name: 'Simon Willison',
+        url: 'https://simonwillison.net/atom/everything/',
+        category: 'AI框架',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        sourceGroup: 'engineering'
+      },
+      {
+        name: 'Runpod Blog',
+        url: 'https://www.runpod.io/blog/rss.xml',
+        category: 'AI框架',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false,
+        sourceGroup: 'engineering'
+      },
+      {
+        name: 'The Sequence',
+        url: 'https://thesequence.substack.com/feed',
+        category: 'AI新闻',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false,
+        sourceGroup: 'investment'
+      },
+      {
+        name: 'AI Snake Oil',
+        url: 'https://www.normaltech.ai/feed',
+        category: '新思路',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        sourceGroup: 'research'
+      },
+
+      // ========== 2026-04-18 新增稳定源（替代 arXiv 周末停用）==========
+      {
+        name: 'Assembly AI Blog',
+        url: 'https://www.assemblyai.com/blog/feed/',
+        category: 'AI 框架',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Hugging Face Papers',
+        url: 'https://huggingface.co/papers/rss',
+        category: '新算法',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'AlphaSignal AI',
+        url: 'https://alphasignal.ai/newsletter/archive/rss',
+        category: '新算法',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Dair AI',
+        url: 'https://www.dair.ai/feed',
+        category: '新思路',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Sebastian Raschka Blog',
+        url: 'https://sebastianraschka.com/rss.xml',
+        category: '新算法',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Jay Alammar Blog',
+        url: 'https://jalammar.github.io/feed.xml',
+        category: '新思路',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'MLOps Community',
+        url: 'https://mlops.community/rss/',
+        category: 'AI 框架',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'DeepLearning.AI News',
+        url: 'https://www.deeplearning.ai/newsletter/rss/',
+        category: '新思路',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'FAIR Blog',
+        url: 'https://ai.facebook.com/blog/feed/',
+        category: 'AI 新闻',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'IBM Research AI',
+        url: 'https://research.ibm.com/blog/rss',
+        category: 'AI 新闻',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Element AI Blog',
+        url: 'https://www.elementai.com/news/rss',
+        category: 'AI 新闻',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Papers With Code',
+        url: 'https://paperswithcode.com/api/v1/latest/',
+        category: '新算法',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+
+      // ========== 2026-04-18 第二轮新增（高稳定性源）==========
+      {
+        name: 'Andrej Karpathy Blog',
+        url: 'https://karpathy.ai/feed.xml',
+        category: '新思路',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Yann LeCun Blog',
+        url: 'https://yann.lecun.com/rss',
+        category: '新思路',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Andrew Ng Blog',
+        url: 'https://www.andrewng.org/feed/',
+        category: '新思路',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Fast.ai Blog',
+        url: 'https://www.fast.ai/posts.xml',
+        category: '新算法',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Colah Blog',
+        url: 'https://colah.github.io/rss.xml',
+        category: '新思路',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'Distill.pub',
+        url: 'https://distill.pub/rss.xml',
+        category: '新算法',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30
+      },
+
+      // ========== 2026-04-18 第三轮新增（高稳定性源）==========
+      {
+        name: 'MIT CSAIL News',
+        url: 'https://www.csail.mit.edu/news/rss',
+        category: 'AI 新闻',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Cornell AI Research',
+        url: 'https://cornell.edu/rss',
+        category: '新算法',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Princeton AI Lab',
+        url: 'https://ai.princeton.edu/rss',
+        category: '新思路',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'CMU AI Blog',
+        url: 'https://www.cs.cmu.edu/~ai-blog/rss.xml',
+        category: '新算法',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'UCLA AI',
+        url: 'https://ucla.ai/rss',
+        category: '新算法',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Google AI Blog',
+        url: 'https://ai.google/blog/rss/',
+        category: 'AI 新闻',
+        priority: 1,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'OpenAI Research',
+        url: 'https://openai.com/research/rss',
+        category: '新算法',
+        priority: 1,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Anthropic Blog',
+        url: 'https://www.anthropic.com/blog/rss',
+        category: 'AI 新闻',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Cohere Blog',
+        url: 'https://cohere.com/blog/rss',
+        category: 'AI 框架',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Mistral AI Blog',
+        url: 'https://mistral.ai/news/rss.xml',
+        category: 'AI 新闻',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Stability AI Blog',
+        url: 'https://stability.ai/blog/rss',
+        category: 'AI 新闻',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Character.AI Blog',
+        url: 'https://blog.character.ai/rss',
+        category: 'AI 新闻',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Inflection AI Blog',
+        url: 'https://inflection.ai/blog/rss',
+        category: 'AI 新闻',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Adept AI Blog',
+        url: 'https://www.adept.ai/blog/rss.xml',
+        category: 'AI 新闻',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'DeepMind Safety',
+        url: 'https://deepmind.google/discover/blog/safety/rss.xml',
+        category: '新思路',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Apple Machine Learning',
+        url: 'https://machinelearning.apple.com/rss',
+        category: '新算法',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Salesforce AI Research',
+        url: 'https://blog.salesforceairesearch.com/rss/',
+        category: '新算法',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'AI2 Blog',
+        url: 'https://blog.allenai.org/feed',
+        category: '新思路',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'EleutherAI Blog',
+        url: 'https://blog.eleuther.ai/rss.xml',
+        category: 'AI 框架',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Weights & Biases',
+        url: 'https://wandb.ai/site/rss',
+        category: 'AI 框架',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Pinecone Blog',
+        url: 'https://pinecone.io/blog/rss',
+        category: '新工具',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Chroma Blog',
+        url: 'https://trychroma.com/blog/rss',
+        category: '新工具',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'LlamaIndex Blog',
+        url: 'https://blog.llamaindex.ai/rss',
+        category: 'AI 框架',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Ollama Blog',
+        url: 'https://ollama.ai/blog/rss',
+        category: '新工具',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Hugging Face Daily Papers',
+        url: 'https://huggingface.co/papers',
+        category: '新算法',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'AI Breakdown',
+        url: 'https://aibreakdown.substack.com/feed',
+        category: 'AI 新闻',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'The Batch AI',
+        url: 'https://www.deeplearning.ai/the-batch/rss/',
+        category: '新思路',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'NVIDIA Research',
+        url: 'https://nvlabs.github.io/rss.xml',
+        category: '新算法',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'Intel AI Blog',
+        url: 'https://www.intel.com/content/www/us/en/developer/tools/oneapi/ai-analytics-toolkit.html/rss',
+        category: 'AI 框架',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        enabled: false
+      },
+      {
+        name: 'AWS Machine Learning',
+        url: 'https://aws.amazon.com/blogs/machine-learning/feed/',
+        category: 'AI 框架',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      // ========== 新增源（2026扩充，每2小时抓取）==========
+      // 中文AI媒体
+      {
+        name: '机器之心',
+        url: 'https://www.jiqizhixin.com/rss',
+        category: 'AI新闻',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        language: 'zh',
+        source_group: 'research'
+      },
+      {
+        name: '量子位',
+        url: 'https://www.qbitai.com/feed',
+        category: 'AI新闻',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30,
+        language: 'zh',
+        source_group: 'product'
+      },
+      {
+        name: 'AI新智讯',
+        url: 'https://www.aixinzhixun.com/rss',
+        category: 'AI新闻',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        language: 'zh',
+        source_group: 'product'
+      },
+      {
+        name: '36氪AI',
+        url: 'https://36kr.com/feed',
+        category: 'AI新闻',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        language: 'zh',
+        source_group: 'investment'
+      },
+      {
+        name: 'InfoQ AI',
+        url: 'https://www.infoq.cn/feed',
+        category: 'AI新闻',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        language: 'zh',
+        source_group: 'engineering'
+      },
+      {
+        name: 'CSDN AI',
+        url: 'https://blog.csdn.net/nav/ai/rss',
+        category: '新工具',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30,
+        language: 'zh',
+        source_group: 'engineering'
+      },
+      // 国际AI媒体
+      {
+        name: 'VentureBeat AI',
+        url: 'https://venturebeat.com/category/ai/feed/',
+        category: 'AI新闻',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'The Verge AI',
+        url: 'https://www.theverge.com/rss/ai-artificial-intelligence/index.xml',
+        category: 'AI新闻',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'Ars Technica AI',
+        url: 'https://feeds.arstechnica.com/arstechnica/features',
+        category: 'AI新闻',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'ZDNET AI',
+        url: 'https://www.zdnet.com/topic/artificial-intelligence/rss.xml',
+        category: 'AI新闻',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'AI News',
+        url: 'https://www.artificialintelligence-news.com/feed/',
+        category: 'AI新闻',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      // AI工具与产品
+      {
+        name: 'Product Hunt AI',
+        url: 'https://www.producthunt.com/feed?category=artificial-intelligence',
+        category: '新工具',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'There Is An AI For That',
+        url: 'https://theresanaiforthat.com/rss/',
+        category: '新工具',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      // 研究机构
+      {
+        name: 'Stanford AI Lab',
+        url: 'https://ai.stanford.edu/blog/feed.xml',
+        category: '新思路',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'Berkeley AI Research',
+        url: 'https://bair.berkeley.edu/blog/feed.xml',
+        category: '新算法',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'CMU Machine Learning',
+        url: 'https://blog.ml.cmu.edu/feed/',
+        category: '新算法',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'MIT CSAIL',
+        url: 'https://www.csail.mit.edu/rss.xml',
+        category: '新算法',
+        priority: 2,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      // AI周报与通讯
+      {
+        name: 'Last Week in AI',
+        url: 'https://lastweekin.ai/feed',
+        category: 'AI新闻',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'Import AI',
+        url: 'https://importai.net/feed',
+        category: '新思路',
+        priority: 3,
+        timeout: 20000,
+        rateLimit: 30
+      },
+      {
+        name: 'Ben\'s Bites',
+        url: 'https://bensbites.com/feed',
+        category: 'AI新闻',
+        priority: 3,
+        timeout: 20000,
         rateLimit: 30
       }
     ];
+
+    this.rssSources = NEWS_SOURCES.map((source) => ({
+      ...source,
+      category: normalizeCategory(source.category),
+      sourceGroup: this.inferSourceGroup(source)
+    }));
 
     // API配置
     this.apiSources = {
@@ -612,7 +1526,7 @@ class NewsService {
           sortBy: 'publishedAt',
           language: 'en',
           pageSize: 20,
-          apiKey: process.env.NEWSAPI_KEY || 'fae1e349d73345b2a5b8ead577c69b94'
+          apiKey: process.env.NEWSAPI_KEY || null
         },
         rateLimit: 100, // 每天100次（免费版）
         dailyLimit: true
@@ -622,6 +1536,622 @@ class NewsService {
     // 日请求计数（用于NewsAPI限制）
     this.dailyRequestCount = 0;
     this.lastResetDate = new Date().toDateString();
+  }
+
+  inferSourceGroup(source = {}) {
+    if (source.sourceGroup) {
+      return source.sourceGroup;
+    }
+
+    const text = `${source.name || ''} ${source.category || ''} ${source.url || ''}`.toLowerCase();
+    const hasAny = (keywords) => keywords.some((keyword) => text.includes(keyword));
+
+    if (hasAny([
+      'arxiv',
+      'research',
+      'stanford',
+      'berkeley',
+      'cmu',
+      'csail',
+      'oxford',
+      'distill',
+      'lilian weng',
+      'chip huyen',
+      'the gradient',
+      'ai snake oil',
+      'apple machine learning',
+      'safety'
+    ])) {
+      return 'research';
+    }
+
+    if (hasAny([
+      'hugging face',
+      'pytorch',
+      'tensorflow',
+      'langchain',
+      'aws',
+      'nvidia',
+      'opencv',
+      'weights & biases',
+      'pinecone',
+      'chroma',
+      'llamaindex',
+      'ollama',
+      'replicate',
+      'modal',
+      'infoq',
+      'jetbrains',
+      'github',
+      'weaviate',
+      'roboflow',
+      'google developers',
+      'runpod',
+      'latent space',
+      'simon willison'
+    ])) {
+      return 'engineering';
+    }
+
+    if (hasAny([
+      'venturebeat',
+      'techcrunch',
+      'mit tech review',
+      'wired',
+      'the verge',
+      'product hunt',
+      'ai tools weekly',
+      'ai tool report',
+      'ben’s bites',
+      'ben\'s bites',
+      'futuretools',
+      'ai weekly',
+      'last week in ai',
+      'import ai',
+      'tom tunguz',
+      'the sequence'
+    ])) {
+      return 'investment';
+    }
+
+    return 'product';
+  }
+
+  getSourceGroupLabel(group) {
+    const labels = {
+      research: '研究',
+      product: '产品',
+      engineering: '工程',
+      investment: '投资'
+    };
+    return labels[group] || '产品';
+  }
+
+  getSourceGroupOrder(group) {
+    const order = {
+      research: 0,
+      product: 1,
+      engineering: 2,
+      investment: 3
+    };
+    return order[group] ?? 99;
+  }
+
+  getSourceMetadataMap() {
+    return new Map(
+      this.rssSources.map((source) => [
+        source.name,
+        {
+          ...source,
+          sourceGroup: this.inferSourceGroup(source),
+          sourceGroupLabel: this.getSourceGroupLabel(this.inferSourceGroup(source))
+        }
+      ])
+    );
+  }
+
+  getActiveRssSources() {
+    return this.rssSources.filter((source) => source.enabled !== false);
+  }
+
+  getSchedulableSources(statusRows = []) {
+    const disabledNames = new Set(
+      statusRows
+        .filter((row) => Number(row.is_active) === 0)
+        .map((row) => row.name)
+    );
+    return this.getActiveRssSources().filter((source) => !disabledNames.has(source.name));
+  }
+
+  normalizePagination({ page = 1, limit = 20 } = {}) {
+    const parsedPage = Number.parseInt(page, 10);
+    const parsedLimit = Number.parseInt(limit, 10);
+    return {
+      page: Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1,
+      limit: Math.min(Number.isFinite(parsedLimit) && parsedLimit > 0 ? parsedLimit : 20, 100)
+    };
+  }
+
+  createEmptyNewsResult({ page = 1, limit = 20 } = {}) {
+    return {
+      data: [],
+      total: 0,
+      page,
+      limit,
+      isDemo: false,
+      syncing: true
+    };
+  }
+
+  enrichArticleSourceMetadata(article = {}) {
+    const metadata = this.getSourceMetadataMap().get(article.source) || {};
+    const sourceGroup = metadata.sourceGroup || this.inferSourceGroup({ name: article.source });
+    return {
+      ...article,
+      language: article.language || metadata.language || 'en',
+      region: article.region || metadata.region || 'global',
+      sourceGroup,
+      sourceGroupLabel: this.getSourceGroupLabel(sourceGroup)
+    };
+  }
+
+  normalizeArticleUrl(rawUrl) {
+    if (!rawUrl || typeof rawUrl !== 'string') return '';
+
+    try {
+      const url = new URL(rawUrl.trim());
+      const removableParams = new Set([
+        'ref', 'source', 'from', 'spm', 'campaign', 'mc_cid', 'mc_eid'
+      ]);
+
+      url.hash = '';
+      url.hostname = url.hostname.toLowerCase();
+      [...url.searchParams.keys()].forEach((key) => {
+        const normalizedKey = key.toLowerCase();
+        if (normalizedKey.startsWith('utm_') || removableParams.has(normalizedKey)) {
+          url.searchParams.delete(key);
+        }
+      });
+      url.searchParams.sort();
+      if (url.pathname !== '/') {
+        url.pathname = url.pathname.replace(/\/+$/, '');
+      }
+
+      return url.toString().replace(/\/$/, '');
+    } catch {
+      return rawUrl.trim();
+    }
+  }
+
+  getDuplicateArticleIds(articles = []) {
+    const retainedByUrl = new Map();
+    const duplicateIds = [];
+    const qualityScore = (article) => {
+      const canonicalIdentity = String(article.id || '').startsWith('article_') ? 100000 : 0;
+      const imageQuality = article.image_url ? 10000 : 0;
+      const descriptionQuality = Math.min(String(article.description || '').trim().length, 5000);
+      return canonicalIdentity + imageQuality + descriptionQuality;
+    };
+
+    for (const article of articles) {
+      if (!article?.id) continue;
+      const canonicalUrl = this.normalizeArticleUrl(article.url);
+      if (!canonicalUrl) continue;
+
+      const retained = retainedByUrl.get(canonicalUrl);
+      if (!retained) {
+        retainedByUrl.set(canonicalUrl, article);
+        continue;
+      }
+
+      if (qualityScore(article) > qualityScore(retained)) {
+        duplicateIds.push(retained.id);
+        retainedByUrl.set(canonicalUrl, article);
+      } else {
+        duplicateIds.push(article.id);
+      }
+    }
+
+    return [...new Set(duplicateIds)];
+  }
+
+  async pruneDuplicateStoredNews() {
+    if (this.hasPrunedDuplicateNews) return 0;
+
+    const articles = await DatabaseService.all(
+      'SELECT id, title, description, url, image_url FROM news'
+    );
+    const duplicateIds = this.getDuplicateArticleIds(articles);
+    let removed = 0;
+
+    for (let index = 0; index < duplicateIds.length; index += 200) {
+      const batch = duplicateIds.slice(index, index + 200);
+      const placeholders = batch.map(() => '?').join(',');
+      const result = await DatabaseService.run(
+        `DELETE FROM news WHERE id IN (${placeholders})`,
+        batch
+      );
+      removed += result.changes || 0;
+    }
+
+    this.hasPrunedDuplicateNews = true;
+    return removed;
+  }
+
+  normalizeCachedArticles(articles = [], source = {}) {
+    const relevantArticles = articles.filter(
+      (article) => article && this.isSourceItemRelevant(article, source)
+    );
+    return this.selectPublicFeedItems(relevantArticles, source)
+      .map((article) => {
+        const url = this.normalizeArticleUrl(article.url || article.link || '');
+        const title = this.normalizePublicNewsTitle(article.title, source);
+        const normalizedArticle = { ...article, title, url };
+        return {
+          ...normalizedArticle,
+          id: this.generateArticleId({ ...normalizedArticle, link: url }, source),
+          url,
+          publishedAt: article.publishedAt || article.published_at || new Date(),
+          category: this.classifyArticle(normalizedArticle, source),
+          source: source.name || article.source,
+          imageUrl: article.imageUrl || article.image_url || null,
+          language: source.language || article.language || 'en',
+          region: source.region || article.region || 'global'
+        };
+      });
+  }
+
+  isPublicNewsItem(item = {}, source = {}) {
+    const title = String(item.title || '').replace(/\s+/g, ' ').trim();
+    const sourceUrl = String(source.url || '');
+    const itemUrl = String(item.url || item.link || '');
+    if (!title) return false;
+
+    // Git commit Atom 记录、提交详情和夜间构建标签属于工程流水，不进入公开新闻流。
+    if (sourceUrl.includes('/commits/') || /github\.com\/[^/]+\/[^/]+\/commit\/[0-9a-f]{7,40}/i.test(itemUrl)) {
+      return false;
+    }
+    if (/^(?:trunk|nightly|main|master|dev|canary)[/:_-][0-9a-f]{7,40}(?::|$)/i.test(title)) {
+      return false;
+    }
+    if (/^[0-9a-f]{32,40}(?::|$)/i.test(title)) {
+      return false;
+    }
+    if (sourceUrl.includes('/releases.atom') && /^b\d{4,}$/i.test(title)) {
+      return false;
+    }
+
+    // 自动依赖升级和维护提交没有独立新闻价值。
+    if (/^(?:bump|chore(?:\([^)]*\))?\s*:|dependabot\b|merge (?:branch|pull request)\b)/i.test(title)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  normalizePublicNewsTitle(rawTitle, source = {}) {
+    const title = String(rawTitle || '').replace(/\s+/g, ' ').trim();
+    if (!title) return '无标题';
+
+    const releaseLike = String(source.url || '').includes('/releases.atom') || /(?:官方)?发布$/.test(String(source.name || ''));
+    if (!releaseLike) return title;
+
+    const projectName = String(source.name || '项目')
+      .replace(/\s*(?:官方)?(?:发布|动态)$/u, '')
+      .trim() || '项目';
+    const cleanedReleaseTitle = title.replace(/[:：]$/u, '').trim();
+    const versionPattern = 'v?\\d+(?:\\.\\d+)+(?:[.-]?(?:a|b|rc|dev|post)\\d+)*(?:[-+][0-9a-z.-]+)?';
+    const datedVersion = cleanedReleaseTitle.match(new RegExp(`^(${versionPattern})\\s*\\(\\d{1,2}\\/\\d{1,2}\\/\\d{4}\\)$`, 'i'));
+    if (datedVersion) {
+      return `${projectName} 发布 ${datedVersion[1]}`;
+    }
+    if (new RegExp(`^${versionPattern}$`, 'i').test(cleanedReleaseTitle)) {
+      return `${projectName} 发布 ${cleanedReleaseTitle}`;
+    }
+
+    const packageVersion = cleanedReleaseTitle.match(new RegExp(`^([@a-z0-9._/-]+)\\s*:\\s*(${versionPattern})$`, 'i'));
+    if (packageVersion) {
+      return `${projectName} 发布 ${packageVersion[1]} ${packageVersion[2]}`;
+    }
+
+    return title;
+  }
+
+  selectPublicFeedItems(items = [], source = {}) {
+    const limit = String(source.url || '').includes('/releases.atom') ? 3 : items.length;
+    return items.filter((item) => this.isPublicNewsItem(item, source)).slice(0, limit);
+  }
+
+  getStoredNewsQualityPlan(articles = []) {
+    const metadataMap = this.getSourceMetadataMap();
+    const removeIds = [];
+    const titleUpdates = [];
+    const releaseCounts = new Map();
+
+    for (const article of articles) {
+      if (!article?.id) continue;
+      const source = metadataMap.get(article.source) || {
+        name: article.source,
+        url: /github\.com\/[^/]+\/[^/]+\/commit\//i.test(String(article.url || '')) ? article.url : ''
+      };
+      if (!this.isPublicNewsItem(article, source)) {
+        removeIds.push(article.id);
+        continue;
+      }
+
+      const isReleaseStream = String(source.url || '').includes('/releases.atom')
+        || /github\.com\/[^/]+\/[^/]+\/releases\/tag\//i.test(String(article.url || ''));
+      if (isReleaseStream) {
+        const releaseKey = article.source || source.name || source.url;
+        const seen = releaseCounts.get(releaseKey) || 0;
+        if (seen >= 3) {
+          removeIds.push(article.id);
+          continue;
+        }
+        releaseCounts.set(releaseKey, seen + 1);
+      }
+
+      const title = this.normalizePublicNewsTitle(article.title, source);
+      if (title !== article.title) titleUpdates.push({ id: article.id, title });
+    }
+
+    return { removeIds, titleUpdates };
+  }
+
+  async pruneLowQualityStoredNews() {
+    if (this.hasPrunedLowQualityNews) return { removed: 0, renamed: 0 };
+
+    const articles = await DatabaseService.all(
+      'SELECT id, title, source, url FROM news ORDER BY published_at DESC, created_at DESC'
+    );
+    const plan = this.getStoredNewsQualityPlan(articles);
+    let removed = 0;
+
+    for (let index = 0; index < plan.removeIds.length; index += 200) {
+      const batch = plan.removeIds.slice(index, index + 200);
+      const placeholders = batch.map(() => '?').join(',');
+      const result = await DatabaseService.run(`DELETE FROM news WHERE id IN (${placeholders})`, batch);
+      removed += result.changes || 0;
+      batch.forEach((id) => this.newsCache.delete(id));
+    }
+
+    for (const update of plan.titleUpdates) {
+      await DatabaseService.run(
+        "UPDATE news SET title = ?, updated_at = datetime('now') WHERE id = ?",
+        [update.title, update.id]
+      );
+      const cached = this.newsCache.get(update.id);
+      if (cached) this.newsCache.set(update.id, { ...cached, title: update.title });
+    }
+
+    this.hasPrunedLowQualityNews = true;
+    return { removed, renamed: plan.titleUpdates.length };
+  }
+
+  isSourceItemRelevant(item, source = {}) {
+    if (!Array.isArray(source.filterKeywords) || source.filterKeywords.length === 0) {
+      return true;
+    }
+
+    // 综合科技源的正文常会顺带提到 AI；以标题和上游标签为准，避免把 PostgreSQL、FFmpeg 等普通更新误收进 AI 栏目。
+    const haystack = [
+      item?.title,
+      ...(Array.isArray(item?.categories) ? item.categories : [])
+    ].filter(Boolean).join(' ').toLowerCase();
+
+    return source.filterKeywords.some((keyword) => {
+      const normalizedKeyword = String(keyword).toLowerCase();
+      if (/^[a-z0-9]+$/.test(normalizedKeyword) && normalizedKeyword.length <= 2) {
+        const escaped = normalizedKeyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return new RegExp(`(^|[^a-z0-9])${escaped}([^a-z0-9]|$)`, 'i').test(haystack);
+      }
+      return haystack.includes(normalizedKeyword);
+    });
+  }
+
+  findIrrelevantArticleIds(articles = [], source = {}) {
+    return articles
+      .filter((article) => !this.isSourceItemRelevant(article, source))
+      .map((article) => article.id)
+      .filter(Boolean);
+  }
+
+  async pruneIrrelevantStoredNews() {
+    if (this.hasPrunedIrrelevantNews) return 0;
+
+    let removed = 0;
+    const removeIds = async (ids) => {
+      for (let index = 0; index < ids.length; index += 200) {
+        const batch = ids.slice(index, index + 200);
+        const placeholders = batch.map(() => '?').join(',');
+        const result = await DatabaseService.run(
+          `DELETE FROM news WHERE id IN (${placeholders})`,
+          batch
+        );
+        removed += result.changes || 0;
+      }
+    };
+    const filterableSources = this.getActiveRssSources().filter(
+      (source) => Array.isArray(source.filterKeywords) && source.filterKeywords.length > 0
+    );
+
+    for (const source of filterableSources) {
+      const articles = await DatabaseService.all(
+        'SELECT id, title, description FROM news WHERE source = ?',
+        [source.name]
+      );
+      const irrelevantIds = this.findIrrelevantArticleIds(articles, source);
+      await removeIds(irrelevantIds);
+    }
+
+    // 旧版 NewsAPI ID 可被可靠识别；按同一关键词规则清掉历史误收录。
+    const legacyNewsApiArticles = await DatabaseService.all(
+      "SELECT id, title, description FROM news WHERE id LIKE 'newsapi_%'"
+    );
+    await removeIds(this.findIrrelevantArticleIds(legacyNewsApiArticles, {
+      filterKeywords: AI_FILTER_KEYWORDS
+    }));
+
+    this.hasPrunedIrrelevantNews = true;
+    return removed;
+  }
+
+  getArticleCategoryUpdates(articles = []) {
+    const metadataMap = this.getSourceMetadataMap();
+
+    return articles.reduce((updates, article) => {
+      const rawCategory = typeof article.category === 'string' ? article.category.trim() : '';
+      const currentCategory = normalizeCategory(rawCategory);
+      const configuredSource = metadataMap.get(article.source);
+      const source = configuredSource || {
+        name: article.source,
+        category: currentCategory,
+        sourceGroup: this.inferSourceGroup({ name: article.source })
+      };
+      const nextCategory = this.classifyArticle(article, source);
+
+      if (nextCategory !== rawCategory) {
+        updates.push({ id: article.id, category: nextCategory });
+      }
+      return updates;
+    }, []);
+  }
+
+  async reclassifyStoredNews() {
+    if (this.hasReclassifiedStoredNews) return 0;
+
+    const articles = await DatabaseService.all(
+      'SELECT id, title, description, category, source FROM news'
+    );
+    const updates = this.getArticleCategoryUpdates(articles);
+
+    for (const update of updates) {
+      await DatabaseService.run(
+        "UPDATE news SET category = ?, updated_at = datetime('now') WHERE id = ?",
+        [update.category, update.id]
+      );
+    }
+
+    this.hasReclassifiedStoredNews = true;
+    return updates.length;
+  }
+
+  matchesArticleKeyword(text, keyword) {
+    const normalizedKeyword = String(keyword || '').toLowerCase();
+    if (!normalizedKeyword) return false;
+
+    if (/^[a-z0-9][a-z0-9 .+/-]*$/.test(normalizedKeyword)) {
+      const escaped = normalizedKeyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return new RegExp(`(^|[^a-z0-9])${escaped}([^a-z0-9]|$)`, 'i').test(text);
+    }
+
+    return text.includes(normalizedKeyword);
+  }
+
+  classifyArticle(item = {}, source = {}) {
+    const text = `${item.title || ''} ${item.description || ''} ${item.contentSnippet || ''} ${item.content || ''}`.toLowerCase();
+    const includesAny = (keywords) => keywords.some((keyword) => this.matchesArticleKeyword(text, keyword));
+    const titleText = String(item.title || '').toLowerCase();
+    const titleIncludesAny = (keywords) => keywords.some((keyword) => this.matchesArticleKeyword(titleText, keyword));
+    const sourceCategory = normalizeCategory(source.category);
+    const sourceName = String(source.name || '').toLowerCase();
+    const isEngineeringSource = source.sourceGroup === 'engineering' || sourceCategory === 'AI框架';
+    const isResearchSource = source.sourceGroup === 'research';
+    const isScholarlySource = [
+      'arxiv', 'proceedings', 'journal', 'acl anthology', 'papers with code', 'apple machine learning'
+    ].some((marker) => sourceName.includes(marker));
+
+    // 论文聚合源的每条记录本身就是论文；摘要里的 failure / safety 等词不能把它降成事件新闻。
+    if (isScholarlySource) return '新算法';
+
+    // 事故、融资、诉讼、财报等是事件新闻。先锁定新闻边界，防止“算法工程师”或“产品发布”之类的词被误收进专题栏目。
+    if (includesAny([
+      'accident', 'outage', 'failure', 'recall', 'lawsuit', 'funding', 'acquisition',
+      'earnings', 'quarterly results', 'layoff', 'data breach', '故障', '事故', '召回',
+      'initial public offering', 'ipo', 'strategic placement', 'share allotment',
+      'price cut', 'pricing', 'conference', 'meetup', 'contest', 'keynote',
+      '起诉', '融资', '收购', '财报', '裁员', '误删', '宕机', '监管处罚',
+      '战略配售', '获配', '持股', '上市', '定价', '涨价', '降价', '价格调整',
+      '会议', '大会', '峰会', '竞赛', '比赛'
+    ])) return 'AI新闻';
+
+    // 论文算法需要可验证的学术信号；只有明确的论文聚合源可以直接采用来源边界。
+    if (titleIncludesAny([
+      'paper', 'preprint', 'arxiv', 'benchmark', 'dataset', 'novel algorithm', 'new algorithm',
+      'we propose', 'state-of-the-art', 'sota', '论文', '预印本', '新算法', '基准', '数据集',
+      'trainable parameters', '提出一种算法', '提出新方法', '神经网络架构', '实验结果', '消融实验'
+    ])) return '新算法';
+
+    if (titleIncludesAny([
+      'policy analysis', 'federal policy', 'regulatory analysis', 'industry analysis',
+      '研究报告', '政策分析', '监管分析', '行业分析', '趋势研判', '方法论', '复盘',
+      '深度解析', '底层拆解', '技术取舍', '为什么'
+    ])) return '新思路';
+
+    if (titleIncludesAny([
+      'sdk', 'api framework', 'developer framework', 'software framework', 'software library',
+      'python library', 'javascript library', 'developer tool',
+      'inference engine', 'runtime', 'orchestration', 'serving stack', 'compiler pass',
+      'compiler extension', 'triton plugin', '开发套件', '代码库', '框架', '开发者工具',
+      '推理引擎', '训练框架', '部署框架', '编排框架'
+    ]) || (isEngineeringSource && this.matchesArticleKeyword(titleText, 'framework'))) return 'AI框架';
+
+    // “发布/上线/产品”本身不是工具证据，必须同时能看出用户实际可使用的软件形态。
+    if (titleIncludesAny([
+      'desktop app', 'mobile app', 'browser extension', 'command-line tool', 'cli tool',
+      'copilot', 'agent platform', 'developer console', 'plugin', 'download now',
+      'open-source platform', 'open source platform', 'ai workstation', 'coding agent', 'agent skills',
+      '桌面应用', '移动应用', '浏览器扩展', '命令行工具', '插件', '智能体平台',
+      '开发者控制台', '开放下载', '正式可用', '工具箱', 'ai 工作站', '编程 agent',
+      '开源平台', '自托管平台'
+    ])) return '新工具';
+
+    if (titleIncludesAny([
+      'research report', 'technical report', 'white paper', 'alignment', 'ai safety',
+      'ethics', 'policy analysis', 'industry analysis', 'outlook', '观点', '洞察',
+      '研究报告', '技术报告', '白皮书', '对齐', '伦理', '政策分析', '行业分析',
+      '趋势研判', '方法论', '复盘', '深度解析', '底层拆解', '技术取舍', '为什么'
+    ])) return '新思路';
+
+    // 工程来源仍须出现真实的版本或变更日志信号；普通小数（价格、股数、指标）不能冒充版本号。
+    const hasVersionToken = /(?:\bv\d+\.\d+(?:\.\d+)?\b|(?:release|version|版本|更新至|升级至)\s*[:：]?\s*v?\d+\.\d+(?:\.\d+)?\b|\bv?\d+\.\d+(?:\.\d+)?\s*(?:release|released|发布|版本|更新|升级))/i.test(titleText);
+    if (isEngineeringSource && (hasVersionToken || titleIncludesAny(['release notes', 'changelog', 'version', '版本', '更新日志']))) {
+      return sourceCategory === '新工具' ? '新工具' : 'AI框架';
+    }
+    if (isResearchSource) return '新思路';
+
+    return 'AI新闻';
+  }
+
+  validateFeedHttpResponse(response) {
+    if (!response) {
+      throw new Error('RSS响应为空');
+    }
+
+    if (response.status >= 400) {
+      throw new Error(`HTTP ${response.status}: 上游RSS地址不可用`);
+    }
+
+    const rawBody = typeof response.data === 'string' ? response.data.trim() : '';
+    if (!rawBody || rawBody.length < 32) {
+      throw new Error('RSS内容过短或为空');
+    }
+
+    const contentType = (response.headers?.['content-type'] || '').toLowerCase();
+    const sample = rawBody.slice(0, 512).toLowerCase();
+    const looksLikeFeed =
+      sample.includes('<?xml') ||
+      sample.includes('<rss') ||
+      sample.includes('<feed') ||
+      sample.includes('<rdf:rdf');
+
+    if (!looksLikeFeed && contentType.includes('text/html')) {
+      throw new Error('响应不是有效的RSS或Atom feed');
+    }
+  }
+
+  isPermanentFeedError(error) {
+    return /HTTP 4\d\d|不是有效的RSS或Atom feed/.test(error.message || '');
   }
 
   // 设置WebSocket实例
@@ -702,8 +2232,9 @@ class NewsService {
       // 初始化数据库
       await DatabaseService.initialize();
       
-      // 按优先级排序RSS源
-      const sortedSources = [...this.rssSources].sort((a, b) => 
+      // 数据库中连续失败停用的源不会继续占用抓取配额；新配置源仍会正常加入。
+      const sourceStatuses = await DatabaseService.all('SELECT name, is_active FROM rss_sources');
+      const sortedSources = this.getSchedulableSources(sourceStatuses).sort((a, b) =>
         (a.priority || 3) - (b.priority || 3)
       );
       
@@ -730,7 +2261,7 @@ class NewsService {
             
             // 记录成功
             await DatabaseService.logRequest(source.name, true, responseTime);
-            await DatabaseService.updateRssSourceStatus(source.name, source.url, true);
+            await DatabaseService.updateRssSourceStatus(source.name, source.url, source.category, true);
             
             return {
               source: source.name,
@@ -742,7 +2273,7 @@ class NewsService {
           } catch (error) {
             // 记录失败
             await DatabaseService.logRequest(source.name, false, 0, error.message);
-            await DatabaseService.updateRssSourceStatus(source.name, source.url, false, error.message);
+            await DatabaseService.updateRssSourceStatus(source.name, source.url, source.category, false, error.message);
             
             console.error(`RSS源 ${source.name} 更新失败:`, error.message);
             return {
@@ -808,13 +2339,18 @@ class NewsService {
               this.categories.add(article.category);
             });
           }
-          this.dailyRequestCount++;
+          if (!apiResult.skipped) this.dailyRequestCount++;
         } catch (error) {
           results.errors.push(`NewsAPI: ${error.message}`);
         }
       } else {
         console.log('NewsAPI日限制已达到，跳过');
       }
+
+      results.prunedIrrelevant = await this.pruneIrrelevantStoredNews();
+      results.prunedLowQuality = await this.pruneLowQualityStoredNews();
+      results.prunedDuplicates = await this.pruneDuplicateStoredNews();
+      results.reclassified = await this.reclassifyStoredNews();
 
       this.updateTime = new Date();
       
@@ -877,7 +2413,7 @@ class NewsService {
         if (age < this.FILE_CACHE_DURATION) {
           const cached = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
           console.log(`[缓存命中] ${source.name} (${age / 1000}秒前)`);
-          return cached;
+          return this.normalizeCachedArticles(cached, source);
         }
       }
     } catch (err) {
@@ -909,10 +2445,8 @@ class NewsService {
         if (response.status === 429) {
           throw new Error('HTTP 429: Too Many Requests - 请求过于频繁');
         }
-        
-        if (!response.data || response.data.length < 100) {
-          throw new Error('RSS内容过短或为空');
-        }
+
+        this.validateFeedHttpResponse(response);
         
         let feed;
         try {
@@ -927,28 +2461,32 @@ class NewsService {
       }
 
       // 过滤无效项并验证结构
-      const validItems = feed.items.filter(item => {
-        return item && typeof item === 'object' && (item.title || item.link);
-      });
+      const validItems = this.selectPublicFeedItems(feed.items.filter(item => {
+        return item && typeof item === 'object' && (item.title || item.link) && this.isSourceItemRelevant(item, source);
+      }), source).filter((item) => this.isPublicNewsItem(item, source));
 
       if (validItems.length === 0) {
         throw new Error('RSS feed中没有有效的文章项');
       }
         
-      const articles = feed.items
-        .filter(item => item && (item.link || item.title)) // 过滤掉无效项
+      const articles = validItems
         .map(item => {
           try {
+            const rawUrl = item.link || item.guid || '';
+            const title = this.normalizePublicNewsTitle(item.title, source);
+            const normalizedItem = { ...item, title };
             return {
-              id: this.generateArticleId(item, source),
-              title: item.title || '无标题',
+              id: this.generateArticleId(normalizedItem, source),
+              title,
               description: this.cleanText(item.contentSnippet || item.description || item.content || ''),
-              url: item.link || item.guid || '',
+              url: this.normalizeArticleUrl(rawUrl),
               publishedAt: new Date(item.pubDate || item.isoDate || Date.now()),
-              category: source.category,
+              category: this.classifyArticle(normalizedItem, source),
               source: source.name,
               imageUrl: this.extractImageUrl(item),
-              author: item.creator || item.author || source.name
+              author: this.extractAuthorName(item, source.name),
+              language: source.language || 'en',
+              region: source.region || 'global'
             };
           } catch (itemError) {
             console.warn(`处理RSS项失败: ${source.name}`, itemError.message);
@@ -969,6 +2507,10 @@ class NewsService {
       } catch (error) {
         lastError = error;
         console.warn(`${source.name} 第${attempt}次失败:`, error.message);
+
+        if (this.isPermanentFeedError(error)) {
+          break;
+        }
         
         if (attempt < maxRetries) {
           const delay = Math.min(attempt * 3000, 10000);
@@ -982,12 +2524,11 @@ class NewsService {
 
   // 生成文章ID - 基于内容哈希，确保同一文章始终有相同ID
   generateArticleId(item, source) {
-    // 使用稳定的唯一标识：优先使用guid或link，避免使用时间戳
-    const base = item.guid || item.link || item.title || '';
-    // 创建更稳定的哈希，不包含时间戳
+    const canonicalUrl = this.normalizeArticleUrl(item.link || '');
+    const base = canonicalUrl || item.guid || `${source.name}:${item.title || ''}`;
     const crypto = require('crypto');
-    const hash = crypto.createHash('md5').update(base + source.name).digest('hex').slice(0, 16);
-    return `${source.name.replace(/\s+/g, '_')}_${hash}`;
+    const hash = crypto.createHash('sha256').update(base).digest('hex').slice(0, 20);
+    return `article_${hash}`;
   }
 
   // 提取图片URL
@@ -1012,9 +2553,78 @@ class NewsService {
     return null;
   }
 
+  extractAuthorName(item, fallbackAuthor) {
+    const rawAuthor = item?.creator || item?.author;
+
+    if (!rawAuthor) {
+      return fallbackAuthor;
+    }
+
+    if (typeof rawAuthor === 'string') {
+      return rawAuthor;
+    }
+
+    if (Array.isArray(rawAuthor)) {
+      const first = rawAuthor.find((value) => typeof value === 'string' && value.trim());
+      return first || fallbackAuthor;
+    }
+
+    if (typeof rawAuthor === 'object') {
+      const candidates = [rawAuthor.name, rawAuthor.title, rawAuthor.value, rawAuthor.text];
+      for (const candidate of candidates) {
+        if (typeof candidate === 'string' && candidate.trim()) {
+          return candidate;
+        }
+
+        if (Array.isArray(candidate)) {
+          const first = candidate.find((value) => typeof value === 'string' && value.trim());
+          if (first) return first;
+        }
+      }
+    }
+
+    return fallbackAuthor;
+  }
+
   // 获取NewsAPI数据
+  normalizeNewsApiArticles(rawArticles = []) {
+    const relevanceFilter = { filterKeywords: AI_FILTER_KEYWORDS };
+
+    return rawArticles
+      .filter((article) => article?.url && this.isSourceItemRelevant(article, relevanceFilter))
+      .map((article) => {
+        const url = this.normalizeArticleUrl(article.url);
+        const source = article.source?.name || 'NewsAPI';
+        const normalized = {
+          id: this.generateArticleId({ link: url }, { name: 'NewsAPI' }),
+          title: article.title,
+          description: this.cleanText(article.description || ''),
+          url,
+          publishedAt: new Date(article.publishedAt),
+          category: 'AI新闻',
+          source,
+          imageUrl: article.urlToImage,
+          author: article.author || source
+        };
+
+        normalized.category = this.classifyArticle(normalized, {
+          category: 'AI新闻',
+          sourceGroup: 'investment'
+        });
+        return normalized;
+      });
+  }
+
   async fetchNewsAPI() {
     const apiConfig = this.apiSources.newsapi;
+
+    if (!apiConfig.params.apiKey) {
+      return {
+        articles: [],
+        skipped: true,
+        reason: 'NEWSAPI_KEY 未配置'
+      };
+    }
     
     try {
       const response = await axios.get(apiConfig.url, {
@@ -1029,17 +2639,7 @@ class NewsService {
         throw new Error(response.data.message || 'API返回错误');
       }
       
-      const articles = response.data.articles.map(article => ({
-        id: `newsapi_${Buffer.from(article.url || '').toString('base64').slice(0, 20)}_${Date.now()}`,
-        title: article.title,
-        description: this.cleanText(article.description || ''),
-        url: article.url,
-        publishedAt: new Date(article.publishedAt),
-        category: 'AI新闻',
-        source: article.source?.name || 'NewsAPI',
-        imageUrl: article.urlToImage,
-        author: article.author || article.source?.name || 'Unknown'
-      }));
+      const articles = this.normalizeNewsApiArticles(response.data.articles);
       
       return { articles };
       
@@ -1056,17 +2656,25 @@ class NewsService {
   async getLatestNews({ page = 1, limit = 20, category, search } = {}) {
     try {
       await DatabaseService.initialize();
+      const pagination = this.normalizePagination({ page, limit });
+      const normalizedCategory = category && category !== '全部' ? normalizeCategory(category) : category;
       
       // 从数据库获取
-      const result = await DatabaseService.getNews({ page, limit, category, search });
+      const result = await DatabaseService.getNews({
+        ...pagination,
+        category: normalizedCategory,
+        search
+      });
       
       if (result.data.length > 0) {
-        return result;
+        return {
+          ...result,
+          data: result.data.map((article) => this.enrichArticleSourceMetadata(article))
+        };
       }
       
-      // 如果数据库为空，返回演示数据
-      console.log('数据库为空，返回演示数据');
-      return this.getDemoNews({ page, limit, category, search });
+      console.log('数据库暂无新闻，等待真实来源同步');
+      return this.createEmptyNewsResult(pagination);
       
     } catch (error) {
       console.error('获取新闻失败:', error);
@@ -1572,9 +3180,79 @@ class NewsService {
     try {
       await DatabaseService.initialize();
       const stats = await DatabaseService.getSourceStats();
-      return stats.map(row => ({ name: row.source, count: row.count }));
+      const metadataMap = this.getSourceMetadataMap();
+
+      return stats
+        .map((row) => {
+          const metadata = metadataMap.get(row.source) || {};
+          const sourceGroup = metadata.sourceGroup || this.inferSourceGroup({ name: row.source });
+          return {
+            name: row.source,
+            count: row.count,
+            url: metadata.url || null,
+            category: metadata.category || null,
+            sourceGroup,
+            sourceGroupLabel: this.getSourceGroupLabel(sourceGroup)
+          };
+        })
+        .sort((a, b) =>
+          this.getSourceGroupOrder(a.sourceGroup) - this.getSourceGroupOrder(b.sourceGroup) ||
+          b.count - a.count ||
+          a.name.localeCompare(b.name)
+        );
     } catch (error) {
       console.error('获取来源列表失败:', error);
+      return [];
+    }
+  }
+
+  async getAdminSources() {
+    try {
+      await DatabaseService.initialize();
+      const [rows, stats] = await Promise.all([
+        DatabaseService.all('SELECT * FROM rss_sources'),
+        DatabaseService.getSourceStats()
+      ]);
+
+      const rowMap = new Map(rows.map((row) => [row.name, row]));
+      const countMap = new Map(stats.map((row) => [row.source, row.count]));
+
+      return this.rssSources
+        .map((source) => {
+          const row = rowMap.get(source.name) || {};
+          const sourceGroup = this.inferSourceGroup(source);
+          const enabled = source.enabled !== false;
+          const isActive = enabled && (row.is_active ?? 1) !== 0;
+          const failCount = row.fail_count || 0;
+
+          return {
+            id: row.id || null,
+            name: source.name,
+            url: source.url,
+            category: source.category,
+            priority: row.priority ?? source.priority ?? 3,
+            language: source.language || 'en',
+            source_group: sourceGroup,
+            source_group_label: this.getSourceGroupLabel(sourceGroup),
+            configured_enabled: enabled,
+            is_active: isActive ? 1 : 0,
+            is_healthy: isActive && failCount < 5,
+            fail_count: failCount,
+            article_count: countMap.get(source.name) || 0,
+            last_fetch: row.last_fetch || null,
+            last_success: row.last_success || null,
+            last_error: row.error_message || null,
+            error_message: row.error_message || null
+          };
+        })
+        .sort((a, b) =>
+          this.getSourceGroupOrder(a.source_group) - this.getSourceGroupOrder(b.source_group) ||
+          a.priority - b.priority ||
+          a.fail_count - b.fail_count ||
+          a.name.localeCompare(b.name)
+        );
+    } catch (error) {
+      console.error('获取管理数据源失败:', error);
       return [];
     }
   }
@@ -1588,9 +3266,11 @@ class NewsService {
       const categoryStats = await DatabaseService.getCategoryStats();
       const sourceStats = await DatabaseService.getSourceStats();
       const requestStats = await DatabaseService.getRequestStats(60);
+      const todayStats = await DatabaseService.getDailyStats(1);
       
       return {
         total: totalCount,
+        today: Number(todayStats[0]?.count || 0),
         categories: categoryStats.reduce((acc, row) => {
           acc[row.category] = row.count;
           return acc;
@@ -1609,6 +3289,53 @@ class NewsService {
         total: this.newsCache.size,
         categories: {},
         lastUpdate: this.updateTime
+      };
+    }
+  }
+
+  // 内容完整度指标，供分析页展示真实数据库质量而非客户端估算
+  async getQualityAnalysis() {
+    try {
+      await DatabaseService.initialize();
+      const row = await DatabaseService.get(`
+        SELECT
+          COUNT(*) AS totalArticles,
+          SUM(CASE
+            WHEN image_url IS NOT NULL
+              AND TRIM(image_url) != ''
+              AND image_url NOT LIKE '%placeholder%'
+            THEN 1 ELSE 0
+          END) AS withImages,
+          SUM(CASE
+            WHEN description IS NOT NULL AND LENGTH(TRIM(description)) >= 40
+            THEN 1 ELSE 0
+          END) AS withDescriptions,
+          AVG(LENGTH(COALESCE(description, ''))) AS avgDescriptionLength
+        FROM news
+        WHERE id IN (
+          SELECT MAX(id) FROM news
+          GROUP BY COALESCE(NULLIF(TRIM(url), ''), id)
+        )
+      `);
+
+      return {
+        totalArticles: Number(row?.totalArticles || 0),
+        withImages: Number(row?.withImages || 0),
+        withDescriptions: Number(row?.withDescriptions || 0),
+        avgDescriptionLength: Math.round(Number(row?.avgDescriptionLength || 0))
+      };
+    } catch (error) {
+      console.error('获取内容质量指标失败:', error);
+      const articles = Array.from(this.newsCache.values());
+      const descriptions = articles.map((article) => String(article.description || ''));
+
+      return {
+        totalArticles: articles.length,
+        withImages: articles.filter((article) => article.imageUrl && !article.imageUrl.includes('placeholder')).length,
+        withDescriptions: descriptions.filter((description) => description.trim().length >= 40).length,
+        avgDescriptionLength: articles.length
+          ? Math.round(descriptions.reduce((sum, description) => sum + description.length, 0) / articles.length)
+          : 0
       };
     }
   }
@@ -1635,82 +3362,22 @@ class NewsService {
       .map(([keyword, count]) => ({ keyword, count }));
   }
 
+  async getAnalysisNews(limit = 500) {
+    await DatabaseService.initialize();
+    const safeLimit = Math.min(Math.max(Number.parseInt(limit, 10) || 100, 1), 500);
+    const result = await DatabaseService.getNews({ page: 1, limit: safeLimit });
+    return {
+      ...result,
+      data: result.data.map((article) => this.enrichArticleSourceMetadata(article))
+    };
+  }
+
   // 信息茧房检测
   async getDiversityAnalysis(userId = 'default') {
     try {
-      await DatabaseService.initialize();
-      
-      const categoryStats = await DatabaseService.getCategoryStats();
-      const sourceStats = await DatabaseService.getSourceStats();
-      const total = await DatabaseService.getNewsCount();
-      
-      if (total === 0) {
-        return {
-          diversityScore: 0,
-          categoryDistribution: [],
-          sourceDistribution: [],
-          recommendations: ['暂无足够数据进行分析'],
-          status: 'insufficient_data'
-        };
-      }
-      
-      // 计算多样性评分
-      const categoryEntropy = this.calculateEntropy(categoryStats.map(c => c.count), total);
-      const sourceEntropy = this.calculateEntropy(sourceStats.map(s => s.count), total);
-      
-      const maxCategoryEntropy = Math.log2(categoryStats.length) || 1;
-      const maxSourceEntropy = Math.log2(sourceStats.length) || 1;
-      
-      const categoryDiversity = categoryEntropy / maxCategoryEntropy;
-      const sourceDiversity = sourceEntropy / maxSourceEntropy;
-      
-      const diversityScore = Math.round((categoryDiversity * 0.4 + sourceDiversity * 0.6) * 100);
-      
-      // 生成建议
-      const recommendations = [];
-      
-      categoryStats.forEach(cat => {
-        if (cat.count / total > 0.5) {
-          recommendations.push(`"${cat.category}"内容占比过高(${Math.round(cat.count / total * 100)}%)，建议增加其他类型`);
-        }
-      });
-      
-      const expectedCategories = ['AI新闻', 'AI框架', '新算法', '新思路', '新工具'];
-      const existingCategories = categoryStats.map(c => c.category);
-      const missing = expectedCategories.filter(c => !existingCategories.includes(c));
-      
-      if (missing.length > 0) {
-        recommendations.push(`建议增加: ${missing.join('、')}`);
-      }
-      
-      if (recommendations.length === 0) {
-        recommendations.push('内容多样性良好，继续保持！');
-      }
-      
-      let riskLevel = 'low';
-      if (diversityScore < 40) riskLevel = 'high';
-      else if (diversityScore < 60) riskLevel = 'medium';
-      
-      return {
-        diversityScore,
-        categoryDistribution: categoryStats.map(c => ({
-          name: c.category,
-          count: c.count,
-          percentage: Math.round(c.count / total * 100)
-        })),
-        sourceDistribution: sourceStats.map(s => ({
-          name: s.source,
-          count: s.count,
-          percentage: Math.round(s.count / total * 100)
-        })),
-        recommendations,
-        riskLevel,
-        riskMessage: riskLevel === 'high' ? '信息茧房风险较高' : riskLevel === 'medium' ? '可适当增加多样性' : '内容多样性良好',
-        totalArticles: total,
-        uniqueCategories: categoryStats.length,
-        uniqueSources: sourceStats.length
-      };
-      
+      const { buildDiversitySnapshot } = require('../utils/analytics');
+      const latest = await this.getAnalysisNews(200);
+      return { ...buildDiversitySnapshot(latest.data), analyzedScope: '最近 200 条去重资讯', userId };
     } catch (error) {
       console.error('获取多样性分析失败:', error);
       return { diversityScore: 0, error: error.message };
@@ -1803,32 +3470,33 @@ class NewsService {
       return { recommendations: [], diversityScore: 0, tip: '暂无数据' };
     }
     
-    // 优先推荐低覆盖分类
-    const lowCoverage = (diversity.categoryDistribution || [])
-      .filter(c => c.percentage < 20)
-      .map(c => c.name);
-    
-    let recommendations = [];
-    
-    for (const cat of lowCoverage) {
-      const catNews = allNews.data.filter(n => n.category === cat).slice(0, 2);
-      recommendations.push(...catNews);
-    }
-    
-    // 补充其他类别
-    if (recommendations.length < limit) {
-      const remaining = allNews.data
-        .filter(n => !recommendations.find(r => r.id === n.id))
-        .slice(0, limit - recommendations.length);
-      recommendations.push(...remaining);
+    const { classifyEvidenceType } = require('../utils/analytics');
+    const safeLimit = Math.min(Math.max(Number.parseInt(limit, 10) || 10, 1), 30);
+    const recommendations = [];
+    const usedSources = new Set();
+    const usedRegions = new Set();
+    const usedEvidence = new Set();
+    const pool = allNews.data.map((item) => ({ ...item, evidenceType: classifyEvidenceType(item) }));
+    while (recommendations.length < safeLimit && pool.length) {
+      pool.sort((a, b) => {
+        const noveltyA = Number(!usedSources.has(a.source)) * 4 + Number(!usedRegions.has(a.region)) * 2 + Number(!usedEvidence.has(a.evidenceType)) * 3;
+        const noveltyB = Number(!usedSources.has(b.source)) * 4 + Number(!usedRegions.has(b.region)) * 2 + Number(!usedEvidence.has(b.evidenceType)) * 3;
+        return noveltyB - noveltyA || new Date(b.publishedAt) - new Date(a.publishedAt);
+      });
+      const selected = pool.shift();
+      recommendations.push({
+        ...selected,
+        recommendationReason: `补充${usedSources.has(selected.source) ? '' : '新来源、'}${usedRegions.has(selected.region) ? '' : '新地区、'}${usedEvidence.has(selected.evidenceType) ? '' : '新证据类型'}`.replace(/、$/, '')
+      });
+      usedSources.add(selected.source);
+      usedRegions.add(selected.region);
+      usedEvidence.add(selected.evidenceType);
     }
     
     return {
-      recommendations: recommendations.slice(0, limit),
+      recommendations,
       diversityScore: diversity.diversityScore,
-      tip: lowCoverage.length > 0 
-        ? `为您推荐更多"${lowCoverage.join('、')}"类内容`
-        : '根据多样性智能推荐'
+      tip: '按来源、地区和证据类型轮换，减少连续看到同质内容'
     };
   }
 
@@ -1898,4 +3566,7 @@ class NewsService {
   }
 }
 
-module.exports = new NewsService();
+const newsService = new NewsService();
+
+module.exports = newsService;
+module.exports.NewsService = NewsService;

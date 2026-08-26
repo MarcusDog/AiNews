@@ -1,927 +1,402 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  TrendingUp, 
-  Clock, 
-  Tag, 
-  AlertTriangle, 
-  CheckCircle, 
-  Eye, 
-  BarChart3, 
-  RefreshCw, 
-  Activity,
-  PieChart,
-  Calendar,
-  Zap,
-  Globe,
-  ArrowUp,
-  ArrowDown,
-  Minus,
-  Brain,
-  Loader2
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  AlertTriangle,
+  ArrowDownRight,
+  ArrowUpRight,
+  BarChart3,
+  CheckCircle2,
+  ExternalLink,
+  Eye,
+  Globe2,
+  Newspaper,
+  RefreshCw,
+  ShieldCheck,
+  TrendingUp
 } from 'lucide-react';
+import { API_ENDPOINTS } from '../config/api';
 import { useSocket } from '../contexts/SocketContext';
 import { useRefreshOnVisible } from '../hooks/usePageVisibility';
+import { getBlindSpotKey, getBubbleRiskLabel, normalizeDailySeries, trendDirectionLabel } from '../utils/analytics';
 
-// 简单柱状图组件
-const BarChart = ({ data, maxValue, color = 'blue', showLabels = true }) => {
-  const max = maxValue || Math.max(...data.map(d => d.value), 1);
-  
+const TABS = [
+  { id: 'overview', label: '总览', icon: BarChart3 },
+  { id: 'diversity', label: '信息茧房', icon: Eye },
+  { id: 'trends', label: '趋势', icon: TrendingUp }
+];
+
+const EVIDENCE_NAMES = {
+  official: '官方一手', research: '研究论文', media: '媒体报道', engineering: '工程社区',
+  cn: '国内', global: '国际'
+};
+
+async function fetchData(url) {
+  const response = await fetch(url);
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || payload.success === false) throw new Error(payload.error || `HTTP ${response.status}`);
+  return payload.data;
+}
+
+const Metric = ({ label, value, note, accent = false }) => (
+  <div className={`border-l px-4 py-4 first:border-l-0 ${accent ? 'border-[#cbb9a8] bg-[#eee6db] text-[#292621]' : 'border-[#d8d1c7]'}`}>
+    <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#756d63]">{label}</div>
+    <div className="mt-2 text-3xl font-black tracking-tight">{value ?? '—'}</div>
+    <div className="mt-1 text-xs text-[#756d63]">{note}</div>
+  </div>
+);
+
+const Progress = ({ value, tone = '#466b59' }) => (
+  <div className="h-1.5 bg-slate-200" aria-label={`${value}%`}>
+    <div className="h-full transition-all duration-500" style={{ width: `${Math.min(Math.max(value || 0, 0), 100)}%`, backgroundColor: tone }} />
+  </div>
+);
+
+const SourceLinks = ({ sources = [], compact = false }) => {
+  const valid = sources.filter((source) => source?.url);
+  if (!valid.length) return <span className="text-xs text-amber-700">暂无可核验来源</span>;
   return (
-    <div className="space-y-2">
-      {data.map((item, index) => (
-        <div key={index} className="flex items-center">
-          {showLabels && (
-            <div className="w-24 text-sm text-gray-600 truncate" title={item.label}>
-              {item.label}
-            </div>
-          )}
-          <div className="flex-1 h-6 bg-gray-100 rounded-full overflow-hidden">
-            <div 
-              className={`h-full bg-${color}-500 rounded-full transition-all duration-500 ease-out flex items-center justify-end pr-2`}
-              style={{ width: `${Math.max((item.value / max) * 100, 2)}%` }}
-            >
-              {item.value > 0 && (
-                <span className="text-xs text-white font-medium">
-                  {item.value}
-                </span>
-              )}
-            </div>
+    <div className={`flex flex-wrap ${compact ? 'gap-x-3 gap-y-1' : 'gap-2'}`}>
+      {valid.map((source, index) => (
+        <a
+          key={`${source.url}-${index}`}
+          href={source.url}
+          target="_blank"
+          rel="noreferrer"
+          title={source.title}
+          className="inline-flex max-w-full items-center gap-1 text-xs font-medium text-[#7d4436] underline decoration-[#c8a99b] underline-offset-4 hover:text-[#292621]"
+        >
+          <span className="truncate">{source.source || source.title || `来源 ${index + 1}`}</span>
+          <ExternalLink className="h-3 w-3 flex-none" />
+        </a>
+      ))}
+    </div>
+  );
+};
+
+const DailyChart = ({ rows }) => {
+  const max = Math.max(...rows.map((row) => row.count), 1);
+  if (!rows.length) return <div className="flex h-52 items-center justify-center text-sm text-slate-400">暂无近 7 天数据</div>;
+  return (
+    <div className="mt-7 grid h-56 grid-cols-7 items-end gap-2 sm:gap-4" role="img" aria-label="近7天资讯数量柱状图">
+      {rows.map((row) => (
+        <div key={row.date} className="flex h-full min-w-0 flex-col justify-end">
+          <div className="mb-2 text-center font-mono text-sm font-bold text-slate-800">{row.count}</div>
+          <div className="group relative flex h-36 items-end bg-slate-100">
+            <div
+              className="w-full bg-[#466b59] transition-colors group-hover:bg-[#355343]"
+              style={{ height: `${Math.max((row.count / max) * 100, row.count ? 5 : 1)}%` }}
+              title={`${row.date}：${row.count} 条`}
+            />
           </div>
+          <div className="mt-2 truncate text-center font-mono text-[10px] text-slate-500">{row.date.slice(5)}</div>
         </div>
       ))}
     </div>
   );
 };
 
-// 环形图组件
-const DonutChart = ({ data, size = 120, strokeWidth = 20 }) => {
-  const total = data.reduce((sum, item) => sum + item.value, 0);
-  const radius = (size - strokeWidth) / 2;
-  const circumference = 2 * Math.PI * radius;
-  
-  let offset = 0;
-  const colors = ['#3B82F6', '#10B981', '#8B5CF6', '#F59E0B', '#EC4899', '#6B7280'];
-  
-  return (
-    <div className="relative inline-block">
-      <svg width={size} height={size} className="transform -rotate-90">
-        {data.map((item, index) => {
-          const percentage = total > 0 ? (item.value / total) : 0;
-          const strokeDasharray = `${circumference * percentage} ${circumference}`;
-          const strokeDashoffset = -offset;
-          offset += circumference * percentage;
-          
-          return (
-            <circle
-              key={index}
-              cx={size / 2}
-              cy={size / 2}
-              r={radius}
-              fill="none"
-              stroke={colors[index % colors.length]}
-              strokeWidth={strokeWidth}
-              strokeDasharray={strokeDasharray}
-              strokeDashoffset={strokeDashoffset}
-              className="transition-all duration-500"
-            />
-          );
-        })}
-      </svg>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-2xl font-bold text-gray-900">{total}</div>
-          <div className="text-xs text-gray-500">总计</div>
+const Distribution = ({ title, rows = [], tone = '#466b59', linkable = false }) => (
+  <section className="border border-slate-300 bg-white p-5 sm:p-6">
+    <h3 className="text-sm font-black tracking-wide text-slate-900">{title}</h3>
+    <div className="mt-5 space-y-4">
+      {rows.length ? rows.map((row) => (
+        <div key={row.name}>
+          <div className="mb-1.5 flex items-center justify-between gap-4 text-xs">
+            {linkable && row.sampleUrl ? (
+              <a href={row.sampleUrl} target="_blank" rel="noreferrer" className="min-w-0 truncate font-semibold text-slate-800 hover:text-[#7d4436]">{row.name}</a>
+            ) : <span className="min-w-0 truncate font-semibold text-slate-800">{row.name}</span>}
+            <span className="flex-none font-mono text-slate-500">{row.percentage}% · {row.count}</span>
+          </div>
+          <Progress value={row.percentage} tone={tone} />
         </div>
+      )) : <p className="text-sm text-slate-400">暂无数据</p>}
+    </div>
+  </section>
+);
+
+const Overview = ({ stats, quality, diversity, daily, smartTrends }) => {
+  const series = normalizeDailySeries(daily);
+  const categories = Object.entries(stats?.categories || {}).sort((a, b) => b[1] - a[1]);
+  const categoryMax = Math.max(...categories.map(([, count]) => count), 1);
+  return (
+    <div className="space-y-5">
+      <section className="grid overflow-hidden border border-[#d2cbc0] bg-white text-[#292621] sm:grid-cols-2 lg:grid-cols-4">
+        <Metric label="全部资讯" value={stats?.total?.toLocaleString()} note="已去除重复 URL" />
+        <Metric label="今日新增" value={stats?.today ?? 0} note="Asia/Shanghai" />
+        <Metric label="近 7 天" value={daily?.total ?? 0} note={`日均 ${daily?.average ?? 0} 条`} />
+        <Metric label="视野多样性" value={`${diversity?.diversityScore ?? 0}`} note={`/100 · ${getBubbleRiskLabel(diversity?.riskLevel)}`} accent />
+      </section>
+
+      <div className="grid gap-5 xl:grid-cols-[1.45fr_0.75fr]">
+        <section className="border border-slate-300 bg-white p-5 sm:p-7">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#7d4436]">7 day signal</div>
+              <h2 className="mt-2 text-xl font-black text-slate-950">近 7 天资讯趋势</h2>
+              <p className="mt-1 text-xs text-slate-500">按上海自然日统计，缺失日期补 0，不使用模拟数据。</p>
+            </div>
+            <div className="border-l border-slate-200 pl-4 text-right">
+              <div className="font-mono text-2xl font-black text-slate-950">{daily?.changeRate > 0 ? '+' : ''}{daily?.changeRate ?? 0}%</div>
+              <div className="text-[11px] text-slate-500">首日 vs 今日</div>
+            </div>
+          </div>
+          <DailyChart rows={series} />
+        </section>
+
+        <section className="border border-[#d2cbc0] bg-[#eee9df] p-5 sm:p-7">
+          <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#7d4436]">What deserves attention</div>
+          <h2 className="mt-2 text-xl font-black text-slate-950">正在变化的话题</h2>
+          <div className="mt-5 divide-y divide-[#cfc5b8]">
+            {(smartTrends?.topKeywords || []).slice(0, 5).map((item) => (
+              <div key={item.keyword} className="py-3 first:pt-0">
+                <div className="flex items-baseline justify-between gap-3">
+                  <span className="font-bold text-slate-900">{item.keyword}</span>
+                  <span className="font-mono text-xs text-slate-600">{item.recentCount} / {item.previousCount}</span>
+                </div>
+                <div className="mt-1 flex items-center justify-between gap-3">
+                  <span className="text-xs text-slate-600">{trendDirectionLabel(item.trend)}</span>
+                  <SourceLinks sources={item.sources?.slice(0, 1)} compact />
+                </div>
+              </div>
+            ))}
+            {!smartTrends?.topKeywords?.length && <p className="py-8 text-sm text-slate-500">暂无足够的趋势样本</p>}
+          </div>
+        </section>
+      </div>
+
+      <div className="grid gap-5 lg:grid-cols-2">
+        <section className="border border-slate-300 bg-white p-5 sm:p-6">
+          <h3 className="text-sm font-black tracking-wide text-slate-900">分类覆盖</h3>
+          <div className="mt-5 space-y-4">
+            {categories.map(([name, count]) => (
+              <div key={name} className="grid grid-cols-[5rem_1fr_3rem] items-center gap-3 text-xs">
+                <span className="font-semibold text-slate-700">{name}</span>
+                <Progress value={(count / categoryMax) * 100} tone="#59675f" />
+                <span className="text-right font-mono text-slate-500">{count}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+        <section className="border border-slate-300 bg-white p-5 sm:p-6">
+          <h3 className="text-sm font-black tracking-wide text-slate-900">可用性检查</h3>
+          <div className="mt-5 grid grid-cols-3 divide-x divide-slate-200">
+            <div className="pr-4"><div className="font-mono text-2xl font-black">{quality?.totalArticles ?? 0}</div><p className="mt-1 text-xs text-slate-500">分析样本</p></div>
+            <div className="px-4"><div className="font-mono text-2xl font-black">{quality?.withDescriptions ?? 0}</div><p className="mt-1 text-xs text-slate-500">有完整摘要</p></div>
+            <div className="pl-4"><div className="font-mono text-2xl font-black">{quality?.withImages ?? 0}</div><p className="mt-1 text-xs text-slate-500">有有效配图</p></div>
+          </div>
+          <p className="mt-6 border-t border-slate-200 pt-4 text-xs leading-6 text-slate-500">完整度不等于真实性；所有事实仍应回到原文核对。</p>
+        </section>
       </div>
     </div>
   );
 };
 
-// 趋势指示器
-const TrendIndicator = ({ value, suffix = '%' }) => {
-  if (value > 0) {
-    return (
-      <span className="inline-flex items-center text-green-600 text-sm">
-        <ArrowUp className="w-3 h-3 mr-0.5" />
-        +{value}{suffix}
-      </span>
-    );
-  } else if (value < 0) {
-    return (
-      <span className="inline-flex items-center text-red-600 text-sm">
-        <ArrowDown className="w-3 h-3 mr-0.5" />
-        {value}{suffix}
-      </span>
-    );
+const DiversityView = ({ diversity }) => {
+  if (!diversity || diversity.status === 'insufficient_data') {
+    return <div className="border border-slate-300 bg-white p-12 text-center text-slate-500">资讯样本不足，暂时无法评估信息茧房。</div>;
   }
+  const riskTone = diversity.riskLevel === 'high' ? '#9f3f35' : diversity.riskLevel === 'medium' ? '#9a6a22' : '#466b59';
   return (
-    <span className="inline-flex items-center text-gray-500 text-sm">
-      <Minus className="w-3 h-3 mr-0.5" />
-      0{suffix}
-    </span>
+    <div className="space-y-5">
+      <section className="grid border border-slate-300 bg-white lg:grid-cols-[0.7fr_1.3fr]">
+        <div className="flex flex-col justify-between border-b border-slate-300 bg-[#e8e1d6] p-7 text-[#292621] lg:border-b-0 lg:border-r">
+          <div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#7d4436]">Filter bubble audit</div>
+            <h2 className="mt-3 text-2xl font-black">信息茧房风险</h2>
+            <p className="mt-2 text-sm leading-6 text-[#675f56]">{diversity.riskMessage}</p>
+          </div>
+          <div className="mt-10 flex items-end gap-3">
+            <span className="font-mono text-7xl font-black leading-none">{diversity.diversityScore}</span>
+            <span className="mb-1 text-sm text-[#756d63]">/ 100<br />{getBubbleRiskLabel(diversity.riskLevel)}</span>
+          </div>
+        </div>
+        <div className="p-6 sm:p-8">
+          <div className="flex items-start justify-between gap-4">
+            <div><h3 className="font-black text-slate-950">四维覆盖评分</h3><p className="mt-1 text-xs text-slate-500">不是只数分类，而是同时检查来源、地区和证据类型。</p></div>
+            <span className="font-mono text-[10px] text-slate-400">N={diversity.sampleSize}</span>
+          </div>
+          <div className="mt-7 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+            {(diversity.dimensions || []).map((item) => (
+              <div key={item.id}>
+                <div className="mb-2 flex items-center justify-between text-xs"><span className="font-bold text-slate-700">{item.label}</span><span className="font-mono">{item.score}</span></div>
+                <Progress value={item.score} tone={riskTone} />
+                <div className="mt-1.5 text-[10px] text-slate-400">覆盖 {item.coverage} / 目标 {item.target}</div>
+              </div>
+            ))}
+          </div>
+          <p className="mt-7 border-t border-slate-200 pt-4 text-[11px] leading-5 text-slate-500">{diversity.methodology}</p>
+        </div>
+      </section>
+
+      <div className="grid gap-5 lg:grid-cols-3">
+        <Distribution title="地区覆盖" rows={diversity.regionDistribution} tone="#466b59" />
+        <Distribution title="证据类型" rows={diversity.evidenceDistribution} tone="#8b6654" />
+        <Distribution title="内容分类" rows={diversity.categoryDistribution} tone="#59675f" />
+      </div>
+
+      <div className="grid gap-5 xl:grid-cols-[0.8fr_1.2fr]">
+        <section className="border border-amber-300 bg-amber-50 p-6">
+          <div className="flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-700" /><h3 className="font-black text-amber-950">当前盲区</h3></div>
+          <div className="mt-5 space-y-4">
+            {(diversity.blindSpots || []).map((spot, index) => (
+              <div key={getBlindSpotKey(spot, index)} className="border-t border-amber-300 pt-3 first:border-t-0 first:pt-0">
+                <div className="text-xs font-bold text-amber-900">{spot.label}</div>
+                <div className="mt-1 text-sm text-amber-950">{spot.dominant ? `${spot.dominant.name} 占 ${spot.dominant.percentage}%` : (spot.missing || []).map((key) => EVIDENCE_NAMES[key] || key).join('、')}</div>
+              </div>
+            ))}
+            {!diversity.blindSpots?.length && <div className="flex items-center gap-2 text-sm text-emerald-800"><CheckCircle2 className="h-4 w-4" />未发现明显结构性盲区</div>}
+          </div>
+        </section>
+        <Distribution title="来源集中度 · 点击可核验样本" rows={(diversity.sourceDistribution || []).slice(0, 10)} tone="#466b59" linkable />
+      </div>
+
+      <section className="border border-slate-300 bg-white p-6">
+        <h3 className="font-black text-slate-950">打破茧房的下一步</h3>
+        <ol className="mt-5 grid gap-4 md:grid-cols-3">
+          {(diversity.recommendations || []).slice(0, 3).map((item, index) => (
+            <li key={item} className="border-l-2 border-[#7d4436] pl-4 text-sm leading-6 text-slate-700"><span className="mb-1 block font-mono text-[10px] text-[#7d4436]">0{index + 1}</span>{item}</li>
+          ))}
+        </ol>
+      </section>
+    </div>
   );
 };
 
-// 迷你趋势线
-const SparkLine = ({ data, color = '#3B82F6', height = 40, width = 100 }) => {
-  if (!data || data.length < 2) return null;
-  
-  const max = Math.max(...data);
-  const min = Math.min(...data);
-  const range = max - min || 1;
-  
-  const points = data.map((value, index) => {
-    const x = (index / (data.length - 1)) * width;
-    const y = height - ((value - min) / range) * height;
-    return `${x},${y}`;
-  }).join(' ');
-  
+const TrendDelta = ({ item }) => {
+  if (item.trend === 'insufficient' || item.growth === null) return <span className="font-mono text-xs font-bold text-amber-700">等待基线</span>;
+  const rising = item.growth > 0;
+  const Icon = rising ? ArrowUpRight : item.growth < 0 ? ArrowDownRight : TrendingUp;
+  return <span className={`inline-flex items-center gap-1 font-mono text-xs font-bold ${rising ? 'text-[#9f3f35]' : item.growth < 0 ? 'text-[#466b59]' : 'text-slate-500'}`}><Icon className="h-3.5 w-3.5" />{item.previousCount === 0 && item.recentCount > 0 ? '新出现' : `${item.growth > 0 ? '+' : ''}${item.growth}%`}</span>;
+};
+
+const TrendsView = ({ trends }) => {
+  if (!trends?.topKeywords?.length) return <div className="border border-slate-300 bg-white p-12 text-center text-slate-500">最近两个 7 天周期暂无足够的可比较话题。</div>;
   return (
-    <svg width={width} height={height} className="overflow-visible">
-      <polyline
-        fill="none"
-        stroke={color}
-        strokeWidth="2"
-        points={points}
-        className="transition-all duration-300"
-      />
-    </svg>
+    <div className="space-y-5">
+      {trends.comparison?.status === 'insufficient_history' && <div className="flex items-start gap-2 border border-amber-300 bg-amber-50 p-4 text-sm leading-6 text-amber-900"><AlertTriangle className="mt-1 h-4 w-4 flex-none" />历史库尚未覆盖完整的两个 7 天周期。当前只展示话题数量，不把“此前为 0”误判成突然升温；数据积累满 14 天后自动开始比较。</div>}
+      <section className="grid border border-[#d2cbc0] bg-white text-[#292621] sm:grid-cols-3">
+        <Metric label="最近 24 小时" value={trends.timeDistribution?.last24h ?? 0} note="累计窗口" />
+        <Metric label="最近 7 天" value={trends.timeDistribution?.last7d ?? 0} note="用于当前周期" accent />
+        <Metric label="最近 30 天" value={trends.timeDistribution?.last30d ?? 0} note="累计窗口" />
+      </section>
+
+      <section className="border border-slate-300 bg-white">
+        <div className="flex flex-wrap items-start justify-between gap-4 border-b border-slate-300 p-5 sm:p-6">
+          <div><div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#7d4436]">Equal-window comparison</div><h2 className="mt-2 text-xl font-black text-slate-950">话题升降榜</h2></div>
+          <p className="max-w-sm text-xs leading-5 text-slate-500">{trends.comparison?.method}。每项最多展示 3 条直接支撑该趋势的资讯。</p>
+        </div>
+        <div className="divide-y divide-slate-200">
+          {trends.topKeywords.map((item, index) => (
+            <article key={item.keyword} className="grid gap-4 p-5 transition hover:bg-slate-50 sm:grid-cols-[2rem_1fr_auto] sm:p-6">
+              <div className="font-mono text-xs text-slate-400">{String(index + 1).padStart(2, '0')}</div>
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1"><h3 className="font-black text-slate-950">{item.keyword}</h3><span className="text-xs text-slate-500">{trendDirectionLabel(item.trend)}</span><TrendDelta item={item} /></div>
+                <div className="mt-2 text-xs text-slate-500">最近 7 天 {item.recentCount} 篇 · 此前 7 天 {item.previousCount} 篇</div>
+                <div className="mt-3"><SourceLinks sources={item.sources} /></div>
+              </div>
+              <div className="self-start border-l border-slate-200 pl-4 text-right"><div className="font-mono text-2xl font-black">{item.recentCount}</div><div className="text-[10px] text-slate-400">CURRENT</div></div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <div className="grid gap-5 lg:grid-cols-2">
+        <section className="border border-red-200 bg-red-50 p-6">
+          <h3 className="font-black text-red-950">升温信号</h3>
+          <div className="mt-4 space-y-4">{(trends.emergingTrends || []).map((item) => <div key={item.keyword}><p className="text-sm font-bold text-red-950">{item.description}</p><div className="mt-2"><SourceLinks sources={item.sources} compact /></div></div>)}{!trends.emergingTrends?.length && <p className="text-sm text-red-800/60">暂无达到快速升温阈值的话题</p>}</div>
+        </section>
+        <section className="border border-[#bdd0c6] bg-[#edf3ef] p-6">
+          <h3 className="font-black text-[#2f5544]">降温信号</h3>
+          <div className="mt-4 space-y-4">{(trends.decliningTrends || []).map((item) => <div key={item.keyword}><p className="text-sm font-bold text-[#2f5544]">{item.description}</p><div className="mt-2"><SourceLinks sources={item.sources} compact /></div></div>)}{!trends.decliningTrends?.length && <p className="text-sm text-[#587466]">暂无明显降温话题</p>}</div>
+        </section>
+      </div>
+    </div>
   );
 };
 
 const Analytics = () => {
-  const [stats, setStats] = useState(null);
-  const [trending, setTrending] = useState([]);
-  const [quality, setQuality] = useState(null);
-  const [diversity, setDiversity] = useState(null);
-  const [trends, setTrends] = useState(null);
-  const [smartTrends, setSmartTrends] = useState(null);
+  const [data, setData] = useState({ stats: null, quality: null, diversity: null, daily: null, trends: null });
+  const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [activeTab, setActiveTab] = useState('overview');
+  const [error, setError] = useState('');
   const [lastUpdate, setLastUpdate] = useState(null);
-  const [hasNewData, setHasNewData] = useState(false);
-
-  // 历史数据（用于趋势图）
-  const [historyData, setHistoryData] = useState({
-    newsCount: [0, 0, 0, 0, 0, 0, 0],
-    diversityScore: [0, 0, 0, 0, 0, 0, 0]
-  });
-
   const { connectionStatus, socket } = useSocket();
 
-  // 获取智能趋势分析
-  const fetchSmartTrends = useCallback(async () => {
-    try {
-      const response = await fetch('/api/analytics/smart-trends');
-      const data = await response.json();
-      
-      if (data.success) {
-        setSmartTrends(data.data);
-        setHasNewData(data.data.hasNewData);
-      }
-    } catch (error) {
-      console.error('获取智能趋势失败:', error);
-    }
+  const fetchAnalytics = useCallback(async (refresh = false) => {
+    refresh ? setRefreshing(true) : setLoading(true);
+    const requests = [
+      ['stats', API_ENDPOINTS.ANALYTICS_STATS],
+      ['quality', API_ENDPOINTS.ANALYTICS_QUALITY],
+      ['diversity', API_ENDPOINTS.ANALYTICS_DIVERSITY],
+      ['daily', `${API_ENDPOINTS.ANALYTICS_DAILY_TRENDS}?days=7`],
+      ['trends', API_ENDPOINTS.ANALYTICS_SMART_TRENDS]
+    ];
+    const results = await Promise.allSettled(requests.map(([, url]) => fetchData(url)));
+    const next = {};
+    const failures = [];
+    results.forEach((result, index) => {
+      if (result.status === 'fulfilled') next[requests[index][0]] = result.value;
+      else failures.push(requests[index][0]);
+    });
+    setData((current) => ({ ...current, ...next }));
+    setError(failures.length ? `部分分析暂不可用：${failures.join('、')}` : '');
+    setLastUpdate(new Date());
+    setLoading(false);
+    setRefreshing(false);
   }, []);
 
-  const fetchAnalytics = useCallback(async (isRefresh = false) => {
-    try {
-      if (isRefresh) {
-        setRefreshing(true);
-      } else {
-        setLoading(true);
-      }
-
-      // 并行获取统计数据（包括智能趋势）
-      const [statsRes, trendingRes, qualityRes, diversityRes, trendsRes, smartTrendsRes] = await Promise.all([
-        fetch('/api/analytics/stats'),
-        fetch('/api/analytics/trending?limit=10'),
-        fetch('/api/analytics/quality'),
-        fetch('/api/analytics/diversity'),
-        fetch('/api/analytics/trends'),
-        fetch('/api/analytics/smart-trends')
-      ]);
-
-      const [statsData, trendingData, qualityData, diversityData, trendsData, smartTrendsData] = await Promise.all([
-        statsRes.json(),
-        trendingRes.json(),
-        qualityRes.json(),
-        diversityRes.json(),
-        trendsRes.json(),
-        smartTrendsRes.json()
-      ]);
-
-      if (statsData.success) setStats(statsData.data);
-      if (trendingData.success) setTrending(trendingData.data);
-      if (qualityData.success) setQuality(qualityData.data);
-      if (diversityData.success) setDiversity(diversityData.data);
-      if (trendsData.success) setTrends(trendsData.data);
-      if (smartTrendsData.success) {
-        setSmartTrends(smartTrendsData.data);
-        setHasNewData(smartTrendsData.data.hasNewData);
-      }
-
-      setLastUpdate(new Date());
-
-      // 模拟历史数据（实际应从API获取）
-      if (statsData.success) {
-        setHistoryData(prev => ({
-          newsCount: [...prev.newsCount.slice(1), statsData.data.total || 0],
-          diversityScore: [...prev.diversityScore.slice(1), diversityData.data?.diversityScore || 0]
-        }));
-      }
-
-    } catch (error) {
-      console.error('获取分析数据失败:', error);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  }, []);
-
-  // 监听WebSocket新闻更新，自动刷新趋势分析
+  useRefreshOnVisible(fetchAnalytics);
   useEffect(() => {
-    if (!socket) return;
-
-    const handleNewsUpdate = (data) => {
-      if (data?.type === 'update-complete' && data?.data?.totalSaved > 0) {
-        console.log('检测到新数据，自动刷新趋势分析...');
-        // 延迟2秒刷新，等待数据处理完成
-        setTimeout(() => {
-          fetchSmartTrends();
-          setHasNewData(true);
-        }, 2000);
-      }
+    if (!socket) return undefined;
+    const onUpdate = (event) => {
+      if (event?.type === 'update-complete' && event?.data?.totalSaved > 0) fetchAnalytics(true);
     };
+    socket.on('news-update', onUpdate);
+    return () => socket.off('news-update', onUpdate);
+  }, [socket, fetchAnalytics]);
 
-    socket.on('news-update', handleNewsUpdate);
+  const subtitle = useMemo(() => ({
+    overview: '先看信息量，再看视野是否均衡。',
+    diversity: '识别单一来源、单一地区与单一证据类型造成的偏差。',
+    trends: '比较等长周期，并用原文链接解释每一个升降判断。'
+  }[activeTab]), [activeTab]);
 
-    return () => {
-      socket.off('news-update', handleNewsUpdate);
-    };
-  }, [socket, fetchSmartTrends]);
-
-// 使用自定义Hook确保页面切换时自动刷新
-  useRefreshOnVisible(() => fetchAnalytics(), []);
-
-  // 每5分钟自动刷新
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fetchAnalytics(true);
-    }, 5 * 60 * 1000);
-
-    return () => clearInterval(interval);
-  }, [fetchAnalytics]);
-
-  const getRiskColor = (level) => {
-    const colors = {
-      'low': 'text-green-600 bg-green-100',
-      'medium': 'text-yellow-600 bg-yellow-100',
-      'high': 'text-red-600 bg-red-100'
-    };
-    return colors[level] || 'text-gray-600 bg-gray-100';
-  };
-
-  const getRiskIcon = (level) => {
-    if (level === 'low') return <CheckCircle className="w-5 h-5" />;
-    if (level === 'high') return <AlertTriangle className="w-5 h-5" />;
-    return <Eye className="w-5 h-5" />;
-  };
-
-  const getCategoryChartData = () => {
-    if (!stats?.categories) return [];
-    return Object.entries(stats.categories).map(([name, value]) => ({
-      label: name,
-      value
-    }));
-  };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        <span className="ml-2 text-gray-600">加载数据分析中...</span>
-      </div>
-    );
-  }
+  if (loading) return <div className="flex min-h-[420px] items-center justify-center"><RefreshCw className="h-5 w-5 animate-spin text-[#7d4436]" /><span className="ml-3 text-sm text-slate-600">正在建立视野地图…</span></div>;
 
   return (
-    <div className="space-y-6">
-      {/* 页面标题 */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">数据分析</h1>
-          <p className="text-gray-600 mt-1">AI资讯平台运营数据分析与内容多样性检测</p>
+    <div className="mx-auto max-w-[1500px] editorial-enter pb-16">
+      <header className="border border-slate-300 bg-[#f7f5ef] p-5 sm:p-8">
+        <div className="flex flex-wrap items-start justify-between gap-5">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-[#7d4436]"><ShieldCheck className="h-4 w-4" />Perspective monitor</div>
+            <h1 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">视野监测台</h1>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">{subtitle}</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="hidden text-right text-[11px] leading-5 text-slate-400 sm:block">{lastUpdate ? `更新于 ${lastUpdate.toLocaleTimeString('zh-CN')}` : '等待更新'}<br />{connectionStatus === 'connected' ? '实时通道已连接' : '当前为轮询数据'}</div>
+            <button type="button" onClick={() => fetchAnalytics(true)} disabled={refreshing} className="inline-flex h-10 items-center gap-2 border border-[#7d4436] bg-[#7d4436] px-4 text-xs font-bold text-white transition hover:bg-[#65372d] disabled:opacity-50"><RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />刷新</button>
+          </div>
         </div>
-        <div className="flex items-center space-x-4">
-          {lastUpdate && (
-            <span className="text-sm text-gray-500">
-              更新于 {lastUpdate.toLocaleTimeString('zh-CN')}
-            </span>
-          )}
-          <button
-            onClick={() => fetchAnalytics(true)}
-            disabled={refreshing}
-            className="inline-flex items-center px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
-          >
-            <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
-            刷新
-          </button>
-        </div>
-      </div>
-
-      {/* 连接状态提示 */}
-      {connectionStatus !== 'connected' && (
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 flex items-center">
-          <Activity className="w-5 h-5 text-yellow-600 mr-2" />
-          <span className="text-yellow-700 text-sm">
-            实时连接已断开，数据可能不是最新的
-          </span>
-        </div>
-      )}
-
-      {/* 标签页导航 */}
-      <div className="border-b border-gray-200">
-        <nav className="flex space-x-8">
-          {[
-            { id: 'overview', label: '概览', icon: BarChart3 },
-            { id: 'charts', label: '图表分析', icon: PieChart },
-            { id: 'diversity', label: '信息茧房检测', icon: Eye },
-            { id: 'trends', label: 'AI趋势分析', icon: TrendingUp }
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === tab.id
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              <tab.icon className="w-4 h-4" />
-              <span>{tab.label}</span>
-            </button>
-          ))}
+        <nav className="mt-7 flex overflow-x-auto border-b border-slate-300" role="tablist" aria-label="分析模块">
+          {TABS.map((tab) => {
+            const Icon = tab.icon;
+            return <button key={tab.id} type="button" role="tab" aria-selected={activeTab === tab.id} onClick={() => setActiveTab(tab.id)} className={`flex flex-none items-center gap-2 border-b-2 px-4 py-3 text-sm font-bold transition ${activeTab === tab.id ? 'border-slate-950 text-slate-950' : 'border-transparent text-slate-400 hover:text-slate-700'}`}><Icon className="h-4 w-4" />{tab.label}</button>;
+          })}
         </nav>
-      </div>
+      </header>
 
-      {/* 概览标签页 */}
-      {activeTab === 'overview' && (
-        <div className="space-y-6">
-          {/* 统计卡片 */}
-          {stats && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-                <div className="flex items-center justify-between">
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    <TrendingUp className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <SparkLine data={historyData.newsCount} color="#3B82F6" />
-                </div>
-                <div className="mt-4">
-                  <p className="text-sm font-medium text-gray-500">总资讯数</p>
-                  <div className="flex items-baseline space-x-2">
-                    <p className="text-2xl font-bold text-gray-900">{stats.total?.toLocaleString()}</p>
-                    <TrendIndicator value={5} />
-                  </div>
-                </div>
-              </div>
+      {error && <div className="mt-4 flex items-center gap-2 border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900"><AlertTriangle className="h-4 w-4 flex-none" />{error}</div>}
 
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-                <div className="flex items-center justify-between">
-                  <div className="p-2 bg-green-100 rounded-lg">
-                    <Clock className="w-6 h-6 text-green-600" />
-                  </div>
-                  <div className="text-right">
-                    <span className="text-2xl font-bold text-green-600">{stats.today}</span>
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <p className="text-sm font-medium text-gray-500">今日新增</p>
-                  <div className="flex items-baseline space-x-2">
-                    <p className="text-2xl font-bold text-gray-900">{stats.today}</p>
-                    <span className="text-sm text-gray-500">条资讯</span>
-                  </div>
-                </div>
-              </div>
+      <main className="mt-5">
+        {activeTab === 'overview' && <Overview stats={data.stats} quality={data.quality} diversity={data.diversity} daily={data.daily} smartTrends={data.trends} />}
+        {activeTab === 'diversity' && <DiversityView diversity={data.diversity} />}
+        {activeTab === 'trends' && <TrendsView trends={data.trends} />}
+      </main>
 
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-                <div className="flex items-center justify-between">
-                  <div className="p-2 bg-purple-100 rounded-lg">
-                    <Tag className="w-6 h-6 text-purple-600" />
-                  </div>
-                  <div className="flex space-x-1">
-                    {Object.keys(stats.categories || {}).slice(0, 3).map((cat, i) => (
-                      <span key={i} className="w-2 h-2 rounded-full bg-purple-400" />
-                    ))}
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <p className="text-sm font-medium text-gray-500">资讯分类</p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {Object.keys(stats.categories || {}).length}
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-                <div className="flex items-center justify-between">
-                  <div className={`p-2 rounded-lg ${diversity ? getRiskColor(diversity.riskLevel) : 'bg-gray-100'}`}>
-                    {diversity ? getRiskIcon(diversity.riskLevel) : <Eye className="w-6 h-6 text-gray-600" />}
-                  </div>
-                  <SparkLine 
-                    data={historyData.diversityScore} 
-                    color={diversity?.riskLevel === 'high' ? '#EF4444' : '#10B981'} 
-                  />
-                </div>
-                <div className="mt-4">
-                  <p className="text-sm font-medium text-gray-500">多样性评分</p>
-                  <div className="flex items-baseline space-x-2">
-                    <p className="text-2xl font-bold text-gray-900">{diversity?.diversityScore || 0}%</p>
-                    <span className={`text-xs px-2 py-0.5 rounded-full ${getRiskColor(diversity?.riskLevel)}`}>
-                      {diversity?.riskLevel === 'low' ? '良好' : diversity?.riskLevel === 'high' ? '需改进' : '一般'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* 分类统计 */}
-          {stats?.categories && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                  <Tag className="w-5 h-5 mr-2 text-purple-600" />
-                  分类分布
-                </h2>
-                <BarChart 
-                  data={getCategoryChartData()} 
-                  color="purple"
-                />
-              </div>
-
-              {/* 热门话题 */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                  <Zap className="w-5 h-5 mr-2 text-yellow-600" />
-                  热门话题
-                </h2>
-                {trending.length > 0 ? (
-                  <div className="flex flex-wrap gap-2">
-                    {trending.map((topic, index) => (
-                      <span
-                        key={topic.keyword}
-                        className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm ${
-                          index < 3 
-                            ? 'bg-yellow-100 text-yellow-800' 
-                            : 'bg-gray-100 text-gray-700'
-                        }`}
-                      >
-                        <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs mr-1.5 ${
-                          index < 3 ? 'bg-yellow-500 text-white' : 'bg-gray-400 text-white'
-                        }`}>
-                          {index + 1}
-                        </span>
-                        {topic.keyword}
-                        <span className="ml-1.5 text-xs opacity-70">({topic.count})</span>
-                      </span>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-gray-500">暂无热门话题数据</p>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* 内容质量分析 */}
-          {quality && (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <CheckCircle className="w-5 h-5 mr-2 text-green-600" />
-                内容质量分析
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl">
-                  <p className="text-3xl font-bold text-gray-900">{quality.totalArticles}</p>
-                  <p className="text-sm text-gray-500 mt-1">总文章数</p>
-                </div>
-                <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl">
-                  <p className="text-3xl font-bold text-green-600">{quality.withImages}</p>
-                  <p className="text-sm text-gray-500 mt-1">含图片文章</p>
-                  <p className="text-xs text-green-600 mt-0.5">
-                    {quality.totalArticles > 0 ? Math.round(quality.withImages / quality.totalArticles * 100) : 0}%
-                  </p>
-                </div>
-                <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl">
-                  <p className="text-3xl font-bold text-blue-600">{quality.withDescriptions}</p>
-                  <p className="text-sm text-gray-500 mt-1">含详细描述</p>
-                  <p className="text-xs text-blue-600 mt-0.5">
-                    {quality.totalArticles > 0 ? Math.round(quality.withDescriptions / quality.totalArticles * 100) : 0}%
-                  </p>
-                </div>
-                <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl">
-                  <p className="text-3xl font-bold text-purple-600">{quality.avgDescriptionLength}</p>
-                  <p className="text-sm text-gray-500 mt-1">平均描述长度</p>
-                  <p className="text-xs text-purple-600 mt-0.5">字符</p>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* 图表分析标签页 */}
-      {activeTab === 'charts' && (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* 分类饼图 */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
-                <PieChart className="w-5 h-5 mr-2 text-blue-600" />
-                分类占比
-              </h3>
-              <div className="flex items-center justify-center space-x-8">
-                <DonutChart 
-                  data={getCategoryChartData()}
-                  size={160}
-                  strokeWidth={25}
-                />
-                <div className="space-y-2">
-                  {getCategoryChartData().map((item, index) => {
-                    const colors = ['#3B82F6', '#10B981', '#8B5CF6', '#F59E0B', '#EC4899', '#6B7280'];
-                    const total = getCategoryChartData().reduce((sum, d) => sum + d.value, 0);
-                    const percentage = total > 0 ? Math.round(item.value / total * 100) : 0;
-                    
-                    return (
-                      <div key={index} className="flex items-center">
-                        <span 
-                          className="w-3 h-3 rounded-full mr-2"
-                          style={{ backgroundColor: colors[index % colors.length] }}
-                        />
-                        <span className="text-sm text-gray-600">{item.label}</span>
-                        <span className="text-sm font-medium text-gray-900 ml-2">{percentage}%</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            {/* 来源分布 */}
-            {diversity?.sourceDistribution && (
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
-                  <Globe className="w-5 h-5 mr-2 text-green-600" />
-                  来源分布 TOP 8
-                </h3>
-                <BarChart 
-                  data={diversity.sourceDistribution.slice(0, 8).map(s => ({
-                    label: s.name,
-                    value: s.count
-                  }))}
-                  color="green"
-                />
-              </div>
-            )}
-          </div>
-
-          {/* 时间分布（模拟） */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
-              <Calendar className="w-5 h-5 mr-2 text-orange-600" />
-              近7天资讯趋势
-            </h3>
-            <div className="h-48 flex items-end justify-between px-4">
-              {['周一', '周二', '周三', '周四', '周五', '周六', '周日'].map((day, index) => {
-                const value = Math.random() * 100 + 50; // 模拟数据
-                const height = (value / 150) * 100;
-                
-                return (
-                  <div key={day} className="flex flex-col items-center flex-1 mx-1">
-                    <div 
-                      className="w-full bg-gradient-to-t from-orange-500 to-orange-300 rounded-t-lg transition-all duration-300 hover:from-orange-600 hover:to-orange-400"
-                      style={{ height: `${height}%` }}
-                    />
-                    <span className="text-xs text-gray-500 mt-2">{day}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 信息茧房检测标签页 */}
-      {activeTab === 'diversity' && diversity && (
-        <div className="space-y-6">
-          {/* 多样性评分卡片 */}
-          <div className={`rounded-xl p-6 ${
-            diversity.riskLevel === 'low' ? 'bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200' :
-            diversity.riskLevel === 'high' ? 'bg-gradient-to-r from-red-50 to-orange-50 border border-red-200' :
-            'bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-200'
-          }`}>
-            <div className="flex items-start justify-between">
-              <div>
-                <h2 className="text-xl font-semibold text-gray-900 flex items-center">
-                  {getRiskIcon(diversity.riskLevel)}
-                  <span className="ml-2">内容多样性评分</span>
-                </h2>
-                <p className="text-gray-600 mt-1">{diversity.riskMessage}</p>
-                
-                {/* 多样性进度条 */}
-                <div className="mt-4 w-64">
-                  <div className="flex justify-between text-xs text-gray-500 mb-1">
-                    <span>低多样性</span>
-                    <span>高多样性</span>
-                  </div>
-                  <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
-                    <div 
-                      className={`h-full rounded-full transition-all duration-500 ${
-                        diversity.diversityScore >= 70 ? 'bg-green-500' :
-                        diversity.diversityScore >= 40 ? 'bg-yellow-500' : 'bg-red-500'
-                      }`}
-                      style={{ width: `${diversity.diversityScore}%` }}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="text-right">
-                <span className="text-5xl font-bold text-gray-900">{diversity.diversityScore}</span>
-                <span className="text-2xl text-gray-500">%</span>
-                <p className="text-sm text-gray-500 mt-1">综合评分</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* 分类分布 */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">分类分布</h3>
-              <div className="space-y-3">
-                {diversity.categoryDistribution.map((cat) => (
-                  <div key={cat.name} className="space-y-1">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-700">{cat.name}</span>
-                      <span className="text-gray-500">{cat.percentage}% ({cat.count})</span>
-                    </div>
-                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                      <div 
-                        className={`h-full rounded-full transition-all duration-500 ${
-                          cat.percentage > 50 ? 'bg-orange-500' :
-                          cat.percentage < 10 ? 'bg-gray-400' : 'bg-blue-500'
-                        }`}
-                        style={{ width: `${cat.percentage}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* 来源分布 */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">来源分布</h3>
-              <div className="grid grid-cols-2 gap-3">
-                {diversity.sourceDistribution.slice(0, 8).map((source) => (
-                  <div key={source.name} className="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                    <p className="text-sm font-medium text-gray-900 truncate" title={source.name}>
-                      {source.name}
-                    </p>
-                    <p className="text-xs text-gray-500">{source.count} 篇 ({source.percentage}%)</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* 改进建议 */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">改进建议</h3>
-            <ul className="space-y-3">
-              {diversity.recommendations.map((rec, index) => (
-                <li key={index} className="flex items-start">
-                  <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium mr-3 mt-0.5">
-                    {index + 1}
-                  </span>
-                  <span className="text-gray-700">{rec}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
-
-      {/* AI趋势分析标签页 */}
-{activeTab === 'trends' && (
-          <div className="space-y-6">
-            {/* 智能趋势分析标题 */}
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 text-white relative overflow-hidden">
-              {/* 背景装饰 */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-              <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
-              
-              <div className="relative z-10">
-                <div className="flex items-center justify-between mb-2">
-                  <h2 className="text-2xl font-bold flex items-center">
-                    <Zap className="w-6 h-6 mr-2" />
-                    AI智能趋势分析
-                    {hasNewData && (
-                      <span className="ml-3 px-2 py-1 bg-yellow-400 text-yellow-900 text-xs rounded-full animate-pulse">
-                        有新数据
-                      </span>
-                    )}
-                  </h2>
-                  {smartTrends?.timestamp && (
-                    <span className="text-sm opacity-75">
-                      分析于 {new Date(smartTrends.timestamp).toLocaleString('zh-CN')}
-                    </span>
-                  )}
-                </div>
-                <p className="opacity-90 max-w-3xl">
-                  基于 {smartTrends?.totalAnalyzed || 0} 篇新闻自动提取关键词，实时追踪AI领域热点话题变化趋势
-                </p>
-                <div className="flex items-center space-x-6 mt-4 text-sm opacity-75">
-                  <span className="flex items-center">
-                    <Clock className="w-4 h-4 mr-1" />
-                    24小时: {smartTrends?.timeDistribution?.last24h || 0} 篇
-                  </span>
-                  <span className="flex items-center">
-                    <Calendar className="w-4 h-4 mr-1" />
-                    7天: {smartTrends?.timeDistribution?.last7d || 0} 篇
-                  </span>
-                  <span className="flex items-center">
-                    <BarChart3 className="w-4 h-4 mr-1" />
-                    30天: {smartTrends?.timeDistribution?.last30d || 0} 篇
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {smartTrends ? (
-              <>
-                {/* 热门关键词排行 */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                      <TrendingUp className="w-5 h-5 mr-2 text-red-500" />
-                      热门关键词 TOP 10
-                    </h3>
-                    <span className="text-sm text-gray-500">基于新闻标题和描述自动提取</span>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* 左侧：关键词排行 */}
-                    <div className="space-y-3">
-                      {smartTrends.topKeywords?.map((item, index) => (
-                        <div key={item.keyword} className="flex items-center group">
-                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold mr-3 ${
-                            index < 3 
-                              ? 'bg-gradient-to-br from-yellow-400 to-orange-500 text-white' 
-                              : 'bg-gray-100 text-gray-600'
-                          }`}>
-                            {index + 1}
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between mb-1">
-                              <span className="font-medium text-gray-900">{item.keyword}</span>
-                              <div className="flex items-center space-x-2">
-                                <span className="text-sm text-gray-500">{item.articleCount} 篇文章</span>
-                                <span className={`text-xs px-2 py-0.5 rounded-full ${
-                                  item.trend === 'surging' ? 'bg-red-100 text-red-700' :
-                                  item.trend === 'rising' ? 'bg-orange-100 text-orange-700' :
-                                  item.trend === 'declining' ? 'bg-gray-100 text-gray-600' :
-                                  'bg-blue-100 text-blue-700'
-                                }`}>
-                                  {item.trend === 'surging' ? '🔥 爆发' :
-                                   item.trend === 'rising' ? '↗️ 上升' :
-                                   item.trend === 'declining' ? '↘️ 下降' : '→ 平稳'}
-                                </span>
-                              </div>
-                            </div>
-                            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                              <div 
-                                className={`h-full rounded-full transition-all duration-500 ${
-                                  item.trend === 'surging' ? 'bg-red-500' :
-                                  item.trend === 'rising' ? 'bg-orange-500' :
-                                  item.trend === 'declining' ? 'bg-gray-400' :
-                                  'bg-blue-500'
-                                }`}
-                                style={{ width: `${Math.min((item.count / (smartTrends.topKeywords[0]?.count || 1)) * 100, 100)}%` }}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* 右侧：趋势可视化 */}
-                    <div className="bg-gray-50 rounded-xl p-6">
-                      <h4 className="text-sm font-medium text-gray-700 mb-4">趋势分布</h4>
-                      <div className="space-y-4">
-                        {['surging', 'rising', 'stable', 'declining'].map(trend => {
-                          const count = smartTrends.topKeywords?.filter(k => k.trend === trend).length || 0;
-                          const labels = {
-                            surging: { text: '爆发式增长', color: 'bg-red-500', icon: '🔥' },
-                            rising: { text: '上升趋势', color: 'bg-orange-500', icon: '↗️' },
-                            stable: { text: '平稳发展', color: 'bg-blue-500', icon: '→' },
-                            declining: { text: '热度下降', color: 'bg-gray-400', icon: '↘️' }
-                          };
-                          const label = labels[trend];
-                          const total = smartTrends.topKeywords?.length || 1;
-                          
-                          return (
-                            <div key={trend} className="flex items-center">
-                              <span className="w-20 text-sm text-gray-600 flex items-center">
-                                <span className="mr-1">{label.icon}</span>
-                                {label.text}
-                              </span>
-                              <div className="flex-1 mx-3">
-                                <div className="h-4 bg-gray-200 rounded-full overflow-hidden">
-                                  <div 
-                                    className={`h-full ${label.color} rounded-full transition-all duration-500`}
-                                    style={{ width: `${(count / total) * 100}%` }}
-                                  />
-                                </div>
-                              </div>
-                              <span className="w-8 text-right text-sm font-medium text-gray-900">{count}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 新兴趋势 */}
-                {smartTrends.emergingTrends?.length > 0 && (
-                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200 p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                      <Zap className="w-5 h-5 mr-2 text-green-600" />
-                      新兴趋势
-                      <span className="ml-2 px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">
-                        快速升温
-                      </span>
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {smartTrends.emergingTrends.map((trend, index) => (
-                        <div key={index} className="bg-white rounded-lg p-4 shadow-sm border border-green-100">
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="font-semibold text-gray-900">{trend.keyword}</span>
-                            <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
-                              +{trend.growth}%
-                            </span>
-                          </div>
-                          <p className="text-sm text-gray-600">{trend.description}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* 智能洞察 */}
-                {smartTrends.insights?.length > 0 && (
-                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                      <Brain className="w-5 h-5 mr-2 text-purple-600" />
-                      智能洞察
-                    </h3>
-                    <div className="space-y-3">
-                      {smartTrends.insights.map((insight, index) => (
-                        <div 
-                          key={index} 
-                          className={`p-4 rounded-lg border-l-4 ${
-                            insight.type === 'hot' ? 'bg-red-50 border-red-400' :
-                            insight.type === 'tech' ? 'bg-blue-50 border-blue-400' :
-                            'bg-green-50 border-green-400'
-                          }`}
-                        >
-                          <div className="flex items-center mb-1">
-                            <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                              insight.type === 'hot' ? 'bg-red-100 text-red-700' :
-                              insight.type === 'tech' ? 'bg-blue-100 text-blue-700' :
-                              'bg-green-100 text-green-700'
-                            }`}>
-                              {insight.title}
-                            </span>
-                          </div>
-                          <p className="text-gray-700">{insight.content}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="text-center py-12 bg-gray-50 rounded-xl">
-                <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-                <p className="text-gray-600">正在分析新闻数据...</p>
-              </div>
-            )}
-          </div>
-        )}
+      <footer className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-slate-300 py-4 text-[11px] text-slate-500">
+        <span className="inline-flex items-center gap-2"><Globe2 className="h-3.5 w-3.5" />趋势不等于事实；点击来源核验原文。</span>
+        <span className="inline-flex items-center gap-2"><Newspaper className="h-3.5 w-3.5" />统计范围会随资讯库更新。</span>
+      </footer>
     </div>
   );
 };

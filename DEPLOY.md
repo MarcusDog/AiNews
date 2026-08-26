@@ -100,7 +100,16 @@ docker-compose --profile with-nginx up -d
 NODE_ENV=production
 PORT=3002
 DATABASE_PATH=./data/ainews.db
+MINIMAX_API_KEY=replace_with_a_new_server_side_key
+MINIMAX_BASE_URL=https://api.minimaxi.com/anthropic
+MINIMAX_MODEL=MiniMax-M2.5
+AYA_NEWS_SKILL_PATH=/opt/aya-news-skill/SKILL.md
+ADMIN_API_KEY=replace_with_a_long_random_admin_key
 ```
+
+`MINIMAX_API_KEY` 只保存在服务器环境变量或部署平台的 Secret 中，不要写入前端、镜像或 Git。MiniMax Agent 使用 Anthropic 兼容接口；网站在每天 08:30（Asia/Shanghai）生成一次带来源的信息茧房复核。
+
+`ADMIN_API_KEY` 只配置在服务端。管理页位于 `/#/admin`，密钥仅保存在浏览器当前页面内存中，不写入 LocalStorage、SessionStorage 或 URL。
 
 ### 2. 前端环境变量
 

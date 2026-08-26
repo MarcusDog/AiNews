@@ -5,1137 +5,958 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI模型架构与算法框架详解</title>
     <style>
+        :root {
+            --ink: #0f172a;
+            --muted: #475569;
+            --line: rgba(15, 23, 42, 0.12);
+            --paper: #f6f2e8;
+            --paper-2: #fbfaf7;
+            --accent: #0f766e;
+            --accent-2: #1d4ed8;
+            --warm: #d97706;
+            --panel: rgba(255, 255, 255, 0.88);
+            --shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
-        
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: "SF Pro Display", "Segoe UI", "PingFang SC", "Helvetica Neue", sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(13, 148, 136, 0.12), transparent 24%),
+                radial-gradient(circle at bottom right, rgba(217, 119, 6, 0.12), transparent 24%),
+                linear-gradient(180deg, #f5efe2 0%, #f8f5ee 34%, #fbfaf7 100%);
+            color: var(--ink);
             min-height: 100vh;
-            padding: 20px;
-            line-height: 1.6;
+            padding: 28px;
+            line-height: 1.65;
         }
-        
-        .container {
-            max-width: 1400px;
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .page {
+            max-width: 1480px;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
-        
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 2.5em;
-        }
-        
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 40px;
-            font-size: 1.1em;
-        }
-        
-        /* Tab Navigation */
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            border-bottom: 3px solid #e0e0e0;
-            padding-bottom: 0;
-        }
-        
-        .tab {
-            padding: 15px 30px;
-            cursor: pointer;
-            border: none;
-            background: #f5f5f5;
-            border-radius: 10px 10px 0 0;
-            font-size: 1.1em;
-            font-weight: 600;
-            transition: all 0.3s;
-            color: #666;
-        }
-        
-        .tab:hover {
-            background: #e0e0e0;
-        }
-        
-        .tab.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        /* Architecture Section */
-        .architecture-overview {
-            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-        }
-        
-        .architecture-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-        
-        /* Flowchart Styles */
-        .flowchart {
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            padding: 25px;
-            margin: 20px 0;
-        }
-        
-        .flowchart-title {
-            font-size: 1.4em;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 20px;
-            text-align: center;
-            padding: 10px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 10px;
-        }
-        
-        /* Step Box */
-        .step-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .step {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-            transition: all 0.3s;
-        }
-        
-        .step:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
-        }
-        
-        .step-number {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.2em;
-            flex-shrink: 0;
-        }
-        
-        .step-content {
-            flex: 1;
-        }
-        
-        .step-title {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-            font-size: 1.1em;
-        }
-        
-        .step-description {
-            color: #666;
-            font-size: 0.95em;
-        }
-        
-        .step-visual {
-            margin-top: 10px;
-            padding: 10px;
-            background: white;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.85em;
-            color: #333;
-            border: 1px solid #e0e0e0;
-        }
-        
-        /* Framework Cards */
-        .framework-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-        
-        .framework-card {
-            background: white;
-            border-radius: 15px;
+
+        .hero {
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-        
-        .framework-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            border-color: #667eea;
-        }
-        
-        .framework-header {
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 36px;
+            padding: 44px;
+            background:
+                radial-gradient(circle at top right, rgba(255,255,255,0.12), transparent 28%),
+                linear-gradient(135deg, #09111f 0%, #101f35 44%, #0c5a65 100%);
             color: white;
+            box-shadow: var(--shadow);
         }
-        
-        .framework-name {
-            font-size: 1.4em;
-            font-weight: bold;
-            margin-bottom: 5px;
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px);
+            background-size: 34px 34px;
+            mask-image: radial-gradient(circle at center, black, transparent 82%);
+            pointer-events: none;
         }
-        
-        .framework-english {
-            font-size: 0.9em;
-            opacity: 0.9;
+
+        .hero-inner {
+            position: relative;
+            display: grid;
+            gap: 32px;
+            grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+            align-items: end;
         }
-        
-        .framework-body {
-            padding: 20px;
-        }
-        
-        .framework-section {
-            margin-bottom: 15px;
-        }
-        
-        .framework-section-title {
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 8px;
-            font-size: 0.95em;
-        }
-        
-        .framework-section-content {
-            color: #555;
-            font-size: 0.9em;
-            line-height: 1.5;
-        }
-        
-        .framework-example {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 10px;
-            border-left: 3px solid #667eea;
-        }
-        
-        .framework-example-title {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-            font-size: 0.9em;
-        }
-        
-        /* Architecture Specific Styles */
-        .arch-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            border: 2px solid #e8e8e8;
-        }
-        
-        .arch-title {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .arch-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2em;
-        }
-        
-        .arch-english {
-            color: #667eea;
-            font-size: 0.95em;
-            margin-bottom: 15px;
-        }
-        
-        .arch-description {
-            color: #555;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-        }
-        
-        /* Process Diagram */
-        .process-diagram {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin: 30px 0;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 15px;
-        }
-        
-        .process-node {
-            padding: 15px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 10px;
-            font-weight: 600;
-            text-align: center;
-            min-width: 120px;
-        }
-        
-        .process-arrow {
-            font-size: 1.5em;
-            color: #667eea;
-        }
-        
-        /* Code Block */
-        .code-block {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 20px;
-            border-radius: 10px;
-            overflow-x: auto;
-            margin: 15px 0;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.9em;
-            line-height: 1.5;
-        }
-        
-        .code-comment {
-            color: #6a9955;
-        }
-        
-        .code-keyword {
-            color: #569cd6;
-        }
-        
-        .code-string {
-            color: #ce9178;
-        }
-        
-        .code-function {
-            color: #dcdcaa;
-        }
-        
-        /* Comparison Table */
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .comparison-table th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-        }
-        
-        .comparison-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        
-        .comparison-table tr:hover {
-            background: #f5f5f5;
-        }
-        
-        /* Back Button */
-        .back-button {
+
+        .eyebrow {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 12px 25px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            margin-top: 30px;
-            transition: all 0.3s;
+            gap: 10px;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.08);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 12px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(226, 232, 240, 0.92);
+            margin-bottom: 20px;
         }
-        
-        .back-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+
+        h1 {
+            font-size: clamp(42px, 6vw, 78px);
+            line-height: 0.98;
+            letter-spacing: -0.05em;
+            max-width: 11ch;
+            margin-bottom: 20px;
         }
-        
-        /* Info Box */
-        .info-box {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            border-left: 4px solid #2196f3;
+
+        .subtitle {
+            max-width: 760px;
+            font-size: 18px;
+            line-height: 1.8;
+            color: rgba(226, 232, 240, 0.9);
+        }
+
+        .hero-rail {
+            display: grid;
+            gap: 14px;
+        }
+
+        .rail-block {
             padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
+            border-radius: 24px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            backdrop-filter: blur(14px);
         }
-        
-        .info-box-title {
-            font-weight: bold;
-            color: #1565c0;
+
+        .rail-label {
+            font-size: 12px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(191, 219, 254, 0.72);
             margin-bottom: 10px;
         }
-        
-        .warning-box {
-            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
-            border-left: 4px solid #ff9800;
+
+        .rail-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
         }
-        
-        .warning-box .info-box-title {
-            color: #e65100;
+
+        .rail-copy {
+            color: rgba(226, 232, 240, 0.8);
+            font-size: 14px;
+        }
+
+        .surface {
+            margin-top: 24px;
+            border-radius: 34px;
+            border: 1px solid rgba(255,255,255,0.7);
+            background: var(--panel);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 16px 50px rgba(15, 23, 42, 0.08);
+            overflow: hidden;
+        }
+
+        .surface-nav {
+            position: sticky;
+            top: 14px;
+            z-index: 20;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--line);
+            background: rgba(251, 250, 247, 0.92);
+            backdrop-filter: blur(14px);
+        }
+
+        .tab-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tab {
+            border: 1px solid rgba(15, 23, 42, 0.12);
+            background: white;
+            color: var(--muted);
+            padding: 12px 18px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.22s ease;
+        }
+
+        .tab:hover,
+        .tab.active {
+            background: var(--ink);
+            color: white;
+            border-color: var(--ink);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            color: var(--ink);
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateY(-1px);
+            background: white;
+        }
+
+        .panel {
+            display: none;
+            padding: 32px 34px 42px;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        .panel-grid {
+            display: grid;
+            gap: 26px;
+        }
+
+        .section-head {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .section-kicker {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.24em;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: clamp(30px, 3vw, 44px);
+            line-height: 1.08;
+            letter-spacing: -0.04em;
+            max-width: 14ch;
+        }
+
+        .section-copy {
+            max-width: 840px;
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .summary-card {
+            border-radius: 26px;
+            padding: 22px;
+            border: 1px solid var(--line);
+            background: linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(248, 250, 252, 0.8) 100%);
+        }
+
+        .summary-card h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .summary-card strong {
+            display: block;
+            font-size: 28px;
+            line-height: 1.05;
+            margin-bottom: 10px;
+        }
+
+        .summary-card p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .layout {
+            display: grid;
+            gap: 26px;
+            grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+        }
+
+        .stack {
+            display: grid;
+            gap: 18px;
+        }
+
+        .module {
+            border-radius: 30px;
+            border: 1px solid var(--line);
+            background: white;
+            padding: 26px;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+        }
+
+        .module h3 {
+            font-size: 24px;
+            line-height: 1.15;
+            margin-bottom: 14px;
+        }
+
+        .module p,
+        .module li {
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .module ul {
+            margin-left: 18px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .timeline {
+            display: grid;
+            gap: 14px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 92px minmax(0, 1fr);
+            gap: 18px;
+            padding: 16px 0;
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .timeline-item:first-child {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        .timeline-key {
+            font-size: 13px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .timeline-value strong {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 24px;
+            background: white;
+            border: 1px solid var(--line);
+        }
+
+        .compare-table th,
+        .compare-table td {
+            padding: 16px 18px;
+            text-align: left;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+            vertical-align: top;
+            font-size: 14px;
+        }
+
+        .compare-table th {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--muted);
+            background: rgba(248, 250, 252, 0.72);
+        }
+
+        .compare-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .code {
+            margin-top: 18px;
+            border-radius: 24px;
+            padding: 18px 20px;
+            background: #09111f;
+            color: #dbeafe;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            overflow-x: auto;
+        }
+
+        .split {
+            display: grid;
+            gap: 18px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .pill {
+            border-radius: 999px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            background: rgba(15, 118, 110, 0.08);
+            color: var(--accent);
+        }
+
+        .decision-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .decision-card {
+            border-radius: 26px;
+            padding: 22px;
+            background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+            border: 1px solid var(--line);
+        }
+
+        .decision-card h4 {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .footnote {
+            margin-top: 26px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        @media (max-width: 1120px) {
+            .hero-inner,
+            .layout,
+            .split,
+            .decision-grid,
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 34px 24px;
+            }
+
+            .panel {
+                padding: 26px 22px 32px;
+            }
+        }
+
+        @media (max-width: 760px) {
+            body {
+                padding: 16px;
+            }
+
+            .surface-nav {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .tab-list {
+                width: 100%;
+            }
+
+            .tab {
+                flex: 1 1 auto;
+                text-align: center;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🧠 AI模型架构与算法框架详解</h1>
-        <p class="subtitle">深入了解神经网络架构和主流深度学习框架</p>
-        
-        <div class="tabs">
-            <button class="tab active" onclick="showTab('architecture')">模型架构</button>
-            <button class="tab" onclick="showTab('framework')">算法框架</button>
-        </div>
-        
-        <!-- 模型架构 Tab -->
-        <div id="architecture" class="tab-content active">
-            <div class="architecture-overview">
-                <h2 style="text-align: center; margin-bottom: 20px;">神经网络架构总览</h2>
-                <div class="process-diagram">
-                    <div class="process-node">输入层</div>
-                    <span class="process-arrow">→</span>
-                    <div class="process-node">隐藏层</div>
-                    <span class="process-arrow">→</span>
-                    <div class="process-node">隐藏层</div>
-                    <span class="process-arrow">→</span>
-                    <div class="process-node">...</div>
-                    <span class="process-arrow">→</span>
-                    <div class="process-node">输出层</div>
+    <div class="page">
+        <section class="hero">
+            <div class="hero-inner">
+                <div>
+                    <div class="eyebrow">Architecture Field Manual</div>
+                    <h1>AI模型架构与算法框架详解</h1>
+                    <p class="subtitle">
+                        这不是一份“概念卡片合集”，而是一份真正能帮助你理解模型内部结构、判断适用场景、选择工程栈的阅读地图。
+                        页面按“模型怎么工作”和“框架怎么选”两条线展开，适合产品、工程、研究三类读者快速建立判断标准。
+                    </p>
                 </div>
-            </div>
-            
-            <!-- Transformer 架构 -->
-            <div class="arch-card">
-                <div class="arch-title">
-                    <div class="arch-icon">⚡</div>
-                    Transformer 架构
-                </div>
-                <div class="arch-english">Attention Is All You Need (2017)</div>
-                <div class="arch-description">
-                    Transformer是一种基于注意力机制的深度学习架构，彻底改变了自然语言处理领域。它完全摒弃了RNN和CNN，只使用注意力机制来捕捉输入序列中的全局依赖关系。
-                </div>
-                
-                <div class="flowchart">
-                    <div class="flowchart-title">Transformer 工作流程详解</div>
-                    <div class="step-container">
-                        <div class="step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <div class="step-title">输入嵌入 (Input Embedding)</div>
-                                <div class="step-description">
-                                    将输入的词汇转换为高维向量表示。每个词被映射为一个固定长度的向量，包含了词的语义信息。
-                                </div>
-                                <div class="step-visual">
-                                    "你好" → [0.2, -0.5, 0.8, ..., 0.3]  # 512维或768维向量
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <div class="step-title">位置编码 (Positional Encoding)</div>
-                                <div class="step-description">
-                                    由于Transformer没有循环或卷积结构，需要显式添加位置信息。使用正弦和余弦函数为每个位置生成独特的编码。
-                                </div>
-                                <div class="step-visual">
-                                    PE(pos, 2i) = sin(pos / 10000^(2i/d))<br>
-                                    PE(pos, 2i+1) = cos(pos / 10000^(2i/d))
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <div class="step-title">多头自注意力 (Multi-Head Self-Attention)</div>
-                                <div class="step-description">
-                                    核心机制！让序列中的每个位置都能关注到其他所有位置。使用多个注意力头从不同角度捕捉信息。
-                                </div>
-                                <div class="step-visual">
-                                    Attention(Q,K,V) = softmax(QK^T/√d_k) × V<br>
-                                    其中 Q=查询, K=键, V=值
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">4</div>
-                            <div class="step-content">
-                                <div class="step-title">前馈神经网络 (Feed Forward)</div>
-                                <div class="step-description">
-                                    每个位置独立应用相同的前馈网络，通常包含两个线性变换和ReLU激活函数。
-                                </div>
-                                <div class="step-visual">
-                                    FFN(x) = max(0, xW₁ + b₁)W₂ + b₂
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">5</div>
-                            <div class="step-content">
-                                <div class="step-title">层归一化与残差连接</div>
-                                <div class="step-description">
-                                    每个子层后都应用层归一化(Layer Normalization)和残差连接，帮助梯度流动并加速训练。
-                                </div>
-                                <div class="step-visual">
-                                    Output = LayerNorm(x + Sublayer(x))
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">6</div>
-                            <div class="step-content">
-                                <div class="step-title">编码器-解码器结构</div>
-                                <div class="step-description">
-                                    <strong>编码器：</strong>处理输入序列，生成上下文表示<br>
-                                    <strong>解码器：</strong>基于编码器输出和已生成内容，逐步生成目标序列
-                                </div>
-                            </div>
-                        </div>
+
+                <div class="hero-rail">
+                    <div class="rail-block">
+                        <div class="rail-label">阅读目标</div>
+                        <div class="rail-value">看懂结构，不只记名词</div>
+                        <div class="rail-copy">每个模块都给出核心机制、优势、代价、典型落地，不再停留在泛泛介绍。</div>
                     </div>
-                </div>
-                
-                <div class="info-box">
-                    <div class="info-box-title">💡 关键创新点</div>
-                    <ul style="margin-left: 20px; color: #333;">
-                        <li><strong>自注意力机制：</strong>能直接建模序列中任意两个位置的关系，无论距离多远</li>
-                        <li><strong>并行计算：</strong>不像RNN需要顺序处理，可以高度并行化，训练速度快</li>
-                        <li><strong>可扩展性：</strong>容易扩展到非常大的模型和数据规模</li>
-                        <li><strong>多头注意力：</strong>从多个角度学习不同的特征表示</li>
-                    </ul>
-                </div>
-                
-                <div class="framework-example">
-                    <div class="framework-example-title">🎯 实际应用</div>
-                    <ul>
-                        <li><strong>GPT系列：</strong>仅使用解码器，从左到右生成文本</li>
-                        <li><strong>BERT：</strong>仅使用编码器，双向理解文本</li>
-                        <li><strong>T5：</strong>同时使用编码器-解码器，适合翻译和摘要</li>
-                        <li><strong>Vision Transformer：</strong>将图像切分为patches，应用Transformer处理图像</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <!-- CNN 架构 -->
-            <div class="arch-card">
-                <div class="arch-title">
-                    <div class="arch-icon">🖼️</div>
-                    CNN 卷积神经网络
-                </div>
-                <div class="arch-english">Convolutional Neural Network</div>
-                <div class="arch-description">
-                    CNN是专门处理具有网格结构数据（如图像）的神经网络。通过卷积操作自动提取局部特征，并通过池化减少计算量，是计算机视觉的基石。
-                </div>
-                
-                <div class="flowchart">
-                    <div class="flowchart-title">CNN 工作流程详解</div>
-                    <div class="step-container">
-                        <div class="step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <div class="step-title">卷积层 (Convolution Layer)</div>
-                                <div class="step-description">
-                                    使用卷积核（滤波器）在输入图像上滑动，提取局部特征如边缘、纹理、形状等。每个卷积核学习检测特定的特征。
-                                </div>
-                                <div class="step-visual">
-                                    输入: 32×32×3 (RGB图像)<br>
-                                    卷积核: 5×5×3<br>
-                                    输出特征图: 28×28×N (N个滤波器)
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <div class="step-title">激活函数 (Activation)</div>
-                                <div class="step-description">
-                                    引入非线性，让网络能学习复杂的模式。ReLU是最常用的激活函数。
-                                </div>
-                                <div class="step-visual">
-                                    ReLU(x) = max(0, x)<br>
-                                    负值归零，正值保持不变
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <div class="step-title">池化层 (Pooling)</div>
-                                <div class="step-description">
-                                    降低特征图的空间尺寸，减少计算量和参数量，同时保持主要特征。最大池化取区域内的最大值。
-                                </div>
-                                <div class="step-visual">
-                                    Max Pooling (2×2):<br>
-                                    [1, 3; 2, 4] → [4]<br>
-                                    尺寸减半，通道数不变
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">4</div>
-                            <div class="step-content">
-                                <div class="step-title">堆叠多层</div>
-                                <div class="step-description">
-                                    重复卷积-激活-池化操作，逐渐提取更高级、更抽象的特征。浅层学习边缘，深层学习整体形状和物体部分。
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">5</div>
-                            <div class="step-content">
-                                <div class="step-title">全连接层 (Fully Connected)</div>
-                                <div class="step-description">
-                                    将提取的特征展平并映射到最终的分类输出。每个神经元与前一层的所有神经元相连。
-                                </div>
-                                <div class="step-visual">
-                                    展平: 7×7×512 → 25088维<br>
-                                    全连接 → 4096 → 4096 → 1000 (分类数)
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">6</div>
-                            <div class="step-content">
-                                <div class="step-title">Softmax输出</div>
-                                <div class="step-description">
-                                    将输出转换为概率分布，所有类别的概率和为1。
-                                </div>
-                            </div>
-                        </div>
+                    <div class="rail-block">
+                        <div class="rail-label">适用对象</div>
+                        <div class="rail-value">产品 / 研发 / 研究</div>
+                        <div class="rail-copy">如果你要决定“为什么用 Transformer、什么时候上 vLLM、为什么训练用 JAX”，这里会更直接。</div>
                     </div>
-                </div>
-                
-                <div class="info-box">
-                    <div class="info-box-title">🔑 CNN 核心特性</div>
-                    <ul style="margin-left: 20px; color: #333;">
-                        <li><strong>局部连接：</strong>每个神经元只连接输入的局部区域，减少参数量</li>
-                        <li><strong>权重共享：</strong>同一卷积核在整个输入上共享权重，提高效率</li>
-                        <li><strong>平移不变性：</strong>物体在图像中位置变化时仍能识别</li>
-                        <li><strong>层次化特征：</strong>浅层学习简单特征，深层学习复杂组合</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <!-- RNN/LSTM 架构 -->
-            <div class="arch-card">
-                <div class="arch-title">
-                    <div class="arch-icon">🔄</div>
-                    RNN / LSTM 循环神经网络
-                </div>
-                <div class="arch-english">Recurrent Neural Network / Long Short-Term Memory</div>
-                <div class="arch-description">
-                    RNN适合处理序列数据（如文本、时间序列），具有记忆能力，能利用历史信息。LSTM是RNN的改进版，解决了长期依赖问题。
-                </div>
-                
-                <div class="flowchart">
-                    <div class="flowchart-title">RNN 工作原理</div>
-                    <div class="step-container">
-                        <div class="step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <div class="step-title">循环结构</div>
-                                <div class="step-description">
-                                    RNN的核心是循环连接：当前时刻的输出不仅依赖当前输入，还依赖前一时刻的隐藏状态。
-                                </div>
-                                <div class="step-visual">
-                                    h_t = tanh(W_hh × h_{t-1} + W_xh × x_t + b)<br>
-                                    y_t = W_hy × h_t + b
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <div class="step-title">时间展开</div>
-                                <div class="step-description">
-                                    将RNN按时间步展开，形成深层网络结构。但这也导致了梯度消失/爆炸问题。
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="flowchart">
-                    <div class="flowchart-title">LSTM 门控机制详解</div>
-                    <div class="step-container">
-                        <div class="step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <div class="step-title">遗忘门 (Forget Gate)</div>
-                                <div class="step-description">
-                                    决定从细胞状态中丢弃哪些信息。使用sigmoid函数输出0-1之间的值。
-                                </div>
-                                <div class="step-visual">
-                                    f_t = σ(W_f · [h_{t-1}, x_t] + b_f)
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <div class="step-title">输入门 (Input Gate)</div>
-                                <div class="step-description">
-                                    决定哪些新信息存储到细胞状态中。包含sigmoid层（决定更新哪些值）和tanh层（创建候选值）。
-                                </div>
-                                <div class="step-visual">
-                                    i_t = σ(W_i · [h_{t-1}, x_t] + b_i)<br>
-                                    C̃_t = tanh(W_C · [h_{t-1}, x_t] + b_C)
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <div class="step-title">更新细胞状态</div>
-                                <div class="step-description">
-                                    将旧状态乘以遗忘门结果，加上新候选值乘以输入门结果。
-                                </div>
-                                <div class="step-visual">
-                                    C_t = f_t × C_{t-1} + i_t × C̃_t
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">4</div>
-                            <div class="step-content">
-                                <div class="step-title">输出门 (Output Gate)</div>
-                                <div class="step-description">
-                                    决定输出什么值。基于细胞状态，但经过一个过滤。
-                                </div>
-                                <div class="step-visual">
-                                    o_t = σ(W_o · [h_{t-1}, x_t] + b_o)<br>
-                                    h_t = o_t × tanh(C_t)
-                                </div>
-                            </div>
-                        </div>
+                    <div class="rail-block">
+                        <div class="rail-label">阅读方式</div>
+                        <div class="rail-value">先看判断框架，再看技术细节</div>
+                        <div class="rail-copy">先拿到决策框架，再进入公式、训练路径和工程栈，效率更高。</div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- 算法框架 Tab -->
-        <div id="framework" class="tab-content">
-            <div class="architecture-overview">
-                <h2 style="text-align: center; margin-bottom: 20px;">主流深度学习框架对比</h2>
-                
-                <table class="comparison-table">
-                    <thead>
-                        <tr>
-                            <th>框架</th>
-                            <th>开发方</th>
-                            <th>主要特点</th>
-                            <th>适用场景</th>
-                            <th>学习曲线</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>TensorFlow</strong></td>
-                            <td>Google</td>
-                            <td>生产级部署、TensorBoard可视化、TFX流水线</td>
-                            <td>大规模生产环境、移动端、边缘设备</td>
-                            <td>中等</td>
-                        </tr>
-                        <tr>
-                            <td><strong>PyTorch</strong></td>
-                            <td>Meta (Facebook)</td>
-                            <td>动态图、调试友好、研究首选</td>
-                            <td>学术研究、原型开发、深度学习研究</td>
-                            <td>平缓</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Keras</strong></td>
-                            <td>独立 (现为TF高层API)</td>
-                            <td>用户友好、快速原型、多后端支持</td>
-                            <td>初学者入门、快速原型</td>
-                            <td>平缓</td>
-                        </tr>
-                        <tr>
-                            <td><strong>JAX</strong></td>
-                            <td>Google</td>
-                            <td>高性能、函数变换、自动并行</td>
-                            <td>科研计算、大规模训练</td>
-                            <td>陡峭</td>
-                        </tr>
-                        <tr>
-                            <td><strong>PaddlePaddle</strong></td>
-                            <td>百度</td>
-                            <td>中文文档好、工业级应用</td>
-                            <td>中文开发者、国产化场景</td>
-                            <td>平缓</td>
-                        </tr>
-                    </tbody>
-                </table>
+        </section>
+
+        <div class="surface">
+            <div class="surface-nav">
+                <div class="tab-list">
+                    <button class="tab active" data-tab="architecture">模型架构</button>
+                    <button class="tab" data-tab="frameworks">算法框架</button>
+                </div>
+                <a class="back-link" href="/#/glossary">返回 AI 知识库</a>
             </div>
-            
-            <div class="framework-grid">
-                <!-- PyTorch -->
-                <div class="framework-card">
-                    <div class="framework-header">
-                        <div class="framework-name">🔥 PyTorch</div>
-                        <div class="framework-english">Python + Torch</div>
+
+            <section class="panel active" id="architecture">
+                <div class="section-head">
+                    <div class="section-kicker">Architecture</div>
+                    <h2>先问模型在解决什么结构问题，再问它是否够大、够快、够稳。</h2>
+                    <p class="section-copy">
+                        同样是“AI 模型”，Transformer、CNN、LSTM、Mamba、Diffusion、MoE 解决的其实是完全不同的结构约束。
+                        一个模型架构的价值，来自它如何处理上下文、局部模式、长期记忆、并行效率、生成质量和成本边界。
+                    </p>
+                </div>
+
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h3>核心问题</h3>
+                        <strong>序列如何建模</strong>
+                        <p>文本、语音、事件流，本质上都在处理“先后关系”和“远距离依赖”。</p>
                     </div>
-                    <div class="framework-body">
-                        <div class="framework-section">
-                            <div class="framework-section-title">核心优势</div>
-                            <div class="framework-section-content">
-                                • <strong>动态计算图：</strong>即时执行，调试方便<br>
-                                • <strong>Pythonic：</strong>代码直观，符合Python习惯<br>
-                                • <strong>研究友好：</strong>学术界首选，论文实现多<br>
-                                • <strong>强大的生态：</strong>TorchVision、TorchAudio等
-                            </div>
-                        </div>
-                        
-                        <div class="framework-section">
-                            <div class="framework-section-title">工作流程</div>
-                            <div class="step-container" style="margin-top: 10px;">
-                                <div class="step" style="padding: 10px;">
-                                    <div class="step-number" style="width: 30px; height: 30px; font-size: 0.9em;">1</div>
-                                    <div class="step-content">
-                                        <div class="step-title">定义模型</div>
-                                        <div class="step-description">继承nn.Module，定义__init__和forward</div>
+                    <div class="summary-card">
+                        <h3>核心问题</h3>
+                        <strong>局部如何提取</strong>
+                        <p>图像、视频、语音频谱依赖局部结构，CNN 仍然是强力基线。</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>核心问题</h3>
+                        <strong>长上下文如何扩展</strong>
+                        <p>序列越长，注意力代价越高，所以状态空间与稀疏结构重新变得重要。</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>核心问题</h3>
+                        <strong>质量与成本如何平衡</strong>
+                        <p>MoE、蒸馏、量化、推理框架，都是把“效果”翻译成“可部署成本”。</p>
+                    </div>
+                </div>
+
+                <div class="layout">
+                    <div class="stack">
+                        <article class="module">
+                            <h3>1. Transformer：当上下文关系比局部顺序更重要时，它仍是主架构。</h3>
+                            <p>
+                                Transformer 的根本突破不在“大”，而在于它把序列建模从“按时间一步步传”改成了“任意位置直接看任意位置”。
+                                这使得语言模型、检索增强系统、多模态模型都能把远距离依赖直接编码进注意力矩阵里。
+                            </p>
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-key">机制</div>
+                                    <div class="timeline-value">
+                                        <strong>自注意力</strong>
+                                        每个 token 生成 Query / Key / Value，核心是用相似度决定“看谁”，再把加权后的信息写回自身。
                                     </div>
                                 </div>
-                                <div class="step" style="padding: 10px;">
-                                    <div class="step-number" style="width: 30px; height: 30px; font-size: 0.9em;">2</div>
-                                    <div class="step-content">
-                                        <div class="step-title">准备数据</div>
-                                        <div class="step-description">使用Dataset和DataLoader加载数据</div>
+                                <div class="timeline-item">
+                                    <div class="timeline-key">优点</div>
+                                    <div class="timeline-value">
+                                        <strong>并行训练、长依赖表达强</strong>
+                                        在训练时可以整段并行处理，不像 RNN 必须顺序滚动。
                                     </div>
                                 </div>
-                                <div class="step" style="padding: 10px;">
-                                    <div class="step-number" style="width: 30px; height: 30px; font-size: 0.9em;">3</div>
-                                    <div class="step-content">
-                                        <div class="step-title">训练循环</div>
-                                        <div class="step-description">前向传播 → 计算损失 → 反向传播 → 更新参数</div>
+                                <div class="timeline-item">
+                                    <div class="timeline-key">代价</div>
+                                    <div class="timeline-value">
+                                        <strong>注意力复杂度随序列平方增长</strong>
+                                        上下文越长，显存和延迟压力越大，长文本系统会被推理成本迅速放大。
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-key">适用</div>
+                                    <div class="timeline-value">
+                                        <strong>LLM、RAG、多模态理解、代码生成</strong>
+                                        几乎所有主流通用模型都建立在它的变体之上。
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="code-block">
-<span class="code-keyword">import</span> torch
-<span class="code-keyword">import</span> torch.nn <span class="code-keyword">as</span> nn
-
-<span class="code-comment"># 定义模型</span>
-<span class="code-keyword">class</span> <span class="code-function">Net</span>(nn.Module):
-    <span class="code-keyword">def</span> <span class="code-function">__init__</span>(self):
-        super().__init__()
-        self.fc1 = nn.Linear(784, 256)
-        self.fc2 = nn.Linear(256, 10)
-    
-    <span class="code-keyword">def</span> <span class="code-function">forward</span>(self, x):
-        x = torch.relu(self.fc1(x))
-        return self.fc2(x)
-
-<span class="code-comment"># 训练</span>
-model = Net()
-optimizer = torch.optim.Adam(model.parameters())
-<span class="code-keyword">for</span> data, target <span class="code-keyword">in</span> dataloader:
-    output = model(data)
-    loss = criterion(output, target)
-    loss.backward()  <span class="code-comment"># 自动求导</span>
-    optimizer.step()
-    optimizer.zero_grad()
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- TensorFlow -->
-                <div class="framework-card">
-                    <div class="framework-header">
-                        <div class="framework-name">📊 TensorFlow</div>
-                        <div class="framework-english">Data Flow Graphs</div>
-                    </div>
-                    <div class="framework-body">
-                        <div class="framework-section">
-                            <div class="framework-section-title">核心优势</div>
-                            <div class="framework-section-content">
-                                • <strong>生产级部署：</strong>TF Serving、TensorFlow Lite<br>
-                                • <strong>可视化：</strong>强大的TensorBoard工具<br>
-                                • <strong>TPU支持：</strong>谷歌TPU加速训练<br>
-                                • <strong>跨平台：</strong>移动端、浏览器、嵌入式
+                            <div class="pill-row">
+                                <span class="pill">GPT: decoder-only</span>
+                                <span class="pill">BERT: encoder-only</span>
+                                <span class="pill">T5: encoder-decoder</span>
+                                <span class="pill">ViT: image patches</span>
                             </div>
-                        </div>
-                        
-                        <div class="framework-section">
-                            <div class="framework-section-title">工作流程</div>
-                            <div class="step-container" style="margin-top: 10px;">
-                                <div class="step" style="padding: 10px;">
-                                    <div class="step-number" style="width: 30px; height: 30px; font-size: 0.9em;">1</div>
-                                    <div class="step-content">
-                                        <div class="step-title">构建图</div>
-                                        <div class="step-description">定义张量操作和数据流</div>
-                                    </div>
+                            <div class="code">Attention(Q, K, V) = softmax(QK^T / √d) · V
+Residual → LayerNorm → FeedForward → Residual → LayerNorm</div>
+                        </article>
+
+                        <article class="module">
+                            <h3>2. CNN：当你更在意局部模式、平移不变性和高效卷积时，不要把它过早判死刑。</h3>
+                            <p>
+                                CNN 最强的地方不是“老”，而是它天然适合图像、视频切片、医学影像、语音频谱这种局部结构稳定的信号。
+                                它用卷积核扫描局部区域，本质上是在强行加入“邻近位置往往更相关”的先验。
+                            </p>
+                            <ul>
+                                <li>卷积层负责提取边缘、纹理、角点、形状等局部模式。</li>
+                                <li>池化层压缩空间分辨率，把“哪里有特征”转成“有没有这个特征”。</li>
+                                <li>深层网络把低级视觉模式逐层组合成物体部件和语义目标。</li>
+                                <li>在资源受限或视觉任务边界明确时，CNN 仍常常比 Transformer 更稳、更省。</li>
+                            </ul>
+                            <div class="split">
+                                <div class="module" style="padding:20px; border-radius:22px; box-shadow:none;">
+                                    <h3 style="font-size:18px;">什么时候优先考虑</h3>
+                                    <ul>
+                                        <li>图像分类、检测、分割的中小规模场景</li>
+                                        <li>对边缘设备推理成本非常敏感</li>
+                                        <li>数据量有限，希望模型先验更强</li>
+                                    </ul>
                                 </div>
-                                <div class="step" style="padding: 10px;">
-                                    <div class="step-number" style="width: 30px; height: 30px; font-size: 0.9em;">2</div>
-                                    <div class="step-content">
-                                        <div class="step-title">创建会话</div>
-                                        <div class="step-description">分配资源，运行图</div>
-                                    </div>
-                                </div>
-                                <div class="step" style="padding: 10px;">
-                                    <div class="step-number" style="width: 30px; height: 30px; font-size: 0.9em;">3</div>
-                                    <div class="step-content">
-                                        <div class="step-title">执行训练</div>
-                                        <div class="step-description"> feed数据，优化参数</div>
-                                    </div>
+                                <div class="module" style="padding:20px; border-radius:22px; box-shadow:none;">
+                                    <h3 style="font-size:18px;">什么时候不够</h3>
+                                    <ul>
+                                        <li>跨区域依赖非常强的任务</li>
+                                        <li>长程关系比局部纹理更重要</li>
+                                        <li>需要统一承载文本、图像、音频的多模态建模</li>
+                                    </ul>
                                 </div>
                             </div>
+                        </article>
+
+                        <article class="module">
+                            <h3>3. RNN / LSTM：它们不再是大模型主流，但仍是“顺序状态机”的重要参照系。</h3>
+                            <p>
+                                RNN 把“上一时刻的隐藏状态”直接传给下一时刻，这让它天然具备时间感。但因为梯度会在长链路上衰减，
+                                纯 RNN 很难稳定记住很远的信息。LSTM 的门控机制，本质上就是在问：哪些状态该留，哪些该忘。
+                            </p>
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-key">遗忘门</div>
+                                    <div class="timeline-value">
+                                        <strong>决定保留多少旧状态</strong>
+                                        把历史信息中不重要的部分衰减掉，避免状态污染。
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-key">输入门</div>
+                                    <div class="timeline-value">
+                                        <strong>决定写入哪些新信息</strong>
+                                        不是每个新 token 都值得强行写入长期记忆。
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-key">输出门</div>
+                                    <div class="timeline-value">
+                                        <strong>决定当前暴露哪些状态</strong>
+                                        让内部记忆和外部输出不必完全一致。
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="code">f_t = σ(W_f[h_{t-1}, x_t] + b_f)
+C_t = f_t ⊙ C_{t-1} + i_t ⊙ C̃_t
+h_t = o_t ⊙ tanh(C_t)</div>
+                        </article>
+
+                        <article class="module">
+                            <h3>4. State Space / Mamba：它们重新回答了“长序列一定要靠全注意力吗”。</h3>
+                            <p>
+                                状态空间模型把序列看作一个连续动态系统，重点不在“我能看所有 token”，而在“我怎样把历史压缩成足够有用的状态”。
+                                Mamba 这类模型的吸引力在于，它试图保留长上下文建模能力，同时降低注意力在超长序列下的二次复杂度。
+                            </p>
+                            <ul>
+                                <li>优势是长序列效率、流式处理和更平滑的延迟曲线。</li>
+                                <li>挑战是生态远不如 Transformer 成熟，工具链和社区经验还在积累。</li>
+                                <li>如果场景是日志、事件、信号流、极长文档，这类结构值得持续关注。</li>
+                            </ul>
+                        </article>
+
+                        <article class="module">
+                            <h3>5. Diffusion 与 MoE：一个解决“如何生成更稳”，一个解决“如何把容量做大”。</h3>
+                            <div class="split">
+                                <div class="module" style="padding:20px; border-radius:22px; box-shadow:none;">
+                                    <h3 style="font-size:18px;">Diffusion</h3>
+                                    <p>
+                                        扩散模型通过“逐步加噪、逐步去噪”学习数据分布，稳定性高，图像、视频、音频生成中表现强。
+                                        它不是一次性吐出结果，而是多步迭代逼近样本。
+                                    </p>
+                                </div>
+                                <div class="module" style="padding:20px; border-radius:22px; box-shadow:none;">
+                                    <h3 style="font-size:18px;">MoE</h3>
+                                    <p>
+                                        混合专家模型并不让所有参数每次都参与计算，而是让路由器选择少数专家激活。
+                                        好处是把参数容量做大，同时维持相对可控的每 token 计算量。
+                                    </p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <aside class="stack">
+                        <div class="module">
+                            <h3>架构选择速查</h3>
+                            <table class="compare-table">
+                                <thead>
+                                    <tr>
+                                        <th>场景</th>
+                                        <th>优先结构</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>通用文本生成 / 对话</td>
+                                        <td>Transformer decoder-only</td>
+                                    </tr>
+                                    <tr>
+                                        <td>文本理解 / 分类 / 检索编码</td>
+                                        <td>Transformer encoder / dual-encoder</td>
+                                    </tr>
+                                    <tr>
+                                        <td>图像分类 / 检测 / 分割</td>
+                                        <td>CNN 或 ViT</td>
+                                    </tr>
+                                    <tr>
+                                        <td>极长序列 / 流式处理</td>
+                                        <td>State Space / Hybrid</td>
+                                    </tr>
+                                    <tr>
+                                        <td>图像、视频生成</td>
+                                        <td>Diffusion</td>
+                                    </tr>
+                                    <tr>
+                                        <td>超大模型容量扩展</td>
+                                        <td>MoE</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        
-                        <div class="code-block">
-<span class="code-keyword">import</span> tensorflow <span class="code-keyword">as</span> tf
 
-<span class="code-comment"># Keras API (推荐)</span>
-model = tf.keras.Sequential([
-    tf.keras.layers.Dense(256, activation=<span class="code-string">'relu'</span>),
-    tf.keras.layers.Dense(10, activation=<span class="code-string">'softmax'</span>)
-])
-
-model.compile(optimizer=<span class="code-string">'adam'</span>,
-              loss=<span class="code-string">'sparse_categorical_crossentropy'</span>,
-              metrics=[<span class="code-string">'accuracy'</span>])
-
-<span class="code-comment"># 训练</span>
-model.fit(train_data, train_labels, 
-          epochs=10, 
-          validation_split=0.2)
-
-<span class="code-comment"># 保存模型</span>
-model.save(<span class="code-string">'my_model'</span>)
+                        <div class="module">
+                            <h3>看论文时真正该盯住什么</h3>
+                            <ul>
+                                <li>模型复杂度如何随上下文长度增长。</li>
+                                <li>训练稳定性是否依赖大量技巧。</li>
+                                <li>指标提升来自架构本身，还是更多数据和更大算力。</li>
+                                <li>推理延迟、吞吐、显存曲线是否给出。</li>
+                                <li>是否有明确的失败边界，而不是只展示最佳样例。</li>
+                            </ul>
                         </div>
+
+                        <div class="module">
+                            <h3>常见误区</h3>
+                            <ul>
+                                <li>把“参数更多”误当作“结构更先进”。</li>
+                                <li>只看 benchmark，不看训练成本和推理成本。</li>
+                                <li>把学术最优结构直接搬进生产系统。</li>
+                                <li>忽略数据质量、路由策略、缓存和 serving 对实际效果的影响。</li>
+                            </ul>
+                        </div>
+                    </aside>
+                </div>
+            </section>
+
+            <section class="panel" id="frameworks">
+                <div class="section-head">
+                    <div class="section-kicker">Frameworks</div>
+                    <h2>不要问“哪个框架最好”，要问“你当前处在哪个生命周期阶段”。</h2>
+                    <p class="section-copy">
+                        同样叫“AI 框架”，训练框架、模型库、推理引擎、应用编排层解决的不是一类问题。
+                        如果不先分清层级，就会把 PyTorch、Transformers、LangChain、vLLM 混成一类，最后团队内部也无法形成一致判断。
+                    </p>
+                </div>
+
+                <div class="decision-grid">
+                    <div class="decision-card">
+                        <h4>训练层</h4>
+                        <p>定义模型、跑反向传播、做实验和大规模训练。关键词是 PyTorch、TensorFlow、JAX/Flax。</p>
+                    </div>
+                    <div class="decision-card">
+                        <h4>模型接口层</h4>
+                        <p>统一加载预训练模型、Tokenizer、Trainer、PEFT、量化器。关键词是 Transformers。</p>
+                    </div>
+                    <div class="decision-card">
+                        <h4>推理与应用层</h4>
+                        <p>真正决定部署体验、延迟与吞吐。关键词是 vLLM、ONNX Runtime、TensorRT、LangGraph。</p>
                     </div>
                 </div>
-                
-                <!-- Hugging Face -->
-                <div class="framework-card">
-                    <div class="framework-header">
-                        <div class="framework-name">🤗 Transformers</div>
-                        <div class="framework-english">Hugging Face</div>
+
+                <div class="layout" style="margin-top: 28px;">
+                    <div class="stack">
+                        <article class="module">
+                            <h3>1. PyTorch：研究与工程之间最平衡的默认起点。</h3>
+                            <p>
+                                如果团队没有强历史包袱，PyTorch 往往是最稳的训练起点。它的动态图、调试体验和生态完整度，
+                                让“写模型、查梯度、跑实验、接外部库”几乎都不会遇到非常别扭的地方。
+                            </p>
+                            <ul>
+                                <li>优点：API 直觉化、社区最活跃、论文复现资源最多。</li>
+                                <li>风险：如果团队没有清晰的实验规范，代码会很快从 notebook 式原型膨胀成难维护工程。</li>
+                                <li>最适合：研究团队、模型团队、需要快速试错的应用组。</li>
+                            </ul>
+                            <div class="code">class Model(nn.Module):
+    def forward(self, x):
+        x = self.encoder(x)
+        return self.head(x)
+
+loss.backward()
+optimizer.step()
+optimizer.zero_grad()</div>
+                        </article>
+
+                        <article class="module">
+                            <h3>2. TensorFlow / Keras：不是“老”，而是更偏生产体系和稳定交付。</h3>
+                            <p>
+                                TensorFlow 的价值不只在训练本身，更在于它围绕部署、可视化、序列化、移动端和服务化形成的完整体系。
+                                如果团队非常重视成熟生产链路，Keras + TensorFlow 仍然合理。
+                            </p>
+                            <ul>
+                                <li>适合已经有完整 TF 资产、需要稳定 serving 与跨端部署的团队。</li>
+                                <li>Keras 降低了上手成本，但复杂自定义训练范式仍然会让开发体验逊于 PyTorch。</li>
+                            </ul>
+                        </article>
+
+                        <article class="module">
+                            <h3>3. JAX / Flax：当你在追求极致训练效率、函数式变换和大规模并行。</h3>
+                            <p>
+                                JAX 的真正魅力在于“把数值程序当作可变换对象”。自动并行、自动微分、vmap、pmap、jit 让它在大规模训练里非常有吸引力，
+                                但它对团队工程素养要求也更高。
+                            </p>
+                            <ul>
+                                <li>适合：基础模型团队、追求极致训练吞吐的研究型组织。</li>
+                                <li>不适合：希望快速搭建普通应用团队，或者只做轻量微调的产品组。</li>
+                            </ul>
+                        </article>
+
+                        <article class="module">
+                            <h3>4. Transformers / vLLM / LangGraph：这是三层，不要混着选。</h3>
+                            <table class="compare-table">
+                                <thead>
+                                    <tr>
+                                        <th>工具</th>
+                                        <th>定位</th>
+                                        <th>你为什么需要它</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Transformers</td>
+                                        <td>模型库与训练接口</td>
+                                        <td>快速加载开源模型、Tokenizer、Trainer、PEFT、量化组件</td>
+                                    </tr>
+                                    <tr>
+                                        <td>vLLM</td>
+                                        <td>高吞吐推理引擎</td>
+                                        <td>优化批处理、KV cache 和大模型 serving，真正决定线上吞吐</td>
+                                    </tr>
+                                    <tr>
+                                        <td>LangChain / LangGraph</td>
+                                        <td>应用编排层</td>
+                                        <td>组织工具调用、状态机、多步任务，不是用来替代底层模型训练或 serving</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
                     </div>
-                    <div class="framework-body">
-                        <div class="framework-section">
-                            <div class="framework-section-title">核心优势</div>
-                            <div class="framework-section-content">
-                                • <strong>模型库：</strong>超过10万个预训练模型<br>
-                                • <strong>多模态：</strong>NLP、CV、语音全覆盖<br>
-                                • <strong>易用API：</strong>Pipeline一键推理<br>
-                                • <strong>社区活跃：</strong>开源协作生态好
-                            </div>
-                        </div>
-                        
-                        <div class="framework-section">
-                            <div class="framework-section-title">核心组件</div>
-                            <div class="framework-section-content">
-                                <strong>Transformers:</strong> 预训练模型库<br>
-                                <strong>Datasets:</strong> 数据集加载<br>
-                                <strong>Tokenizers:</strong> 文本分词<br>
-                                <strong>Accelerate:</strong> 分布式训练<br>
-                                <strong>PEFT:</strong> 高效微调(Lora等)
-                            </div>
-                        </div>
-                        
-                        <div class="code-block">
-<span class="code-keyword">from</span> transformers <span class="code-keyword">import</span> (
-    AutoTokenizer, 
-    AutoModelForSequenceClassification,
-    pipeline
-)
 
-<span class="code-comment"># 使用Pipeline (最简单)</span>
-classifier = pipeline(
-    <span class="code-string">"sentiment-analysis"</span>,
-    model=<span class="code-string">"distilbert-base-uncased"</span>
-)
-result = classifier(<span class="code-string">"I love this product!"</span>)
-
-<span class="code-comment"># 加载特定模型</span>
-tokenizer = AutoTokenizer.from_pretrained(
-    <span class="code-string">"bert-base-chinese"</span>)
-model = AutoModelForSequenceClassification.from_pretrained(
-    <span class="code-string">"bert-base-chinese"</span>)
-
-<span class="code-comment"># 微调模型</span>
-<span class="code-keyword">from</span> transformers <span class="code-keyword">import</span> TrainingArguments, Trainer
-training_args = TrainingArguments(
-    output_dir=<span class="code-string">"./results"</span>,
-    num_train_epochs=3,
-    per_device_train_batch_size=16
-)
-trainer = Trainer(model=model, args=training_args)
-trainer.train()
+                    <aside class="stack">
+                        <div class="module">
+                            <h3>框架选择矩阵</h3>
+                            <table class="compare-table">
+                                <thead>
+                                    <tr>
+                                        <th>目标</th>
+                                        <th>首选</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>快速原型 / 论文复现</td>
+                                        <td>PyTorch + Transformers</td>
+                                    </tr>
+                                    <tr>
+                                        <td>超大规模训练</td>
+                                        <td>JAX/Flax 或 PyTorch 分布式</td>
+                                    </tr>
+                                    <tr>
+                                        <td>成熟部署链路</td>
+                                        <td>TensorFlow 或 PyTorch + ONNX/TensorRT</td>
+                                    </tr>
+                                    <tr>
+                                        <td>高吞吐开源模型服务</td>
+                                        <td>vLLM</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Agent / 工具编排</td>
+                                        <td>LangGraph</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
+
+                        <div class="module">
+                            <h3>团队最常见的错误拆法</h3>
+                            <ul>
+                                <li>产品团队直接把“LangChain”当成整个 AI 技术栈。</li>
+                                <li>模型团队只讨论训练，不提前把 serving 成本纳入评估。</li>
+                                <li>工程团队把推理框架问题错当成模型架构问题。</li>
+                                <li>组织层面没有把“训练、推理、编排、评估”分开负责。</li>
+                            </ul>
+                        </div>
+
+                        <div class="module">
+                            <h3>落地建议</h3>
+                            <ul>
+                                <li>如果你做公开站点内容产品：先把稳定数据流、推理链路、缓存与风控做好，再谈更复杂模型。</li>
+                                <li>如果你做内部知识应用：Transformers + 检索层 + 轻量编排通常比一开始上复杂 Agent 更稳。</li>
+                                <li>如果你做模型训练：先确认评测体系和可重复实验规范，否则框架选型意义不大。</li>
+                            </ul>
+                        </div>
+                    </aside>
                 </div>
-                
-                <!-- LangChain -->
-                <div class="framework-card">
-                    <div class="framework-header">
-                        <div class="framework-name">🔗 LangChain</div>
-                        <div class="framework-english">LLM Applications</div>
-                    </div>
-                    <div class="framework-body">
-                        <div class="framework-section">
-                            <div class="framework-section-title">核心优势</div>
-                            <div class="framework-section-content">
-                                • <strong>链式调用：</strong>组合多个组件形成工作流<br>
-                                • <strong>工具集成：</strong>搜索引擎、数据库、API<br>
-                                • <strong>记忆功能：</strong>维护对话上下文<br>
-                                • <strong>RAG支持：</strong>检索增强生成
-                            </div>
-                        </div>
-                        
-                        <div class="framework-section">
-                            <div class="framework-section-title">核心概念</div>
-                            <div class="framework-section-content">
-                                <strong>Chains:</strong> 组合LLM和提示的序列<br>
-                                <strong>Agents:</strong> 自主决策使用工具的LLM<br>
-                                <strong>Memory:</strong> 持久化对话历史<br>
-                                <strong>Retrieval:</strong> 从外部数据检索<br>
-                                <strong>Tools:</strong> 外部功能调用
-                            </div>
-                        </div>
-                        
-                        <div class="code-block">
-<span class="code-keyword">from</span> langchain <span class="code-keyword">import</span> OpenAI, LLMChain, PromptTemplate
-<span class="code-keyword">from</span> langchain.memory <span class="code-keyword">import</span> ConversationBufferMemory
 
-<span class="code-comment"># 创建提示模板</span>
-template = <span class="code-string">"""你是一个AI助手。
-历史对话: {history}
-人类: {input}
-AI:"""</span>
-prompt = PromptTemplate(
-    input_variables=[<span class="code-string">"history"</span>, <span class="code-string">"input"</span>], 
-    template=template
-)
-
-<span class="code-comment"># 添加记忆</span>
-memory = ConversationBufferMemory(
-    memory_key=<span class="code-string">"history"</span>)
-
-<span class="code-comment"># 构建Chain</span>
-llm = OpenAI(temperature=0)
-chain = LLMChain(
-    llm=llm, 
-    prompt=prompt, 
-    memory=memory
-)
-
-<span class="code-comment"># 运行</span>
-response = chain.predict(<span class="code-string">"你好"</span>)
-                        </div>
-                    </div>
+                <div class="footnote">
+                    真正的工程判断不是“我会不会背这些名词”，而是能否回答四个问题：
+                    这个模型为什么适合这个任务、它最贵的成本在哪里、什么时候该换结构、什么时候该换框架而不是换模型。
                 </div>
-            </div>
-            
-            <div class="info-box warning-box" style="margin-top: 30px;">
-                <div class="info-box-title">⚠️ 框架选择建议</div>
-                <div style="color: #333;">
-                    <strong>初学者：</strong>推荐 PyTorch 或 Keras，API直观易懂<br>
-                    <strong>研究人员：</strong>PyTorch 是首选，论文复现多<br>
-                    <strong>生产环境：</strong>TensorFlow 部署生态更成熟<br>
-                    <strong>大模型应用：</strong>Hugging Face + LangChain 组合<br>
-                    <strong>国产化需求：</strong>PaddlePaddle 中文支持好
-                </div>
-            </div>
-        </div>
-        
-        <div style="text-align: center;">
-            <a href="http://localhost/glossary" class="back-button">
-                ← 返回 AI知识库
-            </a>
+            </section>
         </div>
     </div>
-    
+
     <script>
-        function showTab(tabName) {
-            // 隐藏所有内容
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
+        const tabs = document.querySelectorAll('.tab');
+        const panels = document.querySelectorAll('.panel');
+
+        tabs.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.tab;
+
+                tabs.forEach((button) => button.classList.remove('active'));
+                panels.forEach((panel) => panel.classList.remove('active'));
+
+                tab.classList.add('active');
+                document.getElementById(target).classList.add('active');
             });
-            
-            // 移除所有按钮激活状态
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // 显示选中内容
-            document.getElementById(tabName).classList.add('active');
-            
-            // 激活对应按钮
-            event.target.classList.add('active');
-        }
+        });
     </script>
 </body>
 </html>

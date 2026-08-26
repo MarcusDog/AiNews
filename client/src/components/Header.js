@@ -1,185 +1,151 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, RefreshCw, Brain, TrendingUp, Heart, Settings, Sparkles, Book, Activity, Search as SearchIcon } from 'lucide-react';
+import {
+  BarChart3,
+  BookOpen,
+  Heart,
+  LogIn,
+  LogOut,
+  RefreshCw,
+  Search,
+  Sparkles,
+  UserRound
+} from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import { getCategoryLabel } from '../utils/newsFeed';
+
+const categories = ['全部', 'AI新闻', 'AI框架', '新算法', '新思路', '新工具'];
 
 const Header = ({ onRefresh, selectedCategory, setSelectedCategory }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
   const navigate = useNavigate();
+  const { user, isAuthenticated, logout } = useAuth();
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-    }
+  const chooseCategory = (category) => {
+    setSelectedCategory(category);
+    navigate('/');
+  };
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const query = searchQuery.trim();
+    if (query) navigate(`/search?q=${encodeURIComponent(query)}`);
   };
 
   const handleRefresh = () => {
+    if (isRefreshing) return;
     setIsRefreshing(true);
     onRefresh();
-    setTimeout(() => setIsRefreshing(false), 1000);
+    window.setTimeout(() => setIsRefreshing(false), 900);
   };
 
-  const categories = [
-    { name: '全部', icon: '🔥' },
-    { name: 'AI新闻', icon: '📰' },
-    { name: 'AI框架', icon: '🛠️' },
-    { name: '新算法', icon: '🧮' },
-    { name: '新思路', icon: '💡' },
-    { name: '新工具', icon: '🔧' }
-  ];
+  const handleLogout = async () => {
+    if (isSigningOut) return;
+    try {
+      setIsSigningOut(true);
+      await logout();
+      navigate('/');
+    } finally {
+      setIsSigningOut(false);
+    }
+  };
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100 z-30">
-      <div className="flex items-center justify-between px-4 lg:px-6 py-3">
-      {/* 左侧：Logo */}
-      <div className="flex items-center space-x-4">
-        <Link to="/" className="flex items-center space-x-3 group">
-            <div className="relative">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 transition-shadow">
-                <Brain className="w-6 h-6 text-white" />
-              </div>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white animate-pulse" />
-            </div>
-            <div className="hidden sm:block">
-              <h1 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                AI资讯平台
-              </h1>
-              <p className="text-xs text-gray-500 flex items-center">
-                <Sparkles className="w-3 h-3 mr-1 text-yellow-500" />
-                实时AI科技资讯
-              </p>
-            </div>
-          </Link>
-        </div>
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-[#d7d0c5] bg-[#fbfaf6]/[0.97] text-[#2b2925] backdrop-blur-xl">
+      <div className="mx-auto flex h-[72px] max-w-[1600px] items-center gap-5 px-4 sm:px-6 lg:px-8">
+        <Link to="/" className="group flex flex-none items-center gap-3" aria-label="AI News 首页">
+          <span className="relative flex h-9 w-9 items-center justify-center border border-[#80776c] font-mono text-sm font-bold tracking-tight transition group-hover:border-[#914b3a] group-hover:text-[#914b3a]">
+            AI
+            <span className="absolute -right-1 -top-1 h-2 w-2 bg-[#914b3a]" />
+          </span>
+          <span>
+            <span className="block text-[15px] font-black leading-none tracking-[0.16em]">AINEWS</span>
+            <span className="mt-1.5 block font-mono text-[8px] tracking-[0.24em] text-[#80776c]">资讯阅读台</span>
+          </span>
+        </Link>
 
-        {/* 中间：分类导航 */}
-        <nav className="hidden lg:flex items-center bg-gray-50 rounded-xl p-1">
+        <span className="hidden h-6 w-px bg-[#d7d0c5] xl:block" />
+
+        <nav className="hidden min-w-0 flex-1 items-center gap-1 lg:flex" aria-label="新闻分类">
           {categories.map((category) => (
             <button
-              key={category.name}
-              onClick={() => {
-                setSelectedCategory(category.name);
-                navigate('/');
-              }}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-1.5 ${
-                selectedCategory === category.name
-                  ? 'bg-white text-blue-600 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
+              key={category}
+              type="button"
+              onClick={() => chooseCategory(category)}
+              className={`relative whitespace-nowrap px-3 py-2 text-[13px] font-medium transition ${
+                selectedCategory === category ? 'text-[#2b2925]' : 'text-[#777066] hover:text-[#2b2925]'
               }`}
             >
-              <span>{category.icon}</span>
-              <span>{category.name}</span>
+              {getCategoryLabel(category)}
+              {selectedCategory === category && <span className="absolute inset-x-3 -bottom-[17px] h-0.5 bg-[#914b3a]" />}
             </button>
           ))}
         </nav>
 
-        {/* 右侧：搜索 + 快捷操作 */}
-        <div className="flex items-center space-x-2">
-          {/* 搜索框 */}
-          <form onSubmit={handleSearch} className="hidden sm:flex items-center">
-            <div className="relative group">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 group-focus-within:text-blue-500 transition-colors" />
-              <input
-                type="text"
-                placeholder="搜索AI资讯..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white outline-none w-48 lg:w-64 transition-all placeholder:text-gray-400"
-              />
-            </div>
-          </form>
+        <form onSubmit={handleSearch} className="ml-auto hidden w-full max-w-[260px] items-center xl:flex">
+          <label className="relative w-full">
+            <span className="sr-only">搜索 AI 资讯</span>
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#8b8378]" />
+            <input
+              type="search"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder="搜索报道、公司、模型"
+              className="h-10 w-full border border-[#d7d0c5] bg-white pl-10 pr-3 text-sm text-[#2b2925] outline-none transition placeholder:text-[#9a9287] focus:border-[#914b3a]"
+            />
+          </label>
+        </form>
 
-{/* 快捷操作按钮组 */}
-      <div className="flex items-center space-x-1 bg-gray-50 rounded-xl p-1">
-        {/* AI词典 */}
-        <Link
-          to="/glossary"
-          className="p-2.5 rounded-lg hover:bg-white hover:shadow-sm transition-all text-gray-500 hover:text-purple-500"
-          title="AI知识库"
-        >
-          <Book className="w-5 h-5" />
-        </Link>
-
-        {/* 搜索 */}
-        <Link
-          to="/search"
-          className="p-2.5 rounded-lg hover:bg-white hover:shadow-sm transition-all text-gray-500 hover:text-blue-500"
-          title="搜索"
-        >
-          <SearchIcon className="w-5 h-5" />
-        </Link>
-
-        {/* 收藏 */}
-        <Link
-          to="/favorites"
-          className="p-2.5 rounded-lg hover:bg-white hover:shadow-sm transition-all text-gray-500 hover:text-red-500"
-          title="我的收藏"
-        >
-          <Heart className="w-5 h-5" />
-        </Link>
-
-        {/* 分析页面 */}
-        <Link
-          to="/analytics"
-          className="p-2.5 rounded-lg hover:bg-white hover:shadow-sm transition-all text-gray-500 hover:text-green-500"
-          title="数据分析"
-        >
-          <TrendingUp className="w-5 h-5" />
-        </Link>
-
-        {/* 系统监控 */}
-        <Link
-          to="/health"
-          className="p-2.5 rounded-lg hover:bg-white hover:shadow-sm transition-all text-gray-500 hover:text-orange-500"
-          title="系统监控"
-        >
-          <Activity className="w-5 h-5" />
-        </Link>
-
-        {/* 刷新按钮 */}
-        <button
-          onClick={handleRefresh}
-          disabled={isRefreshing}
-          className="p-2.5 rounded-lg hover:bg-white hover:shadow-sm transition-all text-gray-500 hover:text-blue-500 disabled:opacity-50"
-          title="刷新内容"
-        >
-          <RefreshCw className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`} />
-        </button>
-
-        {/* 设置 */}
-        <Link
-          to="/settings"
-          className="p-2.5 rounded-lg hover:bg-white hover:shadow-sm transition-all text-gray-500 hover:text-gray-700"
-          title="设置"
-        >
-          <Settings className="w-5 h-5" />
-        </Link>
-      </div>
+        <div className="flex flex-none items-center gap-0.5">
+          <Link to="/search" className="header-icon inline-flex xl:hidden" aria-label="搜索" title="搜索"><Search className="h-[18px] w-[18px]" /></Link>
+          <Link to="/favorites" className="header-icon hidden sm:inline-flex" aria-label="收藏" title="收藏"><Heart className="h-[18px] w-[18px]" /></Link>
+          <Link to="/glossary" className="header-icon hidden md:inline-flex" aria-label="AI 知识库" title="AI 知识库"><BookOpen className="h-[18px] w-[18px]" /></Link>
+          <Link to="/skills" className="header-icon hidden md:inline-flex" aria-label="技能总览" title="技能总览"><Sparkles className="h-[18px] w-[18px]" /></Link>
+          <Link to="/analytics" className="header-icon hidden md:inline-flex" aria-label="数据分析" title="数据分析"><BarChart3 className="h-[18px] w-[18px]" /></Link>
+          <button type="button" onClick={handleRefresh} disabled={isRefreshing} className="header-icon inline-flex" aria-label="刷新" title="刷新">
+            <RefreshCw className={`h-[18px] w-[18px] ${isRefreshing ? 'animate-spin' : ''}`} />
+          </button>
         </div>
-      </div>
 
-      {/* 移动端分类导航 */}
-      <div className="lg:hidden overflow-x-auto scrollbar-hide border-t border-gray-100">
-        <div className="flex items-center space-x-1 px-4 py-2">
-          {categories.map((category) => (
-            <button
-              key={category.name}
-              onClick={() => {
-                setSelectedCategory(category.name);
-                navigate('/');
-              }}
-              className={`flex-shrink-0 px-3 py-1.5 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
-                selectedCategory === category.name
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`}
-            >
-              {category.icon} {category.name}
+        <span className="hidden h-6 w-px bg-[#d7d0c5] sm:block" />
+
+        {isAuthenticated ? (
+          <div className="flex items-center gap-1">
+            <Link to="/account" className="flex h-9 items-center gap-2 px-2 text-sm text-[#615b53] transition hover:text-[#2b2925]" title="账户">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#e6ded2] text-xs font-bold text-[#413d37]">
+                {user?.displayName?.[0]?.toUpperCase() || 'U'}
+              </span>
+              <span className="hidden max-w-24 truncate 2xl:block">{user?.displayName || '账户'}</span>
+            </Link>
+            <button type="button" onClick={handleLogout} disabled={isSigningOut} className="header-icon hidden sm:inline-flex" aria-label="退出登录" title="退出登录">
+              <LogOut className="h-[18px] w-[18px]" />
             </button>
-          ))}
-        </div>
+          </div>
+        ) : (
+          <Link to="/login" aria-label="登录" className="inline-flex h-9 items-center gap-2 border border-[#b9b0a4] px-3 text-xs font-semibold text-[#4a453f] transition hover:border-[#914b3a] hover:text-[#914b3a]">
+            <LogIn className="h-4 w-4 sm:hidden" />
+            <UserRound className="hidden h-4 w-4 sm:block" />
+            <span className="hidden sm:inline">登录</span>
+          </Link>
+        )}
       </div>
+
+      <nav className="scrollbar-hide flex h-11 items-center gap-1 overflow-x-auto border-t border-[#e2dcd3] px-4 lg:hidden" aria-label="移动端新闻分类">
+        {categories.map((category) => (
+          <button
+            key={category}
+            type="button"
+            onClick={() => chooseCategory(category)}
+            className={`h-full flex-none border-b-2 px-3 text-xs font-medium transition ${
+              selectedCategory === category ? 'border-[#914b3a] text-[#2b2925]' : 'border-transparent text-[#777066]'
+            }`}
+          >
+            {getCategoryLabel(category)}
+          </button>
+        ))}
+      </nav>
     </header>
   );
 };

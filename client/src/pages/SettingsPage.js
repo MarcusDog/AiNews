@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { 
   Settings, 
   Bell, 
@@ -16,11 +16,20 @@ import {
 import { useSocket } from '../contexts/SocketContext';
 import { useRefreshOnVisible } from '../hooks/usePageVisibility';
 
+const SOURCE_GROUP_LABELS = {
+  research: '研究',
+  product: '产品',
+  engineering: '工程',
+  investment: '投资'
+};
+
+const SOURCE_GROUP_ORDER = ['research', 'product', 'engineering', 'investment'];
+
 const SettingsPage = () => {
   const [settings, setSettings] = useState({
     updateTime: '08:00',
     autoRefresh: true,
-    refreshInterval: 30,
+    refreshInterval: 180,
     notifications: true,
     preferredCategories: [],
     theme: 'light',
@@ -61,7 +70,7 @@ const SettingsPage = () => {
   }, []);
 
   // 页面挂载和切换时自动加载
-  useRefreshOnVisible(loadSettings, []);
+  useRefreshOnVisible(loadSettings);
 
   const fetchSources = async () => {
     setLoadingSources(true);
@@ -124,7 +133,7 @@ const SettingsPage = () => {
       setSaveStatus('refreshing');
       const response = await fetch('/api/news/update', { method: 'POST' });
       const data = await response.json();
-      
+
       if (data.success) {
         setSaveStatus('refresh-success');
         fetchSystemStatus();
@@ -139,23 +148,15 @@ const SettingsPage = () => {
     }
   };
 
-  const resetSources = async () => {
-    try {
-      const response = await fetch('/api/admin/sources/reset', { method: 'POST' });
-      const data = await response.json();
-      if (data.success) {
-        setSaveStatus('sources-reset');
-        fetchSources();
-        setTimeout(() => setSaveStatus(null), 3000);
-      }
-    } catch (error) {
-      console.error('重置数据源失败:', error);
-    }
-  };
-
   const getStatusColor = (isHealthy) => {
     return isHealthy ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
   };
+
+  const groupedSources = SOURCE_GROUP_ORDER.map((group) => ({
+    key: group,
+    label: SOURCE_GROUP_LABELS[group],
+    items: sources.filter((source) => source.source_group === group)
+  })).filter((group) => group.items.length > 0);
 
   const renderStatusMessage = () => {
     if (!saveStatus) return null;
@@ -202,9 +203,9 @@ const SettingsPage = () => {
         <nav className="flex space-x-8">
           {[
             { id: 'general', label: '常规设置', icon: Settings },
-            { id: 'sources', label: '数据源管理', icon: Rss },
+            { id: 'sources', label: '数据源', icon: Rss },
             { id: 'display', label: '显示设置', icon: Palette },
-            { id: 'system', label: '系统信息', icon: Database }
+            { id: 'system', label: '关于本站', icon: Database }
           ].map((tab) => (
             <button
               key={tab.id}
@@ -237,7 +238,7 @@ const SettingsPage = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <label className="text-sm font-medium text-gray-700">自动更新</label>
-                    <p className="text-sm text-gray-500">启用每日自动获取最新AI资讯</p>
+                    <p className="text-sm text-gray-500">服务端固定在每天 08:00 全量更新，并每 2 小时增量抓取最新内容</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
@@ -253,21 +254,21 @@ const SettingsPage = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <label className="text-sm font-medium text-gray-700">更新时间</label>
-                    <p className="text-sm text-gray-500">每日自动更新的时间</p>
+                    <p className="text-sm text-gray-500">主更新窗口固定为每日 08:00，其余每 2 小时一次</p>
                   </div>
                   <input
                     type="time"
                     value={settings.updateTime}
                     onChange={(e) => handleSettingChange('updateTime', e.target.value)}
                     className="px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    disabled={!settings.autoRefresh}
+                    disabled
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <label className="text-sm font-medium text-gray-700">刷新间隔</label>
-                    <p className="text-sm text-gray-500">页面自动刷新的间隔（分钟）</p>
+                    <label className="text-sm font-medium text-gray-700">列表刷新间隔</label>
+                    <p className="text-sm text-gray-500">浏览器端列表自动重新拉取的间隔，不影响服务端抓取计划</p>
                   </div>
                   <select
                     value={settings.refreshInterval}
@@ -275,10 +276,10 @@ const SettingsPage = () => {
                     className="px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value={0}>不自动刷新</option>
-                    <option value={15}>15分钟</option>
-                    <option value={30}>30分钟</option>
                     <option value={60}>1小时</option>
+                    <option value={120}>2小时</option>
                     <option value={180}>3小时</option>
+                    <option value={360}>6小时</option>
                   </select>
                 </div>
 
@@ -366,26 +367,18 @@ const SettingsPage = () => {
                 <Rss className="w-5 h-5 mr-2" />
                 RSS数据源
               </h2>
-              <div className="flex space-x-2">
-                <button
-                  onClick={resetSources}
-                  className="px-3 py-1.5 text-sm border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
-                >
-                  重置失败源
-                </button>
-                <button
-                  onClick={fetchSources}
-                  disabled={loadingSources}
-                  className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
-                >
-                  <RefreshCw className={`w-4 h-4 inline mr-1 ${loadingSources ? 'animate-spin' : ''}`} />
-                  刷新
-                </button>
-              </div>
+              <button
+                onClick={fetchSources}
+                disabled={loadingSources}
+                className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              >
+                <RefreshCw className={`w-4 h-4 inline mr-1 ${loadingSources ? 'animate-spin' : ''}`} />
+                刷新列表
+              </button>
             </div>
-            
+
             <p className="text-sm text-gray-500 mb-4">
-              管理AI资讯的RSS数据源，查看各源的健康状态
+              本站聚合多个 AI 资讯 RSS 数据源，按研究、产品、工程、投资四种视角展示覆盖面与健康状态。数据每 2 小时自动抓取更新。
             </p>
 
             {loadingSources ? (
@@ -394,46 +387,83 @@ const SettingsPage = () => {
                 <span className="text-gray-600">加载数据源...</span>
               </div>
             ) : sources.length > 0 ? (
-              <div className="space-y-3">
-                {sources.map((source, index) => (
-                  <div 
-                    key={index}
-                    className={`p-4 rounded-lg border ${
-                      source.is_healthy ? 'border-gray-200' : 'border-red-200 bg-red-50'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center">
-                          <h3 className="font-medium text-gray-900">{source.name}</h3>
-                          <span className={`ml-2 px-2 py-0.5 text-xs rounded-full ${getStatusColor(source.is_healthy)}`}>
-                            {source.is_healthy ? '正常' : '异常'}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-500 mt-1 truncate" title={source.url}>
-                          {source.url}
-                        </p>
-                        {source.last_error && (
-                          <p className="text-xs text-red-600 mt-1">
-                            错误: {source.last_error}
-                          </p>
-                        )}
+              <div className="space-y-6">
+                <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                  {groupedSources.map((group) => (
+                    <div key={group.key} className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                      <div className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
+                        {group.label}
                       </div>
-                      <div className="flex items-center space-x-2 ml-4">
-                        <span className="text-xs text-gray-500">
-                          失败: {source.fail_count || 0}次
-                        </span>
-                        <a
-                          href={source.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-1.5 text-gray-400 hover:text-blue-600 transition-colors"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                        </a>
+                      <div className="mt-2 text-2xl font-semibold text-gray-900">{group.items.length}</div>
+                      <p className="mt-1 text-sm text-gray-500">
+                        正常 {group.items.filter((item) => item.is_healthy).length} 个，异常 {group.items.filter((item) => !item.is_healthy).length} 个
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                {groupedSources.map((group) => (
+                  <section key={group.key} className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900">{group.label}</h3>
+                        <p className="text-sm text-gray-500">
+                          {group.items.length} 个数据源
+                        </p>
                       </div>
                     </div>
-                  </div>
+
+                    <div className="space-y-3">
+                      {group.items.map((source, index) => (
+                        <div
+                          key={`${group.key}-${source.name}-${index}`}
+                          className={`rounded-xl border p-4 ${
+                            source.is_healthy ? 'border-gray-200 bg-white' : 'border-red-200 bg-red-50'
+                          }`}
+                        >
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="min-w-0 flex-1">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <h4 className="font-medium text-gray-900">{source.name}</h4>
+                                <span className="px-2 py-0.5 text-xs rounded-full bg-blue-50 text-blue-700">
+                                  {group.label}
+                                </span>
+                                <span className={`px-2 py-0.5 text-xs rounded-full ${getStatusColor(source.is_healthy)}`}>
+                                  {source.is_healthy ? '正常' : '异常'}
+                                </span>
+                                <span className="px-2 py-0.5 text-xs rounded-full bg-gray-100 text-gray-600">
+                                  {source.category}
+                                </span>
+                              </div>
+                              <p className="mt-1 truncate text-sm text-gray-500" title={source.url}>
+                                {source.url}
+                              </p>
+                              <div className="mt-2 flex flex-wrap gap-4 text-xs text-gray-500">
+                                <span>文章: {source.article_count || 0}</span>
+                                <span>失败: {source.fail_count || 0} 次</span>
+                                <span>优先级: P{source.priority}</span>
+                                <span>{source.language === 'zh' ? '中文源' : '英文源'}</span>
+                              </div>
+                              {source.last_error && (
+                                <p className="mt-2 text-xs text-red-600">
+                                  错误: {source.last_error}
+                                </p>
+                              )}
+                            </div>
+
+                            <a
+                              href={source.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-white hover:text-blue-600"
+                            >
+                              <ExternalLink className="w-4 h-4" />
+                            </a>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
                 ))}
               </div>
             ) : (
@@ -457,6 +487,9 @@ const SettingsPage = () => {
                     </span>
                     <span className="text-red-600">
                       异常: {sources.filter(s => !s.is_healthy).length}
+                    </span>
+                    <span className="text-gray-600">
+                      已覆盖: {groupedSources.length} 个分组
                     </span>
                   </div>
                 </div>
@@ -532,28 +565,23 @@ const SettingsPage = () => {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                 <Database className="w-5 h-5 mr-2" />
-                系统状态
+                站点状态
               </h2>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">WebSocket连接</span>
+                    <span className="text-sm text-gray-500">实时推送</span>
                     <span className={`px-2 py-0.5 text-xs rounded-full ${
-                      connectionInfo?.isConnected 
-                        ? 'bg-green-100 text-green-700' 
+                      connectionInfo?.isConnected
+                        ? 'bg-green-100 text-green-700'
                         : 'bg-red-100 text-red-700'
                     }`}>
                       {connectionInfo?.isConnected ? '已连接' : '断开'}
                     </span>
                   </div>
-                  {connectionInfo?.latency && (
-                    <p className="text-xs text-gray-400 mt-1">
-                      延迟: {connectionInfo.latency}ms
-                    </p>
-                  )}
                 </div>
-                
+
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-500">新闻数量</span>
@@ -562,7 +590,7 @@ const SettingsPage = () => {
                     </span>
                   </div>
                 </div>
-                
+
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-500">分类数量</span>
@@ -571,13 +599,13 @@ const SettingsPage = () => {
                     </span>
                   </div>
                 </div>
-                
+
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-500">运行状态</span>
                     <span className={`px-2 py-0.5 text-xs rounded-full ${
-                      systemStatus?.isUpdating 
-                        ? 'bg-blue-100 text-blue-700' 
+                      systemStatus?.isUpdating
+                        ? 'bg-blue-100 text-blue-700'
                         : 'bg-green-100 text-green-700'
                     }`}>
                       {systemStatus?.status || '正常'}
@@ -589,16 +617,16 @@ const SettingsPage = () => {
 
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">版本信息</h2>
-              
+
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between py-2 border-b border-gray-100">
                   <span className="text-gray-500">版本:</span>
-                  <span className="text-gray-900 font-medium">v1.0.0</span>
+                  <span className="text-gray-900 font-medium">v2.0.0</span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-gray-100">
                   <span className="text-gray-500">最后更新:</span>
                   <span className="text-gray-900">
-                    {systemStatus?.lastUpdate 
+                    {systemStatus?.lastUpdate
                       ? new Date(systemStatus.lastUpdate).toLocaleString('zh-CN')
                       : localStorage.getItem('ainews-last-update') || '未记录'
                     }
@@ -615,9 +643,9 @@ const SettingsPage = () => {
               </div>
             </div>
 
-            {/* 存储管理 */}
+            {/* 我的数据（用户自助管理） */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">本地存储</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">我的数据</h2>
               
               <div className="space-y-3">
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
@@ -684,7 +712,7 @@ const SettingsPage = () => {
                 setSettings({
                   updateTime: '08:00',
                   autoRefresh: true,
-                  refreshInterval: 30,
+                  refreshInterval: 180,
                   notifications: true,
                   preferredCategories: [],
                   theme: 'light',

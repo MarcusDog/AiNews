@@ -55,8 +55,8 @@ npm run client:dev
 ## 访问应用
 
 - 🎯 **前端界面**: http://localhost:3000
-- 🔌 **后端API**: http://localhost:5000  
-- 💚 **健康检查**: http://localhost:5000/health
+- 🔌 **后端API**: http://localhost:3002  
+- 💚 **健康检查**: http://localhost:3002/health
 
 ## 测试功能
 

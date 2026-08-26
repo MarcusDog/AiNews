@@ -1,0 +1,151 @@
+openapi: 3.1.0
+info:
+  title: AI News Content API
+  version: 1.0.0
+  description: Source-preserving AI news API for diverse evidence retrieval, briefs, and model-written cited drafts.
+servers:
+  - url: https://ainews.xiaotianaya.com
+    description: Production
+  - url: http://localhost:3002
+    description: Local development
+paths:
+  /api/content/v1/capabilities:
+    get:
+      operationId: listCapabilities
+      summary: List safe content tools and citation policy
+      responses:
+        '200':
+          description: Capability document
+  /api/content/v1/latest:
+    get:
+      operationId: listLatestNews
+      summary: List latest source-linked AI news
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - name: category
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Latest articles with original URLs
+  /api/content/v1/search:
+    get:
+      operationId: searchNews
+      summary: Search source-linked AI news
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Limit'
+        - name: category
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Matching articles with original URLs
+        '400':
+          description: Missing query
+  /api/content/v1/trends:
+    get:
+      operationId: getTrendingTopics
+      summary: Compare topic coverage in two equal seven-day windows
+      responses:
+        '200':
+          description: Trends with supporting article links
+  /api/content/v1/brief:
+    get:
+      operationId: buildContentBrief
+      summary: Build an anti-filter-bubble evidence pack and citation-bound prompt
+      parameters:
+        - name: topic
+          in: query
+          schema:
+            type: string
+        - name: audience
+          in: query
+          schema:
+            type: string
+        - name: goal
+          in: query
+          schema:
+            type: string
+        - name: format
+          in: query
+          schema:
+            type: string
+            enum: [short-video, article, newsletter, xiaohongshu]
+            default: article
+        - name: days
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 30
+            default: 14
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 3
+            maximum: 8
+            default: 6
+      responses:
+        '200':
+          description: Evidence pack is ready
+        '422':
+          description: Insufficient evidence; response explains the gap
+  /api/content/v1/generate:
+    post:
+      operationId: generateCitedContent
+      summary: Build a diverse evidence pack, draft with MiniMax, and audit every paragraph citation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [topic, audience, goal, format]
+              properties:
+                topic:
+                  type: string
+                  maxLength: 120
+                audience:
+                  type: string
+                  maxLength: 120
+                goal:
+                  type: string
+                  maxLength: 180
+                format:
+                  type: string
+                  enum: [short-video, article, newsletter, xiaohongshu]
+                days:
+                  type: integer
+                  minimum: 1
+                  maximum: 30
+                  default: 14
+                limit:
+                  type: integer
+                  minimum: 3
+                  maximum: 8
+                  default: 6
+      responses:
+        '200':
+          description: Model draft passed the server-side citation audit
+        '422':
+          description: Insufficient evidence
+        '503':
+          description: MiniMax is not configured; response still includes the evidence pack
+components:
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 50
+        default: 20

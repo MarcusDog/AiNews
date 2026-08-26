@@ -17,6 +17,15 @@ import {
 import { useSocket } from '../contexts/SocketContext';
 import { useRefreshOnVisible } from '../hooks/usePageVisibility';
 
+const SOURCE_GROUP_LABELS = {
+  research: '研究',
+  product: '产品',
+  engineering: '工程',
+  investment: '投资'
+};
+
+const SOURCE_GROUP_ORDER = ['research', 'product', 'engineering', 'investment'];
+
 const HealthPage = () => {
   const [health, setHealth] = useState(null);
   const [sourceStatus, setSourceStatus] = useState([]);
@@ -66,7 +75,7 @@ const HealthPage = () => {
   }, []);
 
   // 页面挂载和切换时自动加载数据
-  useRefreshOnVisible(() => fetchHealth(), []);
+  useRefreshOnVisible(fetchHealth);
 
   // 每30秒自动刷新
   useEffect(() => {
@@ -135,6 +144,12 @@ const HealthPage = () => {
       </span>
     );
   };
+
+  const groupedSourceStatus = SOURCE_GROUP_ORDER.map((group) => ({
+    key: group,
+    label: SOURCE_GROUP_LABELS[group],
+    items: sourceStatus.filter((source) => source.source_group === group)
+  })).filter((group) => group.items.length > 0);
 
   return (
     <div className="space-y-8">
@@ -314,7 +329,7 @@ const HealthPage = () => {
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-4 h-4 mr-2 mt-0.5 text-blue-600" />
-                <span>每30分钟自动增量更新</span>
+                <span>每天 08:00 全量更新，且每 3 小时自动轮询新内容</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-4 h-4 mr-2 mt-0.5 text-blue-600" />
@@ -330,54 +345,76 @@ const HealthPage = () => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200">
             <h2 className="text-lg font-semibold text-gray-900">RSS数据源状态</h2>
-            <p className="text-sm text-gray-500 mt-1">显示各数据源的健康状况和最近请求情况</p>
+            <p className="text-sm text-gray-500 mt-1">按研究、产品、工程、投资四类查看各数据源的健康状况和最近请求情况</p>
           </div>
           
           {sourceStatus.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">数据源</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">失败次数</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">最后成功</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">错误信息</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {sourceStatus.map((source, index) => (
-                    <tr key={index} className={source.is_active ? '' : 'bg-red-50'}>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="font-medium text-gray-900">{source.name}</div>
-                        <div className="text-xs text-gray-500 truncate max-w-xs">{source.url}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {source.is_active ? (
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                            活跃
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
-                            禁用
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`font-medium ${source.fail_count > 5 ? 'text-red-600' : source.fail_count > 0 ? 'text-yellow-600' : 'text-green-600'}`}>
-                          {source.fail_count || 0}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {source.last_success ? new Date(source.last_success).toLocaleString('zh-CN') : '—'}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-red-600 max-w-xs truncate">
-                        {source.error_message || '—'}
-                      </td>
+            <div>
+              <div className="grid gap-3 border-b border-gray-200 px-6 py-4 md:grid-cols-2 xl:grid-cols-4">
+                {groupedSourceStatus.map((group) => (
+                  <div key={group.key} className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                    <div className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
+                      {group.label}
+                    </div>
+                    <div className="mt-2 text-2xl font-semibold text-gray-900">{group.items.length}</div>
+                    <p className="mt-1 text-sm text-gray-500">
+                      活跃 {group.items.filter((item) => item.is_active).length} 个，异常 {group.items.filter((item) => !item.is_healthy).length} 个
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">数据源</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">分组</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">失败次数</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">最后成功</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">错误信息</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {sourceStatus.map((source, index) => (
+                      <tr key={index} className={source.is_active ? '' : 'bg-red-50'}>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="font-medium text-gray-900">{source.name}</div>
+                          <div className="text-xs text-gray-500 truncate max-w-xs">{source.url}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className="inline-flex items-center rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700">
+                            {source.source_group_label || '产品'}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {source.is_active ? (
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                              活跃
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
+                              禁用
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`font-medium ${source.fail_count > 5 ? 'text-red-600' : source.fail_count > 0 ? 'text-yellow-600' : 'text-green-600'}`}>
+                            {source.fail_count || 0}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {source.last_success ? new Date(source.last_success).toLocaleString('zh-CN') : '—'}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-red-600 max-w-xs truncate">
+                          {source.error_message || '—'}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           ) : (
             <div className="px-6 py-12 text-center text-gray-500">

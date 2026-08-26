@@ -7,6 +7,8 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
+SERVER_PORT="${SERVER_PORT:-3002}"
+CLIENT_PORT="${CLIENT_PORT:-3000}"
 
 # 颜色定义
 RED='\033[0;31m'
@@ -76,6 +78,19 @@ health_check() {
     return 1
 }
 
+is_port_in_use() {
+    local port=$1
+    lsof -tiTCP:"$port" -sTCP:LISTEN > /dev/null 2>&1
+}
+
+find_available_client_port() {
+    local port=$1
+    while is_port_in_use "$port" || [ "$port" = "$SERVER_PORT" ]; do
+        port=$((port + 1))
+    done
+    echo "$port"
+}
+
 # 启动后端服务
 start_backend() {
     log_step "启动后端服务..."
@@ -96,7 +111,7 @@ start_backend() {
     
     # 等待服务启动
     log_info "等待后端服务就绪..."
-    if health_check "http://localhost:5000/health" 30 2; then
+    if health_check "http://localhost:${SERVER_PORT}/health" 30 2; then
         log_info "后端服务启动成功"
         return 0
     else
@@ -118,14 +133,14 @@ start_frontend() {
     fi
     
     # 启动服务
-    nohup npm start > client.log 2>&1 &
+    nohup env PORT="$CLIENT_PORT" BROWSER=none npm start > client.log 2>&1 &
     echo $! > client.pid
     
     log_info "前端进程ID: $(cat client.pid)"
     
     # 等待服务启动
     log_info "等待前端服务就绪..."
-    if health_check "http://localhost:3000" 60 3; then
+    if health_check "http://localhost:${CLIENT_PORT}" 60 3; then
         log_info "前端服务启动成功"
         return 0
     else
@@ -143,7 +158,7 @@ start_monitor() {
             sleep 60
             
             # 检查后端健康
-            if ! curl -s "http://localhost:5000/health" > /dev/null 2>&1; then
+            if ! curl -s "http://localhost:${SERVER_PORT}/health" > /dev/null 2>&1; then
                 log_warn "后端服务异常，尝试重启..."
                 
                 if [ -f "$SCRIPT_DIR/server/server.pid" ]; then
@@ -156,7 +171,7 @@ start_monitor() {
                 
                 sleep 10
                 
-                if curl -s "http://localhost:5000/health" > /dev/null 2>&1; then
+                if curl -s "http://localhost:${SERVER_PORT}/health" > /dev/null 2>&1; then
                     log_info "后端服务已恢复"
                 else
                     log_error "后端服务恢复失败"
@@ -184,6 +199,9 @@ main() {
     
     log_info "Node.js版本: $(node -v)"
     log_info "npm版本: $(npm -v)"
+
+    CLIENT_PORT="$(find_available_client_port "$CLIENT_PORT")"
+    log_info "前端将使用端口: ${CLIENT_PORT}"
     
     # 停止已存在的服务
     if [ -f server/server.pid ]; then
@@ -213,10 +231,10 @@ main() {
             echo "         服务启动成功！"
             echo "=============================================="
             echo ""
-            echo "  前端地址: http://localhost:3000"
-            echo "  后端API:  http://localhost:5000"
-            echo "  健康检查: http://localhost:5000/health"
-            echo "  WebSocket: ws://localhost:5000"
+            echo "  前端地址: http://localhost:${CLIENT_PORT}"
+            echo "  后端API:  http://localhost:${SERVER_PORT}"
+            echo "  健康检查: http://localhost:${SERVER_PORT}/health"
+            echo "  WebSocket: ws://localhost:${SERVER_PORT}"
             echo ""
             echo "  日志文件:"
             echo "    - 后端: server/server.log"

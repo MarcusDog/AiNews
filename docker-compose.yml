@@ -28,10 +28,12 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3002
+      - AYA_NEWS_SKILL_PATH=/opt/aya-news-skill/SKILL.md
     env_file:
       - ./server/.env
     volumes:
       - ./server:/app
+      - ./skills/aya-news-skill:/opt/aya-news-skill:ro
       - server_node_modules:/app/node_modules
     restart: unless-stopped
     logging:

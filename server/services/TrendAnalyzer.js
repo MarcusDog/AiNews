@@ -1,329 +1,186 @@
 /**
- * 智能趋势分析服务
- * 自动从新闻标题和描述中提取关键词，分析趋势变化
+ * 基于等长时间窗口的趋势分析。所有展示项都保留可核验的新闻来源。
  */
-
 class TrendAnalyzer {
   constructor() {
-    // 核心AI关键词库
     this.coreKeywords = [
-      'GPT', 'ChatGPT', 'GPT-4', 'GPT-5', 'LLM', '大语言模型',
-      'Transformer', 'BERT', 'T5', 'CLIP', 'DALL-E', 'Stable Diffusion',
-      'PyTorch', 'TensorFlow', 'JAX', 'Hugging Face', 'OpenAI',
-      '神经网络', '深度学习', '机器学习', '强化学习', '监督学习',
-      '计算机视觉', 'NLP', '自然语言处理', '语音识别', '图像生成',
-      'AI Agent', '智能体', '多模态', '多模态AI', '代码生成',
-      '自动驾驶', '机器人', '推荐系统', '预测模型', '生成式AI',
-      'AIGC', 'AI绘画', 'AI编程', 'AI写作', 'AI对话',
-      '模型微调', '模型训练', '模型优化', '模型压缩', '模型量化',
-      '知识图谱', '向量数据库', 'RAG', '检索增强生成',
-      '注意力机制', '注意力', 'Self-Attention', '多头注意力',
-      '对抗训练', 'GAN', '扩散模型', 'Diffusion',
-      '开源', '开源模型', '开源框架', 'API',
-      '算力', 'GPU', 'TPU', '训练成本', '推理优化',
-      'AI安全', 'AI伦理', 'AI对齐', '数据隐私'
-    ];
-    
-    // 缓存趋势数据
+      'GPT-5', 'GPT-4', 'ChatGPT', 'GPT', '大语言模型', 'LLM', 'Transformer', 'BERT', 'T5',
+      'CLIP', 'DALL-E', 'Stable Diffusion', 'PyTorch', 'TensorFlow', 'JAX', 'Hugging Face',
+      'OpenAI', '神经网络', '深度学习', '机器学习', '强化学习', '监督学习', '计算机视觉',
+      '自然语言处理', 'NLP', '语音识别', '图像生成', 'AI Agent', '智能体', '多模态AI',
+      '多模态', '代码生成', '自动驾驶', '机器人', '推荐系统', '预测模型', '生成式AI', 'AIGC',
+      'AI绘画', 'AI编程', 'AI写作', 'AI对话', '模型微调', '模型训练', '模型优化', '模型压缩',
+      '模型量化', '知识图谱', '向量数据库', '检索增强生成', 'RAG', 'Self-Attention', '多头注意力',
+      '注意力机制', '注意力', '对抗训练', '扩散模型', 'Diffusion', 'GAN', '开源模型', '开源框架',
+      '开源', 'API', '算力', 'GPU', 'TPU', '训练成本', '推理优化', 'AI安全', 'AI伦理', 'AI对齐',
+      '数据隐私', 'AI'
+    ].sort((a, b) => b.length - a.length);
     this.trendCache = new Map();
     this.lastAnalysisTime = null;
-    this.newsSnapshot = []; // 保存新闻快照用于比较
+    this.newsSnapshot = [];
   }
 
-  /**
-   * 从文本中提取关键词
-   */
   extractKeywords(text) {
     if (!text) return [];
-    
-    const keywords = [];
-    const textLower = text.toLowerCase();
-    
-    // 匹配核心关键词
-    this.coreKeywords.forEach(keyword => {
-      const keywordLower = keyword.toLowerCase();
-      // 支持中英文匹配
-      const regex = new RegExp(keywordLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
-      const matches = textLower.match(regex);
-      if (matches) {
-        keywords.push({
-          keyword: keyword,
-          count: matches.length,
-          positions: []
-        });
+    const occupied = [];
+    const results = [];
+
+    this.coreKeywords.forEach((keyword) => {
+      const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const ascii = /^[\x00-\x7F]+$/.test(keyword);
+      const pattern = ascii ? `(?<![A-Za-z0-9])${escaped}(?![A-Za-z0-9])` : escaped;
+      const regex = new RegExp(pattern, 'gi');
+      let match;
+      let count = 0;
+      while ((match = regex.exec(text)) !== null) {
+        const start = match.index;
+        const end = start + match[0].length;
+        if (!occupied.some(([left, right]) => start < right && end > left)) {
+          occupied.push([start, end]);
+          count += 1;
+        }
+        if (match[0].length === 0) regex.lastIndex += 1;
       }
+      if (count) results.push({ keyword, count, positions: [] });
     });
-    
-    // 按出现次数排序
-    return keywords.sort((a, b) => b.count - a.count);
+
+    return results.sort((a, b) => b.count - a.count || b.keyword.length - a.keyword.length);
   }
 
-  /**
-   * 分析新闻趋势
-   */
-  async analyzeTrends(newsItems) {
-    if (!newsItems || newsItems.length === 0) {
-      return this.getEmptyTrends();
-    }
-
-    const now = new Date();
-    const analysisId = `analysis_${now.getTime()}`;
-    
-    // 提取所有关键词
-    const allKeywords = new Map();
-    const timeWindows = {
-      last24h: [],
-      last7d: [],
-      last30d: []
+  toSource(article) {
+    return {
+      id: article.id,
+      title: article.title || '未命名资讯',
+      url: article.url || null,
+      source: article.source || '未知来源',
+      publishedAt: article.publishedAt || null,
+      category: article.category || null,
+      region: article.region || 'global'
     };
-    
-    const now24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-    const now7d = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-    const now30d = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  }
 
-    newsItems.forEach(item => {
-      const text = `${item.title || ''} ${item.description || ''}`;
-      const keywords = this.extractKeywords(text);
-      const pubDate = new Date(item.publishedAt);
-      
-      // 按时间窗口分类
-      if (pubDate >= now24h) {
-        timeWindows.last24h.push({ item, keywords });
-      } else if (pubDate >= now7d) {
-        timeWindows.last7d.push({ item, keywords });
-      } else if (pubDate >= now30d) {
-        timeWindows.last30d.push({ item, keywords });
-      }
-      
-      // 统计关键词
-      keywords.forEach(kw => {
-        const existing = allKeywords.get(kw.keyword);
-        if (existing) {
-          existing.count += kw.count;
-          existing.articles.push(item);
-        } else {
-          allKeywords.set(kw.keyword, {
-            keyword: kw.keyword,
-            count: kw.count,
-            articles: [item],
-            trend: 'stable'
-          });
-        }
+  async analyzeTrends(newsItems, nowInput = new Date()) {
+    if (!Array.isArray(newsItems) || newsItems.length === 0) return this.getEmptyTrends(nowInput);
+    const now = new Date(nowInput);
+    const day = 86400000;
+    const validItems = newsItems
+      .map((item) => ({ ...item, _date: new Date(item.publishedAt) }))
+      .filter((item) => !Number.isNaN(item._date.getTime()) && item._date <= now)
+      .sort((a, b) => b._date - a._date);
+    const windows = {
+      last24h: validItems.filter((item) => now - item._date <= day),
+      last7d: validItems.filter((item) => now - item._date <= 7 * day),
+      last30d: validItems.filter((item) => now - item._date <= 30 * day)
+    };
+    const hasComparisonHistory = validItems.some((item) => now - item._date >= 14 * day);
+    const keywordMap = new Map();
+
+    validItems.forEach((item) => {
+      const age = now - item._date;
+      this.extractKeywords(`${item.title || ''} ${item.description || ''}`).forEach((match) => {
+        const current = keywordMap.get(match.keyword) || {
+          keyword: match.keyword, count: 0, articles: [], recentArticles: [], previousArticles: []
+        };
+        current.count += match.count;
+        current.articles.push(item);
+        if (age <= 7 * day) current.recentArticles.push(item);
+        else if (age <= 14 * day) current.previousArticles.push(item);
+        keywordMap.set(match.keyword, current);
       });
     });
 
-    // 转换为数组并排序
-    const sortedKeywords = Array.from(allKeywords.values())
-      .sort((a, b) => b.count - a.count)
+    const trends = [...keywordMap.values()].map((item) => this.calculateTrend(item, hasComparisonHistory))
+      .sort((a, b) => b.recentCount - a.recentCount || b.articleCount - a.articleCount || a.keyword.localeCompare(b.keyword))
       .slice(0, 20);
-
-    // 计算趋势变化（与之前的数据对比）
-    const trendsWithChange = this.calculateTrendChanges(sortedKeywords);
-    
-    // 生成趋势洞察
-    const insights = this.generateInsights(trendsWithChange, timeWindows);
-    
-    // 检测新兴趋势
-    const emergingTrends = this.detectEmergingTrends(trendsWithChange, timeWindows);
-    
-    // 检测降温趋势
-    const decliningTrends = this.detectDecliningTrends(trendsWithChange, timeWindows);
-
     const result = {
-      analysisId,
+      analysisId: `analysis_${now.getTime()}`,
       timestamp: now.toISOString(),
-      totalAnalyzed: newsItems.length,
-      topKeywords: trendsWithChange.slice(0, 10),
-      emergingTrends,
-      decliningTrends,
-      insights,
-      timeDistribution: {
-        last24h: timeWindows.last24h.length,
-        last7d: timeWindows.last7d.length,
-        last30d: timeWindows.last30d.length
+      totalAnalyzed: validItems.length,
+      topKeywords: trends.slice(0, 10),
+      emergingTrends: trends.filter((item) => item.trend === 'surging').slice(0, 5).map((item) => ({ keyword: item.keyword, growth: item.growth, description: this.generateTrendDescription(item, 'emerging'), sources: item.sources })),
+      decliningTrends: trends.filter((item) => item.trend === 'declining').slice(0, 5).map((item) => ({ keyword: item.keyword, growth: item.growth, description: this.generateTrendDescription(item, 'declining'), sources: item.sources })),
+      insights: this.generateInsights(trends),
+      timeDistribution: { last24h: windows.last24h.length, last7d: windows.last7d.length, last30d: windows.last30d.length },
+      comparison: {
+        recent: '最近7天',
+        previous: '此前7天',
+        method: hasComparisonHistory ? '按相关文章数比较两个完整的等长周期' : '历史数据尚未覆盖完整的此前7天周期',
+        status: hasComparisonHistory ? 'ready' : 'insufficient_history'
       },
-      hasNewData: this.hasNewData(newsItems)
+      hasNewData: this.hasNewData(validItems)
     };
-
-    // 保存当前快照
-    this.newsSnapshot = newsItems.slice(0, 100).map(n => n.id);
+    this.newsSnapshot = validItems.slice(0, 100).map((item) => item.id);
     this.lastAnalysisTime = now;
     this.trendCache.set('latest', result);
-
     return result;
   }
 
-  /**
-   * 计算趋势变化
-   */
-  calculateTrendChanges(keywords) {
-    return keywords.map(kw => {
-      // 计算增长指标（基于文章数量的对数）
-      const growth = Math.log(kw.count + 1) * 10;
-      
-      // 判断趋势方向
-      let trend = 'stable';
-      if (growth > 15) trend = 'surging';
-      else if (growth > 8) trend = 'rising';
-      else if (growth < 3) trend = 'declining';
-      
-      return {
-        ...kw,
-        growth: Math.round(growth),
-        trend,
-        articleCount: kw.articles.length,
-        // 获取最新相关文章
-        latestArticle: kw.articles[0]
-      };
-    });
-  }
-
-  /**
-   * 检测新兴趋势
-   */
-  detectEmergingTrends(trends, timeWindows) {
-    return trends
-      .filter(t => t.trend === 'surging' && t.articleCount >= 3)
-      .slice(0, 5)
-      .map(t => ({
-        keyword: t.keyword,
-        growth: t.growth,
-        description: this.generateTrendDescription(t, 'emerging')
-      }));
-  }
-
-  /**
-   * 检测降温趋势
-   */
-  detectDecliningTrends(trends, timeWindows) {
-    return trends
-      .filter(t => t.trend === 'declining' && t.count > 5)
-      .slice(0, 3)
-      .map(t => ({
-        keyword: t.keyword,
-        description: this.generateTrendDescription(t, 'declining')
-      }));
-  }
-
-  /**
-   * 生成趋势描述
-   */
-  generateTrendDescription(trend, type) {
-    const descriptions = {
-      emerging: [
-        `${trend.keyword} 正在快速升温，近24小时出现多篇相关报道`,
-        `${trend.keyword} 成为新的关注热点，相关讨论激增`,
-        `${trend.keyword} 话题热度上升，引起行业广泛关注`
-      ],
-      declining: [
-        `${trend.keyword} 话题热度有所下降，进入平稳期`,
-        `${trend.keyword} 讨论度回落，可能进入技术成熟期`
-      ]
+  calculateTrend(item, hasComparisonHistory = true) {
+    const recentCount = item.recentArticles.length;
+    const previousCount = item.previousArticles.length;
+    const growth = !hasComparisonHistory ? null : previousCount > 0
+      ? Math.round(((recentCount - previousCount) / previousCount) * 100)
+      : (recentCount > 0 ? 100 : 0);
+    let trend = hasComparisonHistory ? 'stable' : 'insufficient';
+    if (hasComparisonHistory && growth >= 100 && recentCount >= 3) trend = 'surging';
+    else if (growth >= 25) trend = 'rising';
+    else if (growth <= -25) trend = 'declining';
+    const citedArticles = (item.recentArticles.length ? item.recentArticles : item.articles).slice(0, 3);
+    return {
+      keyword: item.keyword,
+      count: item.count,
+      articleCount: item.articles.length,
+      recentCount,
+      previousCount,
+      growth,
+      trend,
+      latestArticle: this.toSource(item.articles[0]),
+      sources: citedArticles.map((article) => this.toSource(article))
     };
-    
-    const list = descriptions[type] || descriptions.emerging;
-    return list[Math.floor(Math.random() * list.length)];
   }
 
-  /**
-   * 生成趋势洞察
-   */
-  generateInsights(trends, timeWindows) {
+  generateTrendDescription(trend, type) {
+    if (type === 'declining') return `${trend.keyword} 最近7天较此前7天减少 ${Math.abs(trend.growth)}%，热度正在回落`;
+    return `${trend.keyword} 最近7天较此前7天增长 ${trend.growth}%，并有 ${trend.recentCount} 篇相关资讯`;
+  }
+
+  generateInsights(trends) {
     const insights = [];
-    
-    // 检测热点爆发
-    const surging = trends.filter(t => t.trend === 'surging');
-    if (surging.length > 0) {
-      insights.push({
-        type: 'hot',
-        title: '热点爆发',
-        content: `${surging[0].keyword} 等 ${surging.length} 个话题热度快速上升，建议重点关注`
-      });
+    if (trends[0]?.trend === 'insufficient') {
+      return [{
+        type: 'insufficient',
+        title: '等待历史基线',
+        content: '当前数据库尚未覆盖完整的两个7天周期，因此只展示话题数量，不判断升温或降温。',
+        sources: trends[0].sources
+      }];
     }
-    
-    // 检测技术方向
-    const techTrends = trends.filter(t => 
-      ['GPT', 'LLM', 'Transformer', '神经网络', '深度学习'].some(k => 
-        t.keyword.includes(k)
-      )
-    );
-    if (techTrends.length > 0) {
-      insights.push({
-        type: 'tech',
-        title: '技术动态',
-        content: `${techTrends[0].keyword} 技术持续活跃，反映行业技术演进方向`
-      });
-    }
-    
-    // 检测应用落地
-    const appTrends = trends.filter(t =>
-      ['自动驾驶', '机器人', '推荐系统', '代码生成'].some(k =>
-        t.keyword.includes(k)
-      )
-    );
-    if (appTrends.length > 0) {
-      insights.push({
-        type: 'application',
-        title: '应用落地',
-        content: `${appTrends[0].keyword} 等应用场景讨论增加，显示AI技术正在加速落地`
-      });
-    }
-    
+    const rising = trends.find((item) => item.trend === 'surging' || item.trend === 'rising');
+    const declining = trends.find((item) => item.trend === 'declining');
+    if (rising) insights.push({ type: 'hot', title: '升温话题', content: this.generateTrendDescription(rising, 'emerging'), sources: rising.sources });
+    if (declining) insights.push({ type: 'cooling', title: '降温话题', content: this.generateTrendDescription(declining, 'declining'), sources: declining.sources });
+    if (!insights.length && trends[0]) insights.push({ type: 'stable', title: '持续关注', content: `${trends[0].keyword} 在最近两个7天周期内保持相对稳定`, sources: trends[0].sources });
     return insights;
   }
 
-  /**
-   * 检查是否有新数据
-   */
   hasNewData(newsItems) {
-    if (!this.newsSnapshot || this.newsSnapshot.length === 0) {
-      return true;
-    }
-    
-    const currentIds = new Set(newsItems.slice(0, 100).map(n => n.id));
-    const previousIds = new Set(this.newsSnapshot);
-    
-    // 检查是否有新的ID
-    for (const id of currentIds) {
-      if (!previousIds.has(id)) {
-        return true;
-      }
-    }
-    
-    return false;
+    if (!this.newsSnapshot.length) return true;
+    const previous = new Set(this.newsSnapshot);
+    return newsItems.slice(0, 100).some((item) => !previous.has(item.id));
   }
 
-  /**
-   * 获取空趋势数据
-   */
-  getEmptyTrends() {
+  getEmptyTrends(nowInput = new Date()) {
+    const now = new Date(nowInput);
     return {
-      analysisId: `empty_${Date.now()}`,
-      timestamp: new Date().toISOString(),
-      totalAnalyzed: 0,
-      topKeywords: [],
-      emergingTrends: [],
-      decliningTrends: [],
-      insights: [],
+      analysisId: `empty_${now.getTime()}`, timestamp: now.toISOString(), totalAnalyzed: 0,
+      topKeywords: [], emergingTrends: [], decliningTrends: [], insights: [],
       timeDistribution: { last24h: 0, last7d: 0, last30d: 0 },
+      comparison: { recent: '最近7天', previous: '此前7天', method: '历史数据不足', status: 'insufficient_history' },
       hasNewData: false
     };
   }
 
-  /**
-   * 获取最新趋势
-   */
-  getLatestTrends() {
-    return this.trendCache.get('latest') || this.getEmptyTrends();
-  }
-
-  /**
-   * 清理缓存
-   */
-  clearCache() {
-    this.trendCache.clear();
-    this.newsSnapshot = [];
-  }
+  getLatestTrends() { return this.trendCache.get('latest') || this.getEmptyTrends(); }
+  clearCache() { this.trendCache.clear(); this.newsSnapshot = []; }
 }
 
 module.exports = new TrendAnalyzer();

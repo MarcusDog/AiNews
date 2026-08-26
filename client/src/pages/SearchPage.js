@@ -20,6 +20,15 @@ import { formatDistanceToNow } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { useRefreshOnVisible } from '../hooks/usePageVisibility';
 
+const SOURCE_GROUP_LABELS = {
+  research: '研究',
+  product: '产品',
+  engineering: '工程',
+  investment: '投资'
+};
+
+const SOURCE_GROUP_ORDER = ['research', 'product', 'engineering', 'investment'];
+
 // 搜索历史存储键
 const SEARCH_HISTORY_KEY = 'ainews-search-history';
 const MAX_HISTORY_ITEMS = 10;
@@ -42,7 +51,7 @@ const SearchPage = () => {
     endDate: '',
     sortBy: 'publishedAt',
     sortOrder: 'desc'
-  });
+  }, []);
   
   // 数据源
   const [categories, setCategories] = useState([]);
@@ -56,6 +65,12 @@ const SearchPage = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const limit = 15;
+
+  const groupedSources = SOURCE_GROUP_ORDER.map((group) => ({
+    key: group,
+    label: SOURCE_GROUP_LABELS[group],
+    items: sources.filter((source) => source.sourceGroup === group)
+  })).filter((group) => group.items.length > 0);
 
 // 加载分类和来源的回调函数
   const loadFilterOptions = useCallback(async () => {
@@ -83,7 +98,7 @@ const SearchPage = () => {
   useRefreshOnVisible(() => {
     loadFilterOptions();
     loadSearchHistory();
-  }, []);
+  });
 
   // 加载搜索历史
   const loadSearchHistory = () => {
@@ -251,11 +266,11 @@ const SearchPage = () => {
 
   const getCategoryColor = (category) => {
     const colors = {
-      'AI新闻': 'bg-blue-100 text-blue-700',
-      'AI框架': 'bg-green-100 text-green-700',
-      '新算法': 'bg-purple-100 text-purple-700',
-      '新思路': 'bg-yellow-100 text-yellow-700',
-      '新工具': 'bg-pink-100 text-pink-700',
+      'AI新闻': 'bg-[#edf3ef] text-[#355947]',
+      'AI框架': 'bg-[#eef1eb] text-[#49604f]',
+      '新算法': 'bg-[#f2ece5] text-[#665447]',
+      '新思路': 'bg-[#f7f0df] text-[#795a24]',
+      '新工具': 'bg-[#f6ebe7] text-[#844536]',
     };
     return colors[category] || 'bg-gray-100 text-gray-700';
   };
@@ -305,7 +320,7 @@ const SearchPage = () => {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => searchHistory.length > 0 && setShowHistory(true)}
-            className="w-full pl-10 pr-24 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-lg"
+            className="w-full pl-10 pr-24 py-3 border border-[#cfc7bc] bg-white focus:ring-2 focus:ring-[#d9beb3] focus:border-transparent outline-none text-lg"
           />
           <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
             <button
@@ -313,14 +328,14 @@ const SearchPage = () => {
               onClick={() => setShowFilters(!showFilters)}
               className={`p-2 rounded-md transition-colors relative ${
                 showFilters || activeFiltersCount > 0
-                  ? 'bg-blue-100 text-blue-600'
+                  ? 'bg-[#eee6db] text-[#7d4436]'
                   : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'
               }`}
               title="高级筛选"
             >
               <Filter className="w-5 h-5" />
               {activeFiltersCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-blue-600 text-white text-xs rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#7d4436] text-white text-xs rounded-full flex items-center justify-center">
                   {activeFiltersCount}
                 </span>
               )}
@@ -328,7 +343,7 @@ const SearchPage = () => {
             <button
               type="submit"
               disabled={loading || !query.trim()}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-4 py-2 bg-[#7d4436] text-white hover:bg-[#65372d] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -436,10 +451,14 @@ const SearchPage = () => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="">全部来源</option>
-                {sources.map((src) => (
-                  <option key={src.name} value={src.name}>
-                    {src.name} ({src.count})
-                  </option>
+                {groupedSources.map((group) => (
+                  <optgroup key={group.key} label={group.label}>
+                    {group.items.map((src) => (
+                      <option key={src.name} value={src.name}>
+                        {src.name} ({src.count})
+                      </option>
+                    ))}
+                  </optgroup>
                 ))}
               </select>
             </div>
@@ -522,7 +541,7 @@ const SearchPage = () => {
               type="button"
               onClick={applyFilters}
               disabled={!query.trim()}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-4 py-2 bg-[#7d4436] text-white hover:bg-[#65372d] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               应用筛选
             </button>
@@ -571,7 +590,7 @@ const SearchPage = () => {
           <p className="text-gray-600 mb-4">{error}</p>
           <button
             onClick={() => performSearch(query)}
-            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center px-4 py-2 bg-[#7d4436] text-white hover:bg-[#65372d] transition-colors"
           >
             重试
           </button>

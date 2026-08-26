@@ -5,11 +5,12 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "init-db": "node scripts/init-db.js"
+    "init-db": "node scripts/init-db.js",
+    "test": "node --test tests/*.test.js"
   },
   "dependencies": {
     "axios": "^1.6.2",
-    "better-sqlite3": "^9.2.2",
+    "better-sqlite3": "^12.8.0",
     "cheerio": "^1.0.0-rc.12",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -19,8 +20,7 @@
     "https-proxy-agent": "^7.0.6",
     "node-cron": "^3.0.3",
     "rss-parser": "^3.13.0",
-    "socket.io": "^4.7.2",
-    "sqlite3": "^5.1.7"
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

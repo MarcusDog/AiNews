@@ -3,7 +3,7 @@ module.exports = {
     {
       name: 'ainews-server',
       script: './server/index.js',
-      cwd: '/home/tian/clawdbot/work/Ainews',
+      cwd: '/root/website/Ainews',
       instances: 1,
       exec_mode: 'fork',
       env: {
@@ -40,7 +40,7 @@ module.exports = {
       name: 'ainews-client',
       script: 'npx',
       args: 'serve -s build -l 3003',
-      cwd: '/home/tian/clawdbot/work/Ainews/client',
+      cwd: '/root/website/Ainews/client',
       instances: 1,
       exec_mode: 'fork',
       env: {

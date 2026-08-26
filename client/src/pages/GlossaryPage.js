@@ -1,265 +1,131 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Book, Search, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
+import React, { useCallback, useState } from 'react';
+import { BookOpen, ChevronDown, ChevronUp, Cpu, Layers3, Loader2, Search } from 'lucide-react';
+import { API_ENDPOINTS } from '../config/api';
 import { useRefreshOnVisible } from '../hooks/usePageVisibility';
 
+const VIEWS = [
+  { id: 'terms', label: '术语词典', icon: BookOpen },
+  { id: 'architectures', label: '模型架构', icon: Cpu },
+  { id: 'frameworks', label: '工程框架', icon: Layers3 }
+];
+
+const ARCHITECTURES = [
+  { id: 'transformer', name: 'Transformer', note: '序列与多模态的主流骨架', summary: '通过注意力机制建模上下文关系，适合并行训练，也是大语言模型和许多多模态模型的核心结构。', strengths: ['长距离上下文', '训练并行度高', '生态成熟'], tradeoffs: ['长序列计算与显存开销较高', '对数据和算力需求大'], uses: '语言模型、视觉 Transformer、多模态理解与生成' },
+  { id: 'cnn', name: 'CNN', note: '局部模式与视觉任务', summary: '用卷积核提取局部空间特征，结构稳定、推理高效，在视觉和边缘设备上仍然很实用。', strengths: ['局部归纳偏置强', '参数利用高效', '部署成熟'], tradeoffs: ['全局关系需要更深网络', '通用序列建模能力有限'], uses: '图像分类、检测、工业视觉、端侧推理' },
+  { id: 'rnn', name: 'RNN / LSTM', note: '按时间顺序处理状态', summary: '逐步维护隐藏状态，天然适合流式时序信号；LSTM 和 GRU 用门控机制缓解长期依赖问题。', strengths: ['流式处理自然', '小模型成本可控', '适合连续状态'], tradeoffs: ['训练难以充分并行', '超长依赖容易衰减'], uses: '传感器时序、语音流、小型预测系统' },
+  { id: 'ssm', name: 'State Space / Mamba', note: '线性复杂度长序列', summary: '把序列建模转为状态空间更新，以更接近线性的成本处理长上下文，是 Transformer 之外的重要路线。', strengths: ['长序列效率高', '推理内存更友好', '适合流式输入'], tradeoffs: ['工具生态较新', '任务适配与可解释性仍在发展'], uses: '长文本、基因序列、音频与连续信号' },
+  { id: 'diffusion', name: 'Diffusion / MoE', note: '生成过程与稀疏扩展', summary: 'Diffusion 通过逐步去噪生成内容；MoE 通过路由激活部分专家扩展容量。二者解决的是不同层面的问题。', strengths: ['高质量生成', '模型容量可扩展', '路线组合空间大'], tradeoffs: ['采样或路由更复杂', '训练和部署需要专门优化'], uses: '图像视频生成、稀疏大模型、多模态系统' }
+];
+
+const FRAMEWORK_LAYERS = [
+  { id: 'training', name: '训练与数值计算', role: '把模型结构变成可以训练的程序，并管理梯度、并行与硬件。', examples: ['PyTorch', 'JAX', 'TensorFlow', 'MindSpore', 'PaddlePaddle'], choose: '需要研究迭代、训练自有模型或控制底层算子时。' },
+  { id: 'ecosystem', name: '模型与数据生态', role: '提供预训练模型、数据集、评测和复用接口，减少重复工程。', examples: ['Hugging Face', 'ModelScope', 'OpenMMLab', 'PaddleNLP'], choose: '需要快速找到模型、微调配方或标准评测时。' },
+  { id: 'inference', name: '推理与部署', role: '把训练好的模型稳定、低成本地变成线上服务或端侧能力。', examples: ['vLLM', 'TensorRT-LLM', 'ONNX Runtime', 'Triton', 'llama.cpp'], choose: '关注吞吐、延迟、显存、量化和多硬件部署时。' },
+  { id: 'application', name: '应用与编排', role: '连接模型、检索、工具和业务流程，管理一次完整任务如何执行。', examples: ['LangChain', 'LlamaIndex', 'Dify', 'Semantic Kernel'], choose: '需要做 RAG、Agent、工作流或产品原型时。' }
+];
+
 const GlossaryPage = () => {
+  const [view, setView] = useState('terms');
   const [glossary, setGlossary] = useState([]);
+  const [totalTerms, setTotalTerms] = useState(0);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('全部');
   const [expandedTerms, setExpandedTerms] = useState(new Set());
+  const [architectureId, setArchitectureId] = useState(ARCHITECTURES[0].id);
+  const [frameworkId, setFrameworkId] = useState(FRAMEWORK_LAYERS[0].id);
 
-  // 使用useCallback包装fetch函数
-  const loadData = useCallback(() => {
-    fetchCategories();
-    fetchGlossary();
-  }, [selectedCategory]);
-
-  // 页面挂载和切换时自动加载数据
-  useRefreshOnVisible(loadData, [selectedCategory]);
-
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     try {
-      const response = await fetch('/api/glossary/categories');
-      const data = await response.json();
-      if (data.success) {
-        setCategories(['全部', ...data.data]);
-      }
-    } catch (error) {
-      console.error('获取分类失败:', error);
+      const response = await fetch(API_ENDPOINTS.GLOSSARY_CATEGORIES);
+      const payload = await response.json();
+      if (payload.success) setCategories(['全部', ...payload.data]);
+    } catch {
+      // 术语列表仍可独立加载。
     }
-  };
+  }, []);
 
-  const fetchGlossary = async () => {
+  const fetchGlossary = useCallback(async () => {
     try {
       setLoading(true);
-      setError(null);
-      
-      const params = new URLSearchParams();
-      if (selectedCategory !== '全部') {
-        params.append('category', selectedCategory);
-      }
-      if (searchQuery.trim()) {
-        params.append('search', searchQuery.trim());
-      }
-      
-      const response = await fetch(`/api/glossary?${params}`);
-      const data = await response.json();
-      
-      if (data.success) {
-        setGlossary(data.data);
-      } else {
-        throw new Error(data.error || '获取失败');
-      }
-    } catch (error) {
-      console.error('获取AI知识库失败:', error);
-      setError(error.message);
+      setError('');
+      const params = new URLSearchParams({ limit: '1500' });
+      if (selectedCategory !== '全部') params.set('category', selectedCategory);
+      if (searchQuery.trim()) params.set('search', searchQuery.trim());
+      const response = await fetch(`${API_ENDPOINTS.GLOSSARY}?${params}`);
+      const payload = await response.json();
+      if (!response.ok || !payload.success) throw new Error(payload.error || '获取失败');
+      setGlossary(payload.data || []);
+      setTotalTerms(payload.total || 0);
+    } catch (requestError) {
+      setError(requestError.message || '知识库加载失败');
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchQuery, selectedCategory]);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
+  const loadData = useCallback(() => {
+    fetchCategories();
     fetchGlossary();
-  };
+  }, [fetchCategories, fetchGlossary]);
 
-  const toggleTerm = (termId) => {
-    setExpandedTerms(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(termId)) {
-        newSet.delete(termId);
-      } else {
-        newSet.add(termId);
-      }
-      return newSet;
-    });
-  };
+  useRefreshOnVisible(loadData, selectedCategory);
 
-  const getCategoryColor = (category) => {
-    const colors = {
-      '基础概念': 'bg-blue-100 text-blue-700',
-      '模型架构': 'bg-purple-100 text-purple-700',
-      '模型类型': 'bg-green-100 text-green-700',
-      '应用领域': 'bg-yellow-100 text-yellow-700',
-      '应用技术': 'bg-pink-100 text-pink-700',
-      '训练方法': 'bg-indigo-100 text-indigo-700',
-      '学习方法': 'bg-cyan-100 text-cyan-700',
-      '数据表示': 'bg-orange-100 text-orange-700',
-      '数据存储': 'bg-teal-100 text-teal-700',
-      '硬件': 'bg-red-100 text-red-700',
-      '运行阶段': 'bg-gray-100 text-gray-700',
-      '模型问题': 'bg-rose-100 text-rose-700',
-      'AI安全': 'bg-amber-100 text-amber-700',
-      '技术接口': 'bg-lime-100 text-lime-700',
-      '部署方式': 'bg-emerald-100 text-emerald-700',
-      '优化技术': 'bg-violet-100 text-violet-700',
-      '模型参数': 'bg-sky-100 text-sky-700',
-    };
-    return colors[category] || 'bg-gray-100 text-gray-700';
-  };
+  const toggleTerm = (termId) => setExpandedTerms((current) => {
+    const next = new Set(current);
+    if (next.has(termId)) next.delete(termId);
+    else next.add(termId);
+    return next;
+  });
+
+  const architecture = ARCHITECTURES.find((item) => item.id === architectureId);
+  const framework = FRAMEWORK_LAYERS.find((item) => item.id === frameworkId);
 
   return (
-    <div className="max-w-4xl mx-auto">
-      {/* 页面标题 */}
-      <div className="mb-8">
-<h1 className="text-3xl font-bold text-gray-900 flex items-center">
-            <Book className="w-8 h-8 mr-3 text-blue-600" />
-            AI知识库
-          </h1>
-<p className="text-gray-600 mt-2">
-            全面的AI学习资源，涵盖基础概念、模型架构、算法框架、训练方法、AI技术及应用领域，共收录 {glossary.length} 个知识点
-          </p>
-          <div className="mt-4 flex gap-3">
-            <a 
-              href="/ai-architecture-guide.html" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-md hover:shadow-lg"
-            >
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.553-.894L15 7m0 13V7" />
-              </svg>
-              📊 查看模型架构与算法框架详解
-            </a>
+    <div className="mx-auto max-w-[1320px] pb-16 text-[#292621]">
+      <header className="border-b border-[#bdb3a5] pb-7 pt-2">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#8c3f30]">AI knowledge desk</p>
+        <div className="mt-3 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+          <div><h1 className="font-serif text-5xl font-semibold tracking-[-0.035em] sm:text-6xl">AI 知识库</h1><p className="mt-4 max-w-2xl text-sm leading-7 text-[#686057]">术语、模型结构和工程工具放在同一个页面里。先选择你要理解的层次，再逐项展开，不需要在几个长页面之间来回跳。</p></div>
+          <p className="text-sm text-[#756d63]">收录 {totalTerms.toLocaleString('zh-CN')} 个知识条目</p>
+        </div>
+      </header>
+
+      <nav className="mt-6 inline-flex max-w-full overflow-x-auto border border-[#cfc5b7] bg-[#f8f4ec] p-1" aria-label="知识库视图">
+        {VIEWS.map(({ id, label, icon: Icon }) => <button key={id} type="button" onClick={() => setView(id)} className={`inline-flex h-11 flex-none items-center gap-2 px-5 text-sm font-semibold transition ${view === id ? 'bg-[#28241f] text-white' : 'text-[#655d54] hover:text-[#8c3f30]'}`}><Icon className="h-4 w-4" />{label}</button>)}
+      </nav>
+
+      {view === 'terms' && (
+        <div className="mt-7 grid gap-8 lg:grid-cols-[260px_minmax(0,1fr)]">
+          <aside>
+            <form onSubmit={(event) => { event.preventDefault(); fetchGlossary(); }}>
+              <label className="relative block"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#8a8176]" /><input value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder="搜索术语" className="h-11 w-full border border-[#c9c0b3] bg-white pl-10 pr-3 text-sm outline-none focus:border-[#9d4938]" /></label>
+            </form>
+            <div className="mt-5 border-t border-[#cbc1b4] pt-4"><p className="mb-3 text-xs font-semibold text-[#746c62]">按分类浏览</p><div className="space-y-1">{categories.map((category) => <button key={category} type="button" onClick={() => setSelectedCategory(category)} className={`block w-full px-3 py-2 text-left text-sm transition ${selectedCategory === category ? 'bg-[#9d4938] text-white' : 'text-[#5f584f] hover:bg-white'}`}>{category}</button>)}</div></div>
+          </aside>
+          <div>
+            {loading && <div className="flex min-h-72 items-center justify-center text-sm text-[#6f675e]"><Loader2 className="mr-2 h-5 w-5 animate-spin" />正在读取术语</div>}
+            {error && !loading && <div className="border-l-2 border-red-600 bg-red-50 p-4 text-sm text-red-800">{error}<button type="button" onClick={fetchGlossary} className="ml-3 font-semibold underline">重试</button></div>}
+            {!loading && !error && <div className="border-t border-[#bdb3a5]">{glossary.map((term) => <article key={term.id} className="border-b border-[#cec5b8]"><button type="button" onClick={() => toggleTerm(term.id)} className="flex w-full items-center justify-between gap-5 py-5 text-left"><div className="min-w-0"><div className="flex flex-wrap items-baseline gap-x-3 gap-y-1"><h3 className="font-serif text-xl font-semibold">{term.term}</h3><span className="text-sm text-[#80776d]">{term.english}</span></div><p className="mt-2 text-xs text-[#8c3f30]">{term.category}{term.level ? ` · ${term.level}` : ''}</p></div>{expandedTerms.has(term.id) ? <ChevronUp className="h-5 w-5 flex-none text-[#82796f]" /> : <ChevronDown className="h-5 w-5 flex-none text-[#82796f]" />}</button>{expandedTerms.has(term.id) && <div className="grid gap-x-8 gap-y-6 pb-7 text-sm leading-7 text-[#5e574f] sm:grid-cols-2"><div className="sm:col-span-2"><p className="mb-1 text-xs font-semibold text-[#8a8176]">完整解释</p><p>{term.definition}</p></div><div><p className="mb-1 text-xs font-semibold text-[#8a8176]">为什么重要</p><p>{term.whyItMatters}</p></div><div><p className="mb-1 text-xs font-semibold text-[#8a8176]">怎么工作</p><p>{term.howItWorks}</p></div>{term.example && <div><p className="mb-1 text-xs font-semibold text-[#8a8176]">例子</p><p>{term.example}</p></div>}<div><p className="mb-1 text-xs font-semibold text-[#8a8176]">局限与误区</p><p>{term.limitations}</p></div>{term.useCases?.length > 0 && <div className="sm:col-span-2"><p className="mb-2 text-xs font-semibold text-[#8a8176]">常见场景</p><div className="flex flex-wrap gap-2">{term.useCases.map((item) => <span key={item} className="border border-[#d2c8ba] bg-[#f8f4ec] px-2.5 py-1 text-xs">{item}</span>)}</div></div>}{term.relatedTerms?.length > 0 && <div className="sm:col-span-2"><p className="mb-1 text-xs font-semibold text-[#8a8176]">继续了解</p><p>{term.relatedTerms.join('、')}</p></div>}</div>}</article>)}{!glossary.length && <p className="py-16 text-center text-sm text-[#746c62]">没有找到匹配的术语。</p>}</div>}
           </div>
         </div>
+      )}
 
-      {/* 搜索和筛选 */}
-      <div className="mb-6 space-y-4">
-        {/* 搜索框 */}
-        <form onSubmit={handleSearch} className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-          <input
-            type="text"
-            placeholder="搜索术语、英文名称或定义..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-24 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-          />
-          <button
-            type="submit"
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-          >
-            搜索
-          </button>
-        </form>
-
-        {/* 分类筛选 */}
-        <div className="flex flex-wrap gap-2">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                selectedCategory === category
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* 加载状态 */}
-      {loading && (
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-blue-600 mr-2" />
-          <span className="text-gray-600">加载AI知识库中...</span>
+      {view === 'architectures' && (
+        <div className="mt-7 grid border border-[#c9c0b3] bg-white lg:grid-cols-[320px_minmax(0,1fr)]">
+          <div className="border-b border-[#c9c0b3] bg-[#ede6da] p-3 lg:border-b-0 lg:border-r">{ARCHITECTURES.map((item) => <button key={item.id} type="button" onClick={() => setArchitectureId(item.id)} className={`block w-full border-b border-[#d2c8ba] px-4 py-4 text-left transition last:border-b-0 ${item.id === architectureId ? 'bg-[#28241f] text-white' : 'hover:bg-white/70'}`}><span className="block font-serif text-lg font-semibold">{item.name}</span><span className={`mt-1 block text-xs ${item.id === architectureId ? 'text-white/55' : 'text-[#776e64]'}`}>{item.note}</span></button>)}</div>
+          <article className="p-6 sm:p-10 lg:p-12"><p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8c3f30]">模型架构</p><h2 className="mt-3 font-serif text-4xl font-semibold">{architecture.name}</h2><p className="mt-5 max-w-3xl text-base leading-8 text-[#5f584f]">{architecture.summary}</p><div className="mt-9 grid gap-7 md:grid-cols-3"><div><h3 className="text-sm font-semibold">擅长</h3><ul className="mt-3 space-y-2 text-sm leading-6 text-[#6b635a]">{architecture.strengths.map((item) => <li key={item}>— {item}</li>)}</ul></div><div><h3 className="text-sm font-semibold">代价</h3><ul className="mt-3 space-y-2 text-sm leading-6 text-[#6b635a]">{architecture.tradeoffs.map((item) => <li key={item}>— {item}</li>)}</ul></div><div><h3 className="text-sm font-semibold">常见用途</h3><p className="mt-3 text-sm leading-6 text-[#6b635a]">{architecture.uses}</p></div></div></article>
         </div>
       )}
 
-      {/* 错误状态 */}
-      {error && !loading && (
-        <div className="text-center py-12">
-          <div className="text-red-500 mb-4">加载失败: {error}</div>
-          <button
-            onClick={fetchGlossary}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          >
-            重试
-          </button>
+      {view === 'frameworks' && (
+        <div className="mt-7">
+          <div className="grid gap-px bg-[#c9c0b3] sm:grid-cols-2 lg:grid-cols-4">{FRAMEWORK_LAYERS.map((item, index) => <button key={item.id} type="button" onClick={() => setFrameworkId(item.id)} className={`min-h-28 p-5 text-left transition ${item.id === frameworkId ? 'bg-[#28241f] text-white' : 'bg-[#f8f4ec] hover:bg-white'}`}><span className={`text-xs font-mono ${item.id === frameworkId ? 'text-[#e0a18f]' : 'text-[#9d4938]'}`}>0{index + 1}</span><span className="mt-3 block font-serif text-lg font-semibold">{item.name}</span></button>)}</div>
+          <article className="border-x border-b border-[#c9c0b3] bg-white p-6 sm:p-10"><div className="grid gap-8 lg:grid-cols-[1fr_0.8fr]"><div><p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8c3f30]">这一层负责什么</p><h2 className="mt-3 font-serif text-3xl font-semibold">{framework.name}</h2><p className="mt-4 text-base leading-8 text-[#5f584f]">{framework.role}</p><p className="mt-5 border-l-2 border-[#9d4938] pl-4 text-sm leading-7 text-[#665e55]"><strong>什么时候选：</strong>{framework.choose}</p></div><div><p className="text-xs font-semibold text-[#776e64]">常见工具</p><div className="mt-3 flex flex-wrap gap-2">{framework.examples.map((item) => <span key={item} className="border border-[#d2c8ba] bg-[#f8f4ec] px-3 py-2 text-sm font-semibold">{item}</span>)}</div></div></div></article>
         </div>
       )}
-
-      {/* 术语列表 */}
-      {!loading && !error && (
-        <div className="space-y-4">
-          {glossary.map((term) => (
-            <div
-              key={term.id}
-              className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
-            >
-              {/* 术语标题 */}
-              <button
-                onClick={() => toggleTerm(term.id)}
-                className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
-              >
-                <div className="flex items-center space-x-3">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    {term.term}
-                  </h3>
-                  <span className="text-sm text-gray-500">
-                    {term.english}
-                  </span>
-                  <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getCategoryColor(term.category)}`}>
-                    {term.category}
-                  </span>
-                </div>
-                {expandedTerms.has(term.id) ? (
-                  <ChevronUp className="w-5 h-5 text-gray-400" />
-                ) : (
-                  <ChevronDown className="w-5 h-5 text-gray-400" />
-                )}
-              </button>
-
-              {/* 术语详情 */}
-              {expandedTerms.has(term.id) && (
-                <div className="px-6 pb-4 border-t border-gray-100">
-                  <div className="pt-4 space-y-3">
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-500 mb-1">定义</h4>
-                      <p className="text-gray-700">{term.definition}</p>
-                    </div>
-                    {term.example && (
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-500 mb-1">示例</h4>
-                        <p className="text-gray-600 bg-gray-50 px-3 py-2 rounded-lg text-sm">
-                          {term.example}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
-
-          {/* 空状态 */}
-          {glossary.length === 0 && (
-            <div className="text-center py-12">
-              <Book className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">未找到相关术语</h3>
-              <p className="text-gray-600">
-                尝试使用其他关键词搜索，或选择其他分类
-              </p>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* 底部提示 */}
-      <div className="mt-8 p-4 bg-blue-50 rounded-lg">
-        <h4 className="text-sm font-medium text-blue-900 mb-2">学习提示</h4>
-        <p className="text-sm text-blue-700">
-          AI知识库收录了180+个AI术语、算法框架、技术概念和应用场景的详细解释，涵盖从基础概念到前沿技术的完整体系。
-          您可以通过搜索或分类筛选找到感兴趣的术语。
-        </p>
-      </div>
     </div>
   );
 };

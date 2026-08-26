@@ -75,11 +75,11 @@ const FavoritesPage = () => {
 
   const getCategoryColor = (category) => {
     const colors = {
-      'AI新闻': 'bg-blue-100 text-blue-700',
-      'AI框架': 'bg-green-100 text-green-700',
-      '新算法': 'bg-purple-100 text-purple-700',
-      '新思路': 'bg-yellow-100 text-yellow-700',
-      '新工具': 'bg-pink-100 text-pink-700',
+      'AI新闻': 'bg-[#edf3ef] text-[#355947]',
+      'AI框架': 'bg-[#eef1eb] text-[#49604f]',
+      '新算法': 'bg-[#f2ece5] text-[#665447]',
+      '新思路': 'bg-[#f7f0df] text-[#795a24]',
+      '新工具': 'bg-[#f6ebe7] text-[#844536]',
     };
     return colors[category] || 'bg-gray-100 text-gray-700';
   };
@@ -323,7 +323,7 @@ const FavoritesPage = () => {
           </p>
           <Link
             to="/"
-            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center px-4 py-2 bg-[#7d4436] text-white hover:bg-[#65372d] transition-colors"
           >
             去浏览资讯
           </Link>

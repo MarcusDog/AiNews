@@ -22,7 +22,7 @@ function SystemStatus({ onRefresh }) {
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(true);
   const [lastChecked, setLastChecked] = useState(null);
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   
@@ -145,7 +145,7 @@ function SystemStatus({ onRefresh }) {
   // 最小化视图
   if (isMinimized) {
     return (
-      <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end space-y-2">
+      <div className="fixed bottom-4 right-4 z-50 hidden flex-col items-end space-y-2 sm:flex">
         {/* 通知气泡 */}
         {hasNotifications && (
           <div className="flex flex-col space-y-1 max-h-40 overflow-y-auto">

@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+**/node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+client/build/
+**/build/
+**/dist/
+
+# Runtime / Cache
+client/node_modules/.cache/
+server/cache/
+server/data/backups/
+server/data/*.db
+server/data/*.db-shm
+server/data/*.db-wal
+
+# Logs
+*.log
+*.pid
+client/logs/
+server/logs/
+logs/
+
+# OS / Editor
+.DS_Store
+.idea/
+.vscode/
+.playwright-cli/
+.workbuddy/
+.gstack/
+
+# Archives (don't commit zips, including 归档.zip)
+*.zip
+
+# Secrets
+.env
+.env.local
+server/.env
+server/.env.local
+*.local.env
+
+# Playwright test output
+output/playwright/
+output/
+
+# Build artifacts in public
+client/public/downloads/
+
+# Old release archives
+release/
+
+# skills/aya-news-skill 作为独立仓库管理（已在 MarcusDog/AyaNewsSkill）
+skills/

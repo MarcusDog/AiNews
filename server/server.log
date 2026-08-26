@@ -1,243 +1,6520 @@
-[Proxy] 使用代理: http://172.27.128.1:10809
+[Proxy] 使用代理: http://127.0.0.1:7897
 🚀 AI资讯服务器 v2.0 运行在端口 3002
 📱 健康检查: http://localhost:3002/health
 🔌 WebSocket: ws://localhost:3002
-📅 定时更新: 每日8:00 + 每30分钟增量
+📅 定时更新: 每日8:00 + 每3小时一次
 🧹 数据清理: 每日2:00
 🔄 初始化系统...
-SQLite数据库连接成功: /home/tian/clawdbot/work/Ainews/server/data/ainews.db
+SQLite数据库连接成功: /Users/li/Public/Ainews/server/data/ainews.db
 ✅ 数据库初始化完成
 WebSocket已连接到NewsService
 🔄 获取初始新闻数据...
 开始更新新闻...
+[缓存命中] arXiv AI (1563.537秒前)
+[缓存命中] arXiv Computation and Language (1563.607秒前)
+跳过 260 条重复文章
+跳过 149 条重复文章
+[缓存命中] arXiv Computer Vision (1560.544秒前)
+[缓存命中] arXiv Machine Learning (1560.563秒前)
+跳过 229 条重复文章
+跳过 279 条重复文章
+[缓存命中] Hugging Face Blog (1559.421秒前)
+[缓存命中] arXiv Neural and Evolutionary Computing (1646.339秒前)
+跳过 756 条重复文章
+跳过 11 条重复文章
+[缓存命中] arXiv Robotics (1645.82秒前)
+[缓存命中] arXiv Information Retrieval (1643.41秒前)
+跳过 68 条重复文章
+跳过 22 条重复文章
+[缓存命中] arXiv Statistical Machine Learning (1642.889秒前)
+[缓存命中] arXiv Audio and Speech Processing (1640.534秒前)
+跳过 40 条重复文章
+跳过 13 条重复文章
+[缓存命中] OpenAI Blog (1557.278秒前)
+[缓存命中] Google AI Blog (1557.671秒前)
+跳过 903 条重复文章
+跳过 20 条重复文章
+[缓存命中] Microsoft AI Blog (1556.388秒前)
+[缓存命中] NVIDIA Blog (1556.181秒前)
+跳过 10 条重复文章
+跳过 18 条重复文章
+[缓存命中] Amazon AWS AI Blog (1554.545秒前)
+[缓存命中] MIT Tech Review AI (1555.18秒前)
+跳过 20 条重复文章
+跳过 10 条重复文章
+[缓存命中] WIRED AI (1553.691秒前)
+[缓存命中] Ars Technica AI (1553.593秒前)
+跳过 10 条重复文章
+跳过 20 条重复文章
+[缓存命中] VentureBeat AI (1551.726秒前)
+[缓存命中] TechCrunch AI (1552.801秒前)
+跳过 7 条重复文章
+跳过 20 条重复文章
+[缓存命中] The Verge AI (1550.783秒前)
+[缓存命中] 量子位 (1551.436秒前)
+跳过 10 条重复文章
+跳过 10 条重复文章
+[缓存命中] PyTorch Blog (1548.432秒前)
+[缓存命中] TensorFlow Blog (1548.903秒前)
+跳过 10 条重复文章
+跳过 25 条重复文章
+[缓存命中] LangChain Blog (1544.466秒前)
+[缓存命中] Stanford AI Lab (1546.727秒前)
+跳过 15 条重复文章
+跳过 15 条重复文章
+[缓存命中] Berkeley AI Research (1543.396秒前)
+[缓存命中] Replicate Blog (1543.187秒前)
+跳过 10 条重复文章
+跳过 120 条重复文章
+[缓存命中] arXiv Human-Computer Interaction (1658.257秒前)
+[缓存命中] arXiv Multiagent Systems (1655.919秒前)
+跳过 25 条重复文章
+跳过 12 条重复文章
+[缓存命中] Google Research Blog (1656.543秒前)
+[缓存命中] GitHub AI Tag (1655.222秒前)
+跳过 100 条重复文章
+跳过 10 条重复文章
+[缓存命中] Together AI Blog (1656.363秒前)
+[缓存命中] MIT News AI (1652.303秒前)
+跳过 100 条重复文章
+跳过 50 条重复文章
+[缓存命中] Google Developers AI Tools (1653.384秒前)
+[缓存命中] Lilian Weng Blog (1651.28秒前)
+跳过 20 条重复文章
+跳过 51 条重复文章
+[缓存命中] AI科技大本营 (1541.565秒前)
+[缓存命中] Towards Data Science (1541.336秒前)
+跳过 20 条重复文章
+跳过 20 条重复文章
+[缓存命中] Machine Learning Mastery (1540.472秒前)
+[缓存命中] The Batch (deeplearning.ai) (1540.166秒前)
+跳过 10 条重复文章
+跳过 15 条重复文章
+WebSocket客户端连接: xPNI6SEtbGc1TJ5LAAAF
+WebSocket客户端连接: Ml0DXdX8RXmx8AmrAAAH
+WebSocket客户端连接: gslip8iGI1Y0N83BAAAI
+获取质量分析失败: TypeError: NewsService.getQualityAnalysis is not a function
+    at /Users/li/Public/Ainews/server/routes/analytics.js:44:39
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:284:15
+    at router.process_params (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:346:12)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:280:10)
+    at router.handle (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:175:3)
+    at router (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:47:12)
+获取质量分析失败: TypeError: NewsService.getQualityAnalysis is not a function
+    at /Users/li/Public/Ainews/server/routes/analytics.js:44:39
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:284:15
+    at router.process_params (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:346:12)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:280:10)
+    at router.handle (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:175:3)
+    at router (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:47:12)
+[缓存命中] Analytics Vidhya (1538.43秒前)
+[缓存命中] KDnuggets (1539.188秒前)
+跳过 10 条重复文章
+跳过 10 条重复文章
+数据库为空，返回演示数据
+[缓存命中] Distill.pub (1537.511秒前)
+[缓存命中] OpenCV Blog (1537.324秒前)
+跳过 52 条重复文章
+跳过 10 条重复文章
+[缓存命中] Product Hunt AI (1536.006秒前)
+[缓存命中] AI Weekly (1535.589秒前)
+跳过 49 条重复文章
+跳过 20 条重复文章
+WebSocket客户端断开: xPNI6SEtbGc1TJ5LAAAF, 原因: transport close, 连接时长: 5秒
+WebSocket客户端断开: Ml0DXdX8RXmx8AmrAAAH, 原因: transport close, 连接时长: 5秒
+[缓存命中] Last Week in AI (1534.441秒前)
+[缓存命中] Import AI (1534.426秒前)
+跳过 20 条重复文章
+跳过 10 条重复文章
+[缓存命中] Ben’s Bites AI (1533.159秒前)
+[缓存命中] Weaviate Blog (1670.118秒前)
+跳过 20 条重复文章
+跳过 204 条重复文章
+[缓存命中] JetBrains AI Blog (1668.259秒前)
+[缓存命中] Modal Blog (1666.399秒前)
+跳过 12 条重复文章
+跳过 99 条重复文章
+WebSocket客户端断开: gslip8iGI1Y0N83BAAAI, 原因: transport close, 连接时长: 12秒
+[缓存命中] Answer.AI Blog (1666.977秒前)
+[缓存命中] The Register AI (1666.071秒前)
+跳过 20 条重复文章
+跳过 50 条重复文章
+[缓存命中] InfoQ AI ML Data Engineering (1666.877秒前)
+[缓存命中] Roboflow Blog (1665.309秒前)
+跳过 15 条重复文章
+跳过 15 条重复文章
+[缓存命中] Adept Blog (1666.45秒前)
+[缓存命中] The Gradient (166.835秒前)
+跳过 12 条重复文章
+跳过 15 条重复文章
+[缓存命中] Chip Huyen (165.388秒前)
+[缓存命中] Tom Tunguz (165.973秒前)
+跳过 10 条重复文章
+跳过 10 条重复文章
+[缓存命中] Latent Space (163.893秒前)
+[缓存命中] Simon Willison (164.41秒前)
+跳过 20 条重复文章
+跳过 30 条重复文章
+[缓存命中] Runpod Blog (163.008秒前)
+[缓存命中] The Sequence (162.81秒前)
+跳过 100 条重复文章
+跳过 20 条重复文章
+[缓存命中] AI Snake Oil (161.351秒前)
+跳过 20 条重复文章
+跳过 15 条重复文章
+新闻更新完成: 66个源成功, 保存6条, 0个错误
+✅ 新闻数据初始化完成
+WebSocket客户端连接: nRhy6AeQzQw2QO_KAAAN
+WebSocket客户端连接: fZcVWFtbt-BI44apAAAO
+WebSocket客户端断开: nRhy6AeQzQw2QO_KAAAN, 原因: transport close, 连接时长: 6秒
+WebSocket客户端断开: fZcVWFtbt-BI44apAAAO, 原因: transport close, 连接时长: 6秒
+WebSocket客户端连接: 551uanqmZ0CcRcxKAAAR
+WebSocket客户端断开: 551uanqmZ0CcRcxKAAAR, 原因: transport close, 连接时长: 6秒
+WebSocket客户端连接: Yt9NFBFHCobIX4cCAAAY
+WebSocket客户端连接: gkdnrpa7gRPrkHOvAAAa
+WebSocket客户端连接: 3rBmKN_hVSBwnYhRAAAc
+WebSocket客户端连接: zFc6ZMWA8nBMeq3hAAAd
+获取质量分析失败: TypeError: NewsService.getQualityAnalysis is not a function
+    at /Users/li/Public/Ainews/server/routes/analytics.js:44:39
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:284:15
+    at router.process_params (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:346:12)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:280:10)
+    at router.handle (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:175:3)
+    at router (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:47:12)
+获取质量分析失败: TypeError: NewsService.getQualityAnalysis is not a function
+    at /Users/li/Public/Ainews/server/routes/analytics.js:44:39
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:284:15
+    at router.process_params (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:346:12)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:280:10)
+    at router.handle (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:175:3)
+    at router (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:47:12)
+WebSocket客户端断开: zFc6ZMWA8nBMeq3hAAAd, 原因: transport close, 连接时长: 5秒
+WebSocket客户端断开: Yt9NFBFHCobIX4cCAAAY, 原因: transport close, 连接时长: 5秒
+WebSocket客户端断开: gkdnrpa7gRPrkHOvAAAa, 原因: transport close, 连接时长: 5秒
+WebSocket客户端断开: 3rBmKN_hVSBwnYhRAAAc, 原因: transport close, 连接时长: 5秒
+WebSocket客户端连接: 9-HziPIO54j8Q2RlAAAg
+数据库为空，返回演示数据
+数据库为空，返回演示数据
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/4 12:00:00
+开始更新新闻...
 获取RSS: arXiv AI (第1次尝试)
 获取RSS: arXiv Computation and Language (第1次尝试)
-跳过 310 条重复文章
-跳过 177 条重复文章
+arXiv AI 第1次失败: RSS feed为空
+获取RSS: arXiv AI (第2次尝试)
+arXiv AI 第2次失败: RSS feed为空
+RSS源 arXiv AI 更新失败: RSS feed为空
+跳过 52 条重复文章
 获取RSS: arXiv Computer Vision (第1次尝试)
 获取RSS: arXiv Machine Learning (第1次尝试)
-跳过 194 条重复文章
-跳过 395 条重复文章
+arXiv Machine Learning 第1次失败: RSS feed为空
+获取RSS: arXiv Machine Learning (第2次尝试)
+arXiv Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Machine Learning 更新失败: RSS feed为空
+跳过 225 条重复文章
 获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: RSS feed为空
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: RSS feed为空
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: RSS feed为空
+跳过 756 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Robotics 第1次失败: RSS feed为空
+arXiv Information Retrieval 第1次失败: RSS feed为空
+获取RSS: arXiv Robotics (第2次尝试)
+获取RSS: arXiv Information Retrieval (第2次尝试)
+arXiv Robotics 第2次失败: RSS feed为空
+RSS源 arXiv Robotics 更新失败: RSS feed为空
+arXiv Information Retrieval 第2次失败: RSS feed为空
+RSS源 arXiv Information Retrieval 更新失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Statistical Machine Learning 第1次失败: RSS feed为空
+arXiv Audio and Speech Processing 第1次失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+arXiv Statistical Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Statistical Machine Learning 更新失败: RSS feed为空
+arXiv Audio and Speech Processing 第2次失败: RSS feed为空
+RSS源 arXiv Audio and Speech Processing 更新失败: RSS feed为空
 获取RSS: OpenAI Blog (第1次尝试)
-跳过 7 条重复文章
-跳过 10 条重复文章
 获取RSS: Google AI Blog (第1次尝试)
-获取RSS: DeepMind Blog (第1次尝试)
-主解析器失败，尝试备用: DeepMind Blog
-DeepMind Blog 第1次失败: RSS feed为空
-获取RSS: DeepMind Blog (第2次尝试)
-主解析器失败，尝试备用: DeepMind Blog
-DeepMind Blog 第2次失败: RSS feed为空
-RSS源 DeepMind Blog 更新失败: RSS feed为空
-跳过 8 条重复文章
-获取RSS: Meta AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
 获取RSS: Microsoft AI Blog (第1次尝试)
-主解析器失败，尝试备用: Meta AI Blog
-Meta AI Blog 第1次失败: RSS feed为空
-获取RSS: Meta AI Blog (第2次尝试)
-主解析器失败，尝试备用: Meta AI Blog
-Meta AI Blog 第2次失败: RSS feed为空
-RSS源 Meta AI Blog 更新失败: RSS feed为空
 获取RSS: NVIDIA Blog (第1次尝试)
-获取RSS: Amazon AWS AI Blog (第1次尝试)
-跳过 6 条重复文章
 跳过 10 条重复文章
-获取RSS: Anthropic Research (第1次尝试)
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
 获取RSS: MIT Tech Review AI (第1次尝试)
-主解析器失败，尝试备用: Anthropic Research
-Anthropic Research 第1次失败: RSS feed为空
-获取RSS: Anthropic Research (第2次尝试)
-主解析器失败，尝试备用: Anthropic Research
-Anthropic Research 第2次失败: RSS feed为空
-RSS源 Anthropic Research 更新失败: RSS feed为空
-跳过 7 条重复文章
+跳过 20 条重复文章
+跳过 10 条重复文章
 获取RSS: WIRED AI (第1次尝试)
 获取RSS: Ars Technica AI (第1次尝试)
-WIRED AI 第1次失败: Cannot read properties of undefined (reading 'url')
-获取RSS: WIRED AI (第2次尝试)
-WIRED AI 第2次失败: Cannot read properties of undefined (reading 'url')
-RSS源 WIRED AI 更新失败: Cannot read properties of undefined (reading 'url')
-跳过 11 条重复文章
+跳过 10 条重复文章
+跳过 20 条重复文章
 获取RSS: VentureBeat AI (第1次尝试)
 获取RSS: TechCrunch AI (第1次尝试)
-跳过 15 条重复文章
-获取RSS: The Verge AI (第1次尝试)
-获取RSS: 机器之心 (第1次尝试)
-机器之心 第1次失败: timeout of 20000ms exceeded
-获取RSS: 机器之心 (第2次尝试)
-机器之心 第2次失败: timeout of 20000ms exceeded
-RSS源 机器之心 更新失败: timeout of 20000ms exceeded
 跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
 获取RSS: 量子位 (第1次尝试)
-获取RSS: PaperWeekly (第1次尝试)
-PaperWeekly 第1次失败: timeout of 20000ms exceeded
-获取RSS: PaperWeekly (第2次尝试)
-PaperWeekly 第2次失败: timeout of 20000ms exceeded
-RSS源 PaperWeekly 更新失败: timeout of 20000ms exceeded
+跳过 10 条重复文章
 跳过 10 条重复文章
 获取RSS: PyTorch Blog (第1次尝试)
 获取RSS: TensorFlow Blog (第1次尝试)
-跳过 3 条重复文章
+跳过 10 条重复文章
+跳过 25 条重复文章
 获取RSS: LangChain Blog (第1次尝试)
 获取RSS: Stanford AI Lab (第1次尝试)
-跳过 1 条重复文章
+跳过 15 条重复文章
+跳过 15 条重复文章
 获取RSS: Berkeley AI Research (第1次尝试)
-获取RSS: CMU Machine Learning (第1次尝试)
-获取RSS: Cohere Blog (第1次尝试)
-获取RSS: Mistral AI Blog (第1次尝试)
-主解析器失败，尝试备用: Mistral AI Blog
-Mistral AI Blog 第1次失败: RSS feed为空
-主解析器失败，尝试备用: Cohere Blog
-Cohere Blog 第1次失败: RSS feed为空
-获取RSS: Mistral AI Blog (第2次尝试)
-获取RSS: Cohere Blog (第2次尝试)
-主解析器失败，尝试备用: Mistral AI Blog
-Mistral AI Blog 第2次失败: RSS feed为空
-RSS源 Mistral AI Blog 更新失败: RSS feed为空
-主解析器失败，尝试备用: Cohere Blog
-Cohere Blog 第2次失败: RSS feed为空
-RSS源 Cohere Blog 更新失败: RSS feed为空
-获取RSS: Stability AI Blog (第1次尝试)
-获取RSS: Apple Machine Learning (第1次尝试)
-主解析器失败，尝试备用: Apple Machine Learning
-Apple Machine Learning 第1次失败: RSS feed为空
-主解析器失败，尝试备用: Stability AI Blog
-Stability AI Blog 第1次失败: RSS feed为空
-获取RSS: Apple Machine Learning (第2次尝试)
-获取RSS: Stability AI Blog (第2次尝试)
-主解析器失败，尝试备用: Apple Machine Learning
-Apple Machine Learning 第2次失败: RSS feed为空
-RSS源 Apple Machine Learning 更新失败: RSS feed为空
-主解析器失败，尝试备用: Stability AI Blog
-Stability AI Blog 第2次失败: RSS feed为空
-RSS源 Stability AI Blog 更新失败: RSS feed为空
-获取RSS: Salesforce AI Research (第1次尝试)
-获取RSS: AI2 Blog (第1次尝试)
-主解析器失败，尝试备用: AI2 Blog
-AI2 Blog 第1次失败: RSS feed为空
-获取RSS: AI2 Blog (第2次尝试)
-AI2 Blog 第2次失败: aborted
-RSS源 AI2 Blog 更新失败: aborted
-跳过 10 条重复文章
-获取RSS: EleutherAI Blog (第1次尝试)
 获取RSS: Replicate Blog (第1次尝试)
-主解析器失败，尝试备用: EleutherAI Blog
-EleutherAI Blog 第1次失败: RSS feed为空
-获取RSS: EleutherAI Blog (第2次尝试)
-主解析器失败，尝试备用: EleutherAI Blog
-EleutherAI Blog 第2次失败: RSS feed为空
-RSS源 EleutherAI Blog 更新失败: RSS feed为空
-获取RSS: Weights & Biases (第1次尝试)
-获取RSS: LlamaIndex Blog (第1次尝试)
-主解析器失败，尝试备用: LlamaIndex Blog
-LlamaIndex Blog 第1次失败: RSS feed为空
-获取RSS: LlamaIndex Blog (第2次尝试)
-主解析器失败，尝试备用: Weights & Biases
-Weights & Biases 第1次失败: RSS feed为空
-主解析器失败，尝试备用: LlamaIndex Blog
-LlamaIndex Blog 第2次失败: RSS feed为空
-RSS源 LlamaIndex Blog 更新失败: RSS feed为空
-获取RSS: Weights & Biases (第2次尝试)
-主解析器失败，尝试备用: Weights & Biases
-Weights & Biases 第2次失败: RSS feed为空
-RSS源 Weights & Biases 更新失败: RSS feed为空
-获取RSS: MIT CSAIL (第1次尝试)
-获取RSS: Oxford AI Research (第1次尝试)
-主解析器失败，尝试备用: Oxford AI Research
-Oxford AI Research 第1次失败: RSS feed为空
-主解析器失败，尝试备用: MIT CSAIL
-MIT CSAIL 第1次失败: RSS feed为空
-获取RSS: Oxford AI Research (第2次尝试)
-获取RSS: MIT CSAIL (第2次尝试)
-主解析器失败，尝试备用: Oxford AI Research
-Oxford AI Research 第2次失败: RSS feed为空
-RSS源 Oxford AI Research 更新失败: RSS feed为空
-主解析器失败，尝试备用: MIT CSAIL
-MIT CSAIL 第2次失败: RSS feed为空
-RSS源 MIT CSAIL 更新失败: RSS feed为空
-获取RSS: Google DeepMind Safety (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Multiagent Systems 第1次失败: RSS feed为空
+arXiv Human-Computer Interaction 第1次失败: RSS feed为空
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+arXiv Multiagent Systems 第2次失败: RSS feed为空
+RSS源 arXiv Multiagent Systems 更新失败: RSS feed为空
+arXiv Human-Computer Interaction 第2次失败: RSS feed为空
+RSS源 arXiv Human-Computer Interaction 更新失败: RSS feed为空
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
 获取RSS: AI科技大本营 (第1次尝试)
-主解析器失败，尝试备用: Google DeepMind Safety
-Google DeepMind Safety 第1次失败: RSS feed为空
-获取RSS: Google DeepMind Safety (第2次尝试)
-主解析器失败，尝试备用: Google DeepMind Safety
-Google DeepMind Safety 第2次失败: RSS feed为空
-RSS源 Google DeepMind Safety 更新失败: RSS feed为空
-跳过 3 条重复文章
 获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
 获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+[缓存命中] The Gradient (915.686秒前)
+跳过 12 条重复文章
+跳过 15 条重复文章
+[缓存命中] Chip Huyen (915.147秒前)
+[缓存命中] Tom Tunguz (915.732秒前)
+跳过 10 条重复文章
+跳过 10 条重复文章
+[缓存命中] Latent Space (913.647秒前)
+[缓存命中] Simon Willison (914.165秒前)
+跳过 20 条重复文章
+跳过 30 条重复文章
+[缓存命中] Runpod Blog (912.768秒前)
+[缓存命中] The Sequence (912.572秒前)
+跳过 100 条重复文章
+跳过 20 条重复文章
+[缓存命中] AI Snake Oil (911.131秒前)
+跳过 20 条重复文章
+跳过 15 条重复文章
+新闻更新完成: 57个源成功, 保存101条, 9个错误
+✅ 更新完成，新增 101 条新闻
+WebSocket客户端断开: 9-HziPIO54j8Q2RlAAAg, 原因: ping timeout, 连接时长: 335秒
+WebSocket客户端连接: 21oWzfxmHuTXbBL0AAAi
+WebSocket客户端断开: 21oWzfxmHuTXbBL0AAAi, 原因: ping timeout, 连接时长: 210秒
+WebSocket客户端连接: eSspdbUkbW_4soTDAAAk
+WebSocket客户端断开: eSspdbUkbW_4soTDAAAk, 原因: ping timeout, 连接时长: 260秒
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/4 15:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+arXiv AI 第1次失败: RSS feed为空
+获取RSS: arXiv AI (第2次尝试)
+arXiv AI 第2次失败: RSS feed为空
+RSS源 arXiv AI 更新失败: RSS feed为空
+跳过 134 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+arXiv Machine Learning 第1次失败: RSS feed为空
+获取RSS: arXiv Machine Learning (第2次尝试)
+arXiv Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Machine Learning 更新失败: RSS feed为空
+跳过 225 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: RSS feed为空
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: RSS feed为空
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: RSS feed为空
+跳过 756 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Information Retrieval 第1次失败: RSS feed为空
+arXiv Robotics 第1次失败: RSS feed为空
+获取RSS: arXiv Information Retrieval (第2次尝试)
+获取RSS: arXiv Robotics (第2次尝试)
+arXiv Information Retrieval 第2次失败: RSS feed为空
+RSS源 arXiv Information Retrieval 更新失败: RSS feed为空
+arXiv Robotics 第2次失败: RSS feed为空
+RSS源 arXiv Robotics 更新失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Statistical Machine Learning 第1次失败: RSS feed为空
+arXiv Audio and Speech Processing 第1次失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+arXiv Audio and Speech Processing 第2次失败: RSS feed为空
+RSS源 arXiv Audio and Speech Processing 更新失败: RSS feed为空
+arXiv Statistical Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Statistical Machine Learning 更新失败: RSS feed为空
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 9 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Multiagent Systems 第1次失败: RSS feed为空
+arXiv Human-Computer Interaction 第1次失败: RSS feed为空
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+arXiv Multiagent Systems 第2次失败: RSS feed为空
+RSS源 arXiv Multiagent Systems 更新失败: RSS feed为空
+arXiv Human-Computer Interaction 第2次失败: RSS feed为空
+RSS源 arXiv Human-Computer Interaction 更新失败: RSS feed为空
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 14 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 43 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 7 条重复文章
+新闻更新完成: 57个源成功, 保存35条, 9个错误
+✅ 更新完成，新增 35 条新闻
+WebSocket客户端连接: dVlHFKnR_4ny3do2AAAm
+获取质量分析失败: TypeError: NewsService.getQualityAnalysis is not a function
+    at /Users/li/Public/Ainews/server/routes/analytics.js:44:39
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:284:15
+    at router.process_params (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:346:12)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:280:10)
+    at router.handle (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:175:3)
+    at router (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:47:12)
+获取质量分析失败: TypeError: NewsService.getQualityAnalysis is not a function
+    at /Users/li/Public/Ainews/server/routes/analytics.js:44:39
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:284:15
+    at router.process_params (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:346:12)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:280:10)
+    at router.handle (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:175:3)
+    at router (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:47:12)
+获取质量分析失败: TypeError: NewsService.getQualityAnalysis is not a function
+    at /Users/li/Public/Ainews/server/routes/analytics.js:44:39
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:284:15
+    at router.process_params (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:346:12)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:280:10)
+    at router.handle (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:175:3)
+    at router (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:47:12)
+获取质量分析失败: TypeError: NewsService.getQualityAnalysis is not a function
+    at /Users/li/Public/Ainews/server/routes/analytics.js:44:39
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:284:15
+    at router.process_params (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:346:12)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:280:10)
+    at router.handle (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:175:3)
+    at router (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:47:12)
+获取质量分析失败: TypeError: NewsService.getQualityAnalysis is not a function
+    at /Users/li/Public/Ainews/server/routes/analytics.js:44:39
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:284:15
+    at router.process_params (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:346:12)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:280:10)
+    at router.handle (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:175:3)
+    at router (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:47:12)
+获取质量分析失败: TypeError: NewsService.getQualityAnalysis is not a function
+    at /Users/li/Public/Ainews/server/routes/analytics.js:44:39
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/Users/li/Public/Ainews/server/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/Users/li/Public/Ainews/server/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:284:15
+    at router.process_params (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:346:12)
+    at next (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:280:10)
+    at router.handle (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:175:3)
+    at router (/Users/li/Public/Ainews/server/node_modules/express/lib/router/index.js:47:12)
+WebSocket客户端断开: dVlHFKnR_4ny3do2AAAm, 原因: ping timeout, 连接时长: 560秒
+WebSocket客户端连接: COAm6upR_seEjE3SAAAo
+WebSocket客户端断开: COAm6upR_seEjE3SAAAo, 原因: ping timeout, 连接时长: 485秒
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/4 18:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+arXiv AI 第1次失败: RSS feed为空
+获取RSS: arXiv AI (第2次尝试)
+arXiv AI 第2次失败: RSS feed为空
+RSS源 arXiv AI 更新失败: RSS feed为空
+跳过 134 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+arXiv Machine Learning 第1次失败: RSS feed为空
+获取RSS: arXiv Machine Learning (第2次尝试)
+arXiv Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Machine Learning 更新失败: RSS feed为空
+跳过 225 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: RSS feed为空
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: RSS feed为空
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: RSS feed为空
+跳过 756 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Robotics 第1次失败: RSS feed为空
+arXiv Information Retrieval 第1次失败: RSS feed为空
+获取RSS: arXiv Robotics (第2次尝试)
+获取RSS: arXiv Information Retrieval (第2次尝试)
+arXiv Robotics 第2次失败: RSS feed为空
+RSS源 arXiv Robotics 更新失败: RSS feed为空
+arXiv Information Retrieval 第2次失败: RSS feed为空
+RSS源 arXiv Information Retrieval 更新失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Statistical Machine Learning 第1次失败: RSS feed为空
+arXiv Audio and Speech Processing 第1次失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+arXiv Statistical Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Statistical Machine Learning 更新失败: RSS feed为空
+arXiv Audio and Speech Processing 第2次失败: RSS feed为空
+RSS源 arXiv Audio and Speech Processing 更新失败: RSS feed为空
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 8 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Multiagent Systems 第1次失败: RSS feed为空
+arXiv Human-Computer Interaction 第1次失败: RSS feed为空
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+arXiv Multiagent Systems 第2次失败: RSS feed为空
+RSS源 arXiv Multiagent Systems 更新失败: RSS feed为空
+arXiv Human-Computer Interaction 第2次失败: RSS feed为空
+RSS源 arXiv Human-Computer Interaction 更新失败: RSS feed为空
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 49 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 14 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 4 条重复文章
+新闻更新完成: 57个源成功, 保存34条, 9个错误
+✅ 更新完成，新增 34 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/4 21:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+arXiv AI 第1次失败: RSS feed为空
+获取RSS: arXiv AI (第2次尝试)
+arXiv AI 第2次失败: RSS feed为空
+RSS源 arXiv AI 更新失败: RSS feed为空
+跳过 134 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+arXiv Machine Learning 第1次失败: RSS feed为空
+获取RSS: arXiv Machine Learning (第2次尝试)
+arXiv Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Machine Learning 更新失败: RSS feed为空
+跳过 225 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: RSS feed为空
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: RSS feed为空
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: RSS feed为空
+跳过 756 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Information Retrieval 第1次失败: RSS feed为空
+arXiv Robotics 第1次失败: RSS feed为空
+获取RSS: arXiv Information Retrieval (第2次尝试)
+获取RSS: arXiv Robotics (第2次尝试)
+arXiv Robotics 第2次失败: RSS feed为空
+RSS源 arXiv Robotics 更新失败: RSS feed为空
+arXiv Information Retrieval 第2次失败: RSS feed为空
+RSS源 arXiv Information Retrieval 更新失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Statistical Machine Learning 第1次失败: RSS feed为空
+arXiv Audio and Speech Processing 第1次失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+arXiv Audio and Speech Processing 第2次失败: RSS feed为空
+RSS源 arXiv Audio and Speech Processing 更新失败: RSS feed为空
+arXiv Statistical Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Statistical Machine Learning 更新失败: RSS feed为空
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 9 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 9 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Human-Computer Interaction 第1次失败: RSS feed为空
+arXiv Multiagent Systems 第1次失败: RSS feed为空
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+arXiv Multiagent Systems 第2次失败: RSS feed为空
+RSS源 arXiv Multiagent Systems 更新失败: RSS feed为空
+arXiv Human-Computer Interaction 第2次失败: RSS feed为空
+RSS源 arXiv Human-Computer Interaction 更新失败: RSS feed为空
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 19 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
 跳过 20 条重复文章
 跳过 5 条重复文章
+新闻更新完成: 57个源成功, 保存32条, 9个错误
+✅ 更新完成，新增 32 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/5 00:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+arXiv Computation and Language 第1次失败: Client network socket disconnected before secure TLS connection was established
+arXiv AI 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: arXiv Computation and Language (第2次尝试)
+获取RSS: arXiv AI (第2次尝试)
+arXiv Computation and Language 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 arXiv Computation and Language 更新失败: Client network socket disconnected before secure TLS connection was established
+arXiv AI 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 arXiv AI 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+arXiv Computer Vision 第1次失败: Client network socket disconnected before secure TLS connection was established
+arXiv Machine Learning 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: arXiv Computer Vision (第2次尝试)
+获取RSS: arXiv Machine Learning (第2次尝试)
+arXiv Machine Learning 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 arXiv Machine Learning 更新失败: Client network socket disconnected before secure TLS connection was established
+arXiv Computer Vision 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 arXiv Computer Vision 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: Client network socket disconnected before secure TLS connection was established
+Hugging Face Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+获取RSS: Hugging Face Blog (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: Client network socket disconnected before secure TLS connection was established
+Hugging Face Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Hugging Face Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Robotics 第1次失败: Client network socket disconnected before secure TLS connection was established
+arXiv Information Retrieval 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: arXiv Robotics (第2次尝试)
+获取RSS: arXiv Information Retrieval (第2次尝试)
+arXiv Information Retrieval 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 arXiv Information Retrieval 更新失败: Client network socket disconnected before secure TLS connection was established
+arXiv Robotics 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 arXiv Robotics 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Audio and Speech Processing 第1次失败: Client network socket disconnected before secure TLS connection was established
+arXiv Statistical Machine Learning 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+arXiv Statistical Machine Learning 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 arXiv Statistical Machine Learning 更新失败: Client network socket disconnected before secure TLS connection was established
+arXiv Audio and Speech Processing 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 arXiv Audio and Speech Processing 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+OpenAI Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+Google AI Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: OpenAI Blog (第2次尝试)
+获取RSS: Google AI Blog (第2次尝试)
+OpenAI Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 OpenAI Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+Google AI Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Google AI Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+NVIDIA Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+Microsoft AI Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: NVIDIA Blog (第2次尝试)
+获取RSS: Microsoft AI Blog (第2次尝试)
+NVIDIA Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 NVIDIA Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+Microsoft AI Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Microsoft AI Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+MIT Tech Review AI 第1次失败: Client network socket disconnected before secure TLS connection was established
+Amazon AWS AI Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: MIT Tech Review AI (第2次尝试)
+获取RSS: Amazon AWS AI Blog (第2次尝试)
+MIT Tech Review AI 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 MIT Tech Review AI 更新失败: Client network socket disconnected before secure TLS connection was established
+Amazon AWS AI Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Amazon AWS AI Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+WIRED AI 第1次失败: Client network socket disconnected before secure TLS connection was established
+Ars Technica AI 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: WIRED AI (第2次尝试)
+获取RSS: Ars Technica AI (第2次尝试)
+WIRED AI 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 WIRED AI 更新失败: Client network socket disconnected before secure TLS connection was established
+Ars Technica AI 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Ars Technica AI 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+VentureBeat AI 第1次失败: Client network socket disconnected before secure TLS connection was established
+TechCrunch AI 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: VentureBeat AI (第2次尝试)
+获取RSS: TechCrunch AI (第2次尝试)
+VentureBeat AI 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 VentureBeat AI 更新失败: Client network socket disconnected before secure TLS connection was established
+TechCrunch AI 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 TechCrunch AI 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+The Verge AI 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: The Verge AI (第2次尝试)
+The Verge AI 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 The Verge AI 更新失败: Client network socket disconnected before secure TLS connection was established
+跳过 9 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+TensorFlow Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+PyTorch Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: TensorFlow Blog (第2次尝试)
+获取RSS: PyTorch Blog (第2次尝试)
+PyTorch Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 PyTorch Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+TensorFlow Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 TensorFlow Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+Stanford AI Lab 第1次失败: Client network socket disconnected before secure TLS connection was established
+LangChain Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Stanford AI Lab (第2次尝试)
+获取RSS: LangChain Blog (第2次尝试)
+Stanford AI Lab 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Stanford AI Lab 更新失败: Client network socket disconnected before secure TLS connection was established
+LangChain Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 LangChain Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+Replicate Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+Berkeley AI Research 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Replicate Blog (第2次尝试)
+获取RSS: Berkeley AI Research (第2次尝试)
+Replicate Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Replicate Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+Berkeley AI Research 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Berkeley AI Research 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Human-Computer Interaction 第1次失败: Client network socket disconnected before secure TLS connection was established
+arXiv Multiagent Systems 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+arXiv Multiagent Systems 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 arXiv Multiagent Systems 更新失败: Client network socket disconnected before secure TLS connection was established
+arXiv Human-Computer Interaction 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 arXiv Human-Computer Interaction 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+GitHub AI Tag 第1次失败: Client network socket disconnected before secure TLS connection was established
+Google Research Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: GitHub AI Tag (第2次尝试)
+获取RSS: Google Research Blog (第2次尝试)
+GitHub AI Tag 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 GitHub AI Tag 更新失败: Client network socket disconnected before secure TLS connection was established
+Google Research Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Google Research Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+MIT News AI 第1次失败: Client network socket disconnected before secure TLS connection was established
+Together AI Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: MIT News AI (第2次尝试)
+获取RSS: Together AI Blog (第2次尝试)
+MIT News AI 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 MIT News AI 更新失败: Client network socket disconnected before secure TLS connection was established
+Together AI Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Together AI Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+Lilian Weng Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+Google Developers AI Tools 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Lilian Weng Blog (第2次尝试)
+获取RSS: Google Developers AI Tools (第2次尝试)
+Google Developers AI Tools 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Google Developers AI Tools 更新失败: Client network socket disconnected before secure TLS connection was established
+Lilian Weng Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Lilian Weng Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+Towards Data Science 第1次失败: Client network socket disconnected before secure TLS connection was established
+AI科技大本营 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Towards Data Science (第2次尝试)
+获取RSS: AI科技大本营 (第2次尝试)
+Towards Data Science 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Towards Data Science 更新失败: Client network socket disconnected before secure TLS connection was established
+AI科技大本营 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 AI科技大本营 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Machine Learning Mastery (第1次尝试)
 获取RSS: The Batch (deeplearning.ai) (第1次尝试)
-获取RSS: Analytics Vidhya (第1次尝试)
-主解析器失败，尝试备用: The Batch (deeplearning.ai)
-The Batch (deeplearning.ai) 第1次失败: RSS feed为空
+The Batch (deeplearning.ai) 第1次失败: Client network socket disconnected before secure TLS connection was established
+Machine Learning Mastery 第1次失败: Client network socket disconnected before secure TLS connection was established
 获取RSS: The Batch (deeplearning.ai) (第2次尝试)
-主解析器失败，尝试备用: The Batch (deeplearning.ai)
-The Batch (deeplearning.ai) 第2次失败: RSS feed为空
-RSS源 The Batch (deeplearning.ai) 更新失败: RSS feed为空
-跳过 10 条重复文章
+获取RSS: Machine Learning Mastery (第2次尝试)
+The Batch (deeplearning.ai) 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 The Batch (deeplearning.ai) 更新失败: Client network socket disconnected before secure TLS connection was established
+Machine Learning Mastery 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Machine Learning Mastery 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Analytics Vidhya (第1次尝试)
 获取RSS: KDnuggets (第1次尝试)
+KDnuggets 第1次失败: Client network socket disconnected before secure TLS connection was established
+Analytics Vidhya 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: KDnuggets (第2次尝试)
+获取RSS: Analytics Vidhya (第2次尝试)
+Analytics Vidhya 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Analytics Vidhya 更新失败: Client network socket disconnected before secure TLS connection was established
+KDnuggets 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 KDnuggets 更新失败: Client network socket disconnected before secure TLS connection was established
 获取RSS: Distill.pub (第1次尝试)
-跳过 10 条重复文章
 获取RSS: OpenCV Blog (第1次尝试)
+Distill.pub 第1次失败: Client network socket disconnected before secure TLS connection was established
+OpenCV Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Distill.pub (第2次尝试)
+获取RSS: OpenCV Blog (第2次尝试)
+Distill.pub 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Distill.pub 更新失败: Client network socket disconnected before secure TLS connection was established
+OpenCV Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 OpenCV Blog 更新失败: Client network socket disconnected before secure TLS connection was established
 获取RSS: Product Hunt AI (第1次尝试)
-跳过 2 条重复文章
-跳过 37 条重复文章
-获取RSS: AI Tools Weekly (第1次尝试)
 获取RSS: AI Weekly (第1次尝试)
-AI Tools Weekly 第1次失败: Client network socket disconnected before secure TLS connection was established
-主解析器失败，尝试备用: AI Weekly
-AI Weekly 第1次失败: RSS feed为空
-获取RSS: AI Tools Weekly (第2次尝试)
+Product Hunt AI 第1次失败: Client network socket disconnected before secure TLS connection was established
+AI Weekly 第1次失败: socket hang up
+获取RSS: Product Hunt AI (第2次尝试)
 获取RSS: AI Weekly (第2次尝试)
-AI Tools Weekly 第2次失败: Client network socket disconnected before secure TLS connection was established
-RSS源 AI Tools Weekly 更新失败: Client network socket disconnected before secure TLS connection was established
-主解析器失败，尝试备用: AI Weekly
-AI Weekly 第2次失败: RSS feed为空
-RSS源 AI Weekly 更新失败: RSS feed为空
+Product Hunt AI 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Product Hunt AI 更新失败: Client network socket disconnected before secure TLS connection was established
+AI Weekly 第2次失败: socket hang up
+RSS源 AI Weekly 更新失败: socket hang up
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+Last Week in AI 第1次失败: Client network socket disconnected before secure TLS connection was established
+Import AI 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Last Week in AI (第2次尝试)
+获取RSS: Import AI (第2次尝试)
+Last Week in AI 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Last Week in AI 更新失败: Client network socket disconnected before secure TLS connection was established
+Import AI 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Import AI 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+Ben’s Bites AI 第1次失败: Client network socket disconnected before secure TLS connection was established
+Weaviate Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Ben’s Bites AI (第2次尝试)
+获取RSS: Weaviate Blog (第2次尝试)
+Ben’s Bites AI 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Ben’s Bites AI 更新失败: Client network socket disconnected before secure TLS connection was established
+Weaviate Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Weaviate Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+JetBrains AI Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+Modal Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: JetBrains AI Blog (第2次尝试)
+获取RSS: Modal Blog (第2次尝试)
+Modal Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Modal Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+JetBrains AI Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 JetBrains AI Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+Answer.AI Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+The Register AI 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Answer.AI Blog (第2次尝试)
+获取RSS: The Register AI (第2次尝试)
+Answer.AI Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Answer.AI Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+The Register AI 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 The Register AI 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+Roboflow Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+InfoQ AI ML Data Engineering 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Roboflow Blog (第2次尝试)
+获取RSS: InfoQ AI ML Data Engineering (第2次尝试)
+Roboflow Blog 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Roboflow Blog 更新失败: Client network socket disconnected before secure TLS connection was established
+InfoQ AI ML Data Engineering 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 InfoQ AI ML Data Engineering 更新失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 1 条重复文章
+新闻更新完成: 11个源成功, 保存20条, 55个错误
+✅ 更新完成，新增 20 条新闻
+🧹 执行数据清理...
+清理了 2964 条过期新闻
+✅ 清理完成，删除 2964 条过期新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/5 03:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+arXiv AI 第1次失败: RSS feed为空
+获取RSS: arXiv AI (第2次尝试)
+arXiv AI 第2次失败: RSS feed为空
+RSS源 arXiv AI 更新失败: RSS feed为空
+跳过 134 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+arXiv Machine Learning 第1次失败: RSS feed为空
+获取RSS: arXiv Machine Learning (第2次尝试)
+arXiv Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Machine Learning 更新失败: RSS feed为空
+跳过 225 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: RSS feed为空
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: RSS feed为空
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: RSS feed为空
+跳过 5 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Robotics 第1次失败: RSS feed为空
+arXiv Information Retrieval 第1次失败: RSS feed为空
+获取RSS: arXiv Robotics (第2次尝试)
+获取RSS: arXiv Information Retrieval (第2次尝试)
+arXiv Robotics 第2次失败: RSS feed为空
+RSS源 arXiv Robotics 更新失败: RSS feed为空
+arXiv Information Retrieval 第2次失败: RSS feed为空
+RSS源 arXiv Information Retrieval 更新失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Statistical Machine Learning 第1次失败: RSS feed为空
+arXiv Audio and Speech Processing 第1次失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+arXiv Audio and Speech Processing 第2次失败: RSS feed为空
+RSS源 arXiv Audio and Speech Processing 更新失败: RSS feed为空
+arXiv Statistical Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Statistical Machine Learning 更新失败: RSS feed为空
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 5 条重复文章
+跳过 5 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 3 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 16 条重复文章
+跳过 5 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 3 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 19 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 4 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Human-Computer Interaction 第1次失败: RSS feed为空
+arXiv Multiagent Systems 第1次失败: RSS feed为空
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+arXiv Multiagent Systems 第2次失败: RSS feed为空
+RSS源 arXiv Multiagent Systems 更新失败: RSS feed为空
+arXiv Human-Computer Interaction 第2次失败: RSS feed为空
+RSS源 arXiv Human-Computer Interaction 更新失败: RSS feed为空
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 3 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 5 条重复文章
+跳过 4 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 8 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 8 条重复文章
+跳过 19 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 4 条重复文章
+跳过 5 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 9 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 4 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 38 条重复文章
+跳过 2 条重复文章
 获取RSS: Last Week in AI (第1次尝试)
 获取RSS: Import AI (第1次尝试)
 跳过 1 条重复文章
 跳过 1 条重复文章
-获取RSS: Pinecone Blog (第1次尝试)
-获取RSS: Chroma Blog (第1次尝试)
-主解析器失败，尝试备用: Chroma Blog
-Chroma Blog 第1次失败: RSS feed为空
-主解析器失败，尝试备用: Pinecone Blog
-Pinecone Blog 第1次失败: RSS feed为空
-获取RSS: Chroma Blog (第2次尝试)
-获取RSS: Pinecone Blog (第2次尝试)
-主解析器失败，尝试备用: Chroma Blog
-Chroma Blog 第2次失败: RSS feed为空
-RSS源 Chroma Blog 更新失败: RSS feed为空
-主解析器失败，尝试备用: Pinecone Blog
-Pinecone Blog 第2次失败: RSS feed为空
-RSS源 Pinecone Blog 更新失败: RSS feed为空
-获取RSS: Ollama Blog (第1次尝试)
-获取RSS: AI Tool Report (第1次尝试)
-主解析器失败，尝试备用: Ollama Blog
-Ollama Blog 第1次失败: RSS feed为空
-获取RSS: Ollama Blog (第2次尝试)
-主解析器失败，尝试备用: AI Tool Report
-AI Tool Report 第1次失败: RSS feed为空
-主解析器失败，尝试备用: Ollama Blog
-Ollama Blog 第2次失败: RSS feed为空
-RSS源 Ollama Blog 更新失败: RSS feed为空
-获取RSS: AI Tool Report (第2次尝试)
-主解析器失败，尝试备用: AI Tool Report
-AI Tool Report 第2次失败: RSS feed为空
-RSS源 AI Tool Report 更新失败: RSS feed为空
 获取RSS: Ben’s Bites AI (第1次尝试)
-获取RSS: FutureTools AI (第1次尝试)
-主解析器失败，尝试备用: FutureTools AI
-FutureTools AI 第1次失败: RSS feed为空
-获取RSS: FutureTools AI (第2次尝试)
-主解析器失败，尝试备用: FutureTools AI
-FutureTools AI 第2次失败: RSS feed为空
-RSS源 FutureTools AI 更新失败: RSS feed为空
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 2 条重复文章
+跳过 3 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 22 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 10 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 3 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 9 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 3 条重复文章
+跳过 5 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 10 条重复文章
+新闻更新完成: 57个源成功, 保存2979条, 9个错误
+✅ 更新完成，新增 2979 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/5 06:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+arXiv AI 第1次失败: RSS feed为空
+获取RSS: arXiv AI (第2次尝试)
+arXiv AI 第2次失败: RSS feed为空
+RSS源 arXiv AI 更新失败: RSS feed为空
+跳过 134 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+arXiv Machine Learning 第1次失败: RSS feed为空
+获取RSS: arXiv Machine Learning (第2次尝试)
+arXiv Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Machine Learning 更新失败: RSS feed为空
+跳过 225 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: RSS feed为空
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: RSS feed为空
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: RSS feed为空
+跳过 756 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Information Retrieval 第1次失败: RSS feed为空
+arXiv Robotics 第1次失败: RSS feed为空
+获取RSS: arXiv Information Retrieval (第2次尝试)
+获取RSS: arXiv Robotics (第2次尝试)
+arXiv Information Retrieval 第2次失败: RSS feed为空
+RSS源 arXiv Information Retrieval 更新失败: RSS feed为空
+arXiv Robotics 第2次失败: RSS feed为空
+RSS源 arXiv Robotics 更新失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Statistical Machine Learning 第1次失败: RSS feed为空
+arXiv Audio and Speech Processing 第1次失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+arXiv Audio and Speech Processing 第2次失败: RSS feed为空
+RSS源 arXiv Audio and Speech Processing 更新失败: RSS feed为空
+arXiv Statistical Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Statistical Machine Learning 更新失败: RSS feed为空
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 9 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Multiagent Systems 第1次失败: RSS feed为空
+arXiv Human-Computer Interaction 第1次失败: RSS feed为空
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+arXiv Human-Computer Interaction 第2次失败: RSS feed为空
+RSS源 arXiv Human-Computer Interaction 更新失败: RSS feed为空
+arXiv Multiagent Systems 第2次失败: RSS feed为空
+RSS源 arXiv Multiagent Systems 更新失败: RSS feed为空
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 13 条重复文章
+新闻更新完成: 57个源成功, 保存22条, 9个错误
+✅ 更新完成，新增 22 条新闻
+⏰ 执行每日定时更新...
+📅 当前时间: 2026/4/5 08:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+arXiv AI 第1次失败: RSS feed为空
+获取RSS: arXiv AI (第2次尝试)
+arXiv AI 第2次失败: RSS feed为空
+RSS源 arXiv AI 更新失败: RSS feed为空
+跳过 134 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+arXiv Machine Learning 第1次失败: RSS feed为空
+获取RSS: arXiv Machine Learning (第2次尝试)
+arXiv Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Machine Learning 更新失败: RSS feed为空
+跳过 225 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: RSS feed为空
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: RSS feed为空
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: RSS feed为空
+跳过 756 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Robotics 第1次失败: RSS feed为空
+arXiv Information Retrieval 第1次失败: RSS feed为空
+获取RSS: arXiv Robotics (第2次尝试)
+获取RSS: arXiv Information Retrieval (第2次尝试)
+arXiv Information Retrieval 第2次失败: RSS feed为空
+RSS源 arXiv Information Retrieval 更新失败: RSS feed为空
+arXiv Robotics 第2次失败: RSS feed为空
+RSS源 arXiv Robotics 更新失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Audio and Speech Processing 第1次失败: RSS feed为空
+arXiv Statistical Machine Learning 第1次失败: RSS feed为空
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+arXiv Statistical Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Statistical Machine Learning 更新失败: RSS feed为空
+arXiv Audio and Speech Processing 第2次失败: RSS feed为空
+RSS源 arXiv Audio and Speech Processing 更新失败: RSS feed为空
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Human-Computer Interaction 第1次失败: RSS feed为空
+arXiv Multiagent Systems 第1次失败: RSS feed为空
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+arXiv Multiagent Systems 第2次失败: RSS feed为空
+RSS源 arXiv Multiagent Systems 更新失败: RSS feed为空
+arXiv Human-Computer Interaction 第2次失败: RSS feed为空
+RSS源 arXiv Human-Computer Interaction 更新失败: RSS feed为空
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 13 条重复文章
+新闻更新完成: 57个源成功, 保存21条, 9个错误
+✅ 每日更新完成，新增 21 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/5 09:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+arXiv AI 第1次失败: RSS feed为空
+获取RSS: arXiv AI (第2次尝试)
+arXiv AI 第2次失败: RSS feed为空
+RSS源 arXiv AI 更新失败: RSS feed为空
+跳过 134 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+arXiv Machine Learning 第1次失败: RSS feed为空
+获取RSS: arXiv Machine Learning (第2次尝试)
+arXiv Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Machine Learning 更新失败: RSS feed为空
+跳过 225 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: RSS feed为空
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: RSS feed为空
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: RSS feed为空
+跳过 756 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Information Retrieval 第1次失败: RSS feed为空
+arXiv Robotics 第1次失败: RSS feed为空
+获取RSS: arXiv Information Retrieval (第2次尝试)
+获取RSS: arXiv Robotics (第2次尝试)
+arXiv Robotics 第2次失败: RSS feed为空
+RSS源 arXiv Robotics 更新失败: RSS feed为空
+arXiv Information Retrieval 第2次失败: RSS feed为空
+RSS源 arXiv Information Retrieval 更新失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Statistical Machine Learning 第1次失败: RSS feed为空
+arXiv Audio and Speech Processing 第1次失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+arXiv Statistical Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Statistical Machine Learning 更新失败: RSS feed为空
+arXiv Audio and Speech Processing 第2次失败: RSS feed为空
+RSS源 arXiv Audio and Speech Processing 更新失败: RSS feed为空
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Human-Computer Interaction 第1次失败: RSS feed为空
+arXiv Multiagent Systems 第1次失败: RSS feed为空
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+arXiv Human-Computer Interaction 第2次失败: RSS feed为空
+RSS源 arXiv Human-Computer Interaction 更新失败: RSS feed为空
+arXiv Multiagent Systems 第2次失败: RSS feed为空
+RSS源 arXiv Multiagent Systems 更新失败: RSS feed为空
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 29 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 16 条重复文章
+新闻更新完成: 57个源成功, 保存19条, 9个错误
+✅ 更新完成，新增 19 条新闻
+WebSocket客户端连接: li4ZDIq7fUnXd-UcAAAq
+数据库为空，返回演示数据
+WebSocket客户端断开: li4ZDIq7fUnXd-UcAAAq, 原因: ping timeout, 连接时长: 1410秒
+WebSocket客户端连接: dnxIpH6JWtdxs-_uAAAs
+WebSocket客户端断开: dnxIpH6JWtdxs-_uAAAs, 原因: ping timeout, 连接时长: 1010秒
+WebSocket客户端连接: rNV-ZL8oxN0RI-cQAAAu
+WebSocket客户端断开: rNV-ZL8oxN0RI-cQAAAu, 原因: ping timeout, 连接时长: 260秒
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/5 12:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+arXiv AI 第1次失败: RSS feed为空
+arXiv Computation and Language 第1次失败: RSS feed为空
+获取RSS: arXiv AI (第2次尝试)
+获取RSS: arXiv Computation and Language (第2次尝试)
+arXiv AI 第2次失败: RSS feed为空
+RSS源 arXiv AI 更新失败: RSS feed为空
+arXiv Computation and Language 第2次失败: RSS feed为空
+RSS源 arXiv Computation and Language 更新失败: RSS feed为空
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+arXiv Machine Learning 第1次失败: RSS feed为空
+arXiv Computer Vision 第1次失败: RSS feed为空
+获取RSS: arXiv Machine Learning (第2次尝试)
+获取RSS: arXiv Computer Vision (第2次尝试)
+arXiv Computer Vision 第2次失败: RSS feed为空
+RSS源 arXiv Computer Vision 更新失败: RSS feed为空
+arXiv Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Machine Learning 更新失败: RSS feed为空
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: RSS feed为空
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: RSS feed为空
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: RSS feed为空
+跳过 756 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Robotics 第1次失败: RSS feed为空
+arXiv Information Retrieval 第1次失败: RSS feed为空
+获取RSS: arXiv Robotics (第2次尝试)
+获取RSS: arXiv Information Retrieval (第2次尝试)
+arXiv Robotics 第2次失败: RSS feed为空
+RSS源 arXiv Robotics 更新失败: RSS feed为空
+arXiv Information Retrieval 第2次失败: RSS feed为空
+RSS源 arXiv Information Retrieval 更新失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Statistical Machine Learning 第1次失败: RSS feed为空
+arXiv Audio and Speech Processing 第1次失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+arXiv Statistical Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Statistical Machine Learning 更新失败: RSS feed为空
+arXiv Audio and Speech Processing 第2次失败: RSS feed为空
+RSS源 arXiv Audio and Speech Processing 更新失败: RSS feed为空
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 8 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Human-Computer Interaction 第1次失败: RSS feed为空
+arXiv Multiagent Systems 第1次失败: RSS feed为空
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+arXiv Human-Computer Interaction 第2次失败: RSS feed为空
+RSS源 arXiv Human-Computer Interaction 更新失败: RSS feed为空
+arXiv Multiagent Systems 第2次失败: RSS feed为空
+RSS源 arXiv Multiagent Systems 更新失败: RSS feed为空
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 16 条重复文章
+新闻更新完成: 55个源成功, 保存7条, 11个错误
+✅ 更新完成，新增 7 条新闻
+WebSocket客户端连接: GBMF7SIr7W8FFcH2AAAw
+WebSocket客户端断开: GBMF7SIr7W8FFcH2AAAw, 原因: ping timeout, 连接时长: 360秒
+WebSocket客户端连接: VLKi8cZPXzpL0X4PAAAy
+WebSocket客户端断开: VLKi8cZPXzpL0X4PAAAy, 原因: ping timeout, 连接时长: 310秒
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/5 15:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+arXiv Computation and Language 第1次失败: RSS feed为空
+arXiv AI 第1次失败: RSS feed为空
+获取RSS: arXiv Computation and Language (第2次尝试)
+获取RSS: arXiv AI (第2次尝试)
+arXiv AI 第2次失败: RSS feed为空
+RSS源 arXiv AI 更新失败: RSS feed为空
+arXiv Computation and Language 第2次失败: RSS feed为空
+RSS源 arXiv Computation and Language 更新失败: RSS feed为空
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+arXiv Machine Learning 第1次失败: RSS feed为空
+arXiv Computer Vision 第1次失败: RSS feed为空
+获取RSS: arXiv Machine Learning (第2次尝试)
+获取RSS: arXiv Computer Vision (第2次尝试)
+arXiv Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Machine Learning 更新失败: RSS feed为空
+arXiv Computer Vision 第2次失败: RSS feed为空
+RSS源 arXiv Computer Vision 更新失败: RSS feed为空
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: RSS feed为空
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: RSS feed为空
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: RSS feed为空
+跳过 756 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Information Retrieval 第1次失败: RSS feed为空
+arXiv Robotics 第1次失败: RSS feed为空
+获取RSS: arXiv Information Retrieval (第2次尝试)
+获取RSS: arXiv Robotics (第2次尝试)
+arXiv Information Retrieval 第2次失败: RSS feed为空
+RSS源 arXiv Information Retrieval 更新失败: RSS feed为空
+arXiv Robotics 第2次失败: RSS feed为空
+RSS源 arXiv Robotics 更新失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Statistical Machine Learning 第1次失败: RSS feed为空
+arXiv Audio and Speech Processing 第1次失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+arXiv Audio and Speech Processing 第2次失败: RSS feed为空
+RSS源 arXiv Audio and Speech Processing 更新失败: RSS feed为空
+arXiv Statistical Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Statistical Machine Learning 更新失败: RSS feed为空
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 8 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Multiagent Systems 第1次失败: RSS feed为空
+arXiv Human-Computer Interaction 第1次失败: RSS feed为空
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+arXiv Multiagent Systems 第2次失败: RSS feed为空
+RSS源 arXiv Multiagent Systems 更新失败: RSS feed为空
+arXiv Human-Computer Interaction 第2次失败: RSS feed为空
+RSS源 arXiv Human-Computer Interaction 更新失败: RSS feed为空
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 46 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 27 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 14 条重复文章
+新闻更新完成: 55个源成功, 保存15条, 11个错误
+✅ 更新完成，新增 15 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/5 18:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+arXiv Computation and Language 第1次失败: RSS feed为空
+arXiv AI 第1次失败: RSS feed为空
+获取RSS: arXiv Computation and Language (第2次尝试)
+获取RSS: arXiv AI (第2次尝试)
+arXiv Computation and Language 第2次失败: RSS feed为空
+RSS源 arXiv Computation and Language 更新失败: RSS feed为空
+arXiv AI 第2次失败: RSS feed为空
+RSS源 arXiv AI 更新失败: RSS feed为空
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+arXiv Computer Vision 第1次失败: RSS feed为空
+arXiv Machine Learning 第1次失败: RSS feed为空
+获取RSS: arXiv Computer Vision (第2次尝试)
+获取RSS: arXiv Machine Learning (第2次尝试)
+arXiv Computer Vision 第2次失败: RSS feed为空
+RSS源 arXiv Computer Vision 更新失败: RSS feed为空
+arXiv Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Machine Learning 更新失败: RSS feed为空
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: RSS feed为空
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: RSS feed为空
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: RSS feed为空
+跳过 756 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Information Retrieval 第1次失败: RSS feed为空
+arXiv Robotics 第1次失败: RSS feed为空
+获取RSS: arXiv Information Retrieval (第2次尝试)
+获取RSS: arXiv Robotics (第2次尝试)
+arXiv Information Retrieval 第2次失败: RSS feed为空
+RSS源 arXiv Information Retrieval 更新失败: RSS feed为空
+arXiv Robotics 第2次失败: RSS feed为空
+RSS源 arXiv Robotics 更新失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Statistical Machine Learning 第1次失败: RSS feed为空
+arXiv Audio and Speech Processing 第1次失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+arXiv Audio and Speech Processing 第2次失败: RSS feed为空
+RSS源 arXiv Audio and Speech Processing 更新失败: RSS feed为空
+arXiv Statistical Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Statistical Machine Learning 更新失败: RSS feed为空
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 8 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Human-Computer Interaction 第1次失败: RSS feed为空
+arXiv Multiagent Systems 第1次失败: RSS feed为空
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+arXiv Human-Computer Interaction 第2次失败: RSS feed为空
+RSS源 arXiv Human-Computer Interaction 更新失败: RSS feed为空
+arXiv Multiagent Systems 第2次失败: RSS feed为空
+RSS源 arXiv Multiagent Systems 更新失败: RSS feed为空
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 49 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 18 条重复文章
+新闻更新完成: 55个源成功, 保存6条, 11个错误
+✅ 更新完成，新增 6 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/5 21:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+arXiv Computation and Language 第1次失败: RSS feed为空
+arXiv AI 第1次失败: RSS feed为空
+获取RSS: arXiv Computation and Language (第2次尝试)
+获取RSS: arXiv AI (第2次尝试)
+arXiv Computation and Language 第2次失败: RSS feed为空
+RSS源 arXiv Computation and Language 更新失败: RSS feed为空
+arXiv AI 第2次失败: RSS feed为空
+RSS源 arXiv AI 更新失败: RSS feed为空
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+arXiv Machine Learning 第1次失败: RSS feed为空
+arXiv Computer Vision 第1次失败: RSS feed为空
+获取RSS: arXiv Machine Learning (第2次尝试)
+获取RSS: arXiv Computer Vision (第2次尝试)
+arXiv Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Machine Learning 更新失败: RSS feed为空
+arXiv Computer Vision 第2次失败: RSS feed为空
+RSS源 arXiv Computer Vision 更新失败: RSS feed为空
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: RSS feed为空
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: RSS feed为空
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: RSS feed为空
+跳过 756 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Information Retrieval 第1次失败: RSS feed为空
+arXiv Robotics 第1次失败: RSS feed为空
+获取RSS: arXiv Information Retrieval (第2次尝试)
+获取RSS: arXiv Robotics (第2次尝试)
+arXiv Robotics 第2次失败: RSS feed为空
+RSS源 arXiv Robotics 更新失败: RSS feed为空
+arXiv Information Retrieval 第2次失败: RSS feed为空
+RSS源 arXiv Information Retrieval 更新失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Statistical Machine Learning 第1次失败: RSS feed为空
+arXiv Audio and Speech Processing 第1次失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+arXiv Audio and Speech Processing 第2次失败: RSS feed为空
+RSS源 arXiv Audio and Speech Processing 更新失败: RSS feed为空
+arXiv Statistical Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Statistical Machine Learning 更新失败: RSS feed为空
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 9 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Human-Computer Interaction 第1次失败: RSS feed为空
+arXiv Multiagent Systems 第1次失败: RSS feed为空
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+arXiv Multiagent Systems 第2次失败: RSS feed为空
+RSS源 arXiv Multiagent Systems 更新失败: RSS feed为空
+arXiv Human-Computer Interaction 第2次失败: RSS feed为空
+RSS源 arXiv Human-Computer Interaction 更新失败: RSS feed为空
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 19 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 19 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 19 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 17 条重复文章
+新闻更新完成: 55个源成功, 保存8条, 11个错误
+✅ 更新完成，新增 8 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/6 00:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+arXiv AI 第1次失败: RSS feed为空
+arXiv Computation and Language 第1次失败: RSS feed为空
+获取RSS: arXiv AI (第2次尝试)
+获取RSS: arXiv Computation and Language (第2次尝试)
+arXiv Computation and Language 第2次失败: RSS feed为空
+RSS源 arXiv Computation and Language 更新失败: RSS feed为空
+arXiv AI 第2次失败: RSS feed为空
+RSS源 arXiv AI 更新失败: RSS feed为空
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+arXiv Computer Vision 第1次失败: RSS feed为空
+arXiv Machine Learning 第1次失败: RSS feed为空
+获取RSS: arXiv Computer Vision (第2次尝试)
+获取RSS: arXiv Machine Learning (第2次尝试)
+arXiv Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Machine Learning 更新失败: RSS feed为空
+arXiv Computer Vision 第2次失败: RSS feed为空
+RSS源 arXiv Computer Vision 更新失败: RSS feed为空
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: RSS feed为空
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: RSS feed为空
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: RSS feed为空
+跳过 756 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Robotics 第1次失败: RSS feed为空
+arXiv Information Retrieval 第1次失败: RSS feed为空
+获取RSS: arXiv Robotics (第2次尝试)
+获取RSS: arXiv Information Retrieval (第2次尝试)
+arXiv Robotics 第2次失败: RSS feed为空
+RSS源 arXiv Robotics 更新失败: RSS feed为空
+arXiv Information Retrieval 第2次失败: RSS feed为空
+RSS源 arXiv Information Retrieval 更新失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Statistical Machine Learning 第1次失败: RSS feed为空
+arXiv Audio and Speech Processing 第1次失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+arXiv Statistical Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Statistical Machine Learning 更新失败: RSS feed为空
+arXiv Audio and Speech Processing 第2次失败: RSS feed为空
+RSS源 arXiv Audio and Speech Processing 更新失败: RSS feed为空
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 18 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 8 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Multiagent Systems 第1次失败: RSS feed为空
+arXiv Human-Computer Interaction 第1次失败: RSS feed为空
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+arXiv Multiagent Systems 第2次失败: RSS feed为空
+RSS源 arXiv Multiagent Systems 更新失败: RSS feed为空
+arXiv Human-Computer Interaction 第2次失败: RSS feed为空
+RSS源 arXiv Human-Computer Interaction 更新失败: RSS feed为空
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 15 条重复文章
+新闻更新完成: 55个源成功, 保存10条, 11个错误
+✅ 更新完成，新增 10 条新闻
+🧹 执行数据清理...
+清理了 2961 条过期新闻
+✅ 清理完成，删除 2961 条过期新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/6 03:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+arXiv AI 第1次失败: RSS feed为空
+arXiv Computation and Language 第1次失败: RSS feed为空
+获取RSS: arXiv AI (第2次尝试)
+获取RSS: arXiv Computation and Language (第2次尝试)
+arXiv AI 第2次失败: RSS feed为空
+RSS源 arXiv AI 更新失败: RSS feed为空
+arXiv Computation and Language 第2次失败: RSS feed为空
+RSS源 arXiv Computation and Language 更新失败: RSS feed为空
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+arXiv Computer Vision 第1次失败: RSS feed为空
+arXiv Machine Learning 第1次失败: RSS feed为空
+获取RSS: arXiv Computer Vision (第2次尝试)
+获取RSS: arXiv Machine Learning (第2次尝试)
+arXiv Computer Vision 第2次失败: RSS feed为空
+RSS源 arXiv Computer Vision 更新失败: RSS feed为空
+arXiv Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Machine Learning 更新失败: RSS feed为空
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: RSS feed为空
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: RSS feed为空
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: RSS feed为空
+跳过 5 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Information Retrieval 第1次失败: RSS feed为空
+arXiv Robotics 第1次失败: RSS feed为空
+获取RSS: arXiv Information Retrieval (第2次尝试)
+获取RSS: arXiv Robotics (第2次尝试)
+arXiv Robotics 第2次失败: RSS feed为空
+RSS源 arXiv Robotics 更新失败: RSS feed为空
+arXiv Information Retrieval 第2次失败: RSS feed为空
+RSS源 arXiv Information Retrieval 更新失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Statistical Machine Learning 第1次失败: RSS feed为空
+arXiv Audio and Speech Processing 第1次失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+arXiv Statistical Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Statistical Machine Learning 更新失败: RSS feed为空
+arXiv Audio and Speech Processing 第2次失败: RSS feed为空
+RSS源 arXiv Audio and Speech Processing 更新失败: RSS feed为空
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 5 条重复文章
+跳过 5 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
 跳过 4 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 16 条重复文章
+跳过 5 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 3 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 19 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 4 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Human-Computer Interaction 第1次失败: RSS feed为空
+arXiv Multiagent Systems 第1次失败: RSS feed为空
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+arXiv Human-Computer Interaction 第2次失败: RSS feed为空
+RSS源 arXiv Human-Computer Interaction 更新失败: RSS feed为空
+arXiv Multiagent Systems 第2次失败: RSS feed为空
+RSS源 arXiv Multiagent Systems 更新失败: RSS feed为空
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 3 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 5 条重复文章
+跳过 4 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 8 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 8 条重复文章
+跳过 19 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 4 条重复文章
+跳过 5 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 9 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 4 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 35 条重复文章
+跳过 3 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
 跳过 1 条重复文章
-新闻更新完成: 36个源成功, 保存1970条, 25个错误
-✅ 新闻数据初始化完成
+跳过 1 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 2 条重复文章
+跳过 3 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 23 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 1 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 3 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 8 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 3 条重复文章
+跳过 6 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 13 条重复文章
+新闻更新完成: 55个源成功, 保存2962条, 11个错误
+✅ 更新完成，新增 2962 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/6 06:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+arXiv AI 第1次失败: RSS feed为空
+arXiv Computation and Language 第1次失败: RSS feed为空
+获取RSS: arXiv AI (第2次尝试)
+获取RSS: arXiv Computation and Language (第2次尝试)
+arXiv Computation and Language 第2次失败: RSS feed为空
+RSS源 arXiv Computation and Language 更新失败: RSS feed为空
+arXiv AI 第2次失败: RSS feed为空
+RSS源 arXiv AI 更新失败: RSS feed为空
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+arXiv Machine Learning 第1次失败: RSS feed为空
+arXiv Computer Vision 第1次失败: RSS feed为空
+获取RSS: arXiv Machine Learning (第2次尝试)
+获取RSS: arXiv Computer Vision (第2次尝试)
+arXiv Computer Vision 第2次失败: RSS feed为空
+RSS源 arXiv Computer Vision 更新失败: RSS feed为空
+arXiv Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Machine Learning 更新失败: RSS feed为空
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: RSS feed为空
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: RSS feed为空
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: RSS feed为空
+跳过 756 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Robotics 第1次失败: RSS feed为空
+arXiv Information Retrieval 第1次失败: RSS feed为空
+获取RSS: arXiv Robotics (第2次尝试)
+获取RSS: arXiv Information Retrieval (第2次尝试)
+arXiv Robotics 第2次失败: RSS feed为空
+RSS源 arXiv Robotics 更新失败: RSS feed为空
+arXiv Information Retrieval 第2次失败: RSS feed为空
+RSS源 arXiv Information Retrieval 更新失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Statistical Machine Learning 第1次失败: RSS feed为空
+arXiv Audio and Speech Processing 第1次失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+arXiv Statistical Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Statistical Machine Learning 更新失败: RSS feed为空
+arXiv Audio and Speech Processing 第2次失败: RSS feed为空
+RSS源 arXiv Audio and Speech Processing 更新失败: RSS feed为空
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 14 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Multiagent Systems 第1次失败: RSS feed为空
+arXiv Human-Computer Interaction 第1次失败: RSS feed为空
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+arXiv Multiagent Systems 第2次失败: RSS feed为空
+RSS源 arXiv Multiagent Systems 更新失败: RSS feed为空
+arXiv Human-Computer Interaction 第2次失败: RSS feed为空
+RSS源 arXiv Human-Computer Interaction 更新失败: RSS feed为空
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 28 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 19 条重复文章
+新闻更新完成: 55个源成功, 保存5条, 11个错误
+✅ 更新完成，新增 5 条新闻
+⏰ 执行每日定时更新...
+📅 当前时间: 2026/4/6 08:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+arXiv AI 第1次失败: RSS feed为空
+arXiv Computation and Language 第1次失败: RSS feed为空
+获取RSS: arXiv AI (第2次尝试)
+获取RSS: arXiv Computation and Language (第2次尝试)
+arXiv AI 第2次失败: RSS feed为空
+RSS源 arXiv AI 更新失败: RSS feed为空
+arXiv Computation and Language 第2次失败: RSS feed为空
+RSS源 arXiv Computation and Language 更新失败: RSS feed为空
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+arXiv Computer Vision 第1次失败: RSS feed为空
+arXiv Machine Learning 第1次失败: RSS feed为空
+获取RSS: arXiv Computer Vision (第2次尝试)
+获取RSS: arXiv Machine Learning (第2次尝试)
+arXiv Computer Vision 第2次失败: RSS feed为空
+RSS源 arXiv Computer Vision 更新失败: RSS feed为空
+arXiv Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Machine Learning 更新失败: RSS feed为空
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: RSS feed为空
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: RSS feed为空
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: RSS feed为空
+跳过 756 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Robotics 第1次失败: RSS feed为空
+arXiv Information Retrieval 第1次失败: RSS feed为空
+获取RSS: arXiv Robotics (第2次尝试)
+获取RSS: arXiv Information Retrieval (第2次尝试)
+arXiv Robotics 第2次失败: RSS feed为空
+RSS源 arXiv Robotics 更新失败: RSS feed为空
+arXiv Information Retrieval 第2次失败: RSS feed为空
+RSS源 arXiv Information Retrieval 更新失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Audio and Speech Processing 第1次失败: RSS feed为空
+arXiv Statistical Machine Learning 第1次失败: RSS feed为空
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+arXiv Audio and Speech Processing 第2次失败: RSS feed为空
+RSS源 arXiv Audio and Speech Processing 更新失败: RSS feed为空
+arXiv Statistical Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Statistical Machine Learning 更新失败: RSS feed为空
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Human-Computer Interaction 第1次失败: RSS feed为空
+arXiv Multiagent Systems 第1次失败: RSS feed为空
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+arXiv Human-Computer Interaction 第2次失败: RSS feed为空
+RSS源 arXiv Human-Computer Interaction 更新失败: RSS feed为空
+arXiv Multiagent Systems 第2次失败: RSS feed为空
+RSS源 arXiv Multiagent Systems 更新失败: RSS feed为空
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 29 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 18 条重复文章
+新闻更新完成: 55个源成功, 保存4条, 11个错误
+✅ 每日更新完成，新增 4 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/6 09:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+arXiv AI 第1次失败: RSS feed为空
+arXiv Computation and Language 第1次失败: RSS feed为空
+获取RSS: arXiv AI (第2次尝试)
+获取RSS: arXiv Computation and Language (第2次尝试)
+arXiv Computation and Language 第2次失败: RSS feed为空
+RSS源 arXiv Computation and Language 更新失败: RSS feed为空
+arXiv AI 第2次失败: RSS feed为空
+RSS源 arXiv AI 更新失败: RSS feed为空
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+arXiv Computer Vision 第1次失败: RSS feed为空
+arXiv Machine Learning 第1次失败: RSS feed为空
+获取RSS: arXiv Computer Vision (第2次尝试)
+获取RSS: arXiv Machine Learning (第2次尝试)
+arXiv Computer Vision 第2次失败: RSS feed为空
+RSS源 arXiv Computer Vision 更新失败: RSS feed为空
+arXiv Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Machine Learning 更新失败: RSS feed为空
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+arXiv Neural and Evolutionary Computing 第1次失败: RSS feed为空
+获取RSS: arXiv Neural and Evolutionary Computing (第2次尝试)
+arXiv Neural and Evolutionary Computing 第2次失败: RSS feed为空
+RSS源 arXiv Neural and Evolutionary Computing 更新失败: RSS feed为空
+跳过 756 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+arXiv Robotics 第1次失败: RSS feed为空
+arXiv Information Retrieval 第1次失败: RSS feed为空
+获取RSS: arXiv Robotics (第2次尝试)
+获取RSS: arXiv Information Retrieval (第2次尝试)
+arXiv Robotics 第2次失败: RSS feed为空
+RSS源 arXiv Robotics 更新失败: RSS feed为空
+arXiv Information Retrieval 第2次失败: RSS feed为空
+RSS源 arXiv Information Retrieval 更新失败: RSS feed为空
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+arXiv Audio and Speech Processing 第1次失败: RSS feed为空
+arXiv Statistical Machine Learning 第1次失败: RSS feed为空
+获取RSS: arXiv Audio and Speech Processing (第2次尝试)
+获取RSS: arXiv Statistical Machine Learning (第2次尝试)
+arXiv Statistical Machine Learning 第2次失败: RSS feed为空
+RSS源 arXiv Statistical Machine Learning 更新失败: RSS feed为空
+arXiv Audio and Speech Processing 第2次失败: RSS feed为空
+RSS源 arXiv Audio and Speech Processing 更新失败: RSS feed为空
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+arXiv Human-Computer Interaction 第1次失败: RSS feed为空
+arXiv Multiagent Systems 第1次失败: RSS feed为空
+获取RSS: arXiv Human-Computer Interaction (第2次尝试)
+获取RSS: arXiv Multiagent Systems (第2次尝试)
+arXiv Human-Computer Interaction 第2次失败: RSS feed为空
+RSS源 arXiv Human-Computer Interaction 更新失败: RSS feed为空
+arXiv Multiagent Systems 第2次失败: RSS feed为空
+RSS源 arXiv Multiagent Systems 更新失败: RSS feed为空
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 49 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+新闻更新完成: 55个源成功, 保存2条, 11个错误
+✅ 更新完成，新增 2 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/6 12:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 48 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 52 条重复文章
+跳过 82 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 756 条重复文章
+跳过 2 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 14 条重复文章
+跳过 10 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 25 条重复文章
+跳过 9 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 14 条重复文章
+跳过 8 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 14 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 26 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 19 条重复文章
+新闻更新完成: 66个源成功, 保存656条, 0个错误
+✅ 更新完成，新增 656 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/6 15:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 237 条重复文章
+跳过 101 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 171 条重复文章
+跳过 197 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 756 条重复文章
+跳过 9 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 53 条重复文章
+跳过 17 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 32 条重复文章
+跳过 10 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 6 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 29 条重复文章
+跳过 16 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 42 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 14 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 29 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+新闻更新完成: 66个源成功, 保存56条, 0个错误
+✅ 更新完成，新增 56 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/6 18:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 237 条重复文章
+跳过 101 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 171 条重复文章
+跳过 197 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 756 条重复文章
+跳过 9 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 53 条重复文章
+跳过 17 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 32 条重复文章
+跳过 10 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 903 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 9 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 29 条重复文章
+跳过 16 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 48 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 15 条重复文章
+新闻更新完成: 66个源成功, 保存50条, 0个错误
+✅ 更新完成，新增 50 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/6 21:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 237 条重复文章
+跳过 101 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 171 条重复文章
+跳过 197 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 756 条重复文章
+跳过 9 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 53 条重复文章
+跳过 17 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 32 条重复文章
+跳过 10 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 904 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 9 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 29 条重复文章
+跳过 16 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 19 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 9 条重复文章
+跳过 9 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 19 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 14 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+新闻更新完成: 66个源成功, 保存58条, 0个错误
+✅ 更新完成，新增 58 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/7 00:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 237 条重复文章
+跳过 101 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 171 条重复文章
+跳过 197 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 756 条重复文章
+跳过 9 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 53 条重复文章
+跳过 17 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 32 条重复文章
+跳过 10 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 904 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 18 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 19 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 15 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 8 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 29 条重复文章
+跳过 16 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 18 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 9 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 9 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 9 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 11 条重复文章
+新闻更新完成: 66个源成功, 保存64条, 0个错误
+✅ 更新完成，新增 64 条新闻
+🧹 执行数据清理...
+清理了 2964 条过期新闻
+✅ 清理完成，删除 2964 条过期新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/7 03:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 237 条重复文章
+跳过 101 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 171 条重复文章
+跳过 197 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 5 条重复文章
+跳过 9 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 53 条重复文章
+跳过 17 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 32 条重复文章
+跳过 10 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 5 条重复文章
+跳过 5 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 3 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 16 条重复文章
+跳过 6 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 3 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 16 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 8 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 5 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 29 条重复文章
+跳过 16 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 3 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 5 条重复文章
+跳过 4 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 8 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 8 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 5 条重复文章
+跳过 5 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 4 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 38 条重复文章
+跳过 4 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 1 条重复文章
+跳过 2 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+Ben’s Bites AI 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Ben’s Bites AI (第2次尝试)
+跳过 2 条重复文章
+跳过 3 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 22 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 9 条重复文章
+跳过 1 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 3 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 8 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 3 条重复文章
+跳过 5 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 15 条重复文章
+新闻更新完成: 66个源成功, 保存3000条, 0个错误
+✅ 更新完成，新增 3000 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/7 06:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 237 条重复文章
+跳过 101 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 171 条重复文章
+跳过 197 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 756 条重复文章
+跳过 9 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 53 条重复文章
+跳过 17 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 32 条重复文章
+跳过 10 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 905 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 17 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 17 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 29 条重复文章
+跳过 16 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 47 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 48 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 14 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+新闻更新完成: 65个源成功, 保存51条, 1个错误
+✅ 更新完成，新增 51 条新闻
+⏰ 执行每日定时更新...
+📅 当前时间: 2026/4/7 08:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 237 条重复文章
+跳过 101 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 171 条重复文章
+跳过 197 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 757 条重复文章
+跳过 9 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 53 条重复文章
+跳过 17 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 32 条重复文章
+跳过 10 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 905 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 17 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 18 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 29 条重复文章
+跳过 16 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 49 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 5 条重复文章
+新闻更新完成: 66个源成功, 保存60条, 0个错误
+✅ 每日更新完成，新增 60 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/7 09:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 237 条重复文章
+跳过 101 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 171 条重复文章
+跳过 197 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 757 条重复文章
+跳过 9 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 53 条重复文章
+跳过 17 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 32 条重复文章
+跳过 10 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 905 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 17 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 18 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 29 条重复文章
+跳过 16 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 19 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 9 条重复文章
+新闻更新完成: 66个源成功, 保存56条, 0个错误
+✅ 更新完成，新增 56 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/7 12:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 2 条重复文章
+跳过 106 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 101 条重复文章
+跳过 197 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 757 条重复文章
+跳过 8 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 42 条重复文章
+跳过 17 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 11 条重复文章
+跳过 3 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 905 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 17 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 18 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 7 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 47 条重复文章
+跳过 31 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+The Batch (deeplearning.ai) 第1次失败: Client network socket disconnected before secure TLS connection was established
+Machine Learning Mastery 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: The Batch (deeplearning.ai) (第2次尝试)
+获取RSS: Machine Learning Mastery (第2次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 9 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 48 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 49 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 3 条重复文章
+新闻更新完成: 66个源成功, 保存1108条, 0个错误
+✅ 更新完成，新增 1108 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/7 15:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 483 条重复文章
+跳过 210 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 341 条重复文章
+跳过 197 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 757 条重复文章
+跳过 18 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 97 条重复文章
+跳过 40 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 71 条重复文章
+跳过 12 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 905 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 17 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 18 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 9 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 9 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 93 条重复文章
+跳过 46 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 49 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+KDnuggets 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: KDnuggets (第2次尝试)
+跳过 9 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+Chip Huyen 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Chip Huyen (第2次尝试)
+Chip Huyen 第2次失败: Client network socket disconnected before secure TLS connection was established
+RSS源 Chip Huyen 更新失败: Client network socket disconnected before secure TLS connection was established
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 5 条重复文章
+新闻更新完成: 65个源成功, 保存61条, 1个错误
+✅ 更新完成，新增 61 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/7 18:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 483 条重复文章
+跳过 210 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 341 条重复文章
+跳过 197 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 757 条重复文章
+跳过 18 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 97 条重复文章
+跳过 40 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 71 条重复文章
+跳过 12 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 905 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 17 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 19 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 3 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 9 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 93 条重复文章
+跳过 46 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 9 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 31 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 13 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+新闻更新完成: 66个源成功, 保存80条, 0个错误
+✅ 更新完成，新增 80 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/7 21:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 483 条重复文章
+跳过 210 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 341 条重复文章
+跳过 197 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 757 条重复文章
+跳过 18 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 97 条重复文章
+跳过 40 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 71 条重复文章
+跳过 12 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 905 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 17 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 19 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 9 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 93 条重复文章
+跳过 46 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+Together AI Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Together AI Blog (第2次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 19 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 9 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 48 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 48 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 19 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+新闻更新完成: 66个源成功, 保存60条, 0个错误
+✅ 更新完成，新增 60 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/8 00:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 483 条重复文章
+跳过 210 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 341 条重复文章
+跳过 197 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+Hugging Face Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Hugging Face Blog (第2次尝试)
+跳过 757 条重复文章
+跳过 18 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 97 条重复文章
+跳过 40 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 71 条重复文章
+跳过 12 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 905 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 17 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 9 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 18 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 9 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 14 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 93 条重复文章
+跳过 46 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 18 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 9 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 9 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 48 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 19 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 49 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 14 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+Chip Huyen 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Chip Huyen (第2次尝试)
+跳过 10 条重复文章
+跳过 9 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 8 条重复文章
+新闻更新完成: 66个源成功, 保存67条, 0个错误
+✅ 更新完成，新增 67 条新闻
+🧹 执行数据清理...
+清理了 2986 条过期新闻
+✅ 清理完成，删除 2986 条过期新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/8 03:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 483 条重复文章
+跳过 210 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 341 条重复文章
+跳过 197 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+Hugging Face Blog 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Hugging Face Blog (第2次尝试)
+跳过 6 条重复文章
+跳过 18 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 97 条重复文章
+跳过 40 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 71 条重复文章
+跳过 12 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 6 条重复文章
+跳过 5 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 3 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 17 条重复文章
+跳过 6 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 9 条重复文章
+跳过 3 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 15 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 8 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 1 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 6 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 93 条重复文章
+跳过 46 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 3 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 5 条重复文章
+跳过 4 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 8 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 7 条重复文章
+跳过 19 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 4 条重复文章
+跳过 7 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 9 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 4 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 37 条重复文章
+跳过 4 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 1 条重复文章
+跳过 1 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 3 条重复文章
+跳过 3 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 25 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 11 条重复文章
+跳过 3 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 4 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 8 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 3 条重复文章
+跳过 6 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 13 条重复文章
+新闻更新完成: 66个源成功, 保存2994条, 0个错误
+✅ 更新完成，新增 2994 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/8 06:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 483 条重复文章
+跳过 210 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 341 条重复文章
+跳过 197 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 757 条重复文章
+跳过 18 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 97 条重复文章
+跳过 40 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 71 条重复文章
+跳过 12 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 905 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 17 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 19 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 9 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 93 条重复文章
+跳过 46 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 49 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 99 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 48 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 27 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 99 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 16 条重复文章
+新闻更新完成: 66个源成功, 保存55条, 0个错误
+✅ 更新完成，新增 55 条新闻
+⏰ 执行每日定时更新...
+📅 当前时间: 2026/4/8 08:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 483 条重复文章
+跳过 210 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 341 条重复文章
+跳过 197 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 757 条重复文章
+跳过 18 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 97 条重复文章
+跳过 40 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 71 条重复文章
+跳过 12 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 905 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 17 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 19 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 93 条重复文章
+跳过 46 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 100 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 49 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 13 条重复文章
+新闻更新完成: 66个源成功, 保存50条, 0个错误
+✅ 每日更新完成，新增 50 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/8 09:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 483 条重复文章
+跳过 210 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 341 条重复文章
+跳过 197 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 757 条重复文章
+跳过 18 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 97 条重复文章
+跳过 40 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 71 条重复文章
+跳过 12 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 905 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 17 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 93 条重复文章
+跳过 46 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 18 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 100 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 19 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 15 条重复文章
+新闻更新完成: 66个源成功, 保存50条, 0个错误
+✅ 更新完成，新增 50 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/8 12:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 14 条重复文章
+跳过 96 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 66 条重复文章
+跳过 273 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 757 条重复文章
+跳过 2 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 21 条重复文章
+跳过 26 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 4 条重复文章
+跳过 5 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 905 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 17 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 8 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 26 条重复文章
+跳过 18 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 48 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 100 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 8 条重复文章
+新闻更新完成: 66个源成功, 保存937条, 0个错误
+✅ 更新完成，新增 937 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/8 15:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 322 条重复文章
+跳过 202 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 224 条重复文章
+跳过 439 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 757 条重复文章
+跳过 7 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 71 条重复文章
+跳过 44 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 39 条重复文章
+跳过 9 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 905 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 17 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 19 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 8 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 8 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 52 条重复文章
+跳过 25 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 40 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 100 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 49 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+Chip Huyen 第1次失败: Client network socket disconnected before secure TLS connection was established
+获取RSS: Chip Huyen (第2次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 6 条重复文章
+新闻更新完成: 66个源成功, 保存68条, 0个错误
+✅ 更新完成，新增 68 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/8 18:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 322 条重复文章
+跳过 202 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 224 条重复文章
+跳过 439 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 757 条重复文章
+跳过 7 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 71 条重复文章
+跳过 44 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 39 条重复文章
+跳过 9 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 905 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 17 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 10 条重复文章
+跳过 5 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 52 条重复文章
+跳过 25 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 20 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 47 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 100 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 49 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 13 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 7 条重复文章
+新闻更新完成: 66个源成功, 保存63条, 0个错误
+✅ 更新完成，新增 63 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/8 21:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 322 条重复文章
+跳过 202 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 224 条重复文章
+跳过 439 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 758 条重复文章
+跳过 7 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 71 条重复文章
+跳过 44 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 39 条重复文章
+跳过 9 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 905 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 17 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 19 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 20 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 9 条重复文章
+跳过 7 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 52 条重复文章
+跳过 25 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 19 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 9 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 9 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 11 条重复文章
+跳过 100 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 49 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 30 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 19 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 3 条重复文章
+新闻更新完成: 66个源成功, 保存68条, 0个错误
+✅ 更新完成，新增 68 条新闻
+⏰ 执行定期更新（每3小时）...
+📅 当前时间: 2026/4/9 00:00:00
+开始更新新闻...
+获取RSS: arXiv AI (第1次尝试)
+获取RSS: arXiv Computation and Language (第1次尝试)
+跳过 322 条重复文章
+跳过 202 条重复文章
+获取RSS: arXiv Computer Vision (第1次尝试)
+获取RSS: arXiv Machine Learning (第1次尝试)
+跳过 224 条重复文章
+跳过 439 条重复文章
+获取RSS: Hugging Face Blog (第1次尝试)
+获取RSS: arXiv Neural and Evolutionary Computing (第1次尝试)
+跳过 758 条重复文章
+跳过 7 条重复文章
+获取RSS: arXiv Robotics (第1次尝试)
+获取RSS: arXiv Information Retrieval (第1次尝试)
+跳过 71 条重复文章
+跳过 44 条重复文章
+获取RSS: arXiv Statistical Machine Learning (第1次尝试)
+获取RSS: arXiv Audio and Speech Processing (第1次尝试)
+跳过 39 条重复文章
+跳过 9 条重复文章
+获取RSS: OpenAI Blog (第1次尝试)
+获取RSS: Google AI Blog (第1次尝试)
+跳过 906 条重复文章
+跳过 20 条重复文章
+获取RSS: Microsoft AI Blog (第1次尝试)
+获取RSS: NVIDIA Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 17 条重复文章
+获取RSS: Amazon AWS AI Blog (第1次尝试)
+获取RSS: MIT Tech Review AI (第1次尝试)
+跳过 20 条重复文章
+跳过 9 条重复文章
+获取RSS: WIRED AI (第1次尝试)
+获取RSS: Ars Technica AI (第1次尝试)
+跳过 10 条重复文章
+跳过 20 条重复文章
+获取RSS: VentureBeat AI (第1次尝试)
+获取RSS: TechCrunch AI (第1次尝试)
+跳过 7 条重复文章
+跳过 16 条重复文章
+获取RSS: The Verge AI (第1次尝试)
+获取RSS: 量子位 (第1次尝试)
+跳过 9 条重复文章
+跳过 9 条重复文章
+获取RSS: PyTorch Blog (第1次尝试)
+获取RSS: TensorFlow Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 25 条重复文章
+获取RSS: LangChain Blog (第1次尝试)
+获取RSS: Stanford AI Lab (第1次尝试)
+跳过 15 条重复文章
+跳过 15 条重复文章
+获取RSS: Berkeley AI Research (第1次尝试)
+获取RSS: Replicate Blog (第1次尝试)
+跳过 10 条重复文章
+跳过 120 条重复文章
+获取RSS: arXiv Human-Computer Interaction (第1次尝试)
+获取RSS: arXiv Multiagent Systems (第1次尝试)
+跳过 52 条重复文章
+跳过 25 条重复文章
+获取RSS: Google Research Blog (第1次尝试)
+获取RSS: GitHub AI Tag (第1次尝试)
+跳过 100 条重复文章
+跳过 10 条重复文章
+获取RSS: Together AI Blog (第1次尝试)
+获取RSS: MIT News AI (第1次尝试)
+跳过 100 条重复文章
+跳过 50 条重复文章
+获取RSS: Google Developers AI Tools (第1次尝试)
+获取RSS: Lilian Weng Blog (第1次尝试)
+跳过 20 条重复文章
+跳过 51 条重复文章
+获取RSS: AI科技大本营 (第1次尝试)
+获取RSS: Towards Data Science (第1次尝试)
+跳过 20 条重复文章
+跳过 18 条重复文章
+获取RSS: Machine Learning Mastery (第1次尝试)
+获取RSS: The Batch (deeplearning.ai) (第1次尝试)
+跳过 10 条重复文章
+跳过 15 条重复文章
+获取RSS: Analytics Vidhya (第1次尝试)
+获取RSS: KDnuggets (第1次尝试)
+跳过 10 条重复文章
+跳过 9 条重复文章
+获取RSS: Distill.pub (第1次尝试)
+获取RSS: OpenCV Blog (第1次尝试)
+跳过 52 条重复文章
+跳过 10 条重复文章
+获取RSS: Product Hunt AI (第1次尝试)
+获取RSS: AI Weekly (第1次尝试)
+跳过 49 条重复文章
+跳过 20 条重复文章
+获取RSS: Last Week in AI (第1次尝试)
+获取RSS: Import AI (第1次尝试)
+跳过 20 条重复文章
+跳过 10 条重复文章
+获取RSS: Ben’s Bites AI (第1次尝试)
+获取RSS: Weaviate Blog (第1次尝试)
+Weaviate Blog 第1次失败: aborted
+获取RSS: Weaviate Blog (第2次尝试)
+跳过 20 条重复文章
+跳过 204 条重复文章
+获取RSS: JetBrains AI Blog (第1次尝试)
+获取RSS: Modal Blog (第1次尝试)
+跳过 12 条重复文章
+跳过 100 条重复文章
+获取RSS: Answer.AI Blog (第1次尝试)
+获取RSS: The Register AI (第1次尝试)
+跳过 20 条重复文章
+跳过 50 条重复文章
+获取RSS: InfoQ AI ML Data Engineering (第1次尝试)
+获取RSS: Roboflow Blog (第1次尝试)
+跳过 14 条重复文章
+跳过 15 条重复文章
+获取RSS: Adept Blog (第1次尝试)
+获取RSS: The Gradient (第1次尝试)
+Adept Blog 第1次失败: timeout of 20000ms exceeded
+获取RSS: Adept Blog (第2次尝试)
+跳过 12 条重复文章
+跳过 15 条重复文章
+获取RSS: Chip Huyen (第1次尝试)
+获取RSS: Tom Tunguz (第1次尝试)
+跳过 10 条重复文章
+跳过 10 条重复文章
+获取RSS: Latent Space (第1次尝试)
+获取RSS: Simon Willison (第1次尝试)
+跳过 20 条重复文章
+跳过 29 条重复文章
+获取RSS: Runpod Blog (第1次尝试)
+获取RSS: The Sequence (第1次尝试)
+跳过 100 条重复文章
+跳过 20 条重复文章
+获取RSS: AI Snake Oil (第1次尝试)
+跳过 20 条重复文章
+跳过 5 条重复文章
+新闻更新完成: 66个源成功, 保存68条, 0个错误
+✅ 更新完成，新增 68 条新闻

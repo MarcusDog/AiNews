@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const NewsService = require('../services/NewsService');
 const TrendAnalyzer = require('../services/TrendAnalyzer');
+const DatabaseService = require('../services/DatabaseService');
+const { buildDailyTrendSeries, parseBoundedInteger } = require('../utils/analytics');
+const { diversityAuditService } = require('../services/DiversityAuditService');
 
 // 获取统计数据
 router.get('/stats', async (req, res) => {
@@ -23,8 +26,8 @@ router.get('/stats', async (req, res) => {
 // 获取热门话题
 router.get('/trending', async (req, res) => {
   try {
-    const { limit = 10 } = req.query;
-    const trending = await NewsService.getTrendingTopics(parseInt(limit));
+    const limit = parseBoundedInteger(req.query.limit, { fallback: 10, min: 1, max: 30 });
+    const trending = await NewsService.getTrendingTopics(limit);
     res.json({
       success: true,
       data: trending
@@ -73,6 +76,25 @@ router.get('/diversity', async (req, res) => {
   }
 });
 
+// 每日模型复核后的信息茧房反馈；只读，不会由前台触发模型调用。
+router.get('/diversity-review', async (req, res) => {
+  try {
+    const review = await diversityAuditService.getLatestAudit();
+    res.json({
+      success: true,
+      data: review || {
+        status: 'scheduled',
+        summary: '每日来源多样性复核将在新闻刷新后生成。',
+        sources: [],
+        metrics: {}
+      }
+    });
+  } catch (error) {
+    console.error('获取每日信息茧房复核失败:', error);
+    res.status(500).json({ success: false, error: '暂时无法读取每日复核' });
+  }
+});
+
 // AI发展趋势分析（多视角）
 router.get('/trends', async (req, res) => {
   try {
@@ -94,10 +116,7 @@ router.get('/trends', async (req, res) => {
 router.get('/smart-trends', async (req, res) => {
   try {
     // 获取最近的新闻数据进行分析
-    const newsData = await NewsService.getLatestNews({ 
-      page: 1, 
-      limit: 500 
-    });
+    const newsData = await NewsService.getAnalysisNews(500);
     
     const trends = await TrendAnalyzer.analyzeTrends(newsData.data);
     
@@ -118,10 +137,7 @@ router.get('/smart-trends', async (req, res) => {
 router.post('/smart-trends/refresh', async (req, res) => {
   try {
     TrendAnalyzer.clearCache();
-    const newsData = await NewsService.getLatestNews({ 
-      page: 1, 
-      limit: 500 
-    });
+    const newsData = await NewsService.getAnalysisNews(500);
     
     const trends = await TrendAnalyzer.analyzeTrends(newsData.data);
     
@@ -139,11 +155,30 @@ router.post('/smart-trends/refresh', async (req, res) => {
   }
 });
 
+// 近N天每日新闻趋势（真实数据，供前端7天趋势图使用）
+router.get('/daily-trends', async (req, res) => {
+  try {
+    const days = parseBoundedInteger(req.query.days, { fallback: 7, min: 1, max: 30 });
+    await DatabaseService.initialize();
+    const daily = await DatabaseService.getDailyStats(days);
+    const dailyCategory = await DatabaseService.getDailyCategoryStats(days);
+
+    res.json({
+      success: true,
+      data: buildDailyTrendSeries({ daily, dailyCategory, days, timeZone: 'Asia/Shanghai' })
+    });
+  } catch (error) {
+    console.error('获取每日趋势失败:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // 多样化推荐（破除信息茧房）
 router.get('/recommendations', async (req, res) => {
   try {
-    const { userId = 'default', limit = 10 } = req.query;
-    const recommendations = await NewsService.getDiversifiedRecommendations(userId, parseInt(limit));
+    const { userId = 'default' } = req.query;
+    const limit = parseBoundedInteger(req.query.limit, { fallback: 10, min: 1, max: 30 });
+    const recommendations = await NewsService.getDiversifiedRecommendations(userId, limit);
     res.json({
       success: true,
       data: recommendations

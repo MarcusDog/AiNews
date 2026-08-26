@@ -5,7 +5,9 @@ const rateLimit = require('express-rate-limit');
 const cron = require('node-cron');
 const http = require('http');
 const { Server } = require('socket.io');
-require('dotenv').config();
+const path = require('node:path');
+require('dotenv').config({ path: path.join(__dirname, '.env.local') });
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const app = express();
 const server = http.createServer(app);
@@ -20,8 +22,8 @@ const io = new Server(server, {
     methods: ['GET', 'POST'],
     credentials: true
   },
-  pingTimeout: 60000,
-  pingInterval: 25000,
+  pingTimeout: 120000,  // 2 分钟超时
+  pingInterval: 30000,  // 30 秒心跳
   transports: ['websocket', 'polling'] // 允许轮询作为备选
 });
 
@@ -75,34 +77,25 @@ app.use('/api/', apiLimiter);
 const newsRoutes = require('./routes/news');
 const analyticsRoutes = require('./routes/analytics');
 const glossaryRoutes = require('./routes/glossary');
+const authRoutes = require('./routes/auth');
+const userDataRoutes = require('./routes/userData');
+const contentRoutes = require('./routes/content');
+const agentRoutes = require('./routes/agent');
+const adminRoutes = require('./routes/admin');
+const { newsSchedules } = require('./config/schedules');
+const cronOptions = { timezone: newsSchedules.timezone };
 
 // API路由
 app.use('/api/news', newsRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/glossary', glossaryRoutes);
-
-// Admin路由 - 系统管理
-app.get('/api/admin/sources', async (req, res) => {
-  try {
-    const DatabaseService = require('./services/DatabaseService');
-    await DatabaseService.initialize();
-    const sources = await DatabaseService.all('SELECT * FROM rss_sources ORDER BY priority ASC, fail_count ASC');
-    res.json({ success: true, data: sources });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-app.get('/api/admin/logs', async (req, res) => {
-  try {
-    const DatabaseService = require('./services/DatabaseService');
-    await DatabaseService.initialize();
-    const logs = await DatabaseService.getRequestStats(60);
-    res.json({ success: true, data: logs });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
+app.use('/api/auth', authRoutes);
+app.use('/api/user-data', userDataRoutes);
+app.use('/api/content/v1', contentRoutes);
+app.use('/api/agent', agentRoutes);
+app.use('/api/admin', adminRoutes);
+const contactRoutes = require('./routes/contact');
+app.use('/api/contact', contactRoutes);
 
 // 健康检查
 app.get('/health', async (req, res) => {
@@ -123,39 +116,6 @@ app.get('/health', async (req, res) => {
   }
 });
 
-// 重置失败的数据源
-app.post('/api/admin/sources/reset', async (req, res) => {
-  try {
-    const DatabaseService = require('./services/DatabaseService');
-    await DatabaseService.initialize();
-    await DatabaseService.resetFailedSources();
-    res.json({ success: true, message: '失败的数据源已重置' });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-// 手动恢复端点
-app.post('/api/admin/recovery', async (req, res) => {
-  try {
-    const NewsService = require('./services/NewsService');
-    const result = await NewsService.manualRecovery();
-    res.json({ success: true, result });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-// 手动刷新端点
-app.post('/api/admin/refresh', async (req, res) => {
-  try {
-    const NewsService = require('./services/NewsService');
-    const result = await NewsService.updateAllNews();
-    res.json({ success: true, result });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
 
 // 错误处理中间件
 app.use((err, req, res, next) => {
@@ -234,28 +194,12 @@ io.on('connection', (socket) => {
     }
   });
   
-  // 处理手动刷新请求
-  socket.on('refresh-news', async () => {
-    try {
-      const NewsService = require('./services/NewsService');
-      socket.emit('refresh-started', { timestamp: new Date().toISOString() });
-      
-      const result = await NewsService.updateAllNews();
-      
-      socket.emit('refresh-complete', { 
-        timestamp: new Date().toISOString(),
-        result: {
-          totalSaved: result.totalSaved || 0,
-          sources: (result.rss || []).length + (result.api || []).length,
-          errors: (result.errors || []).length
-        }
-      });
-    } catch (error) {
-      socket.emit('refresh-error', { 
-        error: error.message,
-        timestamp: new Date().toISOString()
-      });
-    }
+  // 变更数据的操作只允许走带管理密钥的 /api/admin 路由。
+  socket.on('refresh-news', () => {
+    socket.emit('refresh-error', {
+      error: '请从独立管理后台执行刷新',
+      timestamp: new Date().toISOString()
+    });
   });
   
   // 请求系统状态
@@ -299,6 +243,11 @@ async function initialize() {
     console.log('🔄 获取初始新闻数据...');
     await NewsService.updateAllNews();
     console.log('✅ 新闻数据初始化完成');
+
+    const { diversityAuditService } = require('./services/DiversityAuditService');
+    diversityAuditService.ensureTodayAudit()
+      .then((audit) => console.log(`✅ 每日信息茧房复核就绪：${audit.status}`))
+      .catch((error) => console.error('❌ 启动时信息茧房复核失败:', error.message));
     
   } catch (error) {
     console.error('❌ 初始化失败:', error);
@@ -323,7 +272,7 @@ function scheduleRecoveryInit() {
 }
 
 // 定时任务：每日早上8点更新新闻（静默模式，不广播）
-cron.schedule('0 8 * * *', async () => {
+cron.schedule(newsSchedules.dailyMorning, async () => {
   console.log('⏰ 执行每日定时更新...');
   console.log(`📅 当前时间: ${new Date().toLocaleString('zh-CN')}`);
   try {
@@ -339,11 +288,11 @@ cron.schedule('0 8 * * *', async () => {
     console.error('❌ 每日更新失败:', error);
     console.log('⏳ 将在下次调度时重试');
   }
-});
+}, cronOptions);
 
-// 定时任务：每12小时（半天）更新一次
-cron.schedule('0 */12 * * *', async () => {
-  console.log('⏰ 执行定期更新（每12小时）...');
+// 定时任务：每2小时更新一次
+cron.schedule(newsSchedules.recurring, async () => {
+  console.log('⏰ 执行定期更新（每2小时）...');
   console.log(`📅 当前时间: ${new Date().toLocaleString('zh-CN')}`);
   try {
     const NewsService = require('./services/NewsService');
@@ -358,20 +307,32 @@ cron.schedule('0 */12 * * *', async () => {
     console.error('❌ 定期更新失败:', error);
     console.log('⏳ 将在下次调度时重试');
   }
-});
+}, cronOptions);
+
+// 定时任务：每日新闻刷新完成后，由 MiniMax 复核来源分布与信息盲区。
+cron.schedule(newsSchedules.diversityAudit, async () => {
+  console.log('🧭 执行每日信息茧房复核...');
+  try {
+    const { diversityAuditService } = require('./services/DiversityAuditService');
+    const audit = await diversityAuditService.runDailyAudit();
+    console.log(`✅ 信息茧房复核完成：${audit.status}，评分 ${audit.score ?? '暂无'}`);
+  } catch (error) {
+    console.error('❌ 信息茧房复核失败:', error.message);
+  }
+}, cronOptions);
 
 // 定时任务：每天凌晨清理旧数据
-cron.schedule('0 2 * * *', async () => {
+cron.schedule(newsSchedules.cleanup, async () => {
   console.log('🧹 执行数据清理...');
   try {
     const DatabaseService = require('./services/DatabaseService');
     await DatabaseService.initialize();
-    const cleaned = await DatabaseService.cleanOldNews(7);
+    const cleaned = await DatabaseService.cleanOldNews(newsSchedules.retentionDays);
     console.log(`✅ 清理完成，删除 ${cleaned} 条过期新闻`);
   } catch (error) {
     console.error('❌ 数据清理失败:', error);
   }
-});
+}, cronOptions);
 
 // 进程错误处理
 process.on('uncaughtException', (error) => {
@@ -411,7 +372,8 @@ server.listen(PORT, async () => {
   console.log(`🚀 AI资讯服务器 v2.0 运行在端口 ${PORT}`);
   console.log(`📱 健康检查: http://localhost:${PORT}/health`);
   console.log(`🔌 WebSocket: ws://localhost:${PORT}`);
-  console.log(`📅 定时更新: 每日8:00 + 每30分钟增量`);
+  console.log(`📅 定时更新: 每日8:00 + 每2小时一次`);
+  console.log(`🧭 信息茧房复核: 每日8:30（${newsSchedules.timezone}）`);
   console.log(`🧹 数据清理: 每日2:00`);
 
   // 启动时初始化

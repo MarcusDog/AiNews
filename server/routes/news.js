@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const NewsService = require('../services/NewsService');
+const { adminAuth } = require('../middleware/adminAuth');
 
 // ========== 具体路由（必须放在参数路由之前）==========
 
@@ -264,7 +265,7 @@ router.get('/demo', async (req, res) => {
 });
 
 // 手动更新新闻 - 必须放在 /:id 之前
-router.post('/update', async (req, res) => {
+router.post('/update', adminAuth, async (req, res) => {
   try {
     console.log('收到手动更新请求');
     const result = await NewsService.updateAllNews();

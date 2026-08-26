@@ -1,57 +1,119 @@
-import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { 
-  Clock, 
-  ExternalLink, 
-  Loader2, 
-  RefreshCw,
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  ArrowUpRight,
+  Check,
   AlertCircle,
-  Wifi,
-  WifiOff,
-  Zap,
-  Share2,
+  Clock3,
   Heart,
-  Check
+  Loader2,
+  Radio,
+  RefreshCw,
+  Share2,
+  Sparkles,
+  Wifi,
+  WifiOff
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
+import { API_ENDPOINTS } from '../config/api';
 import { useSocket, useSocketMessage } from '../contexts/SocketContext';
 import { useUserData } from '../contexts/UserDataContext';
+import {
+  ITEMS_PER_PAGE,
+  getCategoryLabel,
+  hasNextPage,
+  mergeNewsItems,
+  shouldDebounceNewsRequest,
+  selectLeadStory,
+  selectDistinctSourceStories
+} from '../utils/newsFeed';
+import { hasUsableNewsImage } from '../utils/newsImage';
 
-// 缓存配置
-const CACHE_KEY = 'ainews_cache';
-const CACHE_DURATION = 5 * 60 * 1000; // 5分钟
-const FETCH_DEBOUNCE = 1000; // 1秒防抖
-const ITEMS_PER_PAGE = 1000; // 显示全部内容（一次性加载1000条）
+const CACHE_KEY = 'ainews_feed_v3';
+const CACHE_DURATION = 5 * 60 * 1000;
+const FETCH_DEBOUNCE = 600;
 
-// 骨架屏组件
-const SkeletonCard = () => (
-  <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-pulse">
-    <div className="h-40 bg-gray-200" />
-    <div className="p-5 space-y-3">
-      <div className="h-4 bg-gray-200 rounded w-1/4" />
-      <div className="space-y-2">
-        <div className="h-4 bg-gray-200 rounded w-full" />
-        <div className="h-4 bg-gray-200 rounded w-3/4" />
-      </div>
-      <div className="space-y-2">
-        <div className="h-3 bg-gray-100 rounded w-full" />
-        <div className="h-3 bg-gray-100 rounded w-5/6" />
-        <div className="h-3 bg-gray-100 rounded w-4/6" />
-      </div>
-      <div className="pt-4 border-t border-gray-50 flex justify-between">
-        <div className="h-3 bg-gray-200 rounded w-24" />
-        <div className="h-3 bg-gray-200 rounded w-16" />
-      </div>
+const categoryTone = {
+  'AI新闻': 'text-[#355947] bg-[#edf3ef] border-[#bdd0c6]',
+  'AI框架': 'text-[#49604f] bg-[#eef1eb] border-[#cbd3c8]',
+  '新算法': 'text-[#665447] bg-[#f2ece5] border-[#d8c9bd]',
+  '新思路': 'text-[#795a24] bg-[#f7f0df] border-[#dfd0aa]',
+  '新工具': 'text-[#844536] bg-[#f6ebe7] border-[#dec1b8]'
+};
+
+const getTone = (category) => categoryTone[category] || 'text-[#625b52] bg-[#f0ece4] border-[#d4ccc0]';
+
+const StoryImage = ({ item, className = '', priority = false }) => {
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => setFailed(false), [item?.imageUrl]);
+  if (!hasUsableNewsImage(item) || failed) return null;
+
+  return (
+    <div className={`overflow-hidden bg-[#e9e4db] ${className}`}>
+      <img
+        src={item.imageUrl}
+        alt=""
+        className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.035]"
+        loading={priority ? 'eager' : 'lazy'}
+        onError={() => setFailed(true)}
+      />
     </div>
+  );
+};
+
+const MetaLine = ({ item, formatTime, inverse = false }) => (
+  <div className={`flex flex-wrap items-center gap-x-3 gap-y-1 text-xs ${inverse ? 'text-white/55' : 'text-slate-500'}`}>
+    <span className="font-medium">{item.source}</span>
+    {item.region === 'cn' && (
+      <span className={inverse ? 'text-[#d7e4dc]' : 'text-[#466b59]'}>国内</span>
+    )}
+    {item.sourceGroupLabel && <span>{item.sourceGroupLabel}</span>}
+    <span className="inline-flex items-center gap-1">
+      <Clock3 className="h-3.5 w-3.5" />
+      {formatTime(item.publishedAt)}
+    </span>
   </div>
 );
 
-// 骨架屏网格
-const SkeletonGrid = ({ count = 8 }) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-    {Array.from({ length: count }).map((_, i) => (
-      <SkeletonCard key={i} />
-    ))}
+const StoryActions = ({ item, favorite, onFavorite, onShare, inverse = false }) => (
+  <div className="flex items-center gap-1">
+    <button
+      type="button"
+      onClick={(event) => onFavorite(item, event)}
+      className={`rounded-full p-2 transition ${inverse ? 'text-white/60 hover:bg-white/10 hover:text-white' : 'text-slate-400 hover:bg-slate-100 hover:text-rose-600'}`}
+      aria-label={favorite ? '取消收藏' : '收藏'}
+      title={favorite ? '取消收藏' : '收藏'}
+    >
+      <Heart className={`h-4 w-4 ${favorite ? 'fill-current text-rose-500' : ''}`} />
+    </button>
+    <button
+      type="button"
+      onClick={(event) => onShare(item, event)}
+      className={`rounded-full p-2 transition ${inverse ? 'text-white/60 hover:bg-white/10 hover:text-white' : 'text-slate-400 hover:bg-slate-100 hover:text-slate-900'}`}
+      aria-label="分享"
+      title="分享"
+    >
+      <Share2 className="h-4 w-4" />
+    </button>
+  </div>
+);
+
+const LoadingState = () => (
+  <div className="mx-auto max-w-[1480px] animate-pulse">
+    <div className="mb-8 h-24 border-b border-slate-300/70" />
+    <div className="grid gap-8 lg:grid-cols-[minmax(0,1.65fr)_minmax(320px,.7fr)]">
+      <div className="aspect-[16/8.5] bg-slate-300/70" />
+      <div className="space-y-7">
+        {[0, 1, 2].map((item) => (
+          <div key={item} className="space-y-3 border-b border-slate-300/70 pb-7">
+            <div className="h-3 w-24 bg-slate-300" />
+            <div className="h-6 w-full bg-slate-300/80" />
+            <div className="h-6 w-3/4 bg-slate-300/80" />
+          </div>
+        ))}
+      </div>
+    </div>
   </div>
 );
 
@@ -61,381 +123,208 @@ const NewsList = ({ category, refreshTrigger }) => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(false);
   const [total, setTotal] = useState(0);
   const [lastUpdate, setLastUpdate] = useState(null);
-  const [isDemo, setIsDemo] = useState(false);
-  
-  // WebSocket
-  const { isConnected, requestRefresh } = useSocket();
-  
-  // 用户数据
+  const [syncing, setSyncing] = useState(false);
+  const [notice, setNotice] = useState('');
+
+  const { isConnected } = useSocket();
   const { toggleFavorite, isFavorite, markAsRead, getReadIds } = useUserData();
   const readIds = useMemo(() => getReadIds(), [getReadIds]);
-  
-  // 防止重复请求
+
   const fetchingRef = useRef(false);
   const abortControllerRef = useRef(null);
   const lastFetchRef = useRef(0);
   const mountedRef = useRef(true);
-  
-  // 无限滚动相关
-  const observerRef = useRef(null);
-  const loadMoreRef = useRef(null);
+  const activeRequestRef = useRef(0);
 
-  // 从localStorage读取缓存
   const getCachedNews = useCallback((cacheKey) => {
     try {
       const cached = localStorage.getItem(`${CACHE_KEY}_${cacheKey}`);
-      if (cached) {
-        const { data, timestamp } = JSON.parse(cached);
-        if (Date.now() - timestamp < CACHE_DURATION) {
-          return data;
-        }
-      }
-    } catch (e) {
-      console.warn('读取缓存失败:', e);
+      if (!cached) return null;
+      const parsed = JSON.parse(cached);
+      return Date.now() - parsed.timestamp < CACHE_DURATION ? parsed.data : null;
+    } catch {
+      return null;
     }
-    return null;
   }, []);
 
-  // 保存到localStorage
   const setCachedNews = useCallback((cacheKey, data) => {
     try {
-      localStorage.setItem(`${CACHE_KEY}_${cacheKey}`, JSON.stringify({
-        data,
-        timestamp: Date.now()
-      }));
-    } catch (e) {
-      console.warn('保存缓存失败:', e);
+      localStorage.setItem(`${CACHE_KEY}_${cacheKey}`, JSON.stringify({ data, timestamp: Date.now() }));
+    } catch {
+      // 本地缓存不可用时继续使用网络结果。
     }
   }, []);
 
-  // 获取新闻
-  const fetchNews = useCallback(async (pageNum = 1, isRefresh = false) => {
-    // 防抖检查
-    const now = Date.now();
-    if (!isRefresh && now - lastFetchRef.current < FETCH_DEBOUNCE) {
-      return;
-    }
-    
-    // 防止重复请求
-    if (fetchingRef.current && !isRefresh) {
-      return;
-    }
+  const applyPayload = useCallback((payload, pageNumber, replace = false) => {
+    const items = Array.isArray(payload.data) ? payload.data : [];
+    const itemTotal = Number(payload.total) || 0;
+    setNews((current) => replace || pageNumber === 1
+      ? mergeNewsItems([], items)
+      : mergeNewsItems(current, items));
+    setTotal(itemTotal);
+    setHasMore(hasNextPage({ page: pageNumber, pageSize: ITEMS_PER_PAGE, total: itemTotal }));
+    setSyncing(Boolean(payload.syncing));
+    setLastUpdate(new Date());
+  }, []);
 
-    // 取消之前的请求
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-    
+  const fetchNews = useCallback(async (pageNumber = 1, force = false) => {
+    const now = Date.now();
+    if (shouldDebounceNewsRequest({
+      page: pageNumber,
+      force,
+      elapsed: now - lastFetchRef.current,
+      threshold: FETCH_DEBOUNCE
+    })) return;
+    if (fetchingRef.current && !force) return;
+
+    if (force && abortControllerRef.current) abortControllerRef.current.abort();
     const controller = new AbortController();
+    const requestId = activeRequestRef.current + 1;
+    activeRequestRef.current = requestId;
     abortControllerRef.current = controller;
     fetchingRef.current = true;
     lastFetchRef.current = now;
 
+    const cacheKey = `${category}_${pageNumber}`;
+    let hasCachedPayload = false;
+    if (!force && pageNumber === 1) {
+      const cached = getCachedNews(cacheKey);
+      if (cached) {
+        applyPayload(cached, pageNumber, true);
+        setLoading(false);
+        hasCachedPayload = true;
+      }
+    }
+
+    if (pageNumber === 1 && !hasCachedPayload) setLoading(true);
+    else setLoadingMore(true);
+    setError(null);
+
     try {
-      // 非强制刷新时检查缓存
-      const cacheKey = `${category}_${pageNum}`;
-      if (!isRefresh && pageNum === 1) {
-        const cached = getCachedNews(cacheKey);
-        if (cached) {
-          if (mountedRef.current) {
-            setNews(cached.data || []);
-            setTotal(cached.total || 0);
-            setHasMore((cached.data?.length || 0) >= ITEMS_PER_PAGE);
-            setIsDemo(cached.isDemo || false);
-            setLoading(false);
-          }
-          fetchingRef.current = false;
-          return;
-        }
-      }
-
-      if (mountedRef.current) {
-        if (pageNum === 1) {
-          setLoading(true);
-        } else {
-          setLoadingMore(true);
-        }
-        setError(null);
-      }
-
       const params = new URLSearchParams({
-        page: pageNum.toString(),
-        limit: ITEMS_PER_PAGE.toString()
+        page: String(pageNumber),
+        limit: String(ITEMS_PER_PAGE)
       });
+      if (category && category !== '全部') params.set('category', category);
 
-      if (category && category !== '全部') {
-        params.append('category', category);
-      }
-
-      const response = await fetch(`/api/news/latest?${params}`, {
+      const response = await fetch(`${API_ENDPOINTS.NEWS_LATEST}?${params}`, {
         signal: controller.signal,
-        headers: {
-          'Cache-Control': 'no-cache'
-        }
+        headers: { 'Cache-Control': 'no-cache' }
       });
-      
       if (!response.ok) {
-        if (response.status === 429) {
-          throw new Error('请求过于频繁，请稍后再试');
-        }
-        throw new Error(`HTTP ${response.status}`);
+        throw new Error(response.status === 429 ? '刷新过于频繁，请稍后再试' : `内容服务暂时不可用（${response.status}）`);
       }
 
       const result = await response.json();
+      if (!result.success || !result.data) throw new Error(result.error || '返回的数据格式不正确');
+      if (!mountedRef.current || requestId !== activeRequestRef.current) return;
 
-      if (!mountedRef.current) return;
-
-      if (result.success && result.data) {
-        const newsData = result.data.data || [];
-        const totalCount = result.data.total || 0;
-        const isFromDemo = result.data.isDemo || false;
-        
-        // 缓存数据
-        setCachedNews(cacheKey, {
-          data: newsData,
-          total: totalCount,
-          isDemo: isFromDemo
-        });
-        
-        if (isRefresh || pageNum === 1) {
-          setNews(newsData);
-        } else {
-          setNews(prev => {
-            // 去重
-            const existingIds = new Set(prev.map(n => n.id));
-            const newItems = newsData.filter(n => !existingIds.has(n.id));
-            return [...prev, ...newItems];
-          });
-        }
-        
-        setTotal(totalCount);
-        setHasMore(newsData.length >= ITEMS_PER_PAGE);
-        setIsDemo(isFromDemo);
-        setLastUpdate(new Date());
+      setCachedNews(cacheKey, result.data);
+      applyPayload(result.data, pageNumber, force || pageNumber === 1);
+      setPage(pageNumber);
+    } catch (fetchError) {
+      if (fetchError.name === 'AbortError' || !mountedRef.current || requestId !== activeRequestRef.current) return;
+      const cached = getCachedNews(`${category}_1`);
+      if (cached && pageNumber === 1) {
+        applyPayload(cached, 1, true);
+        setNotice('网络波动，当前显示最近一次缓存内容');
       } else {
-        throw new Error(result.error || '获取新闻失败');
-      }
-    } catch (err) {
-      if (err.name === 'AbortError') {
-        return;
-      }
-      
-      console.error('获取新闻失败:', err);
-      
-      if (mountedRef.current) {
-        setError(err.message);
-        
-        // 尝试从缓存恢复
-        const cached = getCachedNews(`${category}_1`);
-        if (cached && news.length === 0) {
-          setNews(cached.data || []);
-          setTotal(cached.total || 0);
-        }
+        setError(fetchError.message);
       }
     } finally {
-      if (mountedRef.current) {
+      if (mountedRef.current && requestId === activeRequestRef.current) {
         setLoading(false);
         setLoadingMore(false);
+        fetchingRef.current = false;
       }
-      fetchingRef.current = false;
     }
-  }, [category, getCachedNews, setCachedNews, news.length]);
+  }, [applyPayload, category, getCachedNews, setCachedNews]);
 
-  // 初始加载
   useEffect(() => {
     mountedRef.current = true;
-    setPage(1);
     setNews([]);
+    setPage(1);
+    setNotice('');
     fetchNews(1, false);
-    
+
     return () => {
       mountedRef.current = false;
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
+      activeRequestRef.current += 1;
+      abortControllerRef.current?.abort();
+      fetchingRef.current = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category]);
+  }, [category, fetchNews]);
 
-  // 刷新触发
   useEffect(() => {
-    if (refreshTrigger > 0) {
-      setPage(1);
-      fetchNews(1, true);
-    }
+    if (refreshTrigger > 0) fetchNews(1, true);
   }, [refreshTrigger, fetchNews]);
 
-  // WebSocket新闻更新监听
-  useSocketMessage('news-update', useCallback((data) => {
-    if (data?.type === 'update-complete' && data?.data?.totalSaved > 0) {
-      setTimeout(() => {
-        fetchNews(1, true);
-      }, 2000);
-    }
+  useSocketMessage('news-update', useCallback((message) => {
+    if (message?.type === 'update-complete') fetchNews(1, true);
   }, [fetchNews]));
 
-  // 无限滚动 - Intersection Observer
-  useEffect(() => {
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
+  const formatTime = useCallback((dateString) => {
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return '时间待确认';
+    return formatDistanceToNow(date, { addSuffix: true, locale: zhCN });
+  }, []);
 
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting && hasMore && !loading && !loadingMore && !fetchingRef.current) {
-          const nextPage = page + 1;
-          setPage(nextPage);
-          fetchNews(nextPage, false);
-        }
-      },
-      {
-        root: null,
-        rootMargin: '100px',
-        threshold: 0.1
-      }
-    );
-
-    if (loadMoreRef.current) {
-      observerRef.current.observe(loadMoreRef.current);
-    }
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [hasMore, loading, loadingMore, page, fetchNews]);
-
-  // 手动刷新
   const handleRefresh = useCallback(() => {
-    if (isConnected) {
-      requestRefresh();
-    }
-    setPage(1);
-    setNews([]);
     fetchNews(1, true);
-  }, [isConnected, requestRefresh, fetchNews]);
+  }, [fetchNews]);
 
-  // 分类颜色
-  const getCategoryColor = useMemo(() => (cat) => {
-    const colors = {
-      'AI新闻': 'bg-blue-100 text-blue-700 border-blue-200',
-      'AI框架': 'bg-green-100 text-green-700 border-green-200',
-      '新算法': 'bg-purple-100 text-purple-700 border-purple-200',
-      '新思路': 'bg-yellow-100 text-yellow-700 border-yellow-200',
-      '新工具': 'bg-pink-100 text-pink-700 border-pink-200',
-      '全部': 'bg-gray-100 text-gray-700 border-gray-200'
-    };
-    return colors[cat] || 'bg-gray-100 text-gray-700 border-gray-200';
-  }, []);
-
-  // 格式化时间
-  const formatTime = useCallback((dateStr) => {
-    try {
-      return formatDistanceToNow(new Date(dateStr), { 
-        addSuffix: true, 
-        locale: zhCN 
-      });
-    } catch {
-      return '未知时间';
-    }
-  }, []);
-
-  // 分享功能
-  const handleShare = useCallback((item) => {
-    if (navigator.share) {
-      navigator.share({
-        title: item.title,
-        text: item.description,
-        url: item.url
-      }).catch(() => {});
-    } else {
-      navigator.clipboard.writeText(item.url).then(() => {
-        alert('链接已复制到剪贴板');
-      }).catch(() => {});
-    }
-  }, []);
-
-  // 收藏功能
-  const handleFavorite = useCallback((item, e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleFavorite = useCallback((item, event) => {
+    event.preventDefault();
+    event.stopPropagation();
     toggleFavorite(item);
   }, [toggleFavorite]);
 
-  // 点击阅读
-  const handleRead = useCallback((item) => {
-    markAsRead(item.id);
-  }, [markAsRead]);
+  const handleShare = useCallback(async (item, event) => {
+    event?.preventDefault();
+    event?.stopPropagation();
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: item.title, text: item.description, url: item.url });
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(item.url);
+        setNotice('链接已复制');
+      }
+    } catch {
+      // 用户取消系统分享面板时不显示错误。
+    }
+  }, []);
 
-  // 初始加载状态 - 显示骨架屏
-  if (loading && news.length === 0) {
-    return (
-      <div className="space-y-6">
-        {/* 标题区域骨架 */}
-        <div className="flex items-center justify-between">
-          <div className="space-y-2">
-            <div className="h-8 bg-gray-200 rounded w-48 animate-pulse" />
-            <div className="h-4 bg-gray-100 rounded w-32 animate-pulse" />
-          </div>
-          <div className="flex items-center space-x-3">
-            <div className="h-8 bg-gray-200 rounded w-20 animate-pulse" />
-            <div className="h-8 bg-gray-200 rounded w-24 animate-pulse" />
-          </div>
-        </div>
-        
-        {/* 连接状态 */}
-        <div className="flex items-center justify-center py-4">
-          <div className="flex items-center text-sm text-gray-500 bg-gray-50 px-4 py-2 rounded-full">
-            {isConnected ? (
-              <>
-                <Wifi className="w-4 h-4 mr-2 text-green-500" />
-                <span>实时连接已建立，正在加载资讯...</span>
-              </>
-            ) : (
-              <>
-                <WifiOff className="w-4 h-4 mr-2 text-gray-400" />
-                <span>正在连接...</span>
-              </>
-            )}
-          </div>
-        </div>
-        
-        {/* 骨架屏网格 */}
-        <SkeletonGrid count={8} />
-      </div>
-    );
-  }
+  const openStory = useCallback((item) => markAsRead(item.id), [markAsRead]);
 
-  // 错误状态
+  const leadStory = useMemo(() => selectLeadStory(news), [news]);
+  const supportingStories = useMemo(
+    () => selectDistinctSourceStories(news, { excludeId: leadStory?.id, limit: 3 }),
+    [leadStory, news]
+  );
+  const streamStories = useMemo(() => {
+    const supportingIds = new Set(supportingStories.map((item) => item.id));
+    return news.filter((item) => item.id !== leadStory?.id && !supportingIds.has(item.id));
+  }, [leadStory, news, supportingStories]);
+  const leadHasImage = hasUsableNewsImage(leadStory);
+
+  if (loading && news.length === 0) return <LoadingState />;
+
   if (error && news.length === 0) {
     return (
-      <div className="text-center py-16">
-        <AlertCircle className="w-14 h-14 text-amber-500 mx-auto mb-4" />
-        <h3 className="text-xl font-medium text-gray-900 mb-2">数据源连接中</h3>
-        <p className="text-gray-600 mb-6 max-w-md mx-auto">
-          {error.includes('429') ? (
-            '请求过于频繁，系统正在限流保护中。请稍候...'
-          ) : error.includes('INTERNET') ? (
-            '网络连接异常，请检查网络设置'
-          ) : (
-            error
-          )}
-        </p>
+      <div className="mx-auto flex min-h-[62vh] max-w-xl flex-col items-center justify-center text-center">
+        <AlertCircle className="mb-5 h-10 w-10 text-rose-600" />
+        <p className="font-mono text-xs uppercase tracking-[0.24em] text-slate-500">Feed interrupted</p>
+        <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-slate-950">资讯流暂时中断</h2>
+        <p className="mt-3 text-sm leading-6 text-slate-600">{error}</p>
         <button
+          type="button"
           onClick={handleRefresh}
-          disabled={loading}
-          className="inline-flex items-center px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors shadow-sm"
+          className="mt-7 inline-flex items-center gap-2 bg-[#7d4436] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#65372d]"
         >
-          {loading ? (
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-          ) : (
-            <RefreshCw className="w-4 h-4 mr-2" />
-          )}
+          <RefreshCw className="h-4 w-4" />
           重新连接
         </button>
       </div>
@@ -443,260 +332,184 @@ const NewsList = ({ category, refreshTrigger }) => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* 页面头部 */}
-      <div className="space-y-4">
-        {/* 演示模式提示 */}
-        {isDemo && (
-          <div className="bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-200 rounded-xl p-4 shadow-sm">
-            <div className="flex items-center space-x-3">
-              <div className="flex-shrink-0 w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
-                <AlertCircle className="w-5 h-5 text-yellow-600" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-sm font-semibold text-yellow-800">演示模式</h3>
-                <p className="text-sm text-yellow-700">正在连接真实RSS源，当前显示示例数据</p>
-              </div>
-              <button
-                onClick={handleRefresh}
-                disabled={loading}
-                className="flex items-center space-x-1.5 px-4 py-2 bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200 transition-colors text-sm font-medium disabled:opacity-50"
-              >
-                {loading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <RefreshCw className="w-4 h-4" />
-                )}
-                <span>刷新</span>
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* 标题栏 */}
-        <div className="flex items-center justify-between">
+    <div className="mx-auto max-w-[1480px] pb-16">
+      <section className="editorial-enter border-b border-slate-300/80 pb-7 pt-2">
+        <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <div className="flex items-center space-x-3">
-              <h2 className="text-2xl font-bold text-gray-900">
-                {category === '全部' ? '最新AI资讯' : `${category}`}
-              </h2>
-              {isConnected && (
-                <span className="flex items-center px-2 py-1 bg-green-50 text-green-600 rounded-full text-xs font-medium">
-                  <Zap className="w-3 h-3 mr-1" />
-                  实时
-                </span>
-              )}
+            <div className="mb-3 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.24em] text-slate-500">
+              <span>{new Intl.DateTimeFormat('zh-CN', { month: 'long', day: 'numeric', weekday: 'short' }).format(new Date())}</span>
+              <span className="h-px w-8 bg-slate-400" />
+              <span className={isConnected ? 'text-emerald-700' : 'text-amber-700'}>
+                {isConnected ? 'Live signal' : 'Polling mode'}
+              </span>
             </div>
-            {lastUpdate && (
-              <p className="text-sm text-gray-500 mt-1">
-                更新于 {formatTime(lastUpdate)}
-              </p>
-            )}
+            <h1 className="text-[clamp(2.4rem,6vw,5.8rem)] font-black leading-[0.87] tracking-[-0.065em] text-slate-950">
+              {category === '全部' ? '今日 AI 信号' : getCategoryLabel(category)}
+            </h1>
           </div>
-          
-          <div className="flex items-center space-x-3">
-            <span className={`px-3 py-1.5 rounded-lg text-xs font-medium border ${getCategoryColor(category)}`}>
-              {category}
-            </span>
-            <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1.5 rounded-lg">
-              共 {total} 条
-            </span>
+          <div className="flex items-center gap-5 md:pb-1">
+            <div className="text-right">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500">Indexed stories</p>
+              <p className="mt-1 text-2xl font-semibold tabular-nums text-slate-950">{total.toLocaleString('zh-CN')}</p>
+            </div>
             <button
+              type="button"
               onClick={handleRefresh}
               disabled={loading}
-              className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-50"
-              title="刷新"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#a69d91] text-[#615b53] transition hover:border-[#7d4436] hover:bg-[#7d4436] hover:text-white disabled:opacity-50"
+              aria-label="刷新资讯"
+              title="刷新资讯"
             >
-              <RefreshCw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
             </button>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* 新闻网格 */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-        {news.map((item) => {
-          const itemIsRead = readIds.has(item.id);
-          const itemIsFavorite = isFavorite(item.id);
-          
-          return (
-          <article
-            key={item.id}
-            className={`group bg-white rounded-xl shadow-sm border overflow-hidden hover:shadow-lg hover:border-blue-100 transition-all duration-300 flex flex-col ${
-              itemIsRead ? 'border-gray-50 opacity-80' : 'border-gray-100'
-            }`}
-          >
-            {/* 图片区域 */}
-            {item.imageUrl && (
-              <div className="relative h-40 overflow-hidden bg-gray-100">
-                <img
-                  src={item.imageUrl}
-                  alt=""
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                  }}
-                />
-                <div className="absolute top-3 left-3 flex items-center space-x-2">
-                  <span className={`px-2 py-1 rounded-md text-xs font-medium shadow-sm ${getCategoryColor(item.category)}`}>
-                    {item.category}
-                  </span>
-                  {itemIsRead && (
-                    <span className="flex items-center px-1.5 py-1 bg-gray-900/70 text-white rounded-md text-xs">
-                      <Check className="w-3 h-3 mr-0.5" />
-                      已读
-                    </span>
-                  )}
-                </div>
-                {/* 快捷操作按钮 */}
-                <div className="absolute top-3 right-3 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button
-                    onClick={() => handleShare(item)}
-                    className="p-1.5 bg-white/90 rounded-lg hover:bg-white shadow-sm"
-                    title="分享"
-                  >
-                    <Share2 className="w-4 h-4 text-gray-600" />
-                  </button>
-                  <button
-                    onClick={(e) => handleFavorite(item, e)}
-                    className={`p-1.5 rounded-lg shadow-sm transition-colors ${
-                      itemIsFavorite 
-                        ? 'bg-red-500 hover:bg-red-600' 
-                        : 'bg-white/90 hover:bg-white'
-                    }`}
-                    title={itemIsFavorite ? '取消收藏' : '收藏'}
-                  >
-                    <Heart className={`w-4 h-4 ${itemIsFavorite ? 'text-white fill-current' : 'text-gray-600'}`} />
-                  </button>
-                </div>
-              </div>
-            )}
-            
-            {/* 内容区域 */}
-            <div className="flex-1 p-5 flex flex-col">
-              {/* 无图片时显示分类标签 */}
-              {!item.imageUrl && (
-                <div className="mb-3 flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <span className={`inline-block px-2 py-1 rounded-md text-xs font-medium border ${getCategoryColor(item.category)}`}>
-                      {item.category}
-                    </span>
-                    {itemIsRead && (
-                      <span className="flex items-center text-xs text-gray-400">
-                        <Check className="w-3 h-3 mr-0.5" />
-                        已读
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex space-x-1">
-                    <button
-                      onClick={() => handleShare(item)}
-                      className="p-1 hover:bg-gray-100 rounded"
-                      title="分享"
-                    >
-                      <Share2 className="w-4 h-4 text-gray-400" />
-                    </button>
-                    <button
-                      onClick={(e) => handleFavorite(item, e)}
-                      className={`p-1 rounded transition-colors ${
-                        itemIsFavorite ? 'text-red-500' : 'text-gray-400 hover:text-red-500'
-                      }`}
-                      title={itemIsFavorite ? '取消收藏' : '收藏'}
-                    >
-                      <Heart className={`w-4 h-4 ${itemIsFavorite ? 'fill-current' : ''}`} />
-                    </button>
-                  </div>
-                </div>
-              )}
-              
-              {/* 标题 */}
-              <h3 className={`text-base font-semibold mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors ${
-                itemIsRead ? 'text-gray-600' : 'text-gray-900'
-              }`}>
-                <a
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => handleRead(item)}
-                >
-                  {item.title}
-                </a>
-              </h3>
-
-              {/* 描述 */}
-              {item.description && (
-                <p className="text-sm text-gray-600 mb-4 line-clamp-3 flex-grow">
-                  {item.description}
-                </p>
-              )}
-
-              {/* 底部信息 */}
-              <div className="mt-auto pt-4 border-t border-gray-50">
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center text-gray-500">
-                    <Clock className="w-3.5 h-3.5 mr-1.5" />
-                    <span>{formatTime(item.publishedAt)}</span>
-                  </div>
-                  <span className="text-gray-400 text-xs truncate max-w-[100px]" title={item.source}>
-                    {item.source}
-                  </span>
-                </div>
-                
-                <a
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => handleRead(item)}
-                  className="mt-3 flex items-center justify-center w-full py-2 text-sm text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
-                >
-                  <ExternalLink className="w-4 h-4 mr-1.5" />
-                  阅读原文
-                </a>
-              </div>
-            </div>
-          </article>
-          );
-        })}
-        
-        {/* 加载更多时显示骨架屏 */}
-        {loadingMore && (
-          <>
-            <SkeletonCard />
-            <SkeletonCard />
-            <SkeletonCard />
-            <SkeletonCard />
-          </>
-        )}
-      </div>
-
-      {/* 无限滚动触发器 */}
-      <div ref={loadMoreRef} className="h-10" />
-
-      {/* 加载状态提示 */}
-      {news.length > 0 && (
-        <div className="text-center pt-4 pb-8">
-          {loadingMore ? (
-            <div className="flex items-center justify-center text-gray-500">
-              <Loader2 className="w-5 h-5 animate-spin mr-2" />
-              <span>加载更多...</span>
-            </div>
-          ) : hasMore ? (
-            <p className="text-gray-400 text-sm">向下滚动加载更多</p>
-          ) : (
-            <p className="text-gray-400 text-sm">- 已加载全部 {total} 条内容 -</p>
-          )}
+      {(notice || syncing) && (
+        <div className="mt-5 flex items-center justify-between gap-4 border-l-2 border-[#7d4436] bg-[#f4ece6] px-4 py-3 text-sm text-[#5f3d35]">
+          <span>{notice || '真实新闻源正在进行首次同步，稍后会自动出现内容。'}</span>
+          {syncing && <Loader2 className="h-4 w-4 flex-none animate-spin" />}
         </div>
       )}
 
-      {/* 空状态 */}
-      {news.length === 0 && !loading && !error && (
-        <div className="text-center py-16">
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Loader2 className="w-8 h-8 text-gray-400 animate-spin" />
+      {leadStory && (
+        <section className="mt-8 grid border-b border-slate-300/80 pb-9 lg:grid-cols-[minmax(0,1.62fr)_minmax(320px,.72fr)] lg:gap-10">
+          <article className="group overflow-hidden border-y border-[#bdb5aa] bg-[#fbfaf6]">
+            {leadHasImage && <StoryImage item={leadStory} className="aspect-[16/8.5] border-b border-[#d2cbc0]" priority />}
+            <div className="p-6 sm:p-9 lg:p-12">
+              <div className="mb-4 flex flex-wrap items-center gap-2">
+                  <span className={`border px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.18em] ${getTone(leadStory.category)}`}>
+                  {getCategoryLabel(leadStory.category)}
+                </span>
+                {readIds.has(leadStory.id) && (
+                  <span className="inline-flex items-center gap-1 text-xs text-slate-500"><Check className="h-3.5 w-3.5" />已读</span>
+                )}
+              </div>
+              <h2 className="max-w-5xl text-3xl font-semibold leading-[1.08] tracking-[-0.035em] text-slate-950 sm:text-5xl lg:text-6xl">
+                <a href={leadStory.url} target="_blank" rel="noopener noreferrer" onClick={() => openStory(leadStory)}>
+                  {leadStory.title}
+                </a>
+              </h2>
+              {leadStory.description && (
+                <p className="mt-4 max-w-3xl line-clamp-2 text-sm leading-6 text-slate-600 sm:text-base">{leadStory.description}</p>
+              )}
+              <div className="mt-6 flex items-end justify-between gap-4">
+                <MetaLine item={leadStory} formatTime={formatTime} />
+                <StoryActions
+                  item={leadStory}
+                  favorite={isFavorite(leadStory.id)}
+                  onFavorite={handleFavorite}
+                  onShare={handleShare}
+                />
+              </div>
+            </div>
+          </article>
+
+          <div className="mt-7 lg:mt-0">
+            <div className="mb-2 flex items-center justify-between border-b border-slate-950 pb-3">
+              <h2 className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-slate-950">此刻要闻</h2>
+              <Radio className="h-4 w-4 text-rose-600" />
+            </div>
+            {supportingStories.map((item, index) => (
+              <article key={item.id} className="group border-b border-slate-300/80 py-6">
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
+                    0{index + 1} / {getCategoryLabel(item.category)}
+                  </span>
+                  <StoryActions
+                    item={item}
+                    favorite={isFavorite(item.id)}
+                    onFavorite={handleFavorite}
+                    onShare={handleShare}
+                  />
+                </div>
+                <h3 className="text-xl font-semibold leading-snug tracking-[-0.02em] text-slate-950 transition group-hover:text-[#7d4436]">
+                  <a href={item.url} target="_blank" rel="noopener noreferrer" onClick={() => openStory(item)}>
+                    {item.title}
+                  </a>
+                </h3>
+                <div className="mt-4"><MetaLine item={item} formatTime={formatTime} /></div>
+              </article>
+            ))}
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">正在获取资讯...</h3>
-          <p className="text-gray-500">系统正在从多个数据源获取最新AI资讯</p>
+        </section>
+      )}
+
+      {streamStories.length > 0 && (
+        <section className="mt-10">
+          <div className="mb-1 flex items-end justify-between border-b border-slate-950 pb-4">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-slate-500">Continuing coverage</p>
+              <h2 className="mt-2 text-2xl font-bold tracking-[-0.03em] text-slate-950">持续追踪</h2>
+            </div>
+            {lastUpdate && <span className="hidden text-xs text-slate-500 sm:block">页面更新于 {formatTime(lastUpdate)}</span>}
+          </div>
+
+          <div className="grid lg:grid-cols-2 lg:gap-x-10">
+            {streamStories.map((item) => (
+              <article key={item.id} className={`group grid gap-5 border-b border-slate-300/80 py-7 ${hasUsableNewsImage(item) ? 'grid-cols-[minmax(0,1fr)_112px] sm:grid-cols-[minmax(0,1fr)_170px]' : 'grid-cols-1'} ${readIds.has(item.id) ? 'opacity-65' : ''}`}>
+                <div className="min-w-0">
+                  <div className="mb-3 flex items-center justify-between gap-2">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500">
+                      {getCategoryLabel(item.category)} {item.region === 'cn' ? '/ 国内' : ''}
+                    </span>
+                    <StoryActions
+                      item={item}
+                      favorite={isFavorite(item.id)}
+                      onFavorite={handleFavorite}
+                      onShare={handleShare}
+                    />
+                  </div>
+                  <h3 className="text-lg font-semibold leading-snug tracking-[-0.02em] text-slate-950 transition group-hover:text-[#7d4436] sm:text-xl">
+                    <a href={item.url} target="_blank" rel="noopener noreferrer" onClick={() => openStory(item)}>
+                      {item.title}
+                    </a>
+                  </h3>
+                  {item.description && <p className="mt-3 line-clamp-2 text-sm leading-6 text-slate-600">{item.description}</p>}
+                  <div className="mt-4 flex items-end justify-between gap-3">
+                    <MetaLine item={item} formatTime={formatTime} />
+                    <ArrowUpRight className="h-4 w-4 flex-none text-slate-400 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#7d4436]" />
+                  </div>
+                </div>
+                {hasUsableNewsImage(item) && <StoryImage item={item} className="aspect-[4/3] self-center" />}
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {news.length === 0 && !loading && !error && (
+        <div className="flex min-h-[46vh] flex-col items-center justify-center text-center">
+          <Sparkles className="h-8 w-8 text-[#7d4436]" />
+          <h2 className="mt-5 text-2xl font-semibold tracking-[-0.03em] text-slate-950">
+            {syncing ? '正在建立今日资讯索引' : '这个分类暂时没有内容'}
+          </h2>
+          <p className="mt-2 max-w-md text-sm leading-6 text-slate-600">
+            {syncing ? '系统只展示真实来源内容，首次同步完成后会自动更新。' : '切换分类或稍后刷新，新的报道会出现在这里。'}
+          </p>
+        </div>
+      )}
+
+      {news.length > 0 && (
+        <div className="mt-12 flex flex-col items-center border-t border-slate-300/80 pt-8">
+          {hasMore ? (
+            <button
+              type="button"
+              onClick={() => fetchNews(page + 1, false)}
+              disabled={loadingMore}
+              className="inline-flex min-w-44 items-center justify-center gap-2 border border-[#7d4436] px-6 py-3 text-sm font-semibold text-[#7d4436] transition hover:bg-[#7d4436] hover:text-white disabled:opacity-50"
+            >
+              {loadingMore && <Loader2 className="h-4 w-4 animate-spin" />}
+              {loadingMore ? '读取中' : '加载更多报道'}
+            </button>
+          ) : (
+            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-slate-500">End of current signal · {total} stories</p>
+          )}
+          <div className="mt-3 inline-flex items-center gap-1.5 text-xs text-slate-500">
+            {isConnected ? <Wifi className="h-3.5 w-3.5 text-emerald-700" /> : <WifiOff className="h-3.5 w-3.5 text-amber-700" />}
+            {isConnected ? '实时更新已连接' : '使用定时轮询更新'}
+          </div>
         </div>
       )}
     </div>

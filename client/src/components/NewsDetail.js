@@ -5,7 +5,6 @@ import {
   ExternalLink, 
   Clock, 
   User, 
-  Tag,
   Loader2,
   AlertCircle,
   Heart,

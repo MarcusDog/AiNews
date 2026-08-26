@@ -1,20 +1,18 @@
-// API 配置
-// 根据环境自动选择 API 地址
+// API 配置 - 生产环境使用相对路径（通过 Nginx 反向代理）
+const isProduction = typeof window !== 'undefined' && window.location.hostname !== 'localhost';
+
 const getApiUrl = () => {
-  // 如果在 Docker 中，使用完整 URL
-  if (process.env.NODE_ENV === 'production') {
-    // 生产环境使用后端服务地址
-    return 'http://localhost:3002';
-  }
-  // 开发环境使用相对路径（代理）
-  return '';
+  // 生产环境：使用相对路径，通过 Nginx 代理到后端
+  // 开发环境：使用本地后端地址
+  return isProduction ? '' : 'http://localhost:3002';
 };
 
 export const API_BASE_URL = getApiUrl();
 
-// WebSocket URL
-export const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 
-  (process.env.NODE_ENV === 'production' ? 'http://localhost:3002' : 'http://localhost:3002');
+// WebSocket URL - 生产环境使用当前域名
+export const SOCKET_URL = isProduction 
+  ? (window.location.protocol === 'https:' ? 'wss:' : 'ws:') + '//' + window.location.host
+  : 'http://localhost:3002';
 
 // API 端点
 export const API_ENDPOINTS = {

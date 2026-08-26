@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 
 /**
  * 自定义Hook：检测页面可见性变化
@@ -31,18 +31,24 @@ export function usePageVisibility(callback) {
  * 自定义Hook：在组件挂载和页面变为可见时执行回调
  * 用于解决页面切换后需要手动刷新的问题
  */
-export function useRefreshOnVisible(fetchCallback, deps = []) {
-  // 页面挂载时执行
+export function useRefreshOnVisible(fetchCallback, refreshKey) {
+  const callbackRef = useRef(fetchCallback);
+
   useEffect(() => {
-    fetchCallback();
-  }, deps);
+    callbackRef.current = fetchCallback;
+  }, [fetchCallback]);
+
+  // 页面挂载或明确的刷新键变化时执行。
+  useEffect(() => {
+    callbackRef.current();
+  }, [refreshKey]);
 
   // 页面从隐藏变为可见时执行
   const handleVisibilityChange = useCallback(() => {
     if (!document.hidden) {
-      fetchCallback();
+      callbackRef.current();
     }
-  }, [fetchCallback]);
+  }, []);
 
   useEffect(() => {
     document.addEventListener('visibilitychange', handleVisibilityChange);

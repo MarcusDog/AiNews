@@ -9,7 +9,7 @@
 - **WebSocket实时推送** - 新闻更新实时通知，无需手动刷新
 - **智能限流机制** - 自动防止HTTP 429错误，智能请求调度
 - **自动崩溃恢复** - 服务异常时自动重启，保证系统稳定性
-- **更多数据源** - **50+ RSS源**，包含中英文资讯
+- **更多数据源** - **160 个已启用 RSS/Atom 源**，其中 120 个为本轮新增；提交流水已退出公开新闻流，覆盖国内外一手发布、研究、媒体与工程社区
 - **优化的前端体验** - 防抖、缓存、平滑加载
 - **增强UI组件库** - 统计卡片、进度条、标签、时间线等
 - **新闻详情优化** - 相关推荐、分享功能、收藏功能
@@ -24,6 +24,7 @@
 ### 🔧 功能增强
 - 数据分析仪表板 - 统计、图表、趋势分析
 - 信息茧房检测 - 多样性评分和改进建议
+- 每日模型复核 - MiniMax 每天检查地区、发布者与证据类型缺口，结论保留原文引用
 - 热门话题提取 - TF-IDF关键词分析
 - 内容质量分析 - 图片、描述完整性检测
 - 面包屑导航 - 更好的导航体验
@@ -41,7 +42,7 @@
 - 🔍 **智能搜索**: 支持关键词搜索和分类筛选
 - 📊 **数据分析**: 信息茧房检测、多样性评分、趋势分析
 - ⚡ **个性化推荐**: 基于内容多样性的智能推荐
-- 🔄 **自动更新**: 每日8:00+每30分钟增量更新
+- 🔄 **自动更新**: 每日8:00全量更新 + 每2小时增量更新
 - 🔌 **实时推送**: WebSocket实时新闻通知
 - 💾 **数据持久化**: SQLite本地数据库存储
 - 📱 **响应式设计**: 适配桌面端和移动端
@@ -111,13 +112,13 @@ cd client && npm start
 | 服务 | 地址 |
 |------|------|
 | 前端页面 | http://localhost:3000 |
-| 后端API | http://localhost:5000 |
-| 健康检查 | http://localhost:5000/health |
-| WebSocket | ws://localhost:5000 |
+| 后端API | http://localhost:3002 |
+| 健康检查 | http://localhost:3002/health |
+| WebSocket | ws://localhost:3002 |
 
 ## 数据源配置
 
-### RSS源（50+ 高质量数据源）
+### RSS源（160 个已启用高质量数据源）
 
 #### 学术源 (高优先级)
 | 名称 | 分类 | 说明 |
@@ -229,7 +230,6 @@ Ainews/
 │   │   │   ├── Sidebar.js             # 侧边栏导航
 │   │   │   ├── NewsList.js            # 新闻列表（无限滚动）
 │   │   │   ├── NewsDetail.js          # 新闻详情（含推荐）
-│   │   │   ├── SystemStatus.js        # 系统状态指示器
 │   │   │   └── 📁 ui/                 # UI组件库
 │   │   │       └── index.js           # StatCard, ProgressBar, Tag等
 │   │   ├── 📁 contexts/
@@ -240,8 +240,8 @@ Ainews/
 │   │   │   ├── GlossaryPage.js        # AI术语词典
 │   │   │   ├── SearchPage.js          # 搜索页面
 │   │   │   ├── FavoritesPage.js       # 我的收藏
-│   │   │   ├── SettingsPage.js        # 系统设置
-│   │   │   └── HealthPage.js          # 系统监控
+│   │   │   ├── SkillPage.js           # 多源研究与内容 Agent
+│   │   │   └── AdminPage.js           # 独立管理后台（API Key 鉴权）
 │   │   ├── App.js             # 应用入口
 │   │   └── index.css          # 全局样式（含动画）
 │   └── package.json
@@ -281,7 +281,7 @@ GET /api/news/:id
 # 获取系统状态
 GET /api/news/status
 
-# 手动触发更新
+# 手动触发更新（需要 x-admin-api-key）
 POST /api/news/update
 ```
 
@@ -301,6 +301,18 @@ GET /api/analytics/recommendations
 ### 管理API
 
 ```bash
+# 所有 /api/admin/* 请求必须携带：
+x-admin-api-key: <ADMIN_API_KEY>
+
+# 进入不显示在前台导航中的管理页
+/#/admin
+
+# 查看概览、来源、日志与联系表单
+GET /api/admin/overview
+GET /api/admin/sources
+GET /api/admin/logs
+GET /api/admin/contacts
+
 # 手动恢复
 POST /api/admin/recovery
 
@@ -315,7 +327,6 @@ POST /api/admin/refresh
 |------|------|
 | `subscribe` | 订阅分类 `{category: 'AI新闻'}` |
 | `unsubscribe` | 取消订阅 |
-| `refresh-news` | 请求刷新新闻 |
 
 ### 服务器 -> 客户端
 | 事件 | 说明 |
@@ -323,8 +334,6 @@ POST /api/admin/refresh
 | `welcome` | 连接成功 |
 | `news-update` | 新闻更新通知 |
 | `daily-update` | 每日更新通知 |
-| `refresh-started` | 刷新开始 |
-| `refresh-complete` | 刷新完成 |
 
 ## 优化建议
 
@@ -392,8 +401,9 @@ rm server/data/ainews.db
 | 任务 | 时间 | 说明 |
 |------|------|------|
 | 每日更新 | 08:00 | 全量更新所有RSS源 |
-| 增量更新 | 每30分钟 | 增量获取新内容 |
-| 数据清理 | 02:00 | 清理7天前的旧新闻 |
+| 增量更新 | 每2小时 | 增量获取新内容 |
+| 信息茧房复核 | 08:30 | MiniMax 对当天来源分布进行带引用复核 |
+| 数据清理 | 02:00 | 清理45天前的旧新闻 |
 
 ## 部署建议
 
@@ -415,11 +425,12 @@ cd client && npm run build
 
 ## 版本历史
 
-### v2.0.0 (2026-02-05)
+### v2.0.0 (2026-08-08)
 - SQLite数据库持久化
 - WebSocket实时推送
 - 智能限流和自动恢复
-- 18+ RSS数据源
+- 160 个启用 RSS/Atom 数据源
+- MiniMax Agent、逐句引用审查与每日信息茧房复核
 - UI/UX优化
 
 ### v1.0.0
@@ -433,4 +444,4 @@ MIT License
 
 ---
 
-**提示**: 系统首次启动需要约30秒获取初始数据，请耐心等待。如遇问题请查看日志文件。
+**提示**: 首次启动会抓取较多来源，所需时间取决于网络状况；之后每两小时增量刷新。如遇问题请查看日志文件。
