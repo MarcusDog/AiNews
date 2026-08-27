@@ -8,6 +8,7 @@ node_modules/
 client/build/
 **/build/
 **/dist/
+*.tsbuildinfo
 
 # Runtime / Cache
 client/node_modules/.cache/

@@ -6,6 +6,7 @@ const ContentService = require('../services/ContentService');
 const TrendAnalyzer = require('../services/TrendAnalyzer');
 const { agentService } = require('../services/AgentService');
 const { parseBoundedInteger } = require('../utils/analytics');
+const { buildSourceHealthSnapshot } = require('../utils/source-health');
 
 const generationLimiter = rateLimit({
   windowMs: 10 * 60 * 1000,
@@ -27,7 +28,15 @@ router.get('/capabilities', (req, res) => {
         { name: 'search_news', method: 'GET', path: '/api/content/v1/search?q=' },
         { name: 'get_trending_topics', method: 'GET', path: '/api/content/v1/trends' },
         { name: 'build_content_brief', method: 'GET', path: '/api/content/v1/brief?topic=&audience=&goal=&format=' },
-        { name: 'generate_cited_content', method: 'POST', path: '/api/content/v1/generate' }
+        { name: 'generate_cited_content', method: 'POST', path: '/api/content/v1/generate' },
+        { name: 'list_sources', method: 'GET', path: '/api/content/v1/sources' },
+        { name: 'get_source_health', method: 'GET', path: '/api/content/v1/source-health' },
+        { name: 'list_hot_topics', method: 'GET', path: '/api/signals/v1/topics?window=72h' },
+        { name: 'get_topic_evidence', method: 'GET', path: '/api/signals/v1/topics/{id}' },
+        { name: 'list_creator_opportunities', method: 'GET', path: '/api/signals/v1/opportunities?window=48h' },
+        { name: 'random_creator_opportunity', method: 'GET', path: '/api/signals/v1/opportunities/random?window=72h' },
+        { name: 'list_signal_sources', method: 'GET', path: '/api/signals/v1/sources' },
+        { name: 'get_topic_changes', method: 'GET', path: '/api/signals/v1/changes?since=0' }
       ]
     }
   });
@@ -56,6 +65,24 @@ router.get('/trends', async (req, res, next) => {
     const news = await NewsService.getAnalysisNews(500);
     const trends = await TrendAnalyzer.analyzeTrends(news.data);
     res.json({ success: true, data: trends });
+  } catch (error) { next(error); }
+});
+
+router.get('/sources', async (req, res, next) => {
+  try {
+    const snapshot = buildSourceHealthSnapshot(await NewsService.getAdminSources());
+    res.json({
+      success: true,
+      data: snapshot.sources,
+      meta: { generatedAt: snapshot.generatedAt, summary: snapshot.summary }
+    });
+  } catch (error) { next(error); }
+});
+
+router.get('/source-health', async (req, res, next) => {
+  try {
+    const snapshot = buildSourceHealthSnapshot(await NewsService.getAdminSources());
+    res.json({ success: true, data: snapshot });
   } catch (error) { next(error); }
 });
 

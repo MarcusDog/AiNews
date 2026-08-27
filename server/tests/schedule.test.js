@@ -7,7 +7,13 @@ test('news update schedule keeps 8am full refresh and 2-hour interval updates', 
   assert.equal(schedules.newsSchedules.dailyMorning, '0 8 * * *');
   assert.equal(schedules.newsSchedules.recurring, '0 */2 * * *');
   assert.equal(schedules.newsSchedules.diversityAudit, '30 8 * * *');
+  assert.equal(schedules.newsSchedules.signalRecurring, '*/30 * * * *');
   assert.equal(schedules.newsSchedules.timezone, 'Asia/Shanghai');
+});
+
+test('signal refresh cadence is bounded and explicit', () => {
+  assert.equal(schedules.newsSchedules.signalRecurring, '*/30 * * * *');
+  assert.equal(schedules.newsSchedules.signalWindowHours, 72);
 });
 
 test('news retention covers both trend windows plus recovery margin', () => {

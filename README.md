@@ -1,4 +1,58 @@
-# AI资讯平台 v2.0
+# Aya Creator Intelligence Radar
+
+> 当前正从「AI 新闻聚合站」迁移为「AI 热点发现 + 创作选题 + 素材情报平台」。所有当前范围、决策、进度、验证结果和下一步统一记录在 [PROJECT_REBUILD_STATUS.md](./PROJECT_REBUILD_STATUS.md)。
+
+## 当前能力
+
+- 前端：React 18 + Vite 8 + TypeScript 7 + Tailwind CSS + shadcn/ui 式本地组件。
+- 首页：电影感首屏 + 24/48/72 小时「视野监测台」。
+- 数据链路：公开 Signal → Topic 聚类 → `trend-v1` → `opportunity-v1` → 创作者选题。
+- 来源：既有新闻/官方发布、GitHub、Hacker News、Mastodon、Reddit、Hugging Face、Bilibili，以及可选 YouTube、X、自托管 RSSHub/NewsNow/JSON Bridge。
+- 核心交互：随机选题优先使用真实 Creator Opportunity 与原始证据；不可用时先兼容真实 News，最后才明确降级为「创作练习」。
+- 开放能力：REST、OpenAPI 3.1、Topic JSON Feed、RSS 与 AyaNewsSkill 2.2。MCP、A2A、Webhook 尚未实现，文档不会冒充可用。
+- Node.js 要求：`>=20.19.0`。
+
+```bash
+# 开发
+npm run dev
+
+# 新前端测试
+cd client && npm test
+
+# 生产构建（输出 client/dist）
+cd client && npm run build
+```
+
+## Signal 来源与运维
+
+配置模板位于 `server/.env.example`。复制为 `server/.env` 后按需填写；所有 Token 都只放在服务端，空值不会让可选来源被误报为在线。
+
+| 层级 | 默认能力 | 配置方式 |
+|---|---|---|
+| L1 | News、HN、GitHub、Mastodon、Reddit、Hugging Face、Bilibili | 免密可运行；`GITHUB_TOKEN` 提升 GitHub 额度；`MASTODON_INSTANCES` 与 `REDDIT_COMMUNITIES` 可用逗号调整 |
+| L2 | YouTube、X | 分别配置 `YOUTUBE_API_KEY`、`X_BEARER_TOKEN` |
+| L3 | 微博/知乎/抖音等桥接与自定义 JSON Signal | 自托管 `RSSHUB_BASE_URL`、`NEWSNOW_BASE_URL` 或 `SIGNAL_BRIDGES_JSON`；仅接受 HTTPS |
+| L4 | MediaCrawler、Agent-Reach 深挖 | 独立登录态 Sidecar，Web 服务不会直接调度；清洗后通过 JSON Bridge 接入 |
+
+来源状态含义：`online` 表示最近成功，`degraded` 表示本轮失败但保留过往成功时间，`offline` 表示持续失败，`unconfigured` 表示缺少可选凭据/地址，`disabled` 表示明确禁用，`pending` 表示尚未首次采集。“已配置”不等于“本轮在线”。
+
+默认 Signal 每 30 分钟刷新，Topic 使用 72 小时窗口重建；每日 02:00 清理，Signal 保留 45 天。默认时区为 `Asia/Shanghai`。首次启动会采集；也可人工触发：
+
+```bash
+curl -X POST http://localhost:3002/api/signals/v1/admin/refresh \
+  -H 'Content-Type: application/json' \
+  -H 'x-admin-api-key: YOUR_ADMIN_API_KEY' \
+  -d '{"refreshLegacy":false,"itemLimit":20}'
+
+curl http://localhost:3002/api/signals/v1/health
+curl 'http://localhost:3002/api/signals/v1/topics?window=72h'
+curl http://localhost:3002/topics/feed.json
+curl http://localhost:3002/topics/rss.xml
+```
+
+公开接口的完整契约以 `/openapi.json` 为准。匿名 GitHub、Reddit、Bilibili 等端点可能限流或临时拒绝请求；单源失败不会阻断其他来源，健康接口会保留真实失败状态。
+
+## 现有 v2.0 系统资料（迁移参考）
 
 一个实时获取并分析AI科技新闻的Web平台，帮助用户跟上AI技术发展的步伐，减少信息差。
 
@@ -67,16 +121,17 @@
 - **Express-rate-limit** - API限流
 
 ### 前端
-- **React 18** - 用户界面框架
-- **Socket.io-client** - WebSocket客户端
-- **React Router** - 路由管理
-- **Tailwind CSS** - 样式框架
+- **React 18 + TypeScript** - 类型安全的用户界面
+- **Vite 8** - 开发服务与生产构建
+- **Tailwind CSS + shadcn/ui** - 设计 Token 与可访问组件
+- **Radix UI** - Dialog 焦点管理与键盘交互
 - **Lucide React** - 图标库
+- **Vitest + Testing Library** - 前端行为测试
 
 ## 快速开始
 
 ### 环境要求
-- Node.js 16+ 
+- Node.js 20.19+
 - npm 7+
 
 ### 一键启动
@@ -105,7 +160,7 @@ cd ../client && npm install
 cd server && node index.js
 
 # 终端2 - 启动前端
-cd client && npm start
+cd client && npm run dev
 ```
 
 ### 访问应用
@@ -415,7 +470,7 @@ cd server && pm2 start index.js --name ainews-server
 
 # 构建前端
 cd client && npm run build
-# 使用nginx托管build目录
+# 使用 Nginx 托管 dist 目录
 ```
 
 ### Docker部署

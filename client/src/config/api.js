@@ -39,6 +39,8 @@ export const API_ENDPOINTS = {
   CONTENT_BRIEF: `${API_BASE_URL}/api/content/v1/brief`,
   CONTENT_GENERATE: `${API_BASE_URL}/api/content/v1/generate`,
   CONTENT_TRENDS: `${API_BASE_URL}/api/content/v1/trends`,
+  CONTENT_SOURCES: `${API_BASE_URL}/api/content/v1/sources`,
+  CONTENT_SOURCE_HEALTH: `${API_BASE_URL}/api/content/v1/source-health`,
   AGENT_STATUS: `${API_BASE_URL}/api/agent/status`,
   AGENT_CHAT: `${API_BASE_URL}/api/agent/chat`,
   GLOSSARY: `${API_BASE_URL}/api/glossary`,

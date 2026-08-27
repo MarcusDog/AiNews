@@ -1,5 +1,7 @@
 # 快速启动指南
 
+> 需要 Node.js 20.19 或更高版本。当前重构状态见 [PROJECT_REBUILD_STATUS.md](./PROJECT_REBUILD_STATUS.md)。
+
 ## 一键启动
 
 ```bash
@@ -45,7 +47,7 @@ npm run dev
 
 #### 分别启动
 ```bash
-# 后端服务（端口5000）
+# 后端服务（端口3002）
 npm run server:dev
 
 # 前端服务（端口3000，单独终端）
@@ -60,11 +62,38 @@ npm run client:dev
 
 ## 测试功能
 
-1. **查看资讯**: 首页自动加载AI资讯
-2. **分类筛选**: 左侧菜单选择不同分类
-3. **搜索功能**: 顶部搜索框搜索关键词
-4. **数据分析**: 访问 `/analytics` 查看统计
-5. **系统设置**: 访问 `/settings` 配置参数
+1. **电影感首屏**：确认远程背景视频正常播放；资源失败时保留深蓝背景。
+2. **随机选题**：点击「生成今日选题」，优先显示真实 Creator Opportunity、评分、风险与原始证据链接。
+3. **诚实降级**：后端不可用时，页面明确显示「创作练习」，不冒充实时热点。
+4. **自动化测试**：`cd client && npm test`。
+5. **生产构建**：`cd client && npm run build`，产物位于 `client/dist`。
+6. **来源健康**：打开 `http://localhost:3002/api/signals/v1/health` 和 `/api/signals/v1/sources`，区分在线、降级、未配置与禁用。
+
+## 多源热点首次配置
+
+`server/.env.example` 已列出全部可选项。无需密钥即可运行 L1 主干；可按需设置：
+
+```bash
+GITHUB_TOKEN=
+MASTODON_INSTANCES=https://mastodon.social,https://fosstodon.org
+REDDIT_COMMUNITIES=LocalLLaMA,MachineLearning,artificial
+YOUTUBE_API_KEY=
+X_BEARER_TOKEN=
+RSSHUB_BASE_URL=
+NEWSNOW_BASE_URL=
+SIGNAL_BRIDGES_JSON=[]
+```
+
+启动后可用管理员密钥执行一次有界刷新：
+
+```bash
+curl -X POST http://localhost:3002/api/signals/v1/admin/refresh \
+  -H 'Content-Type: application/json' \
+  -H 'x-admin-api-key: YOUR_ADMIN_API_KEY' \
+  -d '{"itemLimit":10}'
+```
+
+随后访问首页“视野监测台”，或读取 `/topics/feed.json`、`/topics/rss.xml`、`/openapi.json`。
 
 ## 数据源说明
 
