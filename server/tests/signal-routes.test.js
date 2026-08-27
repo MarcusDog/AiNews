@@ -87,15 +87,17 @@ test('topic list validates windows and returns a stable paginated envelope', asy
 });
 
 test('topic detail resolves canonical aliases and exposes original evidence without raw payloads', async () => {
+  const calls = [];
   await withServer(fakeService({
-    getTopic: () => ({ ...topic(), canonicalTopicId: 'topic-1' })
+    getTopic: (id, options) => { calls.push({ id, options }); return ({ ...topic(), canonicalTopicId: 'topic-1' }); }
   }), async (origin) => {
-    const response = await fetch(`${origin}/api/signals/v1/topics/topic-old`);
+    const response = await fetch(`${origin}/api/signals/v1/topics/topic-old?window=24h`);
     const payload = await response.json();
     assert.equal(payload.data.canonical_topic_id, 'topic-1');
     assert.equal(payload.data.signals[0].url, 'https://github.com/acme/tool');
     assert.equal(payload.data.signals[0].metrics.replies, null);
     assert.equal('rawJson' in payload.data.signals[0], false);
+    assert.deepEqual(calls, [{ id: 'topic-old', options: { windowHours: 24 } }]);
   });
 });
 
@@ -113,9 +115,30 @@ test('opportunity list and random endpoint use persisted topics only', async () 
     const list = await fetch(`${origin}/api/signals/v1/opportunities?window=24h`).then((response) => response.json());
     const random = await fetch(`${origin}/api/signals/v1/opportunities/random?window=72h`).then((response) => response.json());
     assert.equal(list.data.items[0].topic_id, 'topic-1');
+    assert.equal(list.data.items[0].id, 'topic-1');
     assert.equal(list.data.items[0].creator_score, 68);
     assert.equal(random.data.topic_id, 'topic-1');
+    assert.equal(random.data.id, 'topic-1');
     assert.equal(random.data.opportunity.formulaVersion, 'opportunity-v1');
+  });
+});
+
+test('opportunity routes pass creator profile and random exclusion to the service', async () => {
+  const calls = [];
+  const second = { ...topic(), id: 'topic-2', title: 'Second creator topic', creatorScore: 70 };
+  await withServer(fakeService({
+    listCreatorOpportunities: (options) => { calls.push(options); return options.exclude === 'topic-1' ? [second] : [topic(), second]; }
+  }), async (origin) => {
+    const list = await fetch(`${origin}/api/signals/v1/opportunities?window=48h&profile=short-video&limit=10`).then((response) => response.json());
+    const random = await fetch(`${origin}/api/signals/v1/opportunities/random?window=48h&profile=short-video&exclude=topic-1`).then((response) => response.json());
+    const invalid = await fetch(`${origin}/api/signals/v1/opportunities?profile=philosopher`);
+
+    assert.deepEqual(list.data.items.map((item) => item.topic_id), ['topic-2', 'topic-1']);
+    assert.equal(random.data.topic_id, 'topic-2');
+    assert.equal(random.data.id, 'topic-2');
+    assert.equal(calls[0].profile, 'short-video');
+    assert.equal(calls[1].exclude, 'topic-1');
+    assert.equal(invalid.status, 400);
   });
 });
 

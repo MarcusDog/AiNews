@@ -21,9 +21,9 @@ class ContentService {
     return requiredTerms.every((term) => text.includes(term));
   }
 
-  selectDiverseEvidence(articles, { topic = '', limit = 6 } = {}) {
+  selectDiverseEvidence(articles, { topic = '', limit = 6, preselected = false } = {}) {
     const candidates = articles
-      .filter((article) => article.url && this.matchesTopic(article, topic))
+      .filter((article) => article.url && (preselected || this.matchesTopic(article, topic)))
       .map((article) => ({ ...article, evidenceType: classifyEvidenceType(article) }))
       .sort((a, b) => EVIDENCE_PRIORITY[a.evidenceType] - EVIDENCE_PRIORITY[b.evidenceType] || new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0));
     const selected = [];
@@ -63,7 +63,11 @@ class ContentService {
     const goal = String(options.goal || '理解影响并采取行动').trim();
     const format = FORMAT_SECTIONS[options.format] ? options.format : 'article';
     const limit = Math.min(Math.max(Number.parseInt(options.limit, 10) || 6, 3), 8);
-    const selected = this.selectDiverseEvidence(articles, { topic, limit });
+    const selected = this.selectDiverseEvidence(articles, {
+      topic,
+      limit,
+      preselected: options.preselected === true
+    });
     const evidence = selected.map((article, index) => ({
       citationId: `S${index + 1}`,
       id: article.id,

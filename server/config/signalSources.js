@@ -65,6 +65,7 @@ function buildSignalSourceCatalog(env = process.env) {
   const customBridgeConfigured = hasValidBridgeConfig(env.SIGNAL_BRIDGES_JSON);
   const mastodonInstances = configuredMastodonInstances(env.MASTODON_INSTANCES);
   const redditCommunities = configuredRedditCommunities(env.REDDIT_COMMUNITIES);
+  const redditAggregateEndpoint = `https://www.reddit.com/r/${redditCommunities.join('+')}/.rss?limit=75`;
 
   return [
     source({
@@ -120,7 +121,9 @@ function buildSignalSourceCatalog(env = process.env) {
       mode: 'rss',
       adapter: 'rss-signal',
       trustClass: 'public_feed',
-      endpoint: `https://www.reddit.com/r/${community}/.rss`,
+      // One shared multi-community feed avoids firing parallel anonymous requests
+      // that Reddit commonly rate-limits. The adapter filters rows per community.
+      endpoint: redditAggregateEndpoint,
       community
     })),
     source({

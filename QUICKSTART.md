@@ -93,7 +93,15 @@ curl -X POST http://localhost:3002/api/signals/v1/admin/refresh \
   -d '{"itemLimit":10}'
 ```
 
-随后访问首页“视野监测台”，或读取 `/topics/feed.json`、`/topics/rss.xml`、`/openapi.json`。
+随后访问首页“视野监测台”、`/topics` 选题工作台、`/research` 研究工作台或 `/skills` Skill 页面；机器可读入口为 `/topics/feed.json`、`/topics/rss.xml`、`/openapi.json`。
+
+热点与创作者接口可直接检查：
+
+```bash
+curl 'http://localhost:3002/api/news/hot-rank?window=24h'
+curl 'http://localhost:3002/api/news/discover?window=48h&profile=short-video'
+curl 'http://localhost:3002/api/content/v1/brief?topic=Qwen&topicId=TOPIC_ID&format=article'
+```
 
 ## 数据源说明
 

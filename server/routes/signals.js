@@ -1,5 +1,6 @@
 const express = require('express');
 const { isAdminKeyValid } = require('../middleware/adminAuth');
+const { normalizeCreatorProfile } = require('../services/signals/opportunity-engine');
 
 const METRIC_FIELDS = [
   'views', 'likes', 'comments', 'replies', 'shares', 'reposts',
@@ -74,13 +75,19 @@ function publicTopic(topic = {}, includeSignals = false) {
 
 function opportunityItem(topic) {
   return {
+    id: topic.id,
     topic_id: topic.id,
     title: topic.title,
     summary: topic.summary,
+    trendScore: topic.trendScore,
     trend_score: topic.trendScore,
+    creatorScore: topic.creatorScore,
     creator_score: topic.creatorScore,
+    trendDirection: topic.trendDirection,
     trend_direction: topic.trendDirection,
+    evidenceStrength: topic.evidenceStrength,
     evidence_strength: topic.evidenceStrength,
+    latestSeenAt: topic.latestSeenAt,
     latest_seen_at: topic.latestSeenAt,
     opportunity: topic.opportunity
   };
@@ -110,7 +117,11 @@ function createSignalsRouter(options = {}) {
 
   router.get('/topics/:id', (req, res, next) => {
     try {
-      const item = service.getTopic(req.params.id);
+      const windowHours = req.query.window === undefined ? undefined : WINDOWS.get(req.query.window);
+      if (req.query.window !== undefined && !windowHours) {
+        return res.status(400).json({ success: false, error: 'invalid_query' });
+      }
+      const item = service.getTopic(req.params.id, windowHours ? { windowHours } : undefined);
       if (!item) return res.status(404).json({ success: false, error: 'topic_not_found' });
       return res.json({ success: true, data: publicTopic(item, true) });
     } catch (error) {
@@ -122,12 +133,16 @@ function createSignalsRouter(options = {}) {
     try {
       const query = queryOptions(req);
       if (!query) return res.status(400).json({ success: false, error: 'invalid_query' });
-      const topics = service.listTopics({ windowHours: query.windowHours, limit: query.limit, offset: query.offset });
+      const profile = normalizeCreatorProfile(req.query.profile);
+      if (!profile) return res.status(400).json({ success: false, error: 'invalid_profile' });
+      const topics = typeof service.listCreatorOpportunities === 'function'
+        ? service.listCreatorOpportunities({ windowHours: query.windowHours, limit: query.limit, offset: query.offset, profile })
+        : service.listTopics({ windowHours: query.windowHours, limit: query.limit, offset: query.offset });
       const items = [...topics].sort((a, b) => b.creatorScore - a.creatorScore || b.trendScore - a.trendScore || a.id.localeCompare(b.id));
       return res.json({
         success: true,
         data: { items: items.map(opportunityItem) },
-        meta: { window: query.window, page: query.page, limit: query.limit, count: items.length }
+        meta: { window: query.window, profile, page: query.page, limit: query.limit, count: items.length }
       });
     } catch (error) {
       return next(error);
@@ -138,10 +153,15 @@ function createSignalsRouter(options = {}) {
     try {
       const query = queryOptions(req);
       if (!query) return res.status(400).json({ success: false, error: 'invalid_query' });
-      const topics = service.listTopics({ windowHours: query.windowHours, limit: 100, offset: 0 });
+      const profile = normalizeCreatorProfile(req.query.profile);
+      if (!profile) return res.status(400).json({ success: false, error: 'invalid_profile' });
+      const exclude = String(req.query.exclude || '').trim().slice(0, 120);
+      const topics = typeof service.listCreatorOpportunities === 'function'
+        ? service.listCreatorOpportunities({ windowHours: query.windowHours, limit: 100, offset: 0, profile, exclude })
+        : service.listTopics({ windowHours: query.windowHours, limit: 100, offset: 0 }).filter((topic) => topic.id !== exclude);
       if (!topics.length) return res.status(404).json({ success: false, error: 'no_opportunity_available' });
       const index = Math.min(topics.length - 1, Math.max(0, Math.floor(random() * topics.length)));
-      return res.json({ success: true, data: opportunityItem(topics[index]), meta: { window: query.window } });
+      return res.json({ success: true, data: opportunityItem(topics[index]), meta: { window: query.window, profile } });
     } catch (error) {
       return next(error);
     }

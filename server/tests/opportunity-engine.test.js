@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
-const { buildOpportunity } = require('../services/signals/opportunity-engine');
+const { buildOpportunity, isCreatorOpportunity } = require('../services/signals/opportunity-engine');
 
 function topic(overrides = {}) {
   return {
@@ -21,9 +21,9 @@ function topic(overrides = {}) {
   };
 }
 
-test('opportunity-v1 follows frozen creator formula for cross-platform project evidence', () => {
+test('opportunity-v2 preserves the base creator formula for cross-platform project evidence', () => {
   const result = buildOpportunity(topic(), { now: '2026-08-27T12:00:00.000Z' });
-  assert.equal(result.formulaVersion, 'opportunity-v1');
+  assert.equal(result.formulaVersion, 'opportunity-v2');
   assert.equal(result.scoreBreakdown.trendContribution, 44);
   assert.equal(result.scoreBreakdown.utility, 15);
   assert.equal(result.scoreBreakdown.demo, 10);
@@ -60,4 +60,30 @@ test('news-only older evidence receives no invented utility or demo capability',
   assert.equal(result.scoreBreakdown.demo, 2);
   assert.equal(result.scoreBreakdown.novelty, 2);
   assert.equal(result.rawInputs.discussion, 0);
+});
+
+test('creator eligibility rejects generic philosophical discussion and paper-only tool pitches', () => {
+  const philosophy = topic({
+    title: 'What enables consciousness in humans?', summary: null, trendScore: 70,
+    signals: [{ sourceId: 'reddit-artificial', platform: 'reddit', kind: 'discussion', title: 'What enables consciousness in humans?', metrics: { comments: 120 } }]
+  });
+  const paper = topic({
+    title: 'Autonomous geospatial prediction via embeddings', summary: 'A field robotics paper', trendScore: 70,
+    signals: [{ sourceId: 'arxiv', platform: 'news', kind: 'paper', title: 'Autonomous geospatial prediction via embeddings', metrics: {} }]
+  });
+
+  assert.equal(isCreatorOpportunity(philosophy, { profile: 'general', now: '2026-08-27T12:00:00.000Z' }), false);
+  assert.equal(isCreatorOpportunity(paper, { profile: 'tool-review', now: '2026-08-27T12:00:00.000Z' }), false);
+});
+
+test('creator profiles produce a named profile angle and profile-specific ranking contribution', () => {
+  const shortVideo = buildOpportunity(topic(), { profile: 'short-video', now: '2026-08-27T12:00:00.000Z' });
+  const deepDive = buildOpportunity(topic(), { profile: 'deep-dive', now: '2026-08-27T12:00:00.000Z' });
+
+  assert.equal(shortVideo.formulaVersion, 'opportunity-v2');
+  assert.equal(shortVideo.profile, 'short-video');
+  assert.equal(deepDive.profile, 'deep-dive');
+  assert.notEqual(shortVideo.scoreBreakdown.profileContribution, deepDive.scoreBreakdown.profileContribution);
+  assert(shortVideo.angles.some((angle) => angle.audience === 'creator' && angle.title.includes('短视频')));
+  assert(deepDive.angles.some((angle) => angle.audience === 'creator' && angle.title.includes('深度')));
 });

@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { useTopicIdea, type TopicLoader } from './use-topic-idea'
+import { useState } from 'react'
 
 interface TopicIdeaDialogProps {
   open: boolean
@@ -22,10 +23,12 @@ export function TopicIdeaDialog({
   loadArticles,
   random,
 }: TopicIdeaDialogProps) {
+  const [profile, setProfile] = useState<'general' | 'short-video' | 'tool-review' | 'news-commentary' | 'deep-dive'>('general')
   const { status, availability, idea, reroll } = useTopicIdea({
     active: open,
     loadArticles,
     random,
+    profile,
   })
 
   const availabilityNotice = availability === 'unavailable'
@@ -43,6 +46,17 @@ export function TopicIdeaDialog({
             一次只做一个明确选题。有真实来源时保留证据；来源不可用时，只提供不冒充热点的创作练习。
           </DialogDescription>
         </DialogHeader>
+
+        <label className="mt-5 grid gap-2 text-xs uppercase tracking-[0.12em] text-muted-foreground">
+          AI 博主类型
+          <select aria-label="AI 博主类型" value={profile} onChange={(event) => setProfile(event.target.value as typeof profile)} className="rounded-xl border border-white/12 bg-[#062333] px-4 py-3 text-sm normal-case tracking-normal text-white outline-none focus:border-white/30">
+            <option value="general">综合创作者</option>
+            <option value="short-video">短视频口播</option>
+            <option value="tool-review">工具实测</option>
+            <option value="news-commentary">热点快评</option>
+            <option value="deep-dive">深度拆解</option>
+          </select>
+        </label>
 
         {status === 'loading' && (
           <div className="flex min-h-72 flex-col items-center justify-center gap-4 text-muted-foreground" aria-live="polite">
@@ -95,6 +109,8 @@ export function TopicIdeaDialog({
               </Button>
 
               {idea.kind === 'source-backed' && (
+                <div className="flex flex-col gap-2 sm:flex-row">
+                <a href={`/research?topic=${encodeURIComponent(idea.title)}&topicId=${encodeURIComponent(idea.id)}`} className="inline-flex items-center justify-center rounded-full border border-white/18 px-5 py-3 text-sm text-white transition hover:bg-white/5">做研究</a>
                 <a
                   href={idea.sourceUrl}
                   target="_blank"
@@ -105,6 +121,7 @@ export function TopicIdeaDialog({
                   查看原始来源
                   <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                 </a>
+                </div>
               )}
             </div>
           </div>

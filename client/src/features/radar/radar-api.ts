@@ -187,7 +187,7 @@ export async function fetchRadar({ window = '72h', signal, fetchImpl = fetch }: 
   const baseTopics = topicItems.map(normalizeTopic).filter((item): item is RadarTopic => item !== null)
   const detailed = await Promise.all(baseTopics.slice(0, 12).map(async (topic) => {
     try {
-      const payload = await jsonRequest(fetchImpl, `/api/signals/v1/topics/${encodeURIComponent(topic.id)}`, signal)
+      const payload = await jsonRequest(fetchImpl, `/api/signals/v1/topics/${encodeURIComponent(topic.id)}?window=${window}`, signal)
       return normalizeTopic(payload.data) || topic
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') throw error

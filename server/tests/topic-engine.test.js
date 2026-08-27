@@ -182,8 +182,43 @@ test('SignalService rebuild persists topics, evidence relations and comparable s
     assert.equal(first.topics[0].id, second.topics[0].id);
     assert.equal(listed.length, 1);
     assert.equal(detail.signals.length, 1);
-    assert.equal(detail.opportunity.formulaVersion, 'opportunity-v1');
+    assert.equal(detail.opportunity.formulaVersion, 'opportunity-v2');
     assert.equal(store.db.prepare('SELECT COUNT(*) AS count FROM topic_snapshots').get().count, 2);
+  } finally {
+    service.close();
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test('SignalService projects persisted topics onto 24h, 48h and 72h evidence windows', () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'aya-topic-windows-'));
+  const catalog = [{
+    id: 'reddit', name: 'Reddit', tier: 'L1', platform: 'reddit', region: 'global',
+    mode: 'rss', adapter: 'rss-signal', trustClass: 'public_feed', timeoutMs: 1000,
+    configured: true, enabled: true, schedulable: true
+  }];
+  const store = new SignalStore({ dbPath: path.join(directory, 'signals.db') });
+  const service = new SignalService({ catalog, store, collector: { collectAll: async () => ({ status: 'success' }) } });
+  const now = '2026-08-27T12:00:00.000Z';
+  try {
+    service.initialize();
+    store.upsertSignals([
+      normalizeSignal({ externalId: '12h', title: 'Qwen launch discussion', kind: 'discussion', url: 'https://qwen.example/launch', publishedAt: '2026-08-27T00:00:00.000Z', metrics: { comments: 30 } }, catalog[0], { now }),
+      normalizeSignal({ externalId: '36h', title: 'Qwen launch discussion', kind: 'discussion', url: 'https://qwen.example/launch', publishedAt: '2026-08-26T00:00:00.000Z', metrics: { comments: 10 } }, catalog[0], { now }),
+      normalizeSignal({ externalId: '60h', title: 'Qwen launch discussion', kind: 'discussion', url: 'https://qwen.example/launch', publishedAt: '2026-08-25T00:00:00.000Z', metrics: { comments: 4 } }, catalog[0], { now })
+    ]);
+    service.rebuildTopics({ now, windowHours: 72 });
+
+    const day = service.listTopics({ now, windowHours: 24, limit: 10 });
+    const twoDays = service.listTopics({ now, windowHours: 48, limit: 10 });
+    const threeDays = service.listTopics({ now, windowHours: 72, limit: 10 });
+    const detail = service.getTopic(day[0].id, { now, windowHours: 24 });
+
+    assert.equal(day[0].id, twoDays[0].id);
+    assert.equal(twoDays[0].id, threeDays[0].id);
+    assert.deepEqual([day[0].evidenceCount, twoDays[0].evidenceCount, threeDays[0].evidenceCount], [1, 2, 3]);
+    assert.equal(new Set([day[0].trendScore, twoDays[0].trendScore, threeDays[0].trendScore]).size > 1, true);
+    assert.deepEqual(detail.signals.map((item) => item.externalId), ['12h']);
   } finally {
     service.close();
     fs.rmSync(directory, { recursive: true, force: true });

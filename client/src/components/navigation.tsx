@@ -15,9 +15,9 @@ export function Navigation({ onGenerate }: NavigationProps) {
 
       <nav className="hidden items-center gap-7 md:flex" aria-label="主导航">
         <a href="#radar" className="text-sm text-foreground transition-colors hover:text-foreground" aria-current="page">看热点</a>
-        <button type="button" onClick={onGenerate} className="text-sm text-muted-foreground transition-colors hover:text-foreground">找选题</button>
-        <a href="/topics/feed.json" className="text-sm text-muted-foreground transition-colors hover:text-foreground">做研究</a>
-        <a href="/skill.md" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Aya Skill</a>
+        <a href="/topics" className="text-sm text-muted-foreground transition-colors hover:text-foreground">找选题</a>
+        <a href="/research" className="text-sm text-muted-foreground transition-colors hover:text-foreground">做研究</a>
+        <a href="/skills" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Aya Skill</a>
       </nav>
 
       <Button variant="glass" className="gap-2 px-4 sm:px-6" onClick={onGenerate} aria-label="随机一个选题">

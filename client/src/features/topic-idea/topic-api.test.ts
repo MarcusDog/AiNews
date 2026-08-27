@@ -18,32 +18,29 @@ function response(body: unknown, ok = true, status = 200): Response {
 }
 
 describe('fetchLatestArticles', () => {
-  it('prefers a real Creator Opportunity and resolves its original evidence', async () => {
+  it('loads multiple creator opportunities with original evidence for non-repeating rerolls', async () => {
     const controller = new AbortController()
-    const fetchImpl = vi.fn()
-      .mockResolvedValueOnce(response({ success: true, data: {
-        topic_id: 'topic-1', title: '真实 AI 项目', summary: '多源摘要', trend_score: 74,
-        creator_score: 81, evidence_strength: 'multi-source', latest_seen_at: article.publishedAt,
-        opportunity: { formulaVersion: 'opportunity-v1', angles: [{ audience: 'creator', title: '实测真实 AI 项目', angle: '完成可复现演示。' }], riskNotes: ['发布前核查版本。'] },
-      } }))
-      .mockResolvedValueOnce(response({ success: true, data: {
-        id: 'topic-1', signals: [{ id: 'signal-1', sourceName: 'GitHub', url: article.url, publishedAt: article.publishedAt }],
-      } }))
+    const fetchImpl = vi.fn().mockResolvedValueOnce(response({ success: true, data: { items: [{
+      id: 'topic-1', title: '真实 AI 项目', summary: '多源摘要', trendScore: 74,
+      creatorScore: 81, evidenceStrength: 'multi-source', latestSeenAt: article.publishedAt,
+      opportunity: { formulaVersion: 'opportunity-v2', profile: 'tool-review', angles: [{ audience: 'creator', title: 'AI 工具实测｜真实 AI 项目', angle: '完成可复现演示。' }], riskNotes: ['发布前核查版本。'] },
+      signals: [{ id: 'signal-1', sourceName: 'GitHub', url: article.url, publishedAt: article.publishedAt }],
+    }, {
+      id: 'topic-2', title: '第二个热点', trendScore: 70, creatorScore: 76, evidenceStrength: 'single-source',
+      opportunity: { formulaVersion: 'opportunity-v2', profile: 'tool-review', angles: [{ audience: 'creator', title: 'AI 工具实测｜第二个热点', angle: '验证真实效果。' }], riskNotes: [] },
+      signals: [{ id: 'signal-2', sourceName: 'Reddit', url: 'https://reddit.example/topic-2', publishedAt: article.publishedAt }],
+    }] } }))
 
-    await expect(fetchLatestArticles({ signal: controller.signal, fetchImpl })).resolves.toEqual([
+    await expect(fetchLatestArticles({ signal: controller.signal, fetchImpl, profile: 'tool-review' })).resolves.toEqual([
       expect.objectContaining({
-        id: 'topic-1', title: '实测真实 AI 项目', source: 'GitHub', url: article.url,
-        opportunity: expect.objectContaining({ creatorScore: 81, trendScore: 74, formulaVersion: 'opportunity-v1' }),
+        id: 'topic-1', title: 'AI 工具实测｜真实 AI 项目', source: 'GitHub', url: article.url,
+        opportunity: expect.objectContaining({ creatorScore: 81, trendScore: 74, formulaVersion: 'opportunity-v2' }),
       }),
+      expect.objectContaining({ id: 'topic-2', source: 'Reddit' }),
     ])
     expect(fetchImpl).toHaveBeenNthCalledWith(
       1,
-      '/api/signals/v1/opportunities/random?window=72h',
-      expect.objectContaining({ signal: controller.signal }),
-    )
-    expect(fetchImpl).toHaveBeenNthCalledWith(
-      2,
-      '/api/signals/v1/topics/topic-1',
+      '/api/news/discover?window=72h&profile=tool-review&limit=24',
       expect.objectContaining({ signal: controller.signal }),
     )
   })

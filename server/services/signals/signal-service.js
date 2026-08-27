@@ -2,7 +2,8 @@ const { buildSignalSourceCatalog } = require('../../config/signalSources');
 const crypto = require('node:crypto');
 const SignalStore = require('./signal-store');
 const SignalCollector = require('./signal-collector');
-const { buildTopics } = require('./topic-engine');
+const { buildTopics, scoreTrend } = require('./topic-engine');
+const { buildOpportunity, isCreatorOpportunity, normalizeCreatorProfile } = require('./opportunity-engine');
 const LegacyNewsAdapter = require('./adapters/legacy-news-adapter');
 const HackerNewsAdapter = require('./adapters/hacker-news-adapter');
 const GitHubAdapter = require('./adapters/github-adapter');
@@ -114,12 +115,78 @@ class SignalService {
 
   listTopics(options = {}) {
     this.initialize();
-    return this.store.listTopics(options);
+    const now = new Date(options.now || new Date());
+    const windowHours = Math.max(1, Math.min(Number(options.windowHours) || 72, 720));
+    const limit = Math.max(1, Math.min(Number(options.limit) || 100, 500));
+    const offset = Math.max(0, Number(options.offset) || 0);
+    const candidates = this.store.listTopics({ windowHours, now, limit: 500, offset: 0 });
+    return candidates
+      .map((topic) => this.projectTopic(topic, { now, windowHours, includeSignals: false, profile: options.profile }))
+      .filter(Boolean)
+      .sort((a, b) => b.trendScore - a.trendScore || new Date(b.latestSeenAt) - new Date(a.latestSeenAt) || a.id.localeCompare(b.id))
+      .slice(offset, offset + limit);
   }
 
-  getTopic(id) {
+  getTopic(id, options = {}) {
     this.initialize();
-    return this.store.getTopic(id);
+    const topic = this.store.getTopic(id);
+    if (!topic || !options.windowHours) return topic;
+    return this.projectTopic(topic, {
+      now: new Date(options.now || new Date()),
+      windowHours: Math.max(1, Math.min(Number(options.windowHours) || 72, 720)),
+      includeSignals: true,
+      profile: options.profile
+    });
+  }
+
+  listCreatorOpportunities(options = {}) {
+    const profile = normalizeCreatorProfile(options.profile) || 'general';
+    const limit = Math.max(1, Math.min(Number(options.limit) || 20, 100));
+    const offset = Math.max(0, Number(options.offset) || 0);
+    const exclude = String(options.exclude || '').trim();
+    return this.listTopics({ ...options, profile, limit: 500, offset: 0 })
+      .filter((topic) => topic.id !== exclude)
+      .map((topic) => {
+        const detail = this.getTopic(topic.id, { ...options, profile });
+        return detail || topic;
+      })
+      .filter((topic) => isCreatorOpportunity(topic, { ...options, profile }))
+      .sort((a, b) => b.creatorScore - a.creatorScore || b.trendScore - a.trendScore || a.id.localeCompare(b.id))
+      .slice(offset, offset + limit);
+  }
+
+  projectTopic(topic, options = {}) {
+    const full = Array.isArray(topic.signals) ? topic : this.store.getTopic(topic.id);
+    if (!full) return null;
+    const now = new Date(options.now || new Date());
+    const windowHours = Math.max(1, Math.min(Number(options.windowHours) || 72, 720));
+    const cutoff = now.getTime() - windowHours * 3600000;
+    const signals = (full.signals || []).filter((signal) => {
+      const time = new Date(signal.publishedAt).getTime();
+      return Number.isFinite(time) && time >= cutoff && time <= now.getTime() + 300000;
+    });
+    if (!signals.length) return null;
+    const firstSeenAt = signals.map((signal) => signal.firstSeenAt || signal.publishedAt).sort()[0];
+    const latestSeenAt = signals.map((signal) => signal.publishedAt).sort().at(-1);
+    const trend = scoreTrend(signals, { now, firstSeenAt });
+    const projected = {
+      ...full,
+      firstSeenAt,
+      latestSeenAt,
+      trendScore: trend.trendScore,
+      trendDirection: trend.trendDirection,
+      evidenceStrength: trend.evidenceStrength,
+      formulaVersion: trend.formulaVersion,
+      scoreBreakdown: { ...trend.scoreBreakdown, rawInputs: trend.rawInputs, whatChanged: trend.whatChanged },
+      evidenceCount: signals.length
+    };
+    const opportunity = buildOpportunity({ ...projected, signals }, { now, profile: options.profile });
+    return {
+      ...projected,
+      creatorScore: opportunity.creatorScore,
+      opportunity,
+      ...(options.includeSignals ? { signals } : { signals: undefined })
+    };
   }
 
   listChanges(options = {}) {

@@ -1,4 +1,5 @@
 import { extractArticles, type NewsArticle } from './topic-idea'
+import type { CreatorProfile, TopicWindow } from './use-topic-idea'
 
 type TopicSourceErrorCode =
   | 'network_error'
@@ -9,6 +10,8 @@ type TopicSourceErrorCode =
 interface FetchLatestArticlesOptions {
   signal?: AbortSignal
   fetchImpl?: typeof fetch
+  profile?: CreatorProfile
+  window?: TopicWindow
 }
 
 interface JsonResult {
@@ -88,18 +91,17 @@ async function requestJson(
   }
 }
 
-function opportunityArticle(opportunityPayload: unknown, topicPayload: unknown): NewsArticle | null {
-  if (!isRecord(opportunityPayload) || opportunityPayload.success !== true || !isRecord(opportunityPayload.data)) return null
-  if (!isRecord(topicPayload) || topicPayload.success !== true || !isRecord(topicPayload.data)) return null
-  const data = opportunityPayload.data
-  const topicId = optionalString(data.topic_id)
+function opportunityArticle(value: unknown): NewsArticle | null {
+  if (!isRecord(value)) return null
+  const data = value
+  const topicId = optionalString(data.id)
   const opportunity = isRecord(data.opportunity) ? data.opportunity : null
   const angles = opportunity && Array.isArray(opportunity.angles) ? opportunity.angles.filter(isRecord) : []
   const selectedAngle = angles.find((angle) => angle.audience === 'creator') || angles[0]
-  const signals = Array.isArray(topicPayload.data.signals) ? topicPayload.data.signals.filter(isRecord) : []
+  const signals = Array.isArray(data.signals) ? data.signals.filter(isRecord) : []
   const evidence = signals.find((signal) => safeUrl(signal.url))
-  const creatorScore = finiteNumber(data.creator_score)
-  const trendScore = finiteNumber(data.trend_score)
+  const creatorScore = finiteNumber(data.creatorScore)
+  const trendScore = finiteNumber(data.trendScore)
   if (!topicId || !selectedAngle || !evidence || creatorScore === undefined || trendScore === undefined || !opportunity) return null
   const url = safeUrl(evidence.url)
   const title = optionalString(selectedAngle.title) || optionalString(data.title)
@@ -114,12 +116,12 @@ function opportunityArticle(opportunityPayload: unknown, topicPayload: unknown):
     description: optionalString(data.summary),
     source: optionalString(evidence.sourceName) || optionalString(evidence.sourceId) || '原始证据',
     url,
-    publishedAt: optionalString(evidence.publishedAt) || optionalString(data.latest_seen_at),
+    publishedAt: optionalString(evidence.publishedAt) || optionalString(data.latestSeenAt),
     opportunity: {
       formulaVersion: optionalString(opportunity.formulaVersion) || 'opportunity-v1',
       creatorScore,
       trendScore,
-      evidenceStrength: optionalString(data.evidence_strength) || 'unknown',
+      evidenceStrength: optionalString(data.evidenceStrength) || 'unknown',
       lens: selectedAngle.audience === 'creator' ? '创作者实测' : '热点解释',
       angle,
       audience: selectedAngle.audience === 'creator' ? 'AI 自媒体与内容创作者' : '关注 AI 的普通读者',
@@ -131,16 +133,22 @@ function opportunityArticle(opportunityPayload: unknown, topicPayload: unknown):
   }
 }
 
-async function fetchCreatorOpportunity(signal: AbortSignal | undefined, fetchImpl: typeof fetch): Promise<NewsArticle[]> {
-  const { payload } = await requestJson('/api/signals/v1/opportunities/random?window=72h', signal, fetchImpl)
-  if (!isRecord(payload) || payload.success !== true || !isRecord(payload.data) || !optionalString(payload.data.topic_id)) {
+async function fetchCreatorOpportunities(
+  signal: AbortSignal | undefined,
+  fetchImpl: typeof fetch,
+  profile: CreatorProfile,
+  window: TopicWindow,
+): Promise<NewsArticle[]> {
+  const endpoint = `/api/news/discover?window=${window}&profile=${profile}&limit=24`
+  const { payload } = await requestJson(endpoint, signal, fetchImpl)
+  if (!isRecord(payload) || payload.success !== true || !isRecord(payload.data) || !Array.isArray(payload.data.items)) {
     throw new TopicSourceError('invalid_payload', 'Creator Opportunity 数据结构不正确')
   }
-  const topicId = optionalString(payload.data.topic_id)!
-  const detail = await requestJson(`/api/signals/v1/topics/${encodeURIComponent(topicId)}`, signal, fetchImpl)
-  const article = opportunityArticle(payload, detail.payload)
-  if (!article) throw new TopicSourceError('invalid_payload', 'Creator Opportunity 缺少可回查的原始证据')
-  return [article]
+  const articles = payload.data.items.map(opportunityArticle).filter((item): item is NewsArticle => item !== null)
+  if (!articles.length && payload.data.items.length) {
+    throw new TopicSourceError('invalid_payload', 'Creator Opportunity 缺少可回查的原始证据')
+  }
+  return articles
 }
 
 async function fetchCompatibleNews(signal: AbortSignal | undefined, fetchImpl: typeof fetch): Promise<NewsArticle[]> {
@@ -152,9 +160,11 @@ async function fetchCompatibleNews(signal: AbortSignal | undefined, fetchImpl: t
 export async function fetchLatestArticles({
   signal,
   fetchImpl = fetch,
+  profile = 'general',
+  window = '72h',
 }: FetchLatestArticlesOptions = {}): Promise<NewsArticle[]> {
   try {
-    return await fetchCreatorOpportunity(signal, fetchImpl)
+    return await fetchCreatorOpportunities(signal, fetchImpl, profile, window)
   } catch (error) {
     if (isAbortError(error)) throw error
   }

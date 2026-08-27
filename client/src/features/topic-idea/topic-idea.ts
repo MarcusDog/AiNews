@@ -199,10 +199,14 @@ export function buildTopicIdea(article: NewsArticle): SourceBackedIdea {
 export function pickTopicIdea(
   articles: NewsArticle[],
   random: () => number = Math.random,
+  excludeId?: string,
 ): TopicIdea {
   if (articles.length > 0) {
-    const index = Math.floor(clampRandom(random()) * articles.length)
-    return buildTopicIdea(articles[index])
+    const candidates = articles.length > 1 && excludeId
+      ? articles.filter((article) => (article.id || article.url) !== excludeId)
+      : articles
+    const index = Math.floor(clampRandom(random()) * candidates.length)
+    return buildTopicIdea(candidates[index])
   }
 
   const index = Math.floor(clampRandom(random()) * PRACTICE_IDEAS.length)

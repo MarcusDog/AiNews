@@ -6,10 +6,10 @@
 
 - 前端：React 18 + Vite 8 + TypeScript 7 + Tailwind CSS + shadcn/ui 式本地组件。
 - 首页：电影感首屏 + 24/48/72 小时「视野监测台」。
-- 数据链路：公开 Signal → Topic 聚类 → `trend-v1` → `opportunity-v1` → 创作者选题。
+- 数据链路：公开 Signal → Topic 聚类 → 窗口化 `trend-v1` → 五画像 `opportunity-v2` → 创作者选题与证据研究。
 - 来源：既有新闻/官方发布、GitHub、Hacker News、Mastodon、Reddit、Hugging Face、Bilibili，以及可选 YouTube、X、自托管 RSSHub/NewsNow/JSON Bridge。
-- 核心交互：随机选题优先使用真实 Creator Opportunity 与原始证据；不可用时先兼容真实 News，最后才明确降级为「创作练习」。
-- 开放能力：REST、OpenAPI 3.1、Topic JSON Feed、RSS 与 AyaNewsSkill 2.2。MCP、A2A、Webhook 尚未实现，文档不会冒充可用。
+- 核心交互：首页雷达、独立 `/topics` 选题工作台、独立 `/research` 证据研究台和 `/skills` 人类说明页；随机选题会排除上一题。
+- 开放能力：REST、OpenAPI 3.1、Topic JSON Feed、RSS 与 AyaNewsSkill 2.3。MCP、A2A、Webhook 尚未实现，文档不会冒充可用。
 - Node.js 要求：`>=20.19.0`。
 
 ```bash
@@ -46,9 +46,15 @@ curl -X POST http://localhost:3002/api/signals/v1/admin/refresh \
 
 curl http://localhost:3002/api/signals/v1/health
 curl 'http://localhost:3002/api/signals/v1/topics?window=72h'
+curl 'http://localhost:3002/api/news/hot-rank?window=24h'
+curl 'http://localhost:3002/api/news/discover?window=48h&profile=tool-review'
+curl 'http://localhost:3002/api/news/dashboard?window=72h'
+curl http://localhost:3002/api/news/by-source
 curl http://localhost:3002/topics/feed.json
 curl http://localhost:3002/topics/rss.xml
 ```
+
+兼容聚合路由还包括 `/api/news/feed` 与 `/api/news/domestic`。`profile` 可取 `general`、`short-video`、`tool-review`、`news-commentary`、`deep-dive`。
 
 公开接口的完整契约以 `/openapi.json` 为准。匿名 GitHub、Reddit、Bilibili 等端点可能限流或临时拒绝请求；单源失败不会阻断其他来源，健康接口会保留真实失败状态。
 

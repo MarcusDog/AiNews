@@ -59,6 +59,39 @@ describe('Aya cinematic home', () => {
     expect(video).toHaveClass('absolute', 'inset-0', 'z-0', 'h-full', 'w-full', 'object-cover')
   })
 
+  it('renders standalone topic, research and Skill workspaces instead of raw machine files', async () => {
+    const researchFetch = vi.fn().mockResolvedValue(new Response(JSON.stringify({ success: true, data: {
+      status: 'ready', notice: '证据包已就绪', angle: '创作者视角',
+      diversity: { sources: 2, regions: 2, evidenceTypes: 2 },
+      evidence: [{ citationId: 'S1', title: '官方发布', source: 'Official', url: 'https://official.example/item', claimBoundary: '官方一手信息' }],
+      outputGuide: { sections: [{ title: '核心结论' }] }, citationPolicy: '逐条引用'
+    } }), { status: 200, headers: { 'content-type': 'application/json' } }))
+
+    const topicView = render(<App path="/topics" loadArticles={async () => [article]} random={() => 0} />)
+    expect(await screen.findByRole('heading', { name: '创作者选题工作台' })).toBeInTheDocument()
+    expect(screen.getByRole('combobox', { name: 'AI 博主类型' })).toBeInTheDocument()
+    topicView.unmount()
+
+    const researchView = render(<App path="/research?topic=Qwen&topicId=topic-qwen" researchFetch={researchFetch as typeof fetch} />)
+    expect(screen.getByRole('heading', { name: '研究工作台' })).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: '开始研究' }))
+    expect(await screen.findByText('证据包已就绪')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /官方发布/ })).toHaveAttribute('href', 'https://official.example/item')
+    expect(String(researchFetch.mock.calls[0][0])).toContain('topicId=topic-qwen')
+    const topicInput = screen.getByRole('textbox', { name: '研究主题' })
+    await userEvent.clear(topicInput)
+    await userEvent.type(topicInput, 'Claude')
+    await userEvent.click(screen.getByRole('button', { name: '开始研究' }))
+    await waitFor(() => expect(researchFetch).toHaveBeenCalledTimes(2))
+    expect(String(researchFetch.mock.calls[1][0])).not.toContain('topicId=')
+    researchView.unmount()
+
+    render(<App path="/skills" />)
+    expect(screen.getByRole('heading', { name: 'AyaNewsSkill' })).toBeInTheDocument()
+    expect(screen.getByText('机器可读接口')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: '查看原始 Skill Markdown' })).toHaveAttribute('href', '/skill.md')
+  })
+
   it('hides the remote video after a media error and keeps the navy page fallback', () => {
     const { container } = render(<App loadArticles={async () => [article]} loadRadar={loadRadar} random={() => 0} />)
     const video = container.querySelector('video') as HTMLVideoElement

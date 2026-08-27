@@ -38,6 +38,7 @@ describe('radar API', () => {
 
     const result = await fetchRadar({ window: '48h', fetchImpl: fetchImpl as typeof fetch })
     expect(urls.some((url) => url.includes('window=48h'))).toBe(true)
+    expect(urls).toContain('/api/signals/v1/topics/topic-1?window=48h')
     expect(result.topics[0].signals).toHaveLength(1)
     expect(result.topics[0].signals[0].url).toBe('https://github.com/acme/tool')
     expect(result.sources[0].status).toBe('online')

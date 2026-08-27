@@ -4,12 +4,16 @@ import { pickTopicIdea, type NewsArticle, type TopicIdea } from './topic-idea'
 
 export type TopicAvailability = 'idle' | 'source-backed' | 'empty' | 'unavailable'
 export type TopicIdeaStatus = 'idle' | 'loading' | 'ready'
-export type TopicLoader = (signal: AbortSignal) => Promise<NewsArticle[]>
+export type CreatorProfile = 'general' | 'short-video' | 'tool-review' | 'news-commentary' | 'deep-dive'
+export type TopicWindow = '24h' | '48h' | '72h'
+export type TopicLoader = (signal: AbortSignal, options?: { profile: CreatorProfile; window: TopicWindow }) => Promise<NewsArticle[]>
 
 interface UseTopicIdeaOptions {
   active: boolean
   loadArticles?: TopicLoader
   random?: () => number
+  profile?: CreatorProfile
+  window?: TopicWindow
 }
 
 interface UseTopicIdeaResult {
@@ -19,12 +23,14 @@ interface UseTopicIdeaResult {
   reroll: () => void
 }
 
-const defaultLoader: TopicLoader = (signal) => fetchLatestArticles({ signal })
+const defaultLoader: TopicLoader = (signal, options) => fetchLatestArticles({ signal, ...options })
 
 export function useTopicIdea({
   active,
   loadArticles = defaultLoader,
   random = Math.random,
+  profile = 'general',
+  window = '72h',
 }: UseTopicIdeaOptions): UseTopicIdeaResult {
   const [status, setStatus] = useState<TopicIdeaStatus>('idle')
   const [availability, setAvailability] = useState<TopicAvailability>('idle')
@@ -54,7 +60,7 @@ export function useTopicIdea({
     setAvailability('idle')
     setIdea(null)
 
-    void loaderRef.current(controller.signal)
+    void loaderRef.current(controller.signal, { profile, window })
       .then((articles) => {
         if (controller.signal.aborted || requestVersionRef.current !== requestVersion) return
 
@@ -73,11 +79,11 @@ export function useTopicIdea({
       })
 
     return () => controller.abort()
-  }, [active])
+  }, [active, profile, window])
 
   const reroll = useCallback(() => {
     if (status !== 'ready') return
-    setIdea(pickTopicIdea(articlesRef.current, randomRef.current))
+    setIdea((current) => pickTopicIdea(articlesRef.current, randomRef.current, current?.id))
   }, [status])
 
   return { status, availability, idea, reroll }

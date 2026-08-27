@@ -118,6 +118,30 @@ test('Mastodon adapter keeps only AI-relevant public trends and returned metrics
   assert.equal(http.calls.length, 2);
 });
 
+test('Mastodon adapter keeps usable AI statuses when the trending links endpoint fails', async () => {
+  const http = fakeHttp((url) => {
+    if (url.endsWith('/links')) throw new Error('links endpoint unavailable');
+    return { data: [{
+      id: 'status-2',
+      created_at: '2026-08-27T00:00:00Z',
+      content: '<p>Claude released a new AI coding workflow</p>',
+      url: 'https://mastodon.social/@builder/2',
+      account: { acct: 'builder' },
+      favourites_count: 12,
+      reblogs_count: 5,
+      replies_count: 3,
+      tags: [{ name: 'AI' }]
+    }] };
+  });
+  const adapter = new MastodonAdapter({ http });
+  const items = await adapter.collect({
+    endpoint: 'https://mastodon.social/api/v1/trends', timeoutMs: 12000
+  }, { limit: 10 });
+
+  assert.equal(items.length, 1);
+  assert.equal(items[0].externalId, 'status-2');
+});
+
 test('Hugging Face adapter maps model, dataset and space repository URLs', async () => {
   const http = fakeHttp(() => ({ data: { recentlyTrending: [
     { repoType: 'model', repoData: { id: 'Qwen/Test', author: 'Qwen', lastModified: '2026-08-27T00:00:00Z', likes: 30, downloads: 200, pipeline_tag: 'text-generation' } },
@@ -125,7 +149,7 @@ test('Hugging Face adapter maps model, dataset and space repository URLs', async
     { repoType: 'space', repoData: { id: 'org/demo', author: 'org', lastModified: '2026-08-25T00:00:00Z', likes: 15 } }
   ] } }));
   const adapter = new HuggingFaceAdapter({ http });
-  const items = await adapter.collect({ endpoint: 'https://huggingface.co/api/trending', timeoutMs: 10000 }, { limit: 10 });
+  const items = await adapter.collect({ endpoint: 'https://huggingface.co/api/trending', timeoutMs: 10000 }, { limit: 40 });
 
   assert.deepEqual(items.map((item) => item.url), [
     'https://huggingface.co/Qwen/Test',
@@ -133,6 +157,7 @@ test('Hugging Face adapter maps model, dataset and space repository URLs', async
     'https://huggingface.co/spaces/org/demo'
   ]);
   assert.deepEqual(items[0].metrics, { likes: 30, downloads: 200 });
+  assert.equal(http.calls[0].options.params.limit, 20);
 });
 
 test('Bilibili adapter applies deterministic AI relevance policy before mapping metrics', async () => {
@@ -177,6 +202,50 @@ test('RSS adapter maps Reddit Atom without inventing engagement', async () => {
   assert.deepEqual(items[0].metrics, {});
   assert.equal(items[0].kind, 'discussion');
   assert.match(http.calls[0].options.headers['User-Agent'], /AyaNews/);
+});
+
+test('RSS adapter shares one Reddit aggregate request and filters each configured community', async () => {
+  const http = fakeHttp(() => ({ data: '<feed />' }));
+  const parser = { parseString: async () => ({ items: [{
+    guid: 'local-1', title: 'New local AI model',
+    link: 'https://www.reddit.com/r/LocalLLaMA/comments/local', isoDate: '2026-08-27T00:00:00Z'
+  }, {
+    guid: 'ml-1', title: 'Machine learning research discussion',
+    link: 'https://www.reddit.com/r/MachineLearning/comments/ml', isoDate: '2026-08-27T00:00:00Z'
+  }] }) };
+  const adapter = new RssSignalAdapter({ http, parser });
+  const shared = 'https://www.reddit.com/r/LocalLLaMA+MachineLearning+artificial/.rss?limit=75';
+
+  const [local, machineLearning] = await Promise.all([
+    adapter.collect({ endpoint: shared, platform: 'reddit', community: 'LocalLLaMA', timeoutMs: 10000 }),
+    adapter.collect({ endpoint: shared, platform: 'reddit', community: 'MachineLearning', timeoutMs: 10000 })
+  ]);
+
+  assert.equal(http.calls.length, 1);
+  assert.deepEqual(local.map((item) => item.externalId), ['local-1']);
+  assert.deepEqual(machineLearning.map((item) => item.externalId), ['ml-1']);
+});
+
+test('RSS adapter excludes generic philosophy posts from broad Reddit AI communities', async () => {
+  const http = fakeHttp(() => ({ data: '<feed />' }));
+  const parser = { parseString: async () => ({ items: [{
+    guid: 'generic-1', title: 'What enables consciousness?',
+    link: 'https://www.reddit.com/r/artificial/comments/generic',
+    contentSnippet: 'A broad philosophical question about human experience.',
+    isoDate: '2026-08-27T00:00:00Z'
+  }, {
+    guid: 'ai-1', title: 'New Claude memory feature changes agent workflows',
+    link: 'https://www.reddit.com/r/artificial/comments/ai',
+    contentSnippet: 'Users compare the AI assistant feature with ChatGPT memory.',
+    isoDate: '2026-08-27T00:00:00Z'
+  }] }) };
+  const adapter = new RssSignalAdapter({ http, parser });
+  const items = await adapter.collect({
+    endpoint: 'https://www.reddit.com/r/artificial/.rss',
+    platform: 'reddit', community: 'artificial', timeoutMs: 10000
+  });
+
+  assert.deepEqual(items.map((item) => item.externalId), ['ai-1']);
 });
 
 test('legacy News adapter imports real database rows as compatibility signals', async () => {

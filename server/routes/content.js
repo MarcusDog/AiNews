@@ -1,8 +1,7 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
-const router = express.Router();
-const NewsService = require('../services/NewsService');
-const ContentService = require('../services/ContentService');
+const DefaultNewsService = require('../services/NewsService');
+const DefaultContentService = require('../services/ContentService');
 const TrendAnalyzer = require('../services/TrendAnalyzer');
 const { agentService } = require('../services/AgentService');
 const { parseBoundedInteger } = require('../utils/analytics');
@@ -15,6 +14,35 @@ const generationLimiter = rateLimit({
   legacyHeaders: false,
   message: { success: false, error: '内容生成请求较多，请稍后再试' }
 });
+
+function signalToArticle(signal) {
+  const kind = String(signal.kind || '').toLowerCase();
+  const trustClass = String(signal.sourceTrustClass || '').toLowerCase();
+  const sourceGroup = trustClass === 'official'
+    ? 'product'
+    : kind === 'paper'
+      ? 'research'
+      : ['discussion', 'shared_link'].includes(kind)
+        ? 'engineering'
+        : 'media';
+  return {
+    id: signal.id,
+    title: signal.title,
+    description: signal.summary || '',
+    source: signal.sourceName || signal.platform || 'Signal 来源',
+    url: signal.url,
+    publishedAt: signal.publishedAt || null,
+    category: kind === 'paper' ? '新算法' : 'AI新闻',
+    sourceGroup,
+    region: signal.region === 'cn' ? 'cn' : 'global'
+  };
+}
+
+function createContentRouter(options = {}) {
+  const router = express.Router();
+  const NewsService = options.newsService || DefaultNewsService;
+  const ContentService = options.contentService || DefaultContentService;
+  const signalService = options.signalService || null;
 
 router.get('/capabilities', (req, res) => {
   res.json({
@@ -90,18 +118,33 @@ router.get('/brief', async (req, res, next) => {
   try {
     const days = parseBoundedInteger(req.query.days, { fallback: 14, min: 1, max: 30 });
     const limit = parseBoundedInteger(req.query.limit, { fallback: 6, min: 3, max: 8 });
+    const topicId = String(req.query.topicId || '').trim().slice(0, 120);
     const news = await NewsService.getAnalysisNews(500);
     const cutoff = Date.now() - days * 86400000;
     const recent = news.data.filter((item) => {
       const time = new Date(item.publishedAt).getTime();
       return !Number.isNaN(time) && time >= cutoff;
     });
-    const brief = ContentService.buildBriefFromArticles(recent, {
+    let candidates = recent;
+    if (topicId && signalService) {
+      const topic = signalService.getTopic(topicId, { windowHours: days * 24 });
+      if (!topic) return res.status(404).json({ success: false, error: 'topic_not_found' });
+      const signalArticles = (topic.signals || []).map(signalToArticle).filter((item) => item.url);
+      const matchingNews = recent.filter((item) => ContentService.matchesTopic(item, req.query.topic));
+      const seenUrls = new Set();
+      candidates = [...signalArticles, ...matchingNews].filter((item) => {
+        if (!item.url || seenUrls.has(item.url)) return false;
+        seenUrls.add(item.url);
+        return true;
+      });
+    }
+    const brief = ContentService.buildBriefFromArticles(candidates, {
       topic: req.query.topic,
       audience: req.query.audience,
       goal: req.query.goal,
       format: req.query.format,
-      limit
+      limit,
+      preselected: Boolean(topicId && signalService)
     });
     res.status(brief.status === 'ready' ? 200 : 422).json({ success: brief.status === 'ready', data: brief });
   } catch (error) { next(error); }
@@ -149,4 +192,9 @@ router.post('/generate', generationLimiter, async (req, res, next) => {
   }
 });
 
-module.exports = router;
+  return router;
+}
+
+const defaultRouter = createContentRouter();
+module.exports = defaultRouter;
+module.exports.createContentRouter = createContentRouter;

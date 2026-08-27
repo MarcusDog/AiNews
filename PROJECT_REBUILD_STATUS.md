@@ -182,3 +182,47 @@
 - 2026-08-27：完成 Task 12 与第二阶段收口。干净库真实采集发现并修复 Mastodon 非 AI 趋势混入；最终后端 `147/147`、客户端 `32/32`。真实采集、Live API、临时 Nginx Feed、Chrome 1440×960 / 390×844、503 诚实错误态、严格密钥扫描、Skill 包与三层脏工作树保护全部通过；详细证据见最终验证报告。
 - 2026-08-27：完成 GitHub 发布准备与上传。AyaNewsSkill 2.2 已推送至 `codex/ayanews-skill-2-2` 并建立 [AyaNewsSkill PR #1](https://github.com/MarcusDog/AyaNewsSkill/pull/1)；AI News 完整重构已推送至 `codex/aya-creator-intelligence-radar` 并建立 [AiNews PR #1](https://github.com/MarcusDog/AiNews/pull/1)。发布前复验结果为服务端 `147/147`、客户端 `32/32`、Skill `14/14`，TypeScript/Vite 构建与客户端生产依赖审计通过。
 - 2026-08-27：GitHub Actions 对 AyaNewsSkill PR 标记失败，但运行元数据显示 runner 未启动、执行步骤为 0，GitHub 注释原因为账号 billing 锁定，并非代码测试失败。已使用工作流相同的 Node.js `20.19.5` 本地复验：Skill `14/14`、安装、打包和 SHA256 校验全部通过；恢复 GitHub Actions 账户状态后需要重新运行该检查。
+
+---
+
+## 第三阶段：线上热点采集与创作者工作流修复
+
+### 用户反馈与线上复现基线
+
+- 2026-08-27 直接请求生产域名确认 `/api/news/feed`、`/domestic`、`/hot-rank`、`/discover`、`/dashboard`、`/by-source` 均返回 404，并被动态 `/:id` 路由误报为“新闻不存在”；`/api/news/latest` 正常。
+- `/api/signals/v1/topics` 的 24h / 48h / 72h 前 10 项 ID、顺序和响应体完全相同，页面无法让用户感知时间窗口差异。
+- 生产来源目录共 20 项；legacy News、Bilibili、GitHub、Hacker News 在线，Hugging Face、Mastodon 与三个 Reddit 来源离线，YouTube、X、RSSHub、NewsNow 和 JSON Bridge 未配置，社交讨论覆盖明显不足。
+- 生产随机机会接口返回 Field Robotics 学术论文，Creator Score 34；页面机会卡也以新闻与 GitHub Release 为主，没有优先回答“今天 AI 社交媒体在讨论什么、创作者现在能做什么”。
+- AI HOT 同期热点对照包含 GLM-5.3 Flash、Gemini 3.5 Transcribe、OpenAI/Hugging Face 事件、Qwen3.8 Flash Next、Claude 记忆等话题，当前站内头部 Topic 未覆盖，说明采集新鲜度与来源结构仍有缺口。
+- 页面“换一个选题”不能稳定换到不同且适合创作者的选题；“做研究”没有独立工作区反馈。选题与研究需要拆成独立页面并保留真实证据链。
+
+### 第三阶段目标
+
+1. 补齐并测试 6 个 News 聚合路由，保留现有历史数据与 `/latest` 兼容契约。
+2. 修复时间窗语义、来源在线状态和失败恢复，真实复测国内外热点来源。
+3. 将机会排序改为面向 AI 自媒体创作者的热点、产品、项目和社交讨论优先，并支持博主类型。
+4. 修复随机换题与研究动作，新增独立选题页和研究页。
+5. 完成线上接口对照、全量回归、文档更新并继续推送现有 GitHub PR。
+
+### 第三阶段状态
+
+| 里程碑 | 状态 | 证据 |
+|---|---|---|
+| I. 线上问题复现 | 已完成 | 6 个路由 404、三窗口响应相同、来源状态与随机论文选题均已由生产 HTTPS 请求复现。 |
+| J. 抓取来源修复 | 已完成 | RED→GREEN 修复 HF `limit>20` 导致的 400、Reddit 三社区并发 429、Mastodon 单端点失败整源下线，并在入库前过滤 `r/artificial` 泛哲学内容。最新全新临时库真实刷新收到/写入 `132/132` 条且零来源错误：HF 20、Mastodon 4、Reddit 67、GitHub 40、HN 1；重建得到 72 个 Topic，头部为 Qwen3.8 Flash Next、GLM-5.3 Flash、LTX-2.5，泛哲学 Topic 为 0。Bilibili 全站热门本轮真实返回 0 条 AI 相关内容；匿名搜索实测触发 412 风控，因此继续诚实显示零结果，国内深挖由可配置 RSSHub/NewsNow 承担。 |
+| K. News 聚合 API | 已完成 | RED→GREEN 实装 `/api/news/feed`、`domestic`、`hot-rank`、`discover`、`dashboard`、`by-source`，全部位于 `/:id` 前；分别返回真实历史 News、国内 Signal Topic、趋势榜、创作者机会、聚合面板与来源统计。OpenAPI 同步，定向路由/发现测试 `8/8`。 |
+| L. 创作者选题与研究页 | 已完成 | `opportunity-v2` 支持 general / short-video / tool-review / news-commentary / deep-dive 五种画像；前端随机换题排除当前 Topic，画像/窗口变化重取真实机会。新增 `/topics`、`/research`、`/skills` 三个独立页面；研究页通过 `topicId` 使用当前 Topic Signal 构建证据包，并对加载、成功、证据不足与失败提供反馈。前端定向测试 `19/19` 与生产构建通过。 |
+| M. 最终验证与 GitHub 更新 | 进行中 | Live HTTP 与桌面/移动浏览器验收完成；最终服务端 `159/159`、客户端 `34/34`、Skill `15/15`，Vite 构建、生产依赖审计、Skill ZIP/TAR SHA256 与两个工作树 `git diff --check` 全部通过。仅待推送现有两个 GitHub PR。 |
+
+### 第三阶段更新日志
+
+- 2026-08-27：来源修复完成。HF Trending 请求上限改为真实契约 20；三个 Reddit 社区共享一个公开聚合 RSS 并按社区拆分，避免并发匿名请求触发 429；Mastodon statuses/links 改为部分成功可用。定向测试 `14/14`，全新库实采 `138/138`、零来源错误、78 个 Topic。
+- 2026-08-27：六个 News 聚合路由完成并同步 OpenAPI。`feed` 保留历史 News 总量与引用 URL，其他路由复用真实 Signal/Topic/来源健康数据；定向测试 `8/8`。
+- 2026-08-27：时间窗从“只按 Topic 最后出现时间过滤”改为按窗口裁剪真实证据并重算 Trend/Creator 分；详情 API 与前端详情请求同步携带 window。构造边界测试得到 24h/48h/72h 证据数 `1/2/3`，真实库 24h 与 48h 已出现可解释差异。
+- 2026-08-27：创作者机会后端升级为 `opportunity-v2`，支持五种 AI 博主画像，增加低价值讨论/纯论文质量门槛和随机排除上一题；真实库 general 头部为 Qwen3.8 Flash Next、GLM-5.3 Flash、LTX-2.5 与 NVIDIA/Hugging Face 讨论。
+- 2026-08-27：新增 Reddit 广泛社区入库前显式 AI 相关性过滤；定向采集/来源/研究测试 `18/18`。再次使用全新库实采 `132/132`、零错误、72 个 Topic，9 个默认 L1 来源均为 online（Bilibili 与空 legacy 库诚实返回 0），泛哲学 Topic 为 0。
+- 2026-08-27：独立研究工作台已将 `topicId` 传给 `/api/content/v1/brief`；Content 路由支持注入 SignalService，并把当前 Topic 的官方、社区和项目 Signal 转换为可引用证据包。定向路由测试 `3/3`。
+- 2026-08-27：完成独立 `/topics`、`/research`、`/skills` 页面与旧 `#/...` 兼容；五画像/窗口切换会重取真实机会，随机换题不会连续重复，手动改研究主题会清除旧 Topic ID。前端定向测试 `19/19`、Vite 生产构建通过。
+- 2026-08-27：AyaNewsSkill 升级为 2.3；OpenAPI、网页 Skill、安装版 Skill/API 参考和零依赖 CLI 同步画像、`exclude`、窗口详情、`topicId` 研究和六个 News 聚合路由。发现面与 Skill 测试 `22/22`。
+- 2026-08-28：完成真实 API 与 Chrome 页面验收。6 个 News 路由、OpenAPI 2.3、Skill Markdown、Topic Feed 均为 HTTP 200；24h/48h Qwen 证据数为 5/6，响应不再相同；随机接口补齐稳定 `id` 后，带 `exclude` 的两次调用返回不同 Topic。桌面与 390×844 移动端完成选题、画像/窗口切换、研究证据和 Skill 页面流程，控制台无错误。详细证据见 `docs/verification/2026-08-28-hotspot-creator-workflow-verification.md`。
+- 2026-08-28：最终提交候选复验通过：服务端 `159/159`、客户端 `34/34`、AyaNewsSkill `15/15`；TypeScript/Vite 构建、客户端生产依赖审计、Skill ZIP/TAR SHA256、两个工作树 `git diff --check` 全部通过。

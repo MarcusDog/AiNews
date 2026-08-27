@@ -74,12 +74,12 @@ const apiLimiter = rateLimit({
 app.use('/api/', apiLimiter);
 
 // 导入路由
-const newsRoutes = require('./routes/news');
+const { createNewsRouter } = require('./routes/news');
 const analyticsRoutes = require('./routes/analytics');
 const glossaryRoutes = require('./routes/glossary');
 const authRoutes = require('./routes/auth');
 const userDataRoutes = require('./routes/userData');
-const contentRoutes = require('./routes/content');
+const { createContentRouter } = require('./routes/content');
 const agentRoutes = require('./routes/agent');
 const adminRoutes = require('./routes/admin');
 const publicRoutes = require('./routes/public');
@@ -90,12 +90,12 @@ const cronOptions = { timezone: newsSchedules.timezone };
 const signalService = new SignalService();
 
 // API路由
-app.use('/api/news', newsRoutes);
+app.use('/api/news', createNewsRouter({ signalService }));
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/glossary', glossaryRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/user-data', userDataRoutes);
-app.use('/api/content/v1', contentRoutes);
+app.use('/api/content/v1', createContentRouter({ signalService }));
 app.use('/api/agent', agentRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/signals/v1', createSignalsRouter({ service: signalService }));

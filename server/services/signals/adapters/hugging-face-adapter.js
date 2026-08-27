@@ -12,7 +12,8 @@ class HuggingFaceAdapter {
   }
 
   async collect(source, options = {}) {
-    const limit = boundedLimit(options.limit, 30, 100);
+    // Hugging Face's public /api/trending contract currently rejects limit > 20.
+    const limit = boundedLimit(options.limit, 20, 20);
     const response = await this.http.get(source.endpoint, {
       timeout: source.timeoutMs,
       headers: requestHeaders(),

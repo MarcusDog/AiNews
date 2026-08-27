@@ -40,16 +40,28 @@ test('RSS output escapes XML and links back to the original publisher', () => {
 
 test('OpenAPI document matches live content and source health endpoints', () => {
   const document = buildOpenApiDocument({ origin: 'https://ainews.example' });
+  const parameterNames = (path, method = 'get') => document.paths[path][method].parameters.map((item) => item.name);
 
   assert.equal(document.openapi, '3.1.0');
   assert(document.paths['/api/content/v1/latest']);
   assert(document.paths['/api/content/v1/source-health']);
+  for (const route of ['feed', 'domestic', 'hot-rank', 'discover', 'dashboard', 'by-source']) {
+    assert(document.paths[`/api/news/${route}`], route);
+  }
   assert(document.paths['/api/signals/v1/topics']);
   assert(document.paths['/api/signals/v1/topics/{id}']);
   assert(document.paths['/api/signals/v1/opportunities/random']);
   assert(document.paths['/api/signals/v1/changes']);
   assert(document.paths['/api/signals/v1/admin/refresh']);
   assert(document.paths['/topics/feed.json']);
+  assert(parameterNames('/api/content/v1/brief').includes('topicId'));
+  assert(parameterNames('/api/signals/v1/topics/{id}').includes('window'));
+  assert(parameterNames('/api/signals/v1/opportunities').includes('profile'));
+  assert(parameterNames('/api/signals/v1/opportunities/random').includes('exclude'));
+  assert.deepEqual(
+    document.paths['/api/news/discover'].get.parameters.find((item) => item.name === 'profile').schema.enum,
+    ['general', 'short-video', 'tool-review', 'news-commentary', 'deep-dive']
+  );
   assert.deepEqual(document.components.schemas.SignalMetrics.properties.replies.type, ['number', 'null']);
   assert.equal(document.paths['/mcp'], undefined);
   assert.equal(document.paths['/api/v1/webhooks/subscriptions'], undefined);
@@ -80,4 +92,7 @@ test('public Skill documents source tiers, windows, changes, and unsupported pro
   assert.match(markdown, /api\/signals\/v1\/changes/);
   assert.match(markdown, /single-source|单一来源/);
   assert.match(markdown, /MCP.*A2A.*Webhook/s);
+  assert.match(markdown, /api\/news\/(feed|domestic).*api\/news\/hot-rank.*api\/news\/discover/s);
+  assert.match(markdown, /general.*short-video.*tool-review.*news-commentary.*deep-dive/s);
+  assert.match(markdown, /\/topics.*\/research.*\/skills/s);
 });

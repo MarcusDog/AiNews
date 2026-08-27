@@ -181,13 +181,19 @@ function queryParameter(name, options = {}) {
   };
 }
 
+const CREATOR_PROFILE_VALUES = ['general', 'short-video', 'tool-review', 'news-commentary', 'deep-dive'];
+const creatorProfileParameter = () => queryParameter('profile', {
+  schema: { enum: CREATOR_PROFILE_VALUES, default: 'general' },
+  description: 'AI 博主画像：综合、短视频、工具实测、热点快评或深度拆解'
+});
+
 function buildOpenApiDocument(options = {}) {
   const origin = normalizeOrigin(options.origin);
   return {
     openapi: '3.1.0',
     info: {
       title: 'AyaNews Public Content API',
-      version: '2.0.0',
+      version: '2.3.0',
       description: '面向开发者与 Agent 的 AI 新闻、真实 Signal、事件 Topic、创作者机会、变化游标与来源健康接口。所有证据保留原始 URL。'
     },
     servers: [{ url: origin }],
@@ -223,6 +229,7 @@ function buildOpenApiDocument(options = {}) {
         get: {
           ...getOperation('生成带引用的内容证据包', [
             queryParameter('topic', { required: true }),
+            queryParameter('topicId', { description: '可选的稳定 Topic ID；提供时优先读取该 Topic 当前窗口内的原始 Signal 证据' }),
             queryParameter('audience'),
             queryParameter('goal'),
             queryParameter('format'),
@@ -242,10 +249,16 @@ function buildOpenApiDocument(options = {}) {
       },
       '/api/content/v1/sources': { get: { ...getOperation('读取公开来源注册表'), tags: ['Sources'] } },
       '/api/content/v1/source-health': { get: { ...getOperation('读取来源采集健康摘要'), tags: ['Sources'] } },
+      '/api/news/feed': { get: { ...getOperation('读取真实历史新闻流', [queryParameter('page', { type: 'integer', schema: { minimum: 1, default: 1 } }), queryParameter('limit', { type: 'integer', schema: { minimum: 1, maximum: 100, default: 20 } })]), tags: ['Research'] } },
+      '/api/news/domestic': { get: { ...getOperation('读取包含国内公开信号证据的热点', [queryParameter('window', { schema: { enum: ['24h', '48h', '72h'], default: '72h' } })]), tags: ['Topics'] } },
+      '/api/news/hot-rank': { get: { ...getOperation('读取按真实趋势分排序的热点', [queryParameter('window', { schema: { enum: ['24h', '48h', '72h'], default: '72h' } })]), tags: ['Topics'] } },
+      '/api/news/discover': { get: { ...getOperation('发现面向创作者的选题机会', [queryParameter('window', { schema: { enum: ['24h', '48h', '72h'], default: '72h' } }), creatorProfileParameter(), queryParameter('limit', { type: 'integer', schema: { minimum: 1, maximum: 100, default: 20 } })]), tags: ['Topics'] } },
+      '/api/news/dashboard': { get: { ...getOperation('读取 News、Topic 与来源健康聚合面板', [queryParameter('window', { schema: { enum: ['24h', '48h', '72h'], default: '72h' } })]), tags: ['Topics', 'Sources'] } },
+      '/api/news/by-source': { get: { ...getOperation('按旧 News 与 Signal 来源读取真实统计'), tags: ['Sources'] } },
       '/api/signals/v1/topics': { get: { ...getOperation('读取持久化热点 Topic', [queryParameter('window', { schema: { enum: ['24h', '48h', '72h'], default: '72h' } }), queryParameter('page', { type: 'integer', schema: { minimum: 1, default: 1 } }), queryParameter('limit', { type: 'integer', schema: { minimum: 1, maximum: 100, default: 20 } })]), tags: ['Topics'] } },
-      '/api/signals/v1/topics/{id}': { get: { ...getOperation('读取 Topic 详情与原始证据'), tags: ['Topics'], parameters: [{ in: 'path', name: 'id', required: true, schema: { type: 'string' } }], responses: { 200: jsonResponse('Topic 详情', { $ref: '#/components/schemas/TopicResponse' }), 404: jsonResponse('Topic 不存在') } } },
-      '/api/signals/v1/opportunities': { get: { ...getOperation('读取创作者机会', [queryParameter('window', { schema: { enum: ['24h', '48h', '72h'], default: '72h' } })]), tags: ['Topics'] } },
-      '/api/signals/v1/opportunities/random': { get: { ...getOperation('从真实持久化 Topic 随机选择创作者机会', [queryParameter('window', { schema: { enum: ['24h', '48h', '72h'], default: '72h' } })]), tags: ['Topics'] } },
+      '/api/signals/v1/topics/{id}': { get: { ...getOperation('读取 Topic 详情与原始证据'), tags: ['Topics'], parameters: [{ in: 'path', name: 'id', required: true, schema: { type: 'string' } }, queryParameter('window', { schema: { enum: ['24h', '48h', '72h'] }, description: '可选；按同一时间窗裁剪证据并重算分数' })], responses: { 200: jsonResponse('Topic 详情', { $ref: '#/components/schemas/TopicResponse' }), 404: jsonResponse('Topic 不存在') } } },
+      '/api/signals/v1/opportunities': { get: { ...getOperation('读取创作者机会', [queryParameter('window', { schema: { enum: ['24h', '48h', '72h'], default: '72h' } }), creatorProfileParameter(), queryParameter('limit', { type: 'integer', schema: { minimum: 1, maximum: 100, default: 20 } })]), tags: ['Topics'] } },
+      '/api/signals/v1/opportunities/random': { get: { ...getOperation('从真实持久化 Topic 随机选择创作者机会', [queryParameter('window', { schema: { enum: ['24h', '48h', '72h'], default: '72h' } }), creatorProfileParameter(), queryParameter('exclude', { description: '排除上一条 Topic ID，避免连续重复选题' })]), tags: ['Topics'] } },
       '/api/signals/v1/sources': { get: { ...getOperation('读取 Signal 来源配置与实际健康状态'), tags: ['Sources'] } },
       '/api/signals/v1/health': { get: { ...getOperation('读取 Signal 系统健康摘要'), tags: ['Sources'] } },
       '/api/signals/v1/changes': { get: { ...getOperation('读取 seq 游标之后的 Topic 变化', [queryParameter('since', { type: 'integer', schema: { minimum: 0, default: 0 } }), queryParameter('limit', { type: 'integer', schema: { minimum: 1, maximum: 500, default: 100 } })]), tags: ['Topics'], responses: { 200: jsonResponse('增量变化'), 410: jsonResponse('游标已过期，需要全量同步') } } },
@@ -278,7 +291,7 @@ function buildOpenApiDocument(options = {}) {
 
 function buildPublicSkillMarkdown(options = {}) {
   const origin = normalizeOrigin(options.origin);
-  return `# AyaNewsSkill\n\nAyaNews 官方 AI News Research & Evidence Skill。把 ${origin} 作为最新 AI 新闻、热点 Topic 与创作者机会入口。\n\n## 何时使用\n\n当用户需要最新 AI 新闻、24h / 48h / 72h 热点、创作者选题、跨来源核查、趋势解释、证据成稿或站内来源视野检查时使用。\n\n## 强制规则\n\n1. 先检索，后结论；不得用模型记忆补齐最新事实。\n2. 每个事实性结论必须保留原始来源 URL。\n3. 区分官方一手、研究论文、媒体报道、工程实践与推断。\n4. 重大结论优先寻找一手来源；只有 single-source / 单一来源时必须降低确定性。\n5. 来源冲突时并列呈现，不得隐藏冲突或自行伪造共识。\n6. 发布时间、抓取时间与事件发生时间必须分开。\n7. Trend Score 与 Creator Score 只是站内信号的可解释排序，不等同于全网事实。\n\n## 来源层级\n\n- L1：免凭据公开主干（News、HN、GitHub、Mastodon、Reddit RSS、Hugging Face、Bilibili）。\n- L2：需要运营方密钥的官方 API（YouTube、X）。\n- L3：运营方自托管桥接（RSSHub、NewsNow、JSON Bridge）。\n- L4：默认禁用的登录态 Sidecar，只能由运营方单独运行后经 Bridge 接入。\n\n## 可用接口\n\n- 热点：${origin}/api/signals/v1/topics?window=72h\n- Topic 详情：${origin}/api/signals/v1/topics/{id}\n- 创作者机会：${origin}/api/signals/v1/opportunities?window=48h\n- 随机真实选题：${origin}/api/signals/v1/opportunities/random?window=72h\n- Signal 来源健康：${origin}/api/signals/v1/sources\n- What Changed：${origin}/api/signals/v1/changes?since=0\n- 旧 News 兼容接口：${origin}/api/content/v1/latest?limit=10\n- 证据包：${origin}/api/content/v1/brief?topic=AI%20Agent&audience=developer&goal=research&format=article\n- OpenAPI：${origin}/openapi.json\n- Topic JSON Feed：${origin}/topics/feed.json\n- Topic RSS：${origin}/topics/rss.xml\n\nMCP、A2A 协议端点与 Webhook 尚未上线，不得声称可用。What Changed REST 游标接口已经上线；收到 410 时必须重新读取 Topic 列表。\n`;
+  return `# AyaNewsSkill\n\nAyaNews 官方 AI News Research & Evidence Skill。把 ${origin} 作为最新 AI 新闻、热点 Topic 与创作者机会入口。\n\n## 何时使用\n\n当用户需要最新 AI 新闻、24h / 48h / 72h 热点、创作者选题、跨来源核查、趋势解释、证据成稿或站内来源视野检查时使用。\n\n## 强制规则\n\n1. 先检索，后结论；不得用模型记忆补齐最新事实。\n2. 每个事实性结论必须保留原始来源 URL。\n3. 区分官方一手、研究论文、媒体报道、工程实践与推断。\n4. 重大结论优先寻找一手来源；只有 single-source / 单一来源时必须降低确定性。\n5. 来源冲突时并列呈现，不得隐藏冲突或自行伪造共识。\n6. 发布时间、抓取时间与事件发生时间必须分开。\n7. Trend Score 与 Creator Score 只是站内信号的可解释排序，不等同于全网事实。\n\n## 来源层级\n\n- L1：免凭据公开主干（News、HN、GitHub、Mastodon、Reddit RSS、Hugging Face、Bilibili）。\n- L2：需要运营方密钥的官方 API（YouTube、X）。\n- L3：运营方自托管桥接（RSSHub、NewsNow、JSON Bridge）。\n- L4：默认禁用的登录态 Sidecar，只能由运营方单独运行后经 Bridge 接入。\n\n## 创作者画像\n\n使用 general、short-video、tool-review、news-commentary、deep-dive 之一；工具实测不会把纯论文作为默认选题。随机接口可用 exclude 排除上一题。\n\n## 可用接口\n\n- 历史 News：${origin}/api/news/feed\n- 国内热点：${origin}/api/news/domestic?window=48h\n- 热点榜：${origin}/api/news/hot-rank?window=24h\n- 创作者发现：${origin}/api/news/discover?window=72h&profile=tool-review\n- 聚合面板：${origin}/api/news/dashboard?window=72h\n- 来源统计：${origin}/api/news/by-source\n- Topic 详情：${origin}/api/signals/v1/topics/{id}?window=48h\n- 随机真实选题：${origin}/api/signals/v1/opportunities/random?window=72h&profile=general&exclude={previousId}\n- Signal 来源健康：${origin}/api/signals/v1/sources\n- What Changed：${origin}/api/signals/v1/changes?since=0\n- 证据包：${origin}/api/content/v1/brief?topic=AI%20Agent&topicId={id}&audience=creator&goal=research&format=article\n- OpenAPI：${origin}/openapi.json\n- Topic JSON Feed：${origin}/topics/feed.json\n- Topic RSS：${origin}/topics/rss.xml\n\n## 人类工作台\n\n- 选题：${origin}/topics\n- 研究：${origin}/research\n- Skill：${origin}/skills\n\nMCP、A2A 协议端点与 Webhook 尚未上线，不得声称可用。What Changed REST 游标接口已经上线；收到 410 时必须重新读取 Topic 列表。\n`;
 }
 
 module.exports = {

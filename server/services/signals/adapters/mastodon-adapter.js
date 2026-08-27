@@ -26,10 +26,15 @@ class MastodonAdapter {
       headers: requestHeaders(),
       params: { limit: Math.min(limit, 20) }
     };
-    const [statusesResponse, linksResponse] = await Promise.all([
+    const [statusesResult, linksResult] = await Promise.allSettled([
       this.http.get(`${base}/statuses`, requestOptions),
       this.http.get(`${base}/links`, requestOptions)
     ]);
+    if (statusesResult.status === 'rejected' && linksResult.status === 'rejected') {
+      throw new Error(`Mastodon trends unavailable: ${statusesResult.reason?.message || 'statuses failed'}; ${linksResult.reason?.message || 'links failed'}`);
+    }
+    const statusesResponse = statusesResult.status === 'fulfilled' ? statusesResult.value : { data: [] };
+    const linksResponse = linksResult.status === 'fulfilled' ? linksResult.value : { data: [] };
     const statuses = (statusesResponse.data || []).map((item) => ({
       externalId: String(item.id),
       kind: 'social_post',

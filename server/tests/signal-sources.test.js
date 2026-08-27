@@ -98,5 +98,7 @@ test('Mastodon instances and Reddit communities can be configured without accept
     'https://fosstodon.org/api/v1/trends'
   ]);
   assert.deepEqual(reddit.map((item) => item.community), ['LocalLLaMA', 'MachineLearning']);
+  assert.equal(new Set(reddit.map((item) => item.endpoint)).size, 1);
+  assert.match(reddit[0].endpoint, /LocalLLaMA\+MachineLearning\/\.rss\?limit=75$/);
   assert.deepEqual(validateSignalSourceCatalog(catalog), []);
 });

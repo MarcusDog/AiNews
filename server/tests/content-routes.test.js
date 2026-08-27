@@ -10,6 +10,7 @@ process.env.AINEWS_DB_PATH = path.join(tempDirectory, 'content-routes.db');
 
 const NewsService = require('../services/NewsService');
 const contentRoutes = require('../routes/content');
+const { createContentRouter } = require('../routes/content');
 
 async function withServer(run) {
   const app = express();
@@ -67,4 +68,40 @@ test('capabilities advertise implemented Signal and Topic tools without claiming
     assert(paths.includes('/api/signals/v1/changes?since=0'));
     assert.equal(paths.some((path) => /mcp|a2a|webhook/i.test(path)), false);
   });
+});
+
+test('brief accepts a Topic id and turns current Signal evidence into a cited research pack', async () => {
+  const app = express();
+  app.use('/api/content/v1', createContentRouter({
+    newsService: { getAnalysisNews: async () => ({ data: [] }) },
+    signalService: { getTopic: (id, options) => id === 'topic-qwen' ? ({
+      id, title: 'Qwen3.8 Flash Next', signals: [{
+        id: 'hf', title: 'Qwen/Qwen3.8-Flash-Next', summary: 'Official model card',
+        url: 'https://huggingface.co/Qwen/Qwen3.8-Flash-Next', sourceName: 'Hugging Face Trending',
+        sourceTrustClass: 'official', platform: 'huggingface', region: 'global', kind: 'model',
+        publishedAt: '2026-08-27T10:00:00.000Z'
+      }, {
+        id: 'reddit', title: 'Qwen3.8 Flash Next community feedback', summary: 'Real user discussion',
+        url: 'https://www.reddit.com/r/LocalLLaMA/comments/qwen', sourceName: 'Reddit r/LocalLLaMA',
+        sourceTrustClass: 'public_feed', platform: 'reddit', region: 'global', kind: 'discussion',
+        publishedAt: '2026-08-27T11:00:00.000Z'
+      }]
+    }) : null }
+  }));
+  const server = await new Promise((resolve) => {
+    const instance = app.listen(0, '127.0.0.1', () => resolve(instance));
+  });
+  try {
+    const origin = `http://127.0.0.1:${server.address().port}`;
+    const response = await fetch(`${origin}/api/content/v1/brief?topic=Qwen3.8&topicId=topic-qwen&days=14&limit=6`);
+    const payload = await response.json();
+    assert.equal(response.status, 200);
+    assert.equal(payload.data.status, 'ready');
+    assert.deepEqual(payload.data.evidence.map((item) => item.url), [
+      'https://huggingface.co/Qwen/Qwen3.8-Flash-Next',
+      'https://www.reddit.com/r/LocalLLaMA/comments/qwen'
+    ]);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
 });

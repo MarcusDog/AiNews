@@ -131,8 +131,14 @@ Compose 会把 `server/.env` 整体传入后端，可选 Signal 变量保持为�
 curl http://localhost:8080/api/signals/v1/health
 curl http://localhost:8080/api/signals/v1/sources
 curl 'http://localhost:8080/api/signals/v1/topics?window=72h'
+curl 'http://localhost:8080/api/news/hot-rank?window=24h'
+curl 'http://localhost:8080/api/news/discover?window=48h&profile=tool-review'
+curl 'http://localhost:8080/api/news/dashboard?window=72h'
 curl -I http://localhost:8080/topics/feed.json
 curl -I http://localhost:8080/topics/rss.xml
+curl -I http://localhost:8080/topics
+curl -I http://localhost:8080/research
+curl -I http://localhost:8080/skills
 ```
 
 Topic Feed 在 Nginx 中使用精确匹配代理，位于 SPA fallback 之前。JSON 应返回 `application/feed+json`，RSS 应返回 XML 内容类型；若返回 HTML，说明仍在使用旧 Nginx 配置。

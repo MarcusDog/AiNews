@@ -105,6 +105,18 @@ describe('useTopicIdea', () => {
     expect(result.current.idea?.sourceUrl).toBe(secondArticle.url)
   })
 
+  it('never repeats the current source immediately even when random returns the same index', async () => {
+    const { result } = renderHook(() => useTopicIdea({
+      active: true,
+      loadArticles: async () => [firstArticle, secondArticle],
+      random: () => 0,
+    }))
+
+    await waitFor(() => expect(result.current.idea?.sourceUrl).toBe(firstArticle.url))
+    act(() => result.current.reroll())
+    expect(result.current.idea?.sourceUrl).toBe(secondArticle.url)
+  })
+
   it('marks API failure as unavailable practice mode', async () => {
     const { result } = renderHook(() => useTopicIdea({
       active: true,
