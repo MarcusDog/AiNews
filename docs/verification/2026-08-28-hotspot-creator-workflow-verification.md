@@ -72,3 +72,9 @@
 ## 发布边界
 
 本次没有删除、重建或覆盖线上 12,474 条历史 News。生产域名仍需合并并部署当前 GitHub PR 后才会获得这些修复；验证结论只针对当前提交候选代码与真实临时采集库。
+
+## GitHub 发布
+
+- AI News：代码提交 `dc56dc9a` 已推送至 [AiNews PR #1](https://github.com/MarcusDog/AiNews/pull/1)。
+- AyaNewsSkill 2.3：代码提交 `33b6e73` 已推送至 [AyaNewsSkill PR #1](https://github.com/MarcusDog/AyaNewsSkill/pull/1)。
+- AyaNewsSkill GitHub Actions 未执行测试步骤；GitHub annotation 明确为账号因 billing 问题被锁定。该外部失败不替代本报告记录的本地 `15/15`、打包与 SHA256 结果，账号恢复后应重新运行检查。

@@ -212,7 +212,7 @@
 | J. 抓取来源修复 | 已完成 | RED→GREEN 修复 HF `limit>20` 导致的 400、Reddit 三社区并发 429、Mastodon 单端点失败整源下线，并在入库前过滤 `r/artificial` 泛哲学内容。最新全新临时库真实刷新收到/写入 `132/132` 条且零来源错误：HF 20、Mastodon 4、Reddit 67、GitHub 40、HN 1；重建得到 72 个 Topic，头部为 Qwen3.8 Flash Next、GLM-5.3 Flash、LTX-2.5，泛哲学 Topic 为 0。Bilibili 全站热门本轮真实返回 0 条 AI 相关内容；匿名搜索实测触发 412 风控，因此继续诚实显示零结果，国内深挖由可配置 RSSHub/NewsNow 承担。 |
 | K. News 聚合 API | 已完成 | RED→GREEN 实装 `/api/news/feed`、`domestic`、`hot-rank`、`discover`、`dashboard`、`by-source`，全部位于 `/:id` 前；分别返回真实历史 News、国内 Signal Topic、趋势榜、创作者机会、聚合面板与来源统计。OpenAPI 同步，定向路由/发现测试 `8/8`。 |
 | L. 创作者选题与研究页 | 已完成 | `opportunity-v2` 支持 general / short-video / tool-review / news-commentary / deep-dive 五种画像；前端随机换题排除当前 Topic，画像/窗口变化重取真实机会。新增 `/topics`、`/research`、`/skills` 三个独立页面；研究页通过 `topicId` 使用当前 Topic Signal 构建证据包，并对加载、成功、证据不足与失败提供反馈。前端定向测试 `19/19` 与生产构建通过。 |
-| M. 最终验证与 GitHub 更新 | 进行中 | Live HTTP 与桌面/移动浏览器验收完成；最终服务端 `159/159`、客户端 `34/34`、Skill `15/15`，Vite 构建、生产依赖审计、Skill ZIP/TAR SHA256 与两个工作树 `git diff --check` 全部通过。仅待推送现有两个 GitHub PR。 |
+| M. 最终验证与 GitHub 更新 | 已完成 | Live HTTP 与桌面/移动浏览器验收完成；最终服务端 `159/159`、客户端 `34/34`、Skill `15/15`，Vite 构建、生产依赖审计、Skill ZIP/TAR SHA256 与两个工作树 `git diff --check` 全部通过。AI News `dc56dc9a` 与 AyaNewsSkill `33b6e73` 已推送并更新现有草稿 PR。 |
 
 ### 第三阶段更新日志
 
@@ -226,3 +226,4 @@
 - 2026-08-27：AyaNewsSkill 升级为 2.3；OpenAPI、网页 Skill、安装版 Skill/API 参考和零依赖 CLI 同步画像、`exclude`、窗口详情、`topicId` 研究和六个 News 聚合路由。发现面与 Skill 测试 `22/22`。
 - 2026-08-28：完成真实 API 与 Chrome 页面验收。6 个 News 路由、OpenAPI 2.3、Skill Markdown、Topic Feed 均为 HTTP 200；24h/48h Qwen 证据数为 5/6，响应不再相同；随机接口补齐稳定 `id` 后，带 `exclude` 的两次调用返回不同 Topic。桌面与 390×844 移动端完成选题、画像/窗口切换、研究证据和 Skill 页面流程，控制台无错误。详细证据见 `docs/verification/2026-08-28-hotspot-creator-workflow-verification.md`。
 - 2026-08-28：最终提交候选复验通过：服务端 `159/159`、客户端 `34/34`、AyaNewsSkill `15/15`；TypeScript/Vite 构建、客户端生产依赖审计、Skill ZIP/TAR SHA256、两个工作树 `git diff --check` 全部通过。
+- 2026-08-28：完成 GitHub 上传与 PR 更新。AI News 代码提交 `dc56dc9a` 已推送至 [AiNews PR #1](https://github.com/MarcusDog/AiNews/pull/1)；AyaNewsSkill 2.3 提交 `33b6e73` 已推送至 [AyaNewsSkill PR #1](https://github.com/MarcusDog/AyaNewsSkill/pull/1)。Skill Actions 注释明确为账号 billing 锁定，job 步骤数为 0；不是代码或测试失败，恢复账号运行资格后需重新运行。
