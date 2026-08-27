@@ -180,3 +180,4 @@
 - 2026-08-27：完成 Task 10 RED→GREEN；随机选题先调用 `/api/signals/v1/opportunities/random`，再解析 Topic 详情中的安全原始证据，展示服务端真实 Creator/趋势分、选题角度和风险提示；404/旧部署兼容回退到真实 News，双源不可用才进入明确练习模式。客户端全量 `31/31` 与生产构建通过。
 - 2026-08-27：完成 Task 11；新增可配置 Mastodon 实例与 Reddit 社区，完善 L1–L4、Token、自托管 Bridge、刷新/保留、健康和管理刷新文档；Compose 继续通过 `server/.env` 透传可选变量，Nginx 新增 Topic JSON/RSS 精确代理。来源配置测试 `5/5`，Shell、Compose、Nginx 1.29.7 本机路径替换语法与 `git diff --check` 均通过。
 - 2026-08-27：完成 Task 12 与第二阶段收口。干净库真实采集发现并修复 Mastodon 非 AI 趋势混入；最终后端 `147/147`、客户端 `32/32`。真实采集、Live API、临时 Nginx Feed、Chrome 1440×960 / 390×844、503 诚实错误态、严格密钥扫描、Skill 包与三层脏工作树保护全部通过；详细证据见最终验证报告。
+- 2026-08-27：完成 GitHub 发布准备与上传。AyaNewsSkill 2.2 已推送至 `codex/ayanews-skill-2-2` 并建立 [AyaNewsSkill PR #1](https://github.com/MarcusDog/AyaNewsSkill/pull/1)；AI News 完整重构已推送至 `codex/aya-creator-intelligence-radar` 并建立 [AiNews PR #1](https://github.com/MarcusDog/AiNews/pull/1)。发布前复验结果为服务端 `147/147`、客户端 `32/32`、Skill `14/14`，TypeScript/Vite 构建与客户端生产依赖审计通过。
