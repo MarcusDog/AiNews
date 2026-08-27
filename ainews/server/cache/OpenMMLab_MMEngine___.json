@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_ccd1bf28c73c99812933",
+    "title": "OpenMMLab MMEngine 发布 v0.11.0rc3",
+    "description": "What's Changed Fix get installed path by @HAOCHENYE in #1689 Full Changelog: v0.11.0rc2...v0.11.0rc3",
+    "url": "https://github.com/open-mmlab/mmengine/releases/tag/v0.11.0rc3",
+    "publishedAt": "2026-07-13T07:30:05.000Z",
+    "category": "AI框架",
+    "source": "OpenMMLab MMEngine 发布",
+    "imageUrl": null,
+    "author": "HAOCHENYE",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_4ae0b36dd261c68c4828",
+    "title": "OpenMMLab MMEngine 发布 v0.11.0rc2",
+    "description": "Update version to 0.11.0rc2 The deployment of pypi landing of 0.11.0rc0 and 0.11.0.rc1 are both failed, we should update the version to 0.11.0.rc2 to deploy the wheel of latest change.",
+    "url": "https://github.com/open-mmlab/mmengine/releases/tag/v0.11.0rc2",
+    "publishedAt": "2025-12-23T04:42:49.000Z",
+    "category": "AI框架",
+    "source": "OpenMMLab MMEngine 发布",
+    "imageUrl": null,
+    "author": "HAOCHENYE",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_404e996b3d26b3b1052b",
+    "title": "OpenMMLab MMEngine 发布 v0.11.0rc1",
+    "description": "Just update the index in PyPI, the deploy of v0.11.0rc0 failed...",
+    "url": "https://github.com/open-mmlab/mmengine/releases/tag/v0.11.0rc1",
+    "publishedAt": "2025-12-11T08:18:00.000Z",
+    "category": "AI框架",
+    "source": "OpenMMLab MMEngine 发布",
+    "imageUrl": null,
+    "author": "HAOCHENYE",
+    "language": "multi",
+    "region": "cn"
+  }
+]

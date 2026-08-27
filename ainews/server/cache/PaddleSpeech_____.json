@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_b79814a9bdb207678552",
+    "title": "PaddleSpeech r1.5.0",
+    "description": "Highlight New Features Add AudioTools toolkit support used in DAC (Descript-Audio-Codec) training and inference. Reproduce the losses required for DAC model: MultiScaleSTFTLoss, GANLoss, and SISDRLoss. Version Adaptation Upgrade and adapt PaddleSpeech from Paddle 2.5.1 to Paddle 3.0.0-beta. Address incompatibility issues caused by the new version upgrade of Paddle, perform adaptation development and regression testing on the models in PaddleSpeech, and ensure the suite operates normally without ",
+    "url": "https://github.com/PaddlePaddle/PaddleSpeech/releases/tag/r1.5.0",
+    "publishedAt": "2025-05-14T06:35:03.000Z",
+    "category": "AI新闻",
+    "source": "PaddleSpeech 官方发布",
+    "imageUrl": null,
+    "author": "zxcd",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_7db6fc86b9251ef79e24",
+    "title": "PaddleSpeech r1.4.2",
+    "description": "S2T Add WavLM ASR-en, WavLM fine-tuning for ASR on LibriSpeech. #3242 by @jiamingkong Add HuBERT ASR-en, HuBERT fine-tuning for ASR on LibriSpeech. #3088 by @Zth9730 Add Squeezeformer model. #2755 by @yeyupiaoling Add AMP for U2 conformer. #3167 by @zxcd Mv dataset into paddlespeech.dataset. #3183 #3189 by @zh794390558 Fix example/aishell local/train.sh if condition bug. #3146 by @lemondy Fix cli args to config. #3194 by @zh794390558 Fix scaler save, load, unscale_ blow, grad_clip. by @zxcd T2S ",
+    "url": "https://github.com/PaddlePaddle/PaddleSpeech/releases/tag/r1.4.2",
+    "publishedAt": "2024-06-28T02:44:19.000Z",
+    "category": "AI新闻",
+    "source": "PaddleSpeech 官方发布",
+    "imageUrl": null,
+    "author": "luotao1",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_2ab7c4bbb13516d5ec7c",
+    "title": "PaddleSpeech r1.4.1",
+    "description": "Others fix typeguard version. #3056 @yt605155624",
+    "url": "https://github.com/PaddlePaddle/PaddleSpeech/releases/tag/r1.4.1",
+    "publishedAt": "2023-04-14T09:36:52.000Z",
+    "category": "AI新闻",
+    "source": "PaddleSpeech 官方发布",
+    "imageUrl": null,
+    "author": "zxcd",
+    "language": "en",
+    "region": "global"
+  }
+]

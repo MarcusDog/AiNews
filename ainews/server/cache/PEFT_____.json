@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_ae2716c5b5f1a71c0ef7",
+    "title": "PEFT 发布 v0.20.0",
+    "description": "Highlights This release adds no less than nine new PEFT methods and puts a lot of work into the surrounding infrastructure, for example adding a new image generation benchmark for the method comparison suite and greatly improving the documentation structure. New Methods HiRA @hqsiswiliam added \"HiRA: Parameter-Efficient Hadamard High-Rank Adaptation for Large Language Models\" to PEFT (#2668). Instead of adding the low-rank product BA to the base weight, HiRA multiplies it elementwise (Hadamard p",
+    "url": "https://github.com/huggingface/peft/releases/tag/v0.20.0",
+    "publishedAt": "2026-07-28T17:38:08.000Z",
+    "category": "AI新闻",
+    "source": "PEFT 官方发布",
+    "imageUrl": "https://private-user-images.githubusercontent.com/6229650/627974489-6194fae9-f3c3-48ca-b43b-40c774bfe6eb.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODc4MTE1NzIsIm5iZiI6MTc4NzgxMTI3MiwicGF0aCI6Ii82MjI5NjUwLzYyNzk3NDQ4OS02MTk0ZmFlOS1mM2MzLTQ4Y2EtYjQzYi00MGM3NzRiZmU2ZWIucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MDgyNyUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjA4MjdUMDYxNDMyWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9YWI3YTZiYWNjZDBjZmY1Y2RmYmE0M2ExYTkwZDg1MGJmMjEzOWI0MzMyNjIwZGFiNmIyZjY2YjkzNjU0ZTZiMyZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.c88pcLwBrBLsMrOIICM_OzRDYOKZSj-Yu-hsp1324iM",
+    "author": "BenjaminBossan",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_f173535a0ea1d7cbd3b9",
+    "title": "PEFT 发布 v0.19.1",
+    "description": "A small patch release containing these fixes: #3161 #3165 Full Changelog: v0.19.0...v0.19.1",
+    "url": "https://github.com/huggingface/peft/releases/tag/v0.19.1",
+    "publishedAt": "2026-04-16T15:50:38.000Z",
+    "category": "AI框架",
+    "source": "PEFT 官方发布",
+    "imageUrl": null,
+    "author": "BenjaminBossan",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_602e866beb03144d7b9d",
+    "title": "PEFT 发布 v0.19.0",
+    "description": "Highlights This PEFT release contains no less than nine new PEFT methods, described below. It also contains numerous enhancements that should make PEFT more useful to many users. New Methods GraLoRA @yeonjoon-jung01 added \"GraLoRA: Granular Low-Rank Adaptation for Parameter-Efficient Fine-Tuning\" to PEFT (#2851). This method subdivides the base weight into smaller blocks and applies LoRA to those. This more granular adaptation promises to increase expressiveness and improve performance, especial",
+    "url": "https://github.com/huggingface/peft/releases/tag/v0.19.0",
+    "publishedAt": "2026-04-14T14:05:11.000Z",
+    "category": "AI框架",
+    "source": "PEFT 官方发布",
+    "imageUrl": "https://private-user-images.githubusercontent.com/6229650/577980318-f2878d0d-b1a1-46d0-9b61-55ab6097694c.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODc4MTE1NzIsIm5iZiI6MTc4NzgxMTI3MiwicGF0aCI6Ii82MjI5NjUwLzU3Nzk4MDMxOC1mMjg3OGQwZC1iMWExLTQ2ZDAtOWI2MS01NWFiNjA5NzY5NGMucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MDgyNyUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjA4MjdUMDYxNDMyWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9NDJjZmVjYzcwNjYzZWNjZWJjNDc1MDY2YmM5N2UyMWUwNzk5ZDkyY2I2NTgzOWE4OTMzMWZkNTMzMWNiOTQ3MCZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.q8Avr_KPyrMf0S77IQxryG5mYKxi5WPSGjStyM15aqA",
+    "author": "BenjaminBossan",
+    "language": "en",
+    "region": "global"
+  }
+]

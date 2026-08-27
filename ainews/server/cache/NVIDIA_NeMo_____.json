@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_fe3fc7e7cd367ee5c478",
+    "title": "NVIDIA NeMo Speech 3.0",
+    "description": "NVIDIA NeMo Speech 3.0 Release Notes NeMo Speech 3.0 is the first major release after the repo split and rename to NVIDIA-NeMo/Speech. The repo now focuses on ASR, TTS, audio processing, speaker tasks, and SpeechLM. Non-speech Framework, LLM, VLM, diffusion, export/deploy, evaluator components can now be found under separate repos under NVIDIA-NeMo organization. While this release brings new major features, the central focus is addressing technical debt: removed 800k deprecated LOC, migration to",
+    "url": "https://github.com/NVIDIA-NeMo/Speech/releases/tag/v3.0.0",
+    "publishedAt": "2026-08-07T12:34:54.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA NeMo 官方发布",
+    "imageUrl": null,
+    "author": "nemo-automation-bot[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_b6d78282171debe3f1d5",
+    "title": "NVIDIA Neural Modules 2.7.3",
+    "description": "Highlights This release addresses known security issues. For the latest NVIDIA Vulnerability Disclosure Information visit https://www.nvidia.com/en-us/security/, for acknowledgement please reach out to the NVIDIA PSIRT team at PSIRT@nvidia.com Uncategorized: Changelog beep boop 🤖: Bumping nemo to v2.7.3 by @nemo-automation-bot[bot] :: PR: #15552 remove experimental sclite file by @nithinraok :: PR: #15572 fix: Remove nemo_class arg in import_hf.py by @chtruong814 :: PR: #15596 fix: Use Restrict",
+    "url": "https://github.com/NVIDIA-NeMo/Speech/releases/tag/v2.7.3",
+    "publishedAt": "2026-04-23T17:42:57.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA NeMo 官方发布",
+    "imageUrl": null,
+    "author": "chtruong814",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_8cda586764039b10b3be",
+    "title": "NVIDIA Neural Modules 2.7.2",
+    "description": "ASR Changelog cp: Fix numba-cuda and cuda-python installation and usage (#15506) by @chtruong814 :: PR: #15540 Uncategorized: Changelog beep boop 🤖: Bumping nemo to v2.7.2 by @nemo-automation-bot[bot] :: PR: #15535",
+    "url": "https://github.com/NVIDIA-NeMo/Speech/releases/tag/v2.7.2",
+    "publishedAt": "2026-03-25T19:47:19.000Z",
+    "category": "AI新闻",
+    "source": "NVIDIA NeMo 官方发布",
+    "imageUrl": null,
+    "author": "chtruong814",
+    "language": "multi",
+    "region": "global"
+  }
+]

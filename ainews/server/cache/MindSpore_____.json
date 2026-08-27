@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_4f65e7bdcdb9052f7c8c",
+    "title": "MindSpore 发布 v2.3.0",
+    "description": "MindSpore 2.3.0",
+    "url": "https://github.com/mindspore-ai/mindspore/releases/tag/v2.3.0",
+    "publishedAt": "2024-07-16T13:45:34.000Z",
+    "category": "AI框架",
+    "source": "MindSpore 官方发布",
+    "imageUrl": null,
+    "author": "fangwenyi",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_79be5dcc09d35feed18f",
+    "title": "MindSpore 发布 v2.3.0-rc6",
+    "description": "MindSpore v2.3.0-rc6",
+    "url": "https://github.com/mindspore-ai/mindspore/releases/tag/v2.3.0-rc6",
+    "publishedAt": "2024-07-10T09:22:14.000Z",
+    "category": "AI框架",
+    "source": "MindSpore 官方发布",
+    "imageUrl": null,
+    "author": "fangwenyi",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_84ae1c7fda9df08d2aab",
+    "title": "MindSpore 发布 v2.3.0-rc2",
+    "description": "MindSpore v2.3.0-rc2",
+    "url": "https://github.com/mindspore-ai/mindspore/releases/tag/v2.3.0-rc2",
+    "publishedAt": "2024-05-13T02:32:18.000Z",
+    "category": "AI框架",
+    "source": "MindSpore 官方发布",
+    "imageUrl": null,
+    "author": "fangwenyi",
+    "language": "en",
+    "region": "global"
+  }
+]

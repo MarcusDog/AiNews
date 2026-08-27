@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_a8c79db7d8c03dd802cf",
+    "title": "OpenMMLab MMPreTrain 发布 v1.1.1",
+    "description": "Update mmcv requirements",
+    "url": "https://github.com/open-mmlab/mmpretrain/releases/tag/v1.1.1",
+    "publishedAt": "2023-11-16T02:29:10.000Z",
+    "category": "AI框架",
+    "source": "OpenMMLab MMPreTrain 发布",
+    "imageUrl": null,
+    "author": "mzr1996",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_8057aa96382be193a735",
+    "title": "OpenMMLab MMPreTrain 发布 v1.1.0",
+    "description": "New Features [Feature] Implement of Zero-Shot CLIP Classifier (#1737) [Feature] Add minigpt4 gradio demo and training script. (#1758) Improvements [Config] New Version of config Adapting MobileNet Algorithm (#1774) [Config] Support DINO self-supervised learning in project (#1756) [Config] New Version of config Adapting Swin Transformer Algorithm (#1780) [Enhance] Add iTPN Supports for Non-three channel image (#1735) [Docs] Update dataset download script from opendatalab to openXlab (#1765) [Docs",
+    "url": "https://github.com/open-mmlab/mmpretrain/releases/tag/v1.1.0",
+    "publishedAt": "2023-10-12T09:20:52.000Z",
+    "category": "AI框架",
+    "source": "OpenMMLab MMPreTrain 发布",
+    "imageUrl": null,
+    "author": "mzr1996",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_5ca6c69587e341434bb9",
+    "title": "OpenMMLab MMPreTrain 发布 v1.0.2",
+    "description": "New Features Add MFF (#1725) Support training of BLIP2 (#1700) Improvements New Version of config Adapting MAE Algorithm (#1750) New Version of config Adapting ConvNeXt Algorithm (#1760) New version of config adapting BeitV2 Algorithm (#1755) Update dataset_prepare.md (#1732) New Version of config Adapting Vision Transformer Algorithm (#1727) Support Infographic VQA dataset and ANLS metric. (#1667) Support IconQA dataset. (#1670) Fix typo MIMHIVIT to MAEHiViT (#1749)",
+    "url": "https://github.com/open-mmlab/mmpretrain/releases/tag/v1.0.2",
+    "publishedAt": "2023-08-15T07:26:54.000Z",
+    "category": "AI框架",
+    "source": "OpenMMLab MMPreTrain 发布",
+    "imageUrl": null,
+    "author": "mzr1996",
+    "language": "multi",
+    "region": "cn"
+  }
+]

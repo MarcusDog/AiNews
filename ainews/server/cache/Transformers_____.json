@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_d4b5c908f621053b7272",
+    "title": "Release v5.16.1",
+    "description": "Release v5.16.1 This is a special release as we include GLM! (and a few small fixes) GLM-5.3-Flash GLM-5.3-Flash, the first natively multimodal model in the GLM-5 series. With 320B total parameters and just 18B active parameters, it outperforms GLM-5.2 across benchmarks and real-world workloads at one-tenth the price, while approaching Claude Opus 4.8 on coding and agentic benchmarks. GLM-5.3-Flash starts from a newly trained base model, with its architecture and training recipe redesigned aroun",
+    "url": "https://github.com/huggingface/transformers/releases/tag/v5.16.1",
+    "publishedAt": "2026-08-26T14:50:01.000Z",
+    "category": "AI框架",
+    "source": "Transformers 官方发布",
+    "imageUrl": "https://private-user-images.githubusercontent.com/73884904/641638039-17bc9c29-758b-44c8-8230-42f945ded209.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODc4MTgzNjYsIm5iZiI6MTc4NzgxODA2NiwicGF0aCI6Ii83Mzg4NDkwNC82NDE2MzgwMzktMTdiYzljMjktNzU4Yi00NGM4LTgyMzAtNDJmOTQ1ZGVkMjA5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA4MjclMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwODI3VDA4MDc0NlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWUyMzM4ZTA0ZmMzMzA2NDY0ZWI3MDUyYTBlZDkxZGZiZmNjYzMzOTJjYTI3Y2U1YWI3NDZkOWE1YWM1NWY1NWQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.azf065xeJk03hKrR3sPXVf606SVpF0IWtAMm8imVTT4",
+    "author": "vasqu",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_05e49555d6885421fdc1",
+    "title": "Transformers 发布 Release v5.16.0",
+    "description": "Release v5.16.0 New Model additions Qwen4-Exp Qwen4-Exp builds on Qwen3.5's hybrid text and multimodal architecture with three key components: GatedResidual (GR), Qwen Sparse Attention (QSA), and Per-Layer Embedding (PLE). GR is a Qwen-developed residual architecture that combines Hyper-Connection with GatedNorm. It mixes multiple residual streams with fine-grained elementwise gating before each attention and Mixture-of-Experts (MoE) block, then controls how much of the block output is injected ",
+    "url": "https://github.com/huggingface/transformers/releases/tag/v5.16.0",
+    "publishedAt": "2026-08-26T15:03:33.000Z",
+    "category": "AI新闻",
+    "source": "Transformers 官方发布",
+    "imageUrl": "https://private-user-images.githubusercontent.com/73884904/641553234-c838b5ba-ffea-42da-baa9-3f66178e3671.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODc4MTgzNjYsIm5iZiI6MTc4NzgxODA2NiwicGF0aCI6Ii83Mzg4NDkwNC82NDE1NTMyMzQtYzgzOGI1YmEtZmZlYS00MmRhLWJhYTktM2Y2NjE3OGUzNjcxLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA4MjclMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwODI3VDA4MDc0NlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPThhZjEyMGI0MGM2OTk1NmVhNzg4OTc0ZThlYWYzMjhlYWExMjM4N2VhNDc1ZjhmMWU0NGRmZDdkNjVmZWMzNWImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.hELiaM0_w2-bMKPFJdJ_ji9t6OrtKQhu5C4BoTSzf44",
+    "author": "Cyrilvallez",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_7df98f84a450158b7253",
+    "title": "Patch release: v5.15.1",
+    "description": "Patch release v5.15.1 This patch most notably solves a few issues with DFlash and MTP candidate generators, as well as an issue where images could sometimes not be processed on accelerator if using Lanczos filter. It contains the following commits: Fix DFlash candidate token device mismatch with device_map=\"auto\" (#47877) by @sywangyi and @Cyrilvallez Align logit distributions for CandidateGenerators using sampling (#48007) by @Cyrilvallez Fix MTP config when mlp_layer_types is absent (#48015) b",
+    "url": "https://github.com/huggingface/transformers/releases/tag/v5.15.1",
+    "publishedAt": "2026-08-19T10:50:47.000Z",
+    "category": "AI框架",
+    "source": "Transformers 官方发布",
+    "imageUrl": null,
+    "author": "Cyrilvallez",
+    "language": "multi",
+    "region": "global"
+  }
+]

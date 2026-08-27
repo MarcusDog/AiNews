@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_6b7fb8c0b9725b366f6f",
+    "title": "pipeline-baseline: perf: group units into tasks (#2338)",
+    "description": "perf: group units into tasks Signed-off-by: Luc Georges luc.sydney.georges@gmail.com fix: mutex acquire in hot loop + worker panic refactor: rename internal structs for better readability Signed-off-by: Luc Georges luc.sydney.georges@gmail.com Signed-off-by: Luc Georges luc.sydney.georges@gmail.com",
+    "url": "https://github.com/huggingface/tokenizers/releases/tag/pipeline-baseline",
+    "publishedAt": "2026-08-19T12:39:21.000Z",
+    "category": "AI新闻",
+    "source": "Tokenizers 官方发布",
+    "imageUrl": null,
+    "author": "McPatate",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_9a0f4b327a110615a572",
+    "title": "Release v0.23.1",
+    "description": "TL;DR tokenizers 0.23.1 is the first proper stable release in the 0.23 line — 0.23.0 only ever shipped as rc0 because the release pipeline itself was broken (Node side hadn't shipped multi-platform binaries since 2023, Python side was on pyo3 0.27 without free-threaded support). 0.23.1 is the version where everything actually goes out the door together: full Node multi-platform wheels for the first time in years, Python 3.14 (regular and free-threaded 3.14t), full type hints for every Python cla",
+    "url": "https://github.com/huggingface/tokenizers/releases/tag/v0.23.1",
+    "publishedAt": "2026-04-27T14:38:35.000Z",
+    "category": "AI框架",
+    "source": "Tokenizers 官方发布",
+    "imageUrl": null,
+    "author": "ArthurZucker",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_3be37569d0d6d9bf27d5",
+    "title": "v0.23.1rc0: ci(node-release): create missing npm/<triple> dirs before artifacts",
+    "description": "yarn artifacts (napi-cli v3 napi artifacts) writes each per-target npm//. The repo has hand-written templates napi.targets ENOENT: no such file or directory, open Add napi create-npm-dirs before yarn artifacts — it scans napi.targets and creates any missing dirs (with a generated package.json) from scratch. Idempotent for triples that already have hand-written templates.",
+    "url": "https://github.com/huggingface/tokenizers/releases/tag/v0.23.1rc0",
+    "publishedAt": "2026-04-27T13:07:02.000Z",
+    "category": "AI框架",
+    "source": "Tokenizers 官方发布",
+    "imageUrl": null,
+    "author": "ArthurZucker",
+    "language": "multi",
+    "region": "global"
+  }
+]

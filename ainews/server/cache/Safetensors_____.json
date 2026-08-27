@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_ad9bd783b2e72bfadfcc",
+    "title": "Safetensors 发布 v0.8.0",
+    "description": "News safetensors joins the PyTorch foundation! Read more on that: https://huggingface.co/blog/safetensors-joins-pytorch-foundation What's changed Safetensors 0.8.0 brings direct to Metal loading on Apple Silicon, GIL-free serialization, broader hardware and dtype coverage, and a stronger Python API. Breaking The serialize and serialize_file functions now release the GIL during writes, enabling true multithreaded saves from Python. Their input contract has also changed: tensor metadata is now pas",
+    "url": "https://github.com/safetensors/safetensors/releases/tag/v0.8.0",
+    "publishedAt": "2026-06-09T08:34:30.000Z",
+    "category": "AI框架",
+    "source": "Safetensors 官方发布",
+    "imageUrl": "https://private-user-images.githubusercontent.com/9112841/600827042-77418d98-0faf-484c-b910-3116f2eb3b63.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODc4MTE1MTUsIm5iZiI6MTc4NzgxMTIxNSwicGF0aCI6Ii85MTEyODQxLzYwMDgyNzA0Mi03NzQxOGQ5OC0wZmFmLTQ4NGMtYjkxMC0zMTE2ZjJlYjNiNjMucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MDgyNyUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjA4MjdUMDYxMzM1WiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9NGYxYzg5MzEzY2MwMTgyNzliZTJkMGVkYjZhNjZjYTdlNDRhYTgzZjY4ZWI5ODZmZTkyZDVkMGZjZGU2YjY1NyZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.k-zoLeTbjhlZ7rw2Up9dDHRDkK1_cSaz2LrWTTi2VcY",
+    "author": "McPatate",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_0cb45c351efac52cacc8",
+    "title": "Safetensors 发布 v0.8.0-rc.1",
+    "description": "News safetensors joins the PyTorch foundation! Read more on that: https://huggingface.co/blog/safetensors-joins-pytorch-foundation What's changed Safetensors 0.8.0 brings direct to Metal loading on Apple Silicon, GIL-free serialization, broader hardware and dtype coverage, and a stronger Python API. Breaking The serialize and serialize_file functions now release the GIL during writes, enabling true multithreaded saves from Python. Their input contract has also changed: tensor metadata is now pas",
+    "url": "https://github.com/safetensors/safetensors/releases/tag/v0.8.0-rc.1",
+    "publishedAt": "2026-06-01T09:52:14.000Z",
+    "category": "AI框架",
+    "source": "Safetensors 官方发布",
+    "imageUrl": "https://private-user-images.githubusercontent.com/9112841/600827042-77418d98-0faf-484c-b910-3116f2eb3b63.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODc4MTE1MTUsIm5iZiI6MTc4NzgxMTIxNSwicGF0aCI6Ii85MTEyODQxLzYwMDgyNzA0Mi03NzQxOGQ5OC0wZmFmLTQ4NGMtYjkxMC0zMTE2ZjJlYjNiNjMucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MDgyNyUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjA4MjdUMDYxMzM1WiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9NGYxYzg5MzEzY2MwMTgyNzliZTJkMGVkYjZhNjZjYTdlNDRhYTgzZjY4ZWI5ODZmZTkyZDVkMGZjZGU2YjY1NyZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.k-zoLeTbjhlZ7rw2Up9dDHRDkK1_cSaz2LrWTTi2VcY",
+    "author": "McPatate",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_fb71909100e47379202d",
+    "title": "Safetensors 发布 v0.8.0-rc.0",
+    "description": "News safetensors joins the PyTorch foundation! Read more on that: https://huggingface.co/blog/safetensors-joins-pytorch-foundation What's changed Safetensors 0.8.0 brings GIL-free serialization, broader hardware and dtype coverage, and a stronger Python API. Breaking The serialize and serialize_file functions now release the GIL during writes, enabling true multithreaded saves from Python. Their input contract has also changed: tensor metadata is now passed via a TensorSpec class (exported from ",
+    "url": "https://github.com/safetensors/safetensors/releases/tag/v0.8.0-rc.0",
+    "publishedAt": "2026-04-14T14:27:39.000Z",
+    "category": "AI框架",
+    "source": "Safetensors 官方发布",
+    "imageUrl": "https://private-user-images.githubusercontent.com/9112841/578008489-bab642d6-b553-4a2b-9301-34dc12c1787c.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODc4MTE1MTUsIm5iZiI6MTc4NzgxMTIxNSwicGF0aCI6Ii85MTEyODQxLzU3ODAwODQ4OS1iYWI2NDJkNi1iNTUzLTRhMmItOTMwMS0zNGRjMTJjMTc4N2MucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MDgyNyUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjA4MjdUMDYxMzM1WiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9NDVjNWVmYjk4ZDMzMDI2NWFkZjRiYWRiNGUxMTYxMTkxMGEzMmM2NDVhODczOTlmZjgzZGIyOWE3ZmZlYjJmOCZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.d50YR_vNeeah0yWDWhhm6pOMB75LpPvsYFA88gReShQ",
+    "author": "McPatate",
+    "language": "multi",
+    "region": "global"
+  }
+]

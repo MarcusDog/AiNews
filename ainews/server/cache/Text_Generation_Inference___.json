@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_7190782f93db1b0621b4",
+    "title": "Text Generation Inference 发布 v3.3.7",
+    "description": "What's Changed misc(gha): expose action cache url and runtime as secrets by @mfuntowicz in #2964 feat: support max_image_fetch_size to limit by @drbh in #3339 Maintenance mode by @LysandreJik in #3344 Maintenance mode by @LysandreJik in #3345 fix(num_devices): fix num_shard/num device auto compute when NVIDIA_VISIBLE_DEVICES == \"all\" or \"void\" by @oOraph in #3346 Full Changelog: v3.3.6...v3.3.7",
+    "url": "https://github.com/huggingface/text-generation-inference/releases/tag/v3.3.7",
+    "publishedAt": "2025-12-19T14:35:25.000Z",
+    "category": "AI框架",
+    "source": "Text Generation Inference 发布",
+    "imageUrl": null,
+    "author": "drbh",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_31738f4dd9752480eead",
+    "title": "Text Generation Inference 发布 v3.3.6",
+    "description": "What's Changed Add missing backslash by @philsupertramp in #3311 Revert \"feat: bump flake including transformers and huggingface_hub versions\" by @drbh in #3323 fix: remove azure by @drbh in #3325 Fix mask passed to flashinfer by @danieldk in #3324 Update iframe sources for streaming demo by @coyotte508 in #3327 Revert \"Revert \"feat: bump flake including transformers and huggingfa… by @drbh in #3326 Revert \"feat: bump flake including transformers and huggingface_hub versions\" by @drbh in #3330 P",
+    "url": "https://github.com/huggingface/text-generation-inference/releases/tag/v3.3.6",
+    "publishedAt": "2025-09-17T00:48:54.000Z",
+    "category": "AI框架",
+    "source": "Text Generation Inference 发布",
+    "imageUrl": null,
+    "author": "drbh",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_38dcbad075245eef403f",
+    "title": "Text Generation Inference 发布 v3.3.5",
+    "description": "What's Changed [gaudi] Refine rope memory, do not need to keep sin/cos cache per layer by @sywangyi in #3274 Gaudi: add CI by @baptistecolle in #3160 [gaudi] Gemma3 sliding window support by @sywangyi in #3280 xpu lora support by @sywangyi in #3232 Optimum neuron 0.2.2 by @dacorvo in #3281 [gaudi] Remove unnecessary reinitialize to HeterogeneousNextTokenChooser to m… by @sywangyi in #3284 [gaudi] Deepseek v2 mla and add ep to unquantized moe by @sywangyi in #3287 [gaudi] Fix the CI test errors b",
+    "url": "https://github.com/huggingface/text-generation-inference/releases/tag/v3.3.5",
+    "publishedAt": "2025-09-02T15:08:22.000Z",
+    "category": "AI框架",
+    "source": "Text Generation Inference 发布",
+    "imageUrl": null,
+    "author": "tengomucho",
+    "language": "multi",
+    "region": "global"
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_f3af3d67b122213d104d",
+    "title": "JAX v0.11.1",
+    "description": "New features Added an error check for trying to deserialize JAX exports that are older --jax_export_deserialize_expired_versions to https://docs.jax.dev/en/latest/export/export.html#compatibility-guarantees. Added jax.numpy.top_k, which implements numpy.top_k, added in #39729). Breaking changes The exec_time_optimization_effort and memory_fitting_effort flags have been EffortLevel enum. JAX does not support anymore deserialization of Exported modules from jnp.take_along_axis now always defaults ",
+    "url": "https://github.com/jax-ml/jax/releases/tag/jax-v0.11.1",
+    "publishedAt": "2026-08-17T20:45:31.000Z",
+    "category": "AI框架",
+    "source": "JAX 官方发布",
+    "imageUrl": null,
+    "author": "hawkinsp",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_391e45297d5c0a69b9f8",
+    "title": "JAX v0.11.0",
+    "description": "New features Added a doc on defining custom derivative rules with the experimental hijax-custom-derivatives), along with jax.experimental.hijax helpers for deriving VJPHiPrimitive autodiff jvp or lin rule: linearize_from_jvp with apply_derived_linearization, vjp_fwd_from_jvp with transpose_jvp, vjp_fwd_from_lin with transpose_linearized, and jvp_from_lin. Added jax.custom_remat to the top-level jax namespace, for jax_remat3 jax.checkpoint_policies is now a submodule rather than a namespace from ",
+    "url": "https://github.com/jax-ml/jax/releases/tag/jax-v0.11.0",
+    "publishedAt": "2026-07-16T19:53:40.000Z",
+    "category": "AI框架",
+    "source": "JAX 官方发布",
+    "imageUrl": null,
+    "author": "hawkinsp",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_ad99363049cd11fceb0a",
+    "title": "JAX v0.10.2",
+    "description": "New features Added jax.scipy.linalg.invhilbert for the closed-form inverse #10144). Added jax.scipy.linalg.invpascal for the inverse of the Pascal #10144). Added jax.scipy.linalg.fiedler_companion for constructing the #10144). Added jax.ShapeDtypeStruct.like -- a shortcut for constructing a jax.ShapeDtypeStruct from an object with shape and dtype We have made a number of improvements to JAX tracing performance.",
+    "url": "https://github.com/jax-ml/jax/releases/tag/jax-v0.10.2",
+    "publishedAt": "2026-06-17T23:39:56.000Z",
+    "category": "AI框架",
+    "source": "JAX 官方发布",
+    "imageUrl": null,
+    "author": "hawkinsp",
+    "language": "en",
+    "region": "global"
+  }
+]

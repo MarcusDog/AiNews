@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_8747be10a2d12d84101d",
+    "title": "Happy-LLM v1.0.2 0129 PPT 发布！",
+    "description": "Happy-LLM v1.0.2 0129 PPT 发布！ 新增配套教学讲义PPT课件资源。 本 Happy-LLM PDF 教程完全开源免费。为防止各类营销号加水印后贩卖给大模型初学者，我们特地在 PDF 文件中预先添加了不影响阅读的 Datawhale 开源标志水印，敬请谅解～ This Happy-LLM PDF tutorial is completely open-source and free. To prevent third-party marketing accounts from adding watermarks and selling it to LLM beginners, we have pre-added a non-intrusive Datawhale open-source logo watermark to the PDF file. Kindly understand~ 在线阅读地址：https://datawhalechina.github.io/happy-llm/ https://github.com/datawhalechina/happ",
+    "url": "https://github.com/datawhalechina/happy-llm/releases/tag/v1.0.2",
+    "publishedAt": "2026-02-04T02:15:44.000Z",
+    "category": "AI新闻",
+    "source": "Datawhale Happy-LLM 发布",
+    "imageUrl": null,
+    "author": "KMnO4-zx",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_82f583534f1438e0d553",
+    "title": "Happy-LLM v1.0.1 0727",
+    "description": "Happy-LLM v1.0.1 0727 发布！ 优化章节内容，修改部分语言错误。 优化图片排版。 本 Happy-LLM PDF 教程完全开源免费。为防止各类营销号加水印后贩卖给大模型初学者，我们特地在 PDF 文件中预先添加了不影响阅读的 Datawhale 开源标志水印，敬请谅解～ This Happy-LLM PDF tutorial is completely open-source and free. To prevent third-party marketing accounts from adding watermarks and selling it to LLM beginners, we have pre-added a non-intrusive Datawhale open-source logo watermark to the PDF file. Kindly understand~ 在线阅读地址：https://datawhalechina.github.io/happy-llm/ https://github.com/datawhalechina/",
+    "url": "https://github.com/datawhalechina/happy-llm/releases/tag/v1.0.1",
+    "publishedAt": "2025-07-27T14:09:31.000Z",
+    "category": "AI新闻",
+    "source": "Datawhale Happy-LLM 发布",
+    "imageUrl": null,
+    "author": "KMnO4-zx",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_7e0e380b22db7d7b813e",
+    "title": "Happy-LLM v1.0.0 0610",
+    "description": "本 Happy-LLM PDF 教程完全开源免费。为防止各类营销号加水印后贩卖给大模型初学者，我们特地在 PDF 文件中预先添加了不影响阅读的 Datawhale 开源标志水印，敬请谅解～ This Happy-LLM PDF tutorial is completely open-source and free. To prevent third-party marketing accounts from adding watermarks and selling it to LLM beginners, we have pre-added a non-intrusive Datawhale open-source logo watermark to the PDF file. Kindly understand~ 在线阅读地址：https://datawhalechina.github.io/happy-llm/ https://github.com/datawhalechina/happy-llm https://www.datawhale.cn/home https://www",
+    "url": "https://github.com/datawhalechina/happy-llm/releases/tag/PDF",
+    "publishedAt": "2025-06-10T14:10:55.000Z",
+    "category": "AI新闻",
+    "source": "Datawhale Happy-LLM 发布",
+    "imageUrl": null,
+    "author": "KMnO4-zx",
+    "language": "en",
+    "region": "global"
+  }
+]

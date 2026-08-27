@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_3fa4611fc32e96e1e86c",
+    "title": "LiteLLM 发布 v1.100.0-dev.1",
+    "description": "Verify Docker Image Signature All LiteLLM Docker images are signed with cosign. Every release is signed with the same key introduced in commit 0112e53. Verify using the pinned commit hash (recommended): A commit hash is cryptographically immutable, so this is the strongest way to ensure you are using the original signing key: cosign verify \\ --key https://raw.githubusercontent.com/BerriAI/litellm/0112e53046018d726492c814b3644b7d376029d0/cosign.pub \\ ghcr.io/berriai/litellm:v1.100.0-dev.1 Verify ",
+    "url": "https://github.com/BerriAI/litellm/releases/tag/v1.100.0-dev.1",
+    "publishedAt": "2026-08-26T05:06:46.000Z",
+    "category": "AI新闻",
+    "source": "LiteLLM 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_e49a2b6d6c5b0a66297e",
+    "title": "LiteLLM 发布 v1.99.0-rc.1",
+    "description": "Verify Docker Image Signature All LiteLLM Docker images are signed with cosign. Every release is signed with the same key introduced in commit 0112e53. Verify using the pinned commit hash (recommended): A commit hash is cryptographically immutable, so this is the strongest way to ensure you are using the original signing key: cosign verify \\ --key https://raw.githubusercontent.com/BerriAI/litellm/0112e53046018d726492c814b3644b7d376029d0/cosign.pub \\ ghcr.io/berriai/litellm:v1.99.0-rc.1 Verify us",
+    "url": "https://github.com/BerriAI/litellm/releases/tag/v1.99.0-rc.1",
+    "publishedAt": "2026-08-23T00:23:56.000Z",
+    "category": "AI新闻",
+    "source": "LiteLLM 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_32d0d5e8fe620a276073",
+    "title": "LiteLLM 发布 v1.98.0",
+    "description": "Verify Docker Image Signature All LiteLLM Docker images are signed with cosign. Every release is signed with the same key introduced in commit 0112e53. Verify using the pinned commit hash (recommended): A commit hash is cryptographically immutable, so this is the strongest way to ensure you are using the original signing key: cosign verify \\ --key https://raw.githubusercontent.com/BerriAI/litellm/0112e53046018d726492c814b3644b7d376029d0/cosign.pub \\ ghcr.io/berriai/litellm:v1.98.0 Verify using t",
+    "url": "https://github.com/BerriAI/litellm/releases/tag/v1.98.0",
+    "publishedAt": "2026-08-23T00:28:24.000Z",
+    "category": "AI新闻",
+    "source": "LiteLLM 官方发布",
+    "imageUrl": null,
+    "author": "yuneng-berri",
+    "language": "en",
+    "region": "global"
+  }
+]

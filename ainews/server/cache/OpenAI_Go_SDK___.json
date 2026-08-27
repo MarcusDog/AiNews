@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_481dacbf2a3b26676279",
+    "title": "OpenAI Go SDK 发布 v3.53.0",
+    "description": "3.53.0 (2026-08-25) Features api: Add obfuscation field to ChatCompletionChunk (#813) (4b08348) api: add project residency and usage quantity units (#853) (2fd626c) api: add Realtime call creation and recursive filters (#860) (c396b57) auth: add caller-attested X.509 transport capability (#855) (64b2ef2) auth: complete X.509 token lifecycle and setup guidance (#858) (3e3a4e0) auth: implement pinned X.509 token exchange (#856) (a84eb49) option: add attested X.509 workload identity authentication ",
+    "url": "https://github.com/openai/openai-go/releases/tag/v3.53.0",
+    "publishedAt": "2026-08-26T21:51:43.000Z",
+    "category": "AI框架",
+    "source": "OpenAI Go SDK 发布",
+    "imageUrl": null,
+    "author": "openai-sdks[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_1a43803ddc4f30f7d74f",
+    "title": "OpenAI Go SDK 发布 v3.52.0",
+    "description": "3.52.0 (2026-08-17) Features add Bedrock Runtime endpoint support (SDK-290) (#793) (8e8444e)",
+    "url": "https://github.com/openai/openai-go/releases/tag/v3.52.0",
+    "publishedAt": "2026-08-17T19:19:46.000Z",
+    "category": "AI框架",
+    "source": "OpenAI Go SDK 发布",
+    "imageUrl": null,
+    "author": "openai-sdks[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_c2271f9da105fe87a104",
+    "title": "OpenAI Go SDK 发布 v3.51.0",
+    "description": "3.51.0 (2026-08-14) Features api: Add model constants for Daybreak and gpt-5.6-cyber (df00e97) api: add WebSocket stream IDs (#776) (0b6316e) api: add workload identity access token issued event (#766) (c61af30) api: deprecate Sora video APIs (#775) (602c5e4) api: Ultrafast tier, structured MCP and websocket errors, separate websocket events (#789) (f8b63fd) Bug Fixes api: Add model constants for Daybreak and gpt-5.6-cyber (#763) (df00e97) api: clarify audio upload metadata requirements (#764) (",
+    "url": "https://github.com/openai/openai-go/releases/tag/v3.51.0",
+    "publishedAt": "2026-08-14T23:49:03.000Z",
+    "category": "AI框架",
+    "source": "OpenAI Go SDK 发布",
+    "imageUrl": null,
+    "author": "openai-sdks[bot]",
+    "language": "multi",
+    "region": "global"
+  }
+]

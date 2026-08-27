@@ -1,0 +1,28 @@
+[
+  {
+    "id": "article_b432b0408614f5abe452",
+    "title": "CosyVoice 发布 v2.0",
+    "description": "fix lint",
+    "url": "https://github.com/QwenAudio/CosyVoice/releases/tag/v2.0",
+    "publishedAt": "2025-07-07T06:52:12.000Z",
+    "category": "AI新闻",
+    "source": "CosyVoice 官方发布",
+    "imageUrl": null,
+    "author": "aluminumbox",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_0294d97b428487d1f54a",
+    "title": "flow_cache: [feature] modify pad to trim",
+    "description": "Conflicts: cosyvoice/dataset/processor.py",
+    "url": "https://github.com/QwenAudio/CosyVoice/releases/tag/flow_cache",
+    "publishedAt": "2025-05-06T02:53:37.000Z",
+    "category": "AI新闻",
+    "source": "CosyVoice 官方发布",
+    "imageUrl": null,
+    "author": "boji123",
+    "language": "en",
+    "region": "global"
+  }
+]

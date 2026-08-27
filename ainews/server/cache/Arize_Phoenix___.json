@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_99daba3ac33411d79df8",
+    "title": "Arize Phoenix 发布 arize-phoenix v20.4.0",
+    "description": "20.4.0 (2026-08-26) ⚠ BREAKING CHANGES server: GET /v1/model_providers no longer returns custom providers or a next_cursor, and built-in entries expose provider rather than kind + provider_key. Custom providers move to GET /v1/custom_model_providers. The endpoint is unreleased, so no published client is affected. Features agents: add in-process Phoenix MCP toolset (#15285) (e2cf8be) apply the 2026 brand to the Phoenix docs (#15458) (66c528c) client: record Harbor jobs in Phoenix (#15547) (f7c6cb",
+    "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.4.0",
+    "publishedAt": "2026-08-26T03:46:03.000Z",
+    "category": "AI框架",
+    "source": "Arize Phoenix 发布",
+    "imageUrl": null,
+    "author": "mikeldking",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_5b7faa5110eb7b850230",
+    "title": "Arize Phoenix 发布 arize-phoenix-sqlean v0.1.1",
+    "description": "0.1.1 (2026-08-25) Bug Fixes phoenix-sqlean: bump bundled sqlean to 0.28.4+10a13f9 (#15465) (48f18e9)",
+    "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-sqlean-v0.1.1",
+    "publishedAt": "2026-08-25T05:39:32.000Z",
+    "category": "AI框架",
+    "source": "Arize Phoenix 发布",
+    "imageUrl": null,
+    "author": "mikeldking",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_c602cb5d7cbd37ee7d5c",
+    "title": "Arize Phoenix 发布 arize-phoenix-evals v3.5.1",
+    "description": "3.5.1 (2026-08-25) Bug Fixes upgrade to anthropic SDK v1 (#15588) (b28cf94)",
+    "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-evals-v3.5.1",
+    "publishedAt": "2026-08-25T02:41:27.000Z",
+    "category": "AI框架",
+    "source": "Arize Phoenix 发布",
+    "imageUrl": null,
+    "author": "mikeldking",
+    "language": "multi",
+    "region": "global"
+  }
+]

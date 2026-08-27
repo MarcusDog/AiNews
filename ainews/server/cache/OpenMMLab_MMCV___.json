@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_59af9abfa60dc7da04af",
+    "title": "OpenMMLab MMCV 发布 v2.2.0",
+    "description": "What's Changed [Feature] Add the support of BallQuery op for Ascend device by @Ginray in #2963 [Feature] Add the support of three_interpolate op for Ascend device by @lihao7212148 in #2962 Update version info by @zhouzaida in #2966 [Docs] Add api reference table by @fanqiNO1 in #2971 [Fix] Fix deform_conv.py for torch_npu v2.1 by @shun001 in #2967 DIOPI adapt codes for npu device by @CokeDong in #2973 [Fix] Fix modulated_deform_conv.py for torch_npu v2.1 by @shun001 in #2983 [Feature] Add NPU op",
+    "url": "https://github.com/open-mmlab/mmcv/releases/tag/v2.2.0",
+    "publishedAt": "2024-04-24T14:23:58.000Z",
+    "category": "AI框架",
+    "source": "OpenMMLab MMCV 发布",
+    "imageUrl": null,
+    "author": "HAOCHENYE",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_ff87e644110799d63107",
+    "title": "MMCV Releases v1.7.2",
+    "description": "😀 We are glad to announce that we are providing the mmcv-full pre-built packages for PyTorch 2.1.0 and 2.0.0 starting from MMCV v1.7.2. pip install -U openmim mim install mmcv-full Features Support DCNv1 on Ascend device by @MiniTIckW in #2480 Support PSAMask op for Ascend device by @DaGaiBa in #2487 Support Voxelization with cambricon MLU device by @ZShaopeng in #2500 Add Ascend support for RoIPool op by @momo609 in #2483 Add MLU support for DCN by @mengpenghui in #2540 Add support for Ascend ",
+    "url": "https://github.com/open-mmlab/mmcv/releases/tag/v1.7.2",
+    "publishedAt": "2023-12-29T15:42:54.000Z",
+    "category": "AI框架",
+    "source": "OpenMMLab MMCV 发布",
+    "imageUrl": null,
+    "author": "zhouzaida",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_b6a61a2fdbc211bd3bc2",
+    "title": "MMCV Releases v2.1.0",
+    "description": "😀 We are glad to announce that we are providing the mmcv pre-built packages for PyTorch 2.1.0 starting from MMCV v2.1.0. pip install -U openmim mim install mmcv Features Add the implementation of dynamic_scatter with mlu-ops by @Danielmic in #2847 Add the implementation of diff_iou_rotated with mlu-ops by @Danielmic in #2840 Add the support of points_in_polyogns for Ascend device by @long11111111 in #2848 Add the support of BoxIouRotated op for ascend device by @MrShadowY in #2842 Support modul",
+    "url": "https://github.com/open-mmlab/mmcv/releases/tag/v2.1.0",
+    "publishedAt": "2023-10-17T11:30:19.000Z",
+    "category": "AI框架",
+    "source": "OpenMMLab MMCV 发布",
+    "imageUrl": null,
+    "author": "zhouzaida",
+    "language": "multi",
+    "region": "cn"
+  }
+]

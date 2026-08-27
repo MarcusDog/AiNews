@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_8a2bac86a1fc3bc1889d",
+    "title": "OpenCompass 发布 0.5.4",
+    "description": "OpenCompass v0.5.4 Release Notes 🌟 Highlights ✨ Multimodal Evaluation with VLMEvalKit: OpenCompass now integrates VLMEvalKit for native multimodal dataset loading, OpenAI-compatible inference, and official VLMEvalKit evaluation metrics (#2586). ✨ Multi-Round Evaluation: GenInferencer now supports multi-round inference, accompanied by the new Multi-IF benchmark for evaluating multi-turn instruction following (#2557). ✨ Expanded Model API Ecosystem: Added LiteLLM as an AI gateway backend and exte",
+    "url": "https://github.com/open-compass/opencompass/releases/tag/0.5.4",
+    "publishedAt": "2026-08-26T06:41:29.000Z",
+    "category": "AI新闻",
+    "source": "OpenCompass 官方发布",
+    "imageUrl": null,
+    "author": "Myhs-phz",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_e5d42f04f6eff979f29f",
+    "title": "OpenCompass 发布 0.5.3",
+    "description": "OpenCompass v0.5.3 Release Notes 🌟 Highlights ✨ 🧪 Extensive New Benchmarks and Dataset Support: Added support for a wide range of new benchmarks and datasets, including AIME2026, HMMT Feb 2026, SimpleQA-Verified, AdvancedIF, HLE-Verified, MRCR-V2, Molecular-IQ, SciReasoner 1.5, MP20, PerspectiveGap, ZebraLogic, ArxivRollBench, CL-Bench, and more. ✨ 🧩 RawPromptTemplate Support: Introduced RawPromptTemplate and expanded its support across dataset configs, OpenAISDKStreaming, ChatML datasets, re",
+    "url": "https://github.com/open-compass/opencompass/releases/tag/0.5.3",
+    "publishedAt": "2026-06-29T03:17:52.000Z",
+    "category": "AI新闻",
+    "source": "OpenCompass 官方发布",
+    "imageUrl": null,
+    "author": "ssiq",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_8d49d2fac35f5b38c1eb",
+    "title": "OpenCompass 发布 0.5.2",
+    "description": "OpenCompass v0.5.2 Release Notes 🌟 Highlights ✨ 🧪 Extensive New Benchmarks Support: We have introduced comprehensive support for Scientific and General Benchmarks, including SciReasoner, Biology Instructions, Mol Instructions, CMPhysBench, IFBench, LCB-pro, etc. 🤖 New Model & API Support: Added support for Intern-S1-Pro and TeleChat API evaluation examples. 🛠️ Infrastructure & Enhancements: Fixed bugs, improved evaluation pipelines and updated CI. 🚀 New Features 🔧 Introduced support for HM",
+    "url": "https://github.com/open-compass/opencompass/releases/tag/0.5.2",
+    "publishedAt": "2026-02-14T03:57:42.000Z",
+    "category": "AI新闻",
+    "source": "OpenCompass 官方发布",
+    "imageUrl": null,
+    "author": "Myhs-phz",
+    "language": "en",
+    "region": "global"
+  }
+]

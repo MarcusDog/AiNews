@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_f903ab454b62774f7eff",
+    "title": "AgentScope 发布 v2.0.7",
+    "description": "What's Changed fix(gemini): remove unsupported $schema from tool parameters by @qbc2016 in #2277 feat(workspace): share workspace across different agents by @iluv7 in #1951 feat(workspace): isolate skills per agent, select them per session by @DavdGao in #2283 fix(hub): preserve GitHub MCP environment inputs by @RerankerGuo in #2230 fix(app): stop stranding session inbox payloads until the next user turn by @DavdGao in #2295 feat(console): add terminal console for trying and debugging agents by ",
+    "url": "https://github.com/agentscope-ai/agentscope/releases/tag/v2.0.7",
+    "publishedAt": "2026-08-24T12:47:44.000Z",
+    "category": "AI新闻",
+    "source": "AgentScope 官方发布",
+    "imageUrl": null,
+    "author": "DavdGao",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_5a7c86030beff759e653",
+    "title": "AgentScope 发布 v2.0.6",
+    "description": "Highlight Support channels (Feishu and Discord) in AgentScope (#1997) Support Apple Container as workspace backend (#2068) Support MCP & skill hubs/markets in agent service (#2197) Add on_check_permission middleware hook (#2001) Refactor Web UI chat pages with shadcn (#2171) Chat page: Channels: MCP & Skill Hubs: What's Changed feat(webui): refactor chat pages with shadcn and prepare for npm release by @DavdGao in #2171 feat(workspace): support apple container as workspace backend by @iluv7 in #",
+    "url": "https://github.com/agentscope-ai/agentscope/releases/tag/v2.0.6",
+    "publishedAt": "2026-08-07T10:39:34.000Z",
+    "category": "AI新闻",
+    "source": "AgentScope 官方发布",
+    "imageUrl": "https://private-user-images.githubusercontent.com/102287034/632888728-67038abc-6050-4d00-8613-76b281bd4b23.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODc4MTkyMTIsIm5iZiI6MTc4NzgxODkxMiwicGF0aCI6Ii8xMDIyODcwMzQvNjMyODg4NzI4LTY3MDM4YWJjLTYwNTAtNGQwMC04NjEzLTc2YjI4MWJkNGIyMy5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwODI3JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDgyN1QwODIxNTJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT01Mzk3NzA1MzFkM2Y2ZDRlYmI4OGVhNmIwNTA2MzlhYjg3NTFkYzI5ZWE3MjA4OWM3YjYyOTQ4ZDcxZmVlZDM3JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.6UhjiEiT8nu7Xpp5sg9qkltPr29QImZnOR4lk8qvM2E",
+    "author": "DavdGao",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_6fc5085f10c6a3bebd14",
+    "title": "AgentScope 发布 v2.0.5",
+    "description": "Highlight Agent Support structured output (#2150) Support environment information injection (#2134) Workspace Support OpenSandbox (#1953), Daytona (#1943), K8s (#1933), Bubblewrap (#2051) Tool Support PowerShell for Windows (#2132) RAG Support MongoDB (#2008), Elasticsearch (#2129) Support Excel (#2026) and Word (#2025) parser Agent as Service Support SQLAlchemy based storage (#2029) Support sharing resources across users as a group or org (#1998) Model Add new Dashscope models (#2073), Kimi K3 ",
+    "url": "https://github.com/agentscope-ai/agentscope/releases/tag/v2.0.5",
+    "publishedAt": "2026-07-23T13:28:56.000Z",
+    "category": "AI新闻",
+    "source": "AgentScope 官方发布",
+    "imageUrl": null,
+    "author": "DavdGao",
+    "language": "en",
+    "region": "global"
+  }
+]

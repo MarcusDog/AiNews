@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_9bad07ff3122195cd424",
+    "title": "Anthropic Java SDK 发布 v2.58.0",
+    "description": "2.58.0 (2026-08-26) Full Changelog: v2.57.0...v2.58.0 Features api: add updates thinking display mode (beta) (792b318) api: add missing anthropic-beta values (60cc62a) api: add support for Organization API endpoints (3adde69) Bug Fixes bedrock: stop clobbering body anthropic_beta with header betas (#58) (e2609a9) client: let explicit and ANTHROPIC_BASE_URL base URLs override profile base_url (#241) (7486e65) client: resolve base URL in ClientOptions instead of the transport (#242) (a3e988a) tool",
+    "url": "https://github.com/anthropics/anthropic-sdk-java/releases/tag/v2.58.0",
+    "publishedAt": "2026-08-26T17:18:11.000Z",
+    "category": "AI框架",
+    "source": "Anthropic Java SDK 发布",
+    "imageUrl": null,
+    "author": "stainless-app[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_2b5d88e256ab8c0c4913",
+    "title": "Anthropic Java SDK 发布 v2.57.0",
+    "description": "2.57.0 (2026-08-19) Full Changelog: v2.56.0...v2.57.0 Features api: managed agents web search config and self hosted sandbox memory (83b03c0)",
+    "url": "https://github.com/anthropics/anthropic-sdk-java/releases/tag/v2.57.0",
+    "publishedAt": "2026-08-19T22:00:28.000Z",
+    "category": "AI框架",
+    "source": "Anthropic Java SDK 发布",
+    "imageUrl": null,
+    "author": "stainless-app[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_50ee927a970f08601bb0",
+    "title": "Anthropic Java SDK 发布 v2.56.0",
+    "description": "2.56.0 (2026-08-19) Full Changelog: v2.55.0...v2.56.0 Features api: Files and Skills APIs are now GA; add computer use and browser use toolsets (762f342)",
+    "url": "https://github.com/anthropics/anthropic-sdk-java/releases/tag/v2.56.0",
+    "publishedAt": "2026-08-19T16:53:53.000Z",
+    "category": "AI框架",
+    "source": "Anthropic Java SDK 发布",
+    "imageUrl": null,
+    "author": "stainless-app[bot]",
+    "language": "multi",
+    "region": "global"
+  }
+]

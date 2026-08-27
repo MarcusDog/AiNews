@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_72c1c65856af7651e1ca",
+    "title": "langgraph-sdk==0.4.3",
+    "description": "Changes since sdk==0.4.2 release(sdk-py): 0.4.3 (#8657) feat(sdk-py): add decrypt replacement result (#8598) release(langgraph): 1.2.11 (#8595) chore(deps): bump the minor-and-patch group across 1 directory with 5 updates (#8532) release(checkpoint): 4.2.0 (#8563) chore: enforce PLC0415 in tests for the remaining packages (#8547) release(langgraph): 1.2.10 (#8462) chore(deps): bump websockets from 15.0.1 to 16.0 in /libs/sdk-py in the major group (#8253) fix(sdk-py): support clearing cron end_ti",
+    "url": "https://github.com/langchain-ai/langgraph/releases/tag/sdk%3D%3D0.4.3",
+    "publishedAt": "2026-08-19T18:05:32.000Z",
+    "category": "AI框架",
+    "source": "LangGraph 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_b2cfa7950ab72a14205b",
+    "title": "langgraph==1.2.11",
+    "description": "Changes since 1.2.10 release(langgraph): 1.2.11 (#8595) feat(langgraph): expose trace_policy on add_node (#8523) chore(deps): bump the minor-and-patch group across 1 directory with 7 updates (#8533) chore(deps): bump the minor-and-patch group across 1 directory with 5 updates (#8532) release(checkpoint-postgres): 3.1.2 (#8565) release(checkpoint): 4.2.0 (#8563) fix(checkpoint): collect writes at plain-value seed in delta channel history (#8526) chore: enforce PLC0415 in tests for the remaining p",
+    "url": "https://github.com/langchain-ai/langgraph/releases/tag/1.2.11",
+    "publishedAt": "2026-08-11T14:00:50.000Z",
+    "category": "AI新闻",
+    "source": "LangGraph 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_6cbb30c6942a175f163a",
+    "title": "langgraph-checkpoint-postgres==3.1.2",
+    "description": "Changes since checkpointpostgres==3.1.1 release(checkpoint-postgres): 3.1.2 (#8565) release(checkpoint): 4.2.0 (#8563) test(checkpoint-postgres,checkpoint-sqlite): run the conformance suite (#8537) fix(checkpoint-postgres): find plain-value seeds when walking delta history (#8535) chore: enable RUF100 and clear unused noqa directives (#8546) chore(checkpoint-postgres,checkpoint-sqlite): enable PLC0415 lint rule (#8540) chore(deps): bump the minor-and-patch group in /libs/checkpoint-postgres with",
+    "url": "https://github.com/langchain-ai/langgraph/releases/tag/checkpointpostgres%3D%3D3.1.2",
+    "publishedAt": "2026-08-07T20:40:16.000Z",
+    "category": "AI新闻",
+    "source": "LangGraph 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  }
+]

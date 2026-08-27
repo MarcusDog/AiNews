@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_d84c1c445149696268f7",
+    "title": "PaddleDetection v2.9.0",
+    "description": "🆕 新增模型 RT-DETRv3：新增 RT-DETRv3 目标检测模型，支持 checkpoint recompute 机制以降低训练显存占用，V100×4 精度达 47.5 mAP（#9376） DEIM：新增 DEIM 系列模型，包含 DFINE-HGNetv2（N/S/M/L/X）和 RTDETRv2（R18/R34/R50/R50m/R101）共 11 个规模，所有模型精度与官方论文对齐（#9381） PP-DocLayoutV3：新增文档版面分析模型，支持文档布局检测与阅读顺序预测（#9473） ✨ 新功能 FariMOT：新增评估功能支持（#9329） 模型导出格式：推理模型默认保存为 JSON 格式（#9352） 🖥️ 硬件平台适配 CUDA 13：适配 CUDA 13 新目录结构，修复编译时头文件搜索路径问题（#9432） 天数智芯（Iluvatar）GPU：新增全链路支持，覆盖训练、评估、推理及 MOT 全流程（#9472） 燧原 GCU：更新 GCU 平台相关配置（#9327） 昇腾 NPU：修复 DETR 模型在 NPU 上的训练异常（#9338） 🐛 B",
+    "url": "https://github.com/PaddlePaddle/PaddleDetection/releases/tag/v2.9.0",
+    "publishedAt": "2026-03-19T13:53:34.000Z",
+    "category": "AI框架",
+    "source": "飞桨 PaddleDetection 发布",
+    "imageUrl": null,
+    "author": "TingquanGao",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_32cc4b885dd5da687838",
+    "title": "PaddleDetectionv2.8.1",
+    "description": "📣最新进展 🔥2025.1.12 新增关键点检测和旋转框目标检测领域一站式全流程开发能力: 飞桨低代码开发工具PaddleX，依托于PaddleDetection的先进技术，支持了目标检测领域的一站式全流程开发能力： 🎨 模型丰富一键调用：将通用目标检测、小目标检测、实例分割、关键点检测和旋转框目标检测涉及的67个模型整合为5条模型产线，通过极简的Python API一键调用，快速体验模型效果。此外，同一套API，也支持图像分类、图像分割、文本图像智能分析、通用OCR、时序预测等共计240+模型，形成30+单功能模块，方便开发者进行模型组合使用。 🚀 提高效率降低门槛：提供基于统一命令和图形界面两种方式，实现模型简洁高效的使用、组合与定制。支持高性能部署、服务化部署和端侧部署等多种部署方式。此外，对于各种主流硬件如英伟达GPU、昆仑芯、昇腾、寒武纪和海光等，进行模型开发时，都可以无缝切换。 新增目标检测模型Co-DETR",
+    "url": "https://github.com/PaddlePaddle/PaddleDetection/releases/tag/v2.8.1",
+    "publishedAt": "2025-02-14T04:57:35.000Z",
+    "category": "AI新闻",
+    "source": "飞桨 PaddleDetection 发布",
+    "imageUrl": null,
+    "author": "Sunting78",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_ba498ea58d561c1d61f2",
+    "title": "PaddleDetectionv2.8.0",
+    "description": "📣最新进展 🔥2024.10.1 添加目标检测、实例分割领域一站式全流程开发能力: 飞桨低代码开发工具PaddleX，依托于PaddleDetection的先进技术，支持了目标检测领域的一站式全流程开发能力： 🎨 模型丰富一键调用：将通用目标检测、小目标检测和实例分割涉及的55个模型整合为3条模型产线，通过极简的Python API一键调用，快速体验模型效果。此外，同一套API，也支持图像分类、图像分割、文本图像智能分析、通用OCR、时序预测等共计200+模型，形成20+单功能模块，方便开发者进行模型组合使用。 🚀 提高效率降低门槛：提供基于统一命令和图形界面两种方式，实现模型简洁高效的使用、组合与定制。支持高性能部署、服务化部署和端侧部署等多种部署方式。此外，对于各种主流硬件如英伟达GPU、昆仑芯、昇腾、寒武纪和海光等，进行模型开发时，都可以无缝切换。 添加实例分割SOTA模型Mask-RT-DETR",
+    "url": "https://github.com/PaddlePaddle/PaddleDetection/releases/tag/v2.8.0",
+    "publishedAt": "2024-11-08T02:50:05.000Z",
+    "category": "AI新闻",
+    "source": "飞桨 PaddleDetection 发布",
+    "imageUrl": null,
+    "author": "Sunting78",
+    "language": "multi",
+    "region": "cn"
+  }
+]

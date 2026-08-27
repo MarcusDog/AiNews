@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_b4007b58d44b1f83ca22",
+    "title": "Ollama 发布 v0.33.2-rc0",
+    "description": "app: synchronize macOS app handoff (#18056)",
+    "url": "https://github.com/ollama/ollama/releases/tag/v0.33.2-rc0",
+    "publishedAt": "2026-08-27T06:15:54.000Z",
+    "category": "AI新闻",
+    "source": "Ollama 官方发布",
+    "imageUrl": null,
+    "author": "ParthSareen",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_b5859fee29c1bc49f9db",
+    "title": "Ollama 发布 v0.33.1",
+    "description": "What's Changed MLX: Qwen3.8 Flash Next support cmake: make external compat patches idempotent MLX and llama.cpp update mlxrunner: add structured output support mlxrunner: avoid Metal GPU timeouts when loading models from slow storage New Contributors @pd95 made their first contribution in #17948 Full Changelog: v0.33.0...v0.33.1",
+    "url": "https://github.com/ollama/ollama/releases/tag/v0.33.1",
+    "publishedAt": "2026-08-26T23:54:05.000Z",
+    "category": "AI新闻",
+    "source": "Ollama 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_18f9975b7e253b429c17",
+    "title": "v0.33.1-rc1: linux: fix llama.cpp docker build (#18040)",
+    "description": "Build context was missing the new cmake common utility.",
+    "url": "https://github.com/ollama/ollama/releases/tag/v0.33.1-rc1",
+    "publishedAt": "2026-08-26T17:21:21.000Z",
+    "category": "AI新闻",
+    "source": "Ollama 官方发布",
+    "imageUrl": null,
+    "author": "dhiltgen",
+    "language": "en",
+    "region": "global"
+  }
+]

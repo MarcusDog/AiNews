@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_52d7fe5e2f70c9ee2258",
+    "title": "OpenAI Agents Python SDK 发布 v0.22.0",
+    "description": "Key Changes Version 0.22.0 is a minor release because it adds substantial runtime hardening and tightens an existing provider configuration contract. Applications that combine an explicit openai_client with organization or project must move those values to the AsyncOpenAI client. Highlights: Redacts terminal function-tool output rejected by agent output guardrails from replayable and persisted SDK state. Raises ModelBehaviorError for non-streaming Responses with terminal status failed or incompl",
+    "url": "https://github.com/openai/openai-agents-python/releases/tag/v0.22.0",
+    "publishedAt": "2026-08-19T13:44:38.000Z",
+    "category": "AI框架",
+    "source": "OpenAI Agents Python SDK 发布",
+    "imageUrl": null,
+    "author": "seratch",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_4d3f8d8c8b307f670217",
+    "title": "OpenAI Agents Python SDK 发布 v0.21.1",
+    "description": "What's Changed feat(core): add model call timeouts by @seratch in #4428 feat(sandbox): add run-scoped sandbox working directories by @seratch in #4427 feat(sandbox): allow Docker sandboxes to disable networking by @koadegno in #4452 feat(sandbox): add Modal sandbox resource options by @Filimoa in #4455 fix(core): honor exact call approval decisions by @seratch in #4447 fix(core): count Responses requests without usage by @seratch in #4453 fix(core): close all MultiProvider children after failure",
+    "url": "https://github.com/openai/openai-agents-python/releases/tag/v0.21.1",
+    "publishedAt": "2026-08-16T22:28:55.000Z",
+    "category": "AI框架",
+    "source": "OpenAI Agents Python SDK 发布",
+    "imageUrl": null,
+    "author": "seratch",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_ba7442a9a2dcb32b5d26",
+    "title": "OpenAI Agents Python SDK 发布 v0.21.0",
+    "description": "Key Changes This minor release does not introduce a known breaking SDK behavior change. The minor version bump is for the new provider-neutral testing APIs and the OpenAI Python v3 compatibility update. Highlights: Added agents.testing, agents.realtime.testing, and agents.voice.testing utilities for deterministic Agent, Sandbox, Realtime, and Voice workflow tests without provider requests. Updated OpenAI provider compatibility to openai>=3.0.0,<4, including HTTPX2-aware request, response, transp",
+    "url": "https://github.com/openai/openai-agents-python/releases/tag/v0.21.0",
+    "publishedAt": "2026-08-15T02:49:37.000Z",
+    "category": "AI新闻",
+    "source": "OpenAI Agents Python SDK 发布",
+    "imageUrl": null,
+    "author": "seratch",
+    "language": "multi",
+    "region": "global"
+  }
+]

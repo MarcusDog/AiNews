@@ -1,0 +1,289 @@
+{
+  "generatedAt": "2026-08-26T20:00:01.698Z",
+  "ttlHours": 4,
+  "days": 14,
+  "limit": 25,
+  "minCount": 2,
+  "data": {
+    "generatedAt": "2026-08-26T20:00:01.698Z",
+    "windowDays": 14,
+    "totalTitles": 732,
+    "hotKeywords": [
+      {
+        "keyword": "LLM",
+        "titleHits": 59,
+        "articleCount": 100,
+        "sample": {
+          "title": "KSE-Web: An Analysis of Hybrid Retrieval and LLM-Assisted Query Expansion for Low-Resource Khmer Semantic Search",
+          "source": "arXiv Computation and Language"
+        }
+      },
+      {
+        "keyword": "Runpod",
+        "titleHits": 45,
+        "articleCount": 46,
+        "sample": {
+          "title": "Inference, optimized: How we benchmarked Runpod Overdrive",
+          "source": "Runpod Blog"
+        }
+      },
+      {
+        "keyword": "Anthropic",
+        "titleHits": 18,
+        "articleCount": 19,
+        "sample": {
+          "title": "Anthropic TypeScript SDK 发布 google-cloud-sdk v0.0.11",
+          "source": "Anthropic TypeScript SDK 发布"
+        }
+      },
+      {
+        "keyword": "Multimodal",
+        "titleHits": 15,
+        "articleCount": 15,
+        "sample": {
+          "title": "RIG-RoPE: Relation-Stratified Multimodal Attention with Instance-Local Rotary Geometry and Representation-Aware Traversal Coordinates",
+          "source": "arXiv Computation and Language"
+        }
+      },
+      {
+        "keyword": "Multi",
+        "titleHits": 15,
+        "articleCount": 56,
+        "sample": {
+          "title": "Evidence-State Reliability Under Controlled Degradation: Parser-Validity Divergence in a Multi-Stage LLM Pipeline",
+          "source": "arXiv Computation and Language"
+        }
+      },
+      {
+        "keyword": "OpenAI",
+        "titleHits": 13,
+        "articleCount": 13,
+        "sample": {
+          "title": "OpenAI Parameter Golf: what 1,100 researchers built in six weeks",
+          "source": "Runpod Blog"
+        }
+      },
+      {
+        "keyword": "RAG",
+        "titleHits": 12,
+        "articleCount": 20,
+        "sample": {
+          "title": "知识库问表格就翻车？我把茅台年报喂给 RAG 后，找到了真凶",
+          "source": "CSDN AI"
+        }
+      },
+      {
+        "keyword": "LLMs",
+        "titleHits": 11,
+        "articleCount": 31,
+        "sample": {
+          "title": "Predicting Multilingual Classification and Translation Performance of LLMs with Cross-Lingual Alignment -- Is English Enough?",
+          "source": "arXiv Computation and Language"
+        }
+      },
+      {
+        "keyword": "AINews",
+        "titleHits": 10,
+        "articleCount": 10,
+        "sample": {
+          "title": "[AINews] Andrew Ng gets into AI Engineering",
+          "source": "Latent Space"
+        }
+      },
+      {
+        "keyword": "Language Models",
+        "titleHits": 9,
+        "articleCount": 40,
+        "sample": {
+          "title": "Mitigating Bias in Large Vision-Language Models via Counterfactual Ensemble Decoding",
+          "source": "arXiv Computation and Language"
+        }
+      },
+      {
+        "keyword": "Multi-Agent",
+        "titleHits": 9,
+        "articleCount": 10,
+        "sample": {
+          "title": "The Collaboration Tax: How Much LLM Multi-Agent Systems Pay to Coordinate",
+          "source": "arXiv Computation and Language"
+        }
+      },
+      {
+        "keyword": "Vision",
+        "titleHits": 8,
+        "articleCount": 19,
+        "sample": {
+          "title": "What Transfers from Text to Vision? Capability Scaling Laws and Transfer Dynamics for VLMs",
+          "source": "arXiv Computation and Language"
+        }
+      },
+      {
+        "keyword": "Cross",
+        "titleHits": 8,
+        "articleCount": 23,
+        "sample": {
+          "title": "Predicting Multilingual Classification and Translation Performance of LLMs with Cross-Lingual Alignment -- Is English Enough?",
+          "source": "arXiv Computation and Language"
+        }
+      },
+      {
+        "keyword": "Stable Diffusion",
+        "titleHits": 8,
+        "articleCount": 8,
+        "sample": {
+          "title": "Stable Diffusion + ComfyUI on Runpod: Easy Setup Guide",
+          "source": "Runpod Blog"
+        }
+      },
+      {
+        "keyword": "Agent",
+        "titleHits": 7,
+        "articleCount": 81,
+        "sample": {
+          "title": "AI 多维分析能力对比：Copilot vs Agent vs Auto-Analyst 的定位差异",
+          "source": "CSDN AI"
+        }
+      },
+      {
+        "keyword": "Claude",
+        "titleHits": 6,
+        "articleCount": 7,
+        "sample": {
+          "title": "【AI智能体】Claude Code +Superpowers 项目实战操作详解",
+          "source": "CSDN AI"
+        }
+      },
+      {
+        "keyword": "Anthropic TypeScript SDK",
+        "titleHits": 6,
+        "articleCount": 6,
+        "sample": {
+          "title": "Anthropic TypeScript SDK 发布 google-cloud-sdk v0.0.11",
+          "source": "Anthropic TypeScript SDK 发布"
+        }
+      },
+      {
+        "keyword": "AI Agent",
+        "titleHits": 6,
+        "articleCount": 13,
+        "sample": {
+          "title": "OpenClaw 测试策略实战：AI Agent 自动化测试体系搭建与落地",
+          "source": "CSDN AI"
+        }
+      },
+      {
+        "keyword": "Text",
+        "titleHits": 6,
+        "articleCount": 36,
+        "sample": {
+          "title": "What Transfers from Text to Vision? Capability Scaling Laws and Transfer Dynamics for VLMs",
+          "source": "arXiv Computation and Language"
+        }
+      },
+      {
+        "keyword": "Diffusion Language",
+        "titleHits": 6,
+        "articleCount": 6,
+        "sample": {
+          "title": "Answer First, Reason Later: When Commitment Order Costs Accuracy in Diffusion Language Models",
+          "source": "arXiv Computation and Language"
+        }
+      },
+      {
+        "keyword": "Qwen3",
+        "titleHits": 5,
+        "articleCount": 5,
+        "sample": {
+          "title": "v0.9.5: Qwen3.5/3.6, Gemma 4, Transformers v5",
+          "source": "LLaMA Factory 官方发布"
+        }
+      },
+      {
+        "keyword": "Large Language Models",
+        "titleHits": 5,
+        "articleCount": 17,
+        "sample": {
+          "title": "Agentic Scaffolding Amplifies Sycophantic Behavior in Large Language Models",
+          "source": "arXiv Computation and Language"
+        }
+      },
+      {
+        "keyword": "Long",
+        "titleHits": 5,
+        "articleCount": 10,
+        "sample": {
+          "title": "WnW: Waxing-and-Waning KV Cache for Long-Form Speech LLMs",
+          "source": "arXiv Computation and Language"
+        }
+      },
+      {
+        "keyword": "A Multi",
+        "titleHits": 5,
+        "articleCount": 11,
+        "sample": {
+          "title": "AraDetox: A Multi-Dialect Arabic Detoxification Dataset",
+          "source": "arXiv Computation and Language"
+        }
+      },
+      {
+        "keyword": "Self",
+        "titleHits": 5,
+        "articleCount": 14,
+        "sample": {
+          "title": "SelFusion: Self-distillation for Diffusion Language Models",
+          "source": "arXiv Computation and Language"
+        }
+      }
+    ],
+    "hotCategories": [
+      {
+        "category": "新算法",
+        "count": 333
+      },
+      {
+        "category": "AI新闻",
+        "count": 297
+      },
+      {
+        "category": "AI框架",
+        "count": 79
+      },
+      {
+        "category": "新思路",
+        "count": 16
+      },
+      {
+        "category": "新工具",
+        "count": 7
+      }
+    ],
+    "hotSources": [
+      {
+        "source": "arXiv Computation and Language",
+        "count": 332
+      },
+      {
+        "source": "Runpod Blog",
+        "count": 100
+      },
+      {
+        "source": "CSDN AI",
+        "count": 75
+      },
+      {
+        "source": "Simon Willison AI",
+        "count": 30
+      },
+      {
+        "source": "Latent Space",
+        "count": 17
+      }
+    ],
+    "searchTips": [
+      "最热分类：新算法（333 篇）",
+      "关注源：arXiv Computation and Language",
+      "搜索试试：LLM、Runpod、Anthropic",
+      "用英文关键词往往能搜到更多 arXiv 论文"
+    ]
+  }
+}

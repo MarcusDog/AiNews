@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_f3422f24bec5627d5e52",
+    "title": "Qwen Agent 发布 v0.0.26",
+    "description": "bugfix: support set sse_read_timeout and automatic reconnection for mcp",
+    "url": "https://github.com/QwenLM/Qwen-Agent/releases/tag/v0.0.26",
+    "publishedAt": "2025-05-29T09:36:00.000Z",
+    "category": "AI框架",
+    "source": "Qwen Agent 官方发布",
+    "imageUrl": null,
+    "author": "tuhahaha",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_ba156e90d696d1e8ff2e",
+    "title": "Qwen Agent 发布 v0.0.25",
+    "description": "support streamable-http for mcp change license to apache 2.0",
+    "url": "https://github.com/QwenLM/Qwen-Agent/releases/tag/v0.0.25",
+    "publishedAt": "2025-05-22T10:29:30.000Z",
+    "category": "AI框架",
+    "source": "Qwen Agent 官方发布",
+    "imageUrl": null,
+    "author": "tuhahaha",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_e75091a707f3a3dc951c",
+    "title": "Qwen Agent 发布 v0.0.24",
+    "description": "allow tool response to be empty string add a fallback for invalid tool call output support resource in mcp server as tool support transformers models, audio input, and fix openvino",
+    "url": "https://github.com/QwenLM/Qwen-Agent/releases/tag/v0.0.24",
+    "publishedAt": "2025-05-19T11:19:10.000Z",
+    "category": "AI框架",
+    "source": "Qwen Agent 官方发布",
+    "imageUrl": null,
+    "author": "tuhahaha",
+    "language": "en",
+    "region": "global"
+  }
+]

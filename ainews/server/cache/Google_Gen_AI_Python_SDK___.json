@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_3fde09230ae21401e03c",
+    "title": "Google Gen AI Python SDK 发布 v2.20.0",
+    "description": "2.20.0 (2026-08-25) Features Add AudioTranscriptionConfigMode (4a80954) Add environment files support and scotty file download helper (3074263) Add TYPE_JPEG2000 to VideoContent.MimeType enum (ef39c40)",
+    "url": "https://github.com/googleapis/python-genai/releases/tag/v2.20.0",
+    "publishedAt": "2026-08-25T21:14:10.000Z",
+    "category": "AI框架",
+    "source": "Google Gen AI Python SDK 发布",
+    "imageUrl": null,
+    "author": "release-please[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_08a9c9e27bfb52d74224",
+    "title": "Google Gen AI Python SDK 发布 v2.19.0",
+    "description": "2.19.0 (2026-08-19) Features Add mode enum (VERBATIM, SMART) to AudioTranscriptionConfig and TranscriptionConfig. (e8cd7d0) Add enable_data_retention to ToolParallelAiSearch, Add step_count to ReinforcementTuningHyperParameters, Add BidiGenerateContentSetup (656da78) Add IDLE state to live connection status enum and mark REQUIRES_ACTION as deprecated. (599d89f) Add video resolution and extension task parameters (c3bdb88)",
+    "url": "https://github.com/googleapis/python-genai/releases/tag/v2.19.0",
+    "publishedAt": "2026-08-19T22:18:27.000Z",
+    "category": "AI框架",
+    "source": "Google Gen AI Python SDK 发布",
+    "imageUrl": null,
+    "author": "release-please[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_e414f7802862d0e0d8b6",
+    "title": "Google Gen AI Python SDK 发布 v2.18.1",
+    "description": "2.18.1 (2026-08-13) Bug Fixes Add gemini-3.7-flash (f898b61)",
+    "url": "https://github.com/googleapis/python-genai/releases/tag/v2.18.1",
+    "publishedAt": "2026-08-13T21:41:00.000Z",
+    "category": "AI框架",
+    "source": "Google Gen AI Python SDK 发布",
+    "imageUrl": null,
+    "author": "release-please[bot]",
+    "language": "multi",
+    "region": "global"
+  }
+]

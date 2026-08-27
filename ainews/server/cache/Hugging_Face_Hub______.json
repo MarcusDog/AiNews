@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_33f5013852e0f55c3e78",
+    "title": "[v1.28.0] Hardware discovery and managed engine images for Inference Endpoints and more",
+    "description": "🔎 Discover deployable hardware with hf endpoints hardware Deploying an Inference Endpoint requires five hardware flags (--vendor, --region, --accelerator, --instance-type, --instance-size) whose valid values depend on each other, and until now there was no way to learn them from the CLI. The new hf endpoints hardware command lists the valid combinations along with the price per replica per hour and your namespace's accelerator quota, filtered by default to the hardware you can deploy on right n",
+    "url": "https://github.com/huggingface/huggingface_hub/releases/tag/v1.28.0",
+    "publishedAt": "2026-08-18T12:26:44.000Z",
+    "category": "AI框架",
+    "source": "Hugging Face Hub 客户端发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_522dcd1be0b2ed4b6b1f",
+    "title": "Hugging Face Hub 客户端 发布 v1.28.0.rc0",
+    "description": "v1.28.0.rc0 pre-release",
+    "url": "https://github.com/huggingface/huggingface_hub/releases/tag/v1.28.0.rc0",
+    "publishedAt": "2026-08-18T11:53:57.000Z",
+    "category": "AI框架",
+    "source": "Hugging Face Hub 客户端发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_896ffb804e1a4e04b3a3",
+    "title": "[v1.27.0] Automatic `hf-cli` skill install, engine flags for Inference Endpoints & more",
+    "description": "🤖 The hf-cli skill installs itself and stays in sync The hf-cli skill teaches AI agents how to use the hf CLI, but until now you had to know it existed and install it by hand. The standalone installers (bash and PowerShell) now install it globally by default, pass --exclude-skill / -ExcludeSkill to skip — and hf update refreshes it afterwards, without ever bringing it back if you opted out or removed it. Any hf command also hints, at most once a day, when the skill is missing or was generated b",
+    "url": "https://github.com/huggingface/huggingface_hub/releases/tag/v1.27.0",
+    "publishedAt": "2026-08-07T12:46:41.000Z",
+    "category": "AI框架",
+    "source": "Hugging Face Hub 客户端发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  }
+]

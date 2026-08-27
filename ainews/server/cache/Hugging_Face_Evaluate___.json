@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_749562a934a2a2a25441",
+    "title": "Hugging Face Evaluate 发布 v0.4.6",
+    "description": "What's Changed Remove deprecated HfFolder by @Wauplin in #701 this change adds support for huggingface_hub>=1.0 Update index.mdx by @meg-huggingface in #694 Fix parity tests ci by @lhoestq in #696 add leaderboards to docs by @burtenshaw in #697* Pin hfh in CI for updating repos by @lhoestq in #702 New Contributors @burtenshaw made their first contribution in #697 Full Changelog: v0.4.5...v0.4.6",
+    "url": "https://github.com/huggingface/evaluate/releases/tag/v0.4.6",
+    "publishedAt": "2025-09-18T13:07:20.000Z",
+    "category": "AI框架",
+    "source": "Hugging Face Evaluate 发布",
+    "imageUrl": null,
+    "author": "lhoestq",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_74c33278a563c8084c38",
+    "title": "Hugging Face Evaluate 发布 v0.4.5",
+    "description": "What's Changed Support datasets 4 by @lhoestq in #689 Full Changelog: v0.4.4...v0.4.5",
+    "url": "https://github.com/huggingface/evaluate/releases/tag/v0.4.5",
+    "publishedAt": "2025-07-10T13:26:45.000Z",
+    "category": "AI框架",
+    "source": "Hugging Face Evaluate 发布",
+    "imageUrl": null,
+    "author": "lhoestq",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_68d5c10a8d82de368ddf",
+    "title": "Hugging Face Evaluate 发布 v0.4.4",
+    "description": "Bug fixes support jiwer 4.0 by @lhoestq in #685 Fix Perplexity Score For Tokenizers without bos_token_id by @kylehowells in #682 Fix size attribute error for precision/recall/f1 by @Maxwell-Jia in #656 Other changes Add required hf_token secret to build main documentation by @albertvillanova in #635 Pin numpy=3.9 to fix vulnerability by @albertvillanova in #629 add tip in docs and readme referring to lighteval by @MoritzLaurer in #618 New Contributors @MoritzLaurer made their first contribution ",
+    "url": "https://github.com/huggingface/evaluate/releases/tag/v0.4.4",
+    "publishedAt": "2025-06-20T17:49:29.000Z",
+    "category": "AI新闻",
+    "source": "Hugging Face Evaluate 发布",
+    "imageUrl": null,
+    "author": "lhoestq",
+    "language": "multi",
+    "region": "global"
+  }
+]

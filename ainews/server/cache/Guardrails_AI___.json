@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_4e15b7f399d8d1323512",
+    "title": "Guardrails AI 发布 v0.11.0",
+    "description": "What's Changed Update SECURITY_ADVISORY.md by @ShreyaR in #1499 chore: add grouped Dependabot config by @zsimjee in #1500 [Aikido] Fix security issue in aiohttp via minor version upgrade from 3.13.3 to 3.13.5 by @aikido-autofix[bot] in #1468 Feat/remove code cov by @zsimjee in #1526 update dependabot and deps by @zsimjee in #1528 chore(deps): resolve Dependabot security alerts by @zsimjee in #1536 [Aikido] AI Fix for Template Injection in GitHub Workflows Action by @aikido-autofix[bot] in #1537 ",
+    "url": "https://github.com/guardrails-ai/guardrails/releases/tag/v0.11.0",
+    "publishedAt": "2026-08-14T14:22:32.000Z",
+    "category": "新思路",
+    "source": "Guardrails AI 发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_66d46f0ed54fd3df44ce",
+    "title": "Guardrails AI 发布 v0.10.2",
+    "description": "What's Changed Create SECURITY_ADVISORY.md by @ShreyaR in #1474 Update SECURITY_ADVISORY.md by @ShreyaR in #1478 [Aikido] AI Fix for Template Injection in GitHub Workflows Action by @aikido-autofix[bot] in #1467 fix: update litellm version pin to allow >=1.83.0 by @vaibhatredu in #1484 Update SECURITY_ADVISORY.md by @ShreyaR in #1490 v0.10.2 by @CalebCourier in #1486 release workflow for trusted publishing by @zsimjee in #1493 New Contributors @aikido-autofix[bot] made their first contribution i",
+    "url": "https://github.com/guardrails-ai/guardrails/releases/tag/v0.10.2",
+    "publishedAt": "2026-06-04T19:37:56.000Z",
+    "category": "新思路",
+    "source": "Guardrails AI 发布",
+    "imageUrl": null,
+    "author": "CalebCourier",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_463aa0d04dd9376fecff",
+    "title": "Guardrails AI 发布 v0.10.0",
+    "description": "What's Changed [GR-1405]: Use guardrails_ai.types and Standard Http Client instead of guardrails_api_client by @CalebCourier in #1442 Full Changelog: v0.9.3...v0.10.0",
+    "url": "https://github.com/guardrails-ai/guardrails/releases/tag/v0.10.0",
+    "publishedAt": "2026-04-03T20:00:30.000Z",
+    "category": "新思路",
+    "source": "Guardrails AI 发布",
+    "imageUrl": null,
+    "author": "CalebCourier",
+    "language": "multi",
+    "region": "global"
+  }
+]

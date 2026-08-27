@@ -1,0 +1,28 @@
+[
+  {
+    "id": "article_77d0a26e4921005a9119",
+    "title": "MiniCPM5-1B",
+    "description": "We are releasing MiniCPM5-1B, the first model in the MiniCPM5 series. It is a dense 1B Transformer built for on-device, local deployment, and resource-constrained scenarios, reaching 1B-class open-source SOTA. 🏆 1B-class open-source SOTA: MiniCPM5-1B reaches an average score of 42.57 across reasoning, knowledge, code, instruction-following, math, logic and agentic benchmarks, above the highest average score of 35.61 among strong open-source models in the same size class; its strengths are most ",
+    "url": "https://github.com/OpenBMB/MiniCPM/releases/tag/5.0",
+    "publishedAt": "2026-05-26T02:48:10.000Z",
+    "category": "AI新闻",
+    "source": "MiniCPM 官方基础模型发布",
+    "imageUrl": null,
+    "author": "ZMXJJ",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_493ec82d0c933e03d2a1",
+    "title": "第一个Release版本",
+    "description": "主要功能： 支持 与模型进行文本&图片对话 支持 调用Intel集成显卡加速 MiniCPM 4.0 8B & 0.5B MiniCPM 3.0 4B MiniCPM-V 2.6 8B（多模态） MiniCPM-V 2.0 2.8B（多模态） MiniCPM-2B-128K MiniCPM-1B-SFT-BF16 配置要求： 建议使用英特尔酷睿 ultra7 及以上移动端处理器 建议运行内存 32GB 及以上",
+    "url": "https://github.com/OpenBMB/MiniCPM/releases/tag/2.4.2",
+    "publishedAt": "2025-07-03T08:00:04.000Z",
+    "category": "AI新闻",
+    "source": "MiniCPM 官方基础模型发布",
+    "imageUrl": null,
+    "author": "lovangry",
+    "language": "en",
+    "region": "global"
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_b27ad8715af0926cfce0",
+    "title": "Hugging Face Datasets 发布 5.0.1",
+    "description": "Bug fixes Fix version string in init.py by @qgallouedec in #8244 fix conda build by @lhoestq in #8250 Fix JSON loader schema inference for files starting with a UTF-8 BOM (#8241) by @archievi in #8243 Support hermes traces by @lhoestq in #8255 Fix batch(by_column=...) crashing after shard/shuffle/split by @pkooij in #8259 fix traces streaming by @lhoestq in #8277 support droid agent traces by @cfahlgren1 in #8263 Fix CI: commit operation equality (hfh 1.20.0) and pytest parametrize collection er",
+    "url": "https://github.com/huggingface/datasets/releases/tag/5.0.1",
+    "publishedAt": "2026-07-28T11:11:35.000Z",
+    "category": "AI新闻",
+    "source": "Hugging Face Datasets 发布",
+    "imageUrl": null,
+    "author": "lhoestq",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_39a0f2d2c69f8d1f76a4",
+    "title": "Hugging Face Datasets 发布 5.0.0",
+    "description": "Datasets Features Agent traces Parse Agent traces messages for SFT using teich by @lhoestq in #8232 Agent traces from claude_code/pi/codex and others can now be loaded with load_dataset Using the teich library (new optional dependency), traces are parsed to messages to enable training on traces using e.g. trl Load the data: >>> from datasets import load_dataset >>> ds = load_dataset(\"lhoestq/agent-traces-example\", split=\"train\") >>> ds[0][\"messages\"] [{'role': 'user', 'content': 'Download a rand",
+    "url": "https://github.com/huggingface/datasets/releases/tag/5.0.0",
+    "publishedAt": "2026-06-05T13:29:36.000Z",
+    "category": "AI新闻",
+    "source": "Hugging Face Datasets 发布",
+    "imageUrl": "https://private-user-images.githubusercontent.com/42851186/590989138-dd85a11b-72fc-474c-8faa-33eda779a4fb.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODc4MTE1MzYsIm5iZiI6MTc4NzgxMTIzNiwicGF0aCI6Ii80Mjg1MTE4Ni81OTA5ODkxMzgtZGQ4NWExMWItNzJmYy00NzRjLThmYWEtMzNlZGE3NzlhNGZiLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA4MjclMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwODI3VDA2MTM1NlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQ1NzcyODc2YTUyNTVkODJkMTA3MjAyZjUzNTVhMmM0MjA0MzY0YmVhNGEzN2RmNjBlZjM1ODhjZjNkYjI2N2UmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.A-Bq_amOJb4KoYBw7fn2vXJei4_L1qwztSDmt-Cxjo4",
+    "author": "lhoestq",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_e51a071cb32620776cf8",
+    "title": "Hugging Face Datasets 发布 4.8.5",
+    "description": "Main bug fixes fix: decode Json() values before calling DataFrame.to_json() (#8116) by @Brianzhengca in #8122 Fix: decode JSON type before to_list or to_dict is called by @ItsTania in #8137 Fix batching for table-formatted datasets by @bluehyena in #8126 Fix iterable map resume state by @Brianzhengca in #8147 don't embed remote files in download_and_prepare to parquet by @lhoestq in #8150 Other improvements and bug fixes Parse agent traces by @lhoestq in #8113 🔒 Pin GitHub Actions to commit SHA",
+    "url": "https://github.com/huggingface/datasets/releases/tag/4.8.5",
+    "publishedAt": "2026-04-27T15:46:14.000Z",
+    "category": "AI新闻",
+    "source": "Hugging Face Datasets 发布",
+    "imageUrl": null,
+    "author": "lhoestq",
+    "language": "multi",
+    "region": "global"
+  }
+]

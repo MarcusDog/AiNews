@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_cfcaed4c91e86f964085",
+    "title": "gfx950-tutorial-v2.0",
+    "description": "Adds the two compiler changes the Gluon Flash Attention kernels need, on top 850a2b1), so the [Gluon] gl.warp_predicate — a per-wave masked-skip region lowering to [AMD] warp-pipeline barriers — always emit LOCAL cluster barriers rather Verified against the branch these were developed on: both attention kernels and all four inter_wave GEMM kernels (a16w16 fp16/bf16, a8w8, a4w4) compile to byte-identical assembly and pass their correctness checks.",
+    "url": "https://github.com/triton-lang/triton/releases/tag/gfx950-tutorial-v2.0",
+    "publishedAt": "2026-07-29T08:47:51.000Z",
+    "category": "AI框架",
+    "source": "Triton 编译器发布",
+    "imageUrl": null,
+    "author": "zhanglx13",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_cca4a039c4a5f12c7624",
+    "title": "gfx950-tutorial-v1.1: gfx950 tutorial pin v1.1",
+    "description": "Rebased onto upstream triton main with the merged warp-pipeline PR #10840 #10840); keeps the out-of-tree 850a2b1.",
+    "url": "https://github.com/triton-lang/triton/releases/tag/gfx950-tutorial-v1.1",
+    "publishedAt": "2026-07-14T00:40:02.000Z",
+    "category": "AI框架",
+    "source": "Triton 编译器发布",
+    "imageUrl": null,
+    "author": "zhanglx13",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_96446ff76db208a51697",
+    "title": "gfx950-tutorial-v1.0: gfx950 Gluon tutorial v1.0",
+    "description": "Out-of-tree LLIR scheduler + amdgcnas plugins. Removes the in-tree LLIR scheduler and amdgcnas post-assembly tool (now shipped as plugins in the gfx950-gluon-tutorials repo) and keeps only the plugin-enabling hooks: the LLVM_PASS_PLUGIN_KEEP_TARGET_MACHINE gate that preserves the TargetMachine for out-of-tree LLVM pass plugins, and the TRITON_FORCE_MFMA_AGPR flag that forces AGPR-form MFMA accumulators (sets amdgpu-mfma-vgpr-form=0 in llvm.cc; the paired amdgpu-agpr-alloc=256 is a kernel llvm_fn",
+    "url": "https://github.com/triton-lang/triton/releases/tag/gfx950-tutorial-v1.0",
+    "publishedAt": "2026-07-10T18:01:58.000Z",
+    "category": "AI框架",
+    "source": "Triton 编译器发布",
+    "imageUrl": null,
+    "author": "zhanglx13",
+    "language": "en",
+    "region": "global"
+  }
+]

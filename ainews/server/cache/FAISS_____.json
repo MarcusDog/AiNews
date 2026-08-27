@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_f13ae3ddd495c54cd0a5",
+    "title": "FAISS 发布 v1.15.0",
+    "description": "[1.15.0] - 2026-07-31 Full changelog Added 4332ceb Enable byte-LUT gather path for QT_8bit_eden distance computation (#5498) 41133fd Add EDEN quantizer indexes (#5278) 3110fd2 Add MetalIndexIVFPQ with product quantization and residual encoding support (#5288) 6c2b687 Adding cuVS IVF-SQ backend (#5306) 4d778bc Add multi-GPU CAGRA → HNSW build with trainAllNeighbors and multi-GPU optimize (#5282) 42dc286 Implement memory-mapped I/O for Flat and static Vamana SVS indices (#5271) d22107b feat(riscv)",
+    "url": "https://github.com/facebookresearch/faiss/releases/tag/v1.15.0",
+    "publishedAt": "2026-08-03T17:10:58.000Z",
+    "category": "AI框架",
+    "source": "FAISS 官方发布",
+    "imageUrl": null,
+    "author": "mnorris11",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_6cff4a611c46e4063950",
+    "title": "FAISS 发布 v1.14.3",
+    "description": "Highlights Metal GPU backend expansion — new MetalIndexIVFFlat with IVF scan/merge kernels and expanded top-k support (#5202); Metal now enabled by default on Apple Silicon machines (#5280) TurboQuant in ScalarQuantizer — full Algorithm 2 (QJL stage) with SIMD and optimizations (#5170) Sapphire Rapids (SPR) optimizations — ScalarQuantizer L2/IP (#5173), VPOPCNTDQ-based HammingComputer (#5183), and VPOPCNTDQ-based RaBitQ kernel (#5149) faiss-gpu pip wheels — new GPU wheel packaging (#5131); musll",
+    "url": "https://github.com/facebookresearch/faiss/releases/tag/v1.14.3",
+    "publishedAt": "2026-06-13T04:03:53.000Z",
+    "category": "AI框架",
+    "source": "FAISS 官方发布",
+    "imageUrl": null,
+    "author": "alibeklfc",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_fbf034a4b843d26b6d4f",
+    "title": "FAISS 发布 v1.14.2",
+    "description": "Highlights SuperKMeans — faster k-means via ADSampling + PDX progressive pruning (#5168) Metal GPU backend for Apple Silicon, starting with IndexFlat (#5144) RVV (RISC-V Vector) SIMD backend + RISC-V cross-compilation CI (#5156, #5184) pip install support via scikit-build-core + cibuildwheel (#4862) SVS IVF index enabled; SVS upgraded to 0.3.0 (#4801, #4999); SVSVamana usable as IVF coarse quantizer via index_factory (#5175) TurboQuant (CPU) quantizer (#5049) HNSW improvements — optional persist",
+    "url": "https://github.com/facebookresearch/faiss/releases/tag/v1.14.2",
+    "publishedAt": "2026-05-22T20:05:00.000Z",
+    "category": "AI新闻",
+    "source": "FAISS 官方发布",
+    "imageUrl": null,
+    "author": "alibeklfc",
+    "language": "en",
+    "region": "global"
+  }
+]

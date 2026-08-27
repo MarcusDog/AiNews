@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_113409594ecf38f332aa",
+    "title": "whisper.cpp 发布 v1.9.3",
+    "description": "Note Semantic versioning is still work in progress. https://github.com/ggml-org/ggml/discussions/1579 Nightly build: b4938 Change log since v1.9.2 371b5a7 release : v1.9.3 (#4000) 81c1905 cmake : update semver and release process [no ci] (#3996) 4834a23 talk-llama : sync llama.cpp 6b014cf sync : ggml 8189458 ggml : bump version to 0.20.2 (ggml/1589) 51319a2 CUDA: MMVQ nwarps=8 for bs=1 for dense models on DGX Spark (llama/26843) 71759b7 cuda : skip UMA override for HIP builds (llama/27083) 964bb",
+    "url": "https://github.com/ggml-org/whisper.cpp/releases/tag/v1.9.3",
+    "publishedAt": "2026-08-20T11:42:23.000Z",
+    "category": "AI框架",
+    "source": "whisper.cpp 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_cd805d9aad1d51ceac02",
+    "title": "whisper.cpp 发布 v1.9.2",
+    "description": "What's Changed sync : ggml by @ggerganov in #3896 include parakeet in build-xcframework.sh by @daaku in #3899 Fix pkgconfig configuration (Nix build failure) by @nmouha in #3894 examples : update model names in parakeet-cli README.md [no ci] by @danbev in #3906 examples: Fix argument flag for min speech duration in VAD by @QuantiusBenignus in #3907 sync : ggml by @ggerganov in #3912 examples : Improved inference performance of Android example project by @yymin1022 in #3913 ci : set GGML_NATIVE=O",
+    "url": "https://github.com/ggml-org/whisper.cpp/releases/tag/v1.9.2",
+    "publishedAt": "2026-08-04T15:31:37.000Z",
+    "category": "AI新闻",
+    "source": "whisper.cpp 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_8eb7f95e17e42501aec7",
+    "title": "whisper.cpp 发布 v1.9.1",
+    "description": "What's Changed ci : add GGML_NATIVE=OFF and GGML_BMI2=OFF to windows-blas by @danbev in #3891 release : v1.9.1 by @danbev in #3892 Full Changelog: v1.9.0...v1.9.1",
+    "url": "https://github.com/ggml-org/whisper.cpp/releases/tag/v1.9.1",
+    "publishedAt": "2026-06-19T05:53:19.000Z",
+    "category": "AI框架",
+    "source": "whisper.cpp 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  }
+]

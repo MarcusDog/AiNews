@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_99340b63fdb5cccd612b",
+    "title": "InternVL-Chat-V1.5.0",
+    "description": "v1.5.0",
+    "url": "https://github.com/OpenGVLab/InternVL/releases/tag/v1.5.0",
+    "publishedAt": "2024-05-08T16:04:27.000Z",
+    "category": "AI新闻",
+    "source": "InternVL 官方发布",
+    "imageUrl": null,
+    "author": "czczup",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_5fe380e9ee6a2a7dc8f5",
+    "title": "InternVL-Chat-V1.2.3",
+    "description": "V1.2.3",
+    "url": "https://github.com/OpenGVLab/InternVL/releases/tag/v1.2.3",
+    "publishedAt": "2024-03-04T12:14:03.000Z",
+    "category": "AI新闻",
+    "source": "InternVL 官方发布",
+    "imageUrl": null,
+    "author": "czczup",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_daf2335332536350404e",
+    "title": "InternVL-Chat-V1.2.2",
+    "description": "V1.2.2",
+    "url": "https://github.com/OpenGVLab/InternVL/releases/tag/v1.2.2",
+    "publishedAt": "2024-02-21T15:04:50.000Z",
+    "category": "AI新闻",
+    "source": "InternVL 官方发布",
+    "imageUrl": null,
+    "author": "czczup",
+    "language": "en",
+    "region": "global"
+  }
+]

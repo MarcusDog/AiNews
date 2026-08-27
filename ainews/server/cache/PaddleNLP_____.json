@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_ce004c4956e8bb369b8a",
+    "title": "Stable RL v1.0.0",
+    "description": "GRPO、RF++ ready",
+    "url": "https://github.com/PaddlePaddle/PaddleNLP/releases/tag/rl-v1.0.0",
+    "publishedAt": "2025-05-22T09:00:47.000Z",
+    "category": "AI框架",
+    "source": "PaddleNLP 官方发布",
+    "imageUrl": null,
+    "author": "gongel",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_cff526cce6c6ee8c8195",
+    "title": "PaddleNLP 发布 v3.0.0-beta4",
+    "description": "本次版本中，我们全面集成了 DeepSeek R1类的思考模型。推理团队深度优化了模型推理，速度业界领先。此外，我们还发布了自研PP-UIE信息抽取模型。本次重点更新如下。 重点更新： 模型新增 DeepSeek V3/R1, R1-distill, QwQ-32B 热门思考模型，全面支持。用户可以点击官方模型文档列表查看、下载所有模型。 飞桨自研发布下一代通用信息抽取工具 PP-UIE 全新发布。支持8K长度信息抽取。使用文档。 推理部署 全面支持DeepSeek V3/R1满血版FP8、INT8、4比特量化推理，MTP投机解码。 FP8推理，单机输出超1000 tokens/s；4比特单机部署，输出超2100 tokens/s！ 首次协同推理团队，发布统一推理部署镜像，热门模型一键部署。推理部署使用文档全面更新，体验全面提升！见文档。 模型训练： 新增大模型 Embedding 训练，支持INF-CL超大batch size训练。 新增MergeKit模型融合工具，缓解对齐代价。见文档。 低资源训练 全面优化。16G小显存可以流畅训练。 其他重点特性： 文档页面，新增模型列表展示。",
+    "url": "https://github.com/PaddlePaddle/PaddleNLP/releases/tag/v3.0.0-beta4",
+    "publishedAt": "2025-03-12T11:50:38.000Z",
+    "category": "AI框架",
+    "source": "PaddleNLP 官方发布",
+    "imageUrl": null,
+    "author": "ZHUI",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_0ce083997135c187d72c",
+    "title": "PaddleNLP 发布 v3.0.0-beta3",
+    "description": "本次更新增强了PaddleNLP的基础体验，新增了Llama-3.2、DeepSeekV2模型，升级了TokenizerFast功能，重构了SFTTrainer。 此外，PaddleNLP还支持了优化器状态的卸载和重载功能，实现了精细化的重新计算，训练性能提升7%。在Unified Checkpoint方面，进一步优化了异步保存逻辑，新增Checkpoint压缩功能，可节省78.5%存储空间。 主要更新与增强 新增模型： 新增了Llama-3.2模型（#9199）、DeepSeekV2模型（#9250），进一步丰富了大型模型的选择。 基础架构改进： 重构了SFTTrainer和SFTConfig，提高了代码的可维护性。（#9318) 支持优化器状态的卸载和重载功能（#9467），有效降低了内存使用。 通过Hook实现了精细化的重新计算支持，例如，在llama模型上，训练性能可提升7%。（#9396） Unified Checkpoint优化： 更新了异步保存逻辑（#9173, #9274, #9321），显著提升了检查点的保存与加载效率。 增加了对专家并行的支持（#9055），使模型训",
+    "url": "https://github.com/PaddlePaddle/PaddleNLP/releases/tag/v3.0.0-beta3",
+    "publishedAt": "2025-03-11T07:52:11.000Z",
+    "category": "AI框架",
+    "source": "PaddleNLP 官方发布",
+    "imageUrl": null,
+    "author": "ZHUI",
+    "language": "en",
+    "region": "global"
+  }
+]

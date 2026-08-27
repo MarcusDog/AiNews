@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_c3fd45ea4ea0fc35d368",
+    "title": "android harmonyos ios macos linux windows webassembly watchos tvos visionos 预编译库 20260526 e54f7b1",
+    "description": "编译版本，默认配置，android-ndk-r29，ohos-sdk-5.0.3，xcode 16.4，ubuntu-22.04，ubuntu-24.04，vs2015，vs2017，vs2019，vs2022，emscripten-3.1.28 file content arch ncnn-full-source.zip 包含全部 submodule 代码的完整源码 ncnn-android.zip android 静态库/动态库 armeabi-v7a + arm64-v8a + x86 + x86_64 + riscv64 ncnn-android-vulkan.zip android 静态库/动态库，支持 GPU armeabi-v7a + arm64-v8a + x86 + x86_64 + riscv64 ncnn-harmonyos.zip harmonyos 静态库/动态库 armeabi-v7a + arm64-v8a + x86_64 ncnn-harmonyos-vulkan.zip harmonyos 静态库/动态库，支持 GPU armeabi-v7a + a",
+    "url": "https://github.com/Tencent/ncnn/releases/tag/20260526",
+    "publishedAt": "2026-05-27T02:25:02.000Z",
+    "category": "AI新闻",
+    "source": "腾讯 ncnn 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_be274ea0acbdc8d42247",
+    "title": "android ios macos linux windows webassembly watchos tvos visionos 预编译库 20260113 e956fbf",
+    "description": "编译版本，默认配置，android-ndk-r29，xcode 16.4，ubuntu-22.04，ubuntu-24.04，vs2015，vs2017，vs2019，vs2022，emscripten-3.1.28 file content arch ncnn-full-source.zip 包含全部 submodule 代码的完整源码 ncnn-android.zip android 静态库/动态库 armeabi-v7a + arm64-v8a + x86 + x86_64 + riscv64 ncnn-android-vulkan.zip android 静态库/动态库，支持 GPU armeabi-v7a + arm64-v8a + x86 + x86_64 + riscv64 ncnn-apple.zip apple xcframework，ios + ios-simulator + macos + mac-catalyst + watchos + watchos-simulator + tvos + tvos-simulator + visionos + visionos",
+    "url": "https://github.com/Tencent/ncnn/releases/tag/20260113",
+    "publishedAt": "2026-01-13T05:36:41.000Z",
+    "category": "AI新闻",
+    "source": "腾讯 ncnn 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_44b777a84e17c6068d66",
+    "title": "android ios macos linux windows webassembly watchos tvos visionos 预编译库 20250916 c4193aa",
+    "description": "编译版本，默认配置，android-ndk-r28c，xcode 15.2，ubuntu-22.04，ubuntu-24.04，vs2015，vs2017，vs2019，vs2022，emscripten-3.1.28 file content arch ncnn-full-source.zip 包含全部 submodule 代码的完整源码 ncnn-android.zip android 静态库/动态库 armeabi-v7a + arm64-v8a + x86 + x86_64 + riscv64 ncnn-android-vulkan.zip android 静态库/动态库，支持 GPU armeabi-v7a + arm64-v8a + x86 + x86_64 + riscv64 ncnn-apple.zip apple xcframework，ios + ios-simulator + macos + mac-catalyst + watchos + watchos-simulator + tvos + tvos-simulator + visionos + visiono",
+    "url": "https://github.com/Tencent/ncnn/releases/tag/20250916",
+    "publishedAt": "2025-09-16T02:40:37.000Z",
+    "category": "AI新闻",
+    "source": "腾讯 ncnn 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "cn"
+  }
+]

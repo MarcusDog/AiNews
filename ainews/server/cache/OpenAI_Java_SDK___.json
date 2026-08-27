@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_59b68aecadb96341a1ed",
+    "title": "OpenAI Java SDK 发布 v4.53.0",
+    "description": "4.53.0 (2026-08-26) Features api: Add obfuscation to ChatCompletionChunk (#902) (9b1379b) api: add project residency and usage quantity unit support (#933) (3c63360) api: support backend-mediated Realtime WebRTC calls (#937) (e1b15f6) auth: add fixed-alias X.509 transport capability (#934) (2303825) support named data-residency endpoints (#880) (cf942a4) Bug Fixes api: preserve stream IDs for factory-created response errors (#926) (7f9f186) ci: isolate trusted Gradle caches from pull requests (#",
+    "url": "https://github.com/openai/openai-java/releases/tag/v4.53.0",
+    "publishedAt": "2026-08-26T21:57:06.000Z",
+    "category": "AI框架",
+    "source": "OpenAI Java SDK 发布",
+    "imageUrl": null,
+    "author": "openai-sdks[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_9f2a7caba1dd8f759219",
+    "title": "OpenAI Java SDK 发布 v4.52.0",
+    "description": "4.52.0 (2026-08-17) Features add first-class Bedrock Runtime support (SDK-290) (#866) (676b475) api: Add shell call streaming events and image partial fields (#868) (9d0c42d) Bug Fixes make Kotlin formatting consistent locally and in CI (#867) (0ede78d)",
+    "url": "https://github.com/openai/openai-java/releases/tag/v4.52.0",
+    "publishedAt": "2026-08-17T19:10:25.000Z",
+    "category": "AI框架",
+    "source": "OpenAI Java SDK 发布",
+    "imageUrl": null,
+    "author": "openai-sdks[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_3149cec91da207922bfc",
+    "title": "OpenAI Java SDK 发布 v4.51.0",
+    "description": "4.51.0 (2026-08-14) Features api: Add GPT_DAYBREAK and GPT_5_6_CYBER model identifiers (5b9ba3a) api: add WebSocket stream IDs (#861) (4936d0b) api: add workload identity access token issued event (#859) (2b763fe) api: deprecate Sora video APIs (#860) (a191575) api: Ultrafast tier, structured MCP and websocket errors, separate websocket events (#863) (ec274a8) Bug Fixes api: Add GPT_DAYBREAK and GPT_5_6_CYBER model identifiers (#856) (5b9ba3a) api: clarify audio upload metadata requirements (#85",
+    "url": "https://github.com/openai/openai-java/releases/tag/v4.51.0",
+    "publishedAt": "2026-08-14T23:42:20.000Z",
+    "category": "AI框架",
+    "source": "OpenAI Java SDK 发布",
+    "imageUrl": null,
+    "author": "openai-sdks[bot]",
+    "language": "multi",
+    "region": "global"
+  }
+]

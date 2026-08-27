@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_93d99088c3d1e3326d8b",
+    "title": "MLC LLM 发布 v0.20.0",
+    "description": "mlc-llm v0.20.0 stable (last monolithic-era release; aligns with mlc-…",
+    "url": "https://github.com/mlc-ai/mlc-llm/releases/tag/v0.20.0",
+    "publishedAt": "2026-07-07T14:27:26.000Z",
+    "category": "AI框架",
+    "source": "MLC LLM 发布",
+    "imageUrl": null,
+    "author": "MasterJH5574",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_52f2dc8431a1366de2ab",
+    "title": "v0.26.dev0: [Refactor] Update TVM runtime integration (#3501)",
+    "description": "Use relocated NVTX header under tvm/support/cuda and use NVTXScopedRange from tvm::support instead of tvm::runtime. Link and install tvm_runtime_extra by default so distributed runtime symbols are resolved correctly.",
+    "url": "https://github.com/mlc-ai/mlc-llm/releases/tag/v0.26.dev0",
+    "publishedAt": "2026-06-28T02:42:22.000Z",
+    "category": "AI框架",
+    "source": "MLC LLM 发布",
+    "imageUrl": null,
+    "author": "akaashrp",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_74eead0caf142a73405f",
+    "title": "MLC LLM 发布 v0.19.0",
+    "description": "Tag v0.19.0",
+    "url": "https://github.com/mlc-ai/mlc-llm/releases/tag/v0.19.0",
+    "publishedAt": "2025-02-11T05:16:56.000Z",
+    "category": "AI框架",
+    "source": "MLC LLM 发布",
+    "imageUrl": null,
+    "author": "MasterJH5574",
+    "language": "multi",
+    "region": "global"
+  }
+]

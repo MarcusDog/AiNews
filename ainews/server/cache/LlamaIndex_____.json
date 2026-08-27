@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_172d052d12dca60340fc",
+    "title": "LlamaIndex 发布 v0.14.24",
+    "description": "Release Notes [2026-08-19] llama-index-core [0.14.24] fix: close HotpotQA evaluator file handles (#22113) fix(core): preserve oversized leaf nodes in CodeSplitter (#22119) fix: preserve multiblock chat history writes (#22124) fix(core): skip empty nodes in HTMLNodeParser (#22125) fix(core): respect mmr_threshold=0 in MMR embedding search (#22126) fix: keep all nodes per document in IngestionPipeline upserts (re-submit of #22046, not a dup of #21456) (#22133) fix: don't mark *args/**kwargs as req",
+    "url": "https://github.com/run-llama/llama_index/releases/tag/v0.14.24",
+    "publishedAt": "2026-08-19T18:48:01.000Z",
+    "category": "AI框架",
+    "source": "LlamaIndex 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_b0fe2e85015610c8fad3",
+    "title": "LlamaIndex 发布 v0.14.23",
+    "description": "Release Notes [2026-06-24] llama-index-callbacks-argilla [0.5.0] chore(deps): bump the uv group across 32 directories with 3 updates (#21664) chore(deps): bump the uv group across 29 directories with 3 updates (#21665) chore(deps): bump the uv group across 31 directories with 3 updates (#21668) chore(deps): bump the pip group across 35 directories with 4 updates (#21714) chore(deps): bump the uv group across 32 directories with 5 updates (#21717) chore(deps): bump the uv group across 31 director",
+    "url": "https://github.com/run-llama/llama_index/releases/tag/v0.14.23",
+    "publishedAt": "2026-06-24T19:36:43.000Z",
+    "category": "AI新闻",
+    "source": "LlamaIndex 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_f15a335fe7d11c978e62",
+    "title": "LlamaIndex 发布 v0.14.22",
+    "description": "Release Notes [2026-05-14] llama-index-agent-agentmesh [0.2.0] mass uv lock --upgrade (#21638) llama-index-callbacks-agentops [0.5.0] chore(deps): bump the pip group across 55 directories with 3 updates (#21435) mass uv lock --upgrade (#21638) llama-index-callbacks-aim [0.4.1] mass uv lock --upgrade (#21638) llama-index-callbacks-argilla [0.5.0] chore(deps): bump the pip group across 55 directories with 3 updates (#21435) llama-index-callbacks-arize-phoenix [0.7.0] chore(deps): bump the pip grou",
+    "url": "https://github.com/run-llama/llama_index/releases/tag/v0.14.22",
+    "publishedAt": "2026-05-14T20:22:24.000Z",
+    "category": "AI框架",
+    "source": "LlamaIndex 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  }
+]

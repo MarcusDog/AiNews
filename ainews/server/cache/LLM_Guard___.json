@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_1c44e09ae22967f91eae",
+    "title": "v0.3.16: 0.3.16 version prepare (#244)",
+    "description": "preparing to bump a new version fixing",
+    "url": "https://github.com/protectai/llm-guard/releases/tag/v0.3.16",
+    "publishedAt": "2025-05-19T17:12:06.000Z",
+    "category": "AI新闻",
+    "source": "LLM Guard 发布",
+    "imageUrl": null,
+    "author": "asofter",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_b6bfe6d10faabd551e99",
+    "title": "LLM Guard 发布 v0.3.15",
+    "description": "bump version to 0.3.15",
+    "url": "https://github.com/protectai/llm-guard/releases/tag/v0.3.15",
+    "publishedAt": "2024-08-23T08:11:55.000Z",
+    "category": "AI新闻",
+    "source": "LLM Guard 发布",
+    "imageUrl": null,
+    "author": "asofter",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_c7e95c16c06f706c4a86",
+    "title": "LLM Guard 发布 v0.3.14",
+    "description": "upgrading python for lint",
+    "url": "https://github.com/protectai/llm-guard/releases/tag/v0.3.14",
+    "publishedAt": "2024-06-17T09:57:28.000Z",
+    "category": "AI新闻",
+    "source": "LLM Guard 发布",
+    "imageUrl": null,
+    "author": "asofter",
+    "language": "en",
+    "region": "global"
+  }
+]

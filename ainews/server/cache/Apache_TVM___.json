@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_844d8995e5a8e757446d",
+    "title": "v0.27.dev0: tirx: represent buffer parameters with BufferType (#20086)",
+    "description": "This phases out PrimFunc.buffer_map entirely. Buffer parameters now The migration updates construction and visitor paths across TIRx, TE, S-TIR, Relax, printers/parsers, packed-ABI lowering, specialization, storage rewriting, and related tests and documentation. BufferType signature shapes use left-to-right match-scope binding: the first quoted shape expression defines missing symbolic variables, and later dimensions, parameters, and matching scalar declarations reuse those exact variables.",
+    "url": "https://github.com/apache/tvm/releases/tag/v0.27.dev0",
+    "publishedAt": "2026-08-05T01:17:05.000Z",
+    "category": "AI框架",
+    "source": "Apache TVM 发布",
+    "imageUrl": null,
+    "author": "tqchen",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_02bf7c5e717253457465",
+    "title": "Apache TVM 发布 v0.26.0",
+    "description": "What's Changed [Relax][PyTorch] Cast non-bool inputs to bool in logical_and converter by @javierdejesusda in #19679 [CI] Remove PyPI-only tag ref guard from wheel publishing by @tlopex in #19685 [CI] Target apache-tvm for PyPI wheel publishing by @tlopex in #19686 [Web] Bump tvmjs version to 0.25.0-dev1 by @akaashrp in #19687 [Fix] CommReduce could handle 0-dim data by @flashmouse in #19683 [CI] Pin actions by version tag, trim wheel perms by @MasterJH5574 in #19703 [Tests] Fix s_tir tests using",
+    "url": "https://github.com/apache/tvm/releases/tag/v0.26.0",
+    "publishedAt": "2026-08-11T01:04:25.000Z",
+    "category": "AI框架",
+    "source": "Apache TVM 发布",
+    "imageUrl": null,
+    "author": "MasterJH5574",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_ca7e0c97c34db0b1d5b2",
+    "title": "Apache TVM 发布 v0.26.0.rc0",
+    "description": "What's Changed [release][Dont Squash] Update version to 0.24.0 and 0.25.0.dev on main branch by @ysh329 in #19446 [Relax][Frontend] Add ParameterList and ParameterDict containers by @mshr-h in #19495 [Relax][Frontend][TFLite] Add segment operator mappings by @Aharrypotter in #19491 [BUGFIX][TIR] Skip bool-typed expressions in CSE by @tqchen in #19502 [Relax][Frontend][TFLite] Add tests coverage for SPACE_TO_BATCH_ND and BATCH_TO_SPACE_ND by @rknastenka in #19499 [BugFix][Relax] Fix scatter_eleme",
+    "url": "https://github.com/apache/tvm/releases/tag/v0.26.0.rc0",
+    "publishedAt": "2026-08-05T20:45:42.000Z",
+    "category": "AI框架",
+    "source": "Apache TVM 发布",
+    "imageUrl": null,
+    "author": "MasterJH5574",
+    "language": "multi",
+    "region": "global"
+  }
+]

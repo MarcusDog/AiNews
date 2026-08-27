@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_f598acae198ca58c5161",
+    "title": "Ray-2.58.0",
+    "description": "Highlights Ray Serve LLM: In this release we've completed KV cache and token aware request routing, which was previewed in 2.57. Tokenization now happens in-process on the LLMRouter ingress replica, the routing decision is made there, tokens are transmitted out-of-band so the engine does not re-tokenize, KV lifecycle events are broadcast to every ingress replica (#64642, #64920, #64949, #65010, #65095). KV cache and token aware routing is also aware of CPU KV caches, so offloaded KV cache blocks",
+    "url": "https://github.com/ray-project/ray/releases/tag/ray-2.58.0",
+    "publishedAt": "2026-08-23T05:42:08.000Z",
+    "category": "AI新闻",
+    "source": "Ray 官方发布",
+    "imageUrl": null,
+    "author": "sai-miduthuri",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_70a7529723cd76975057",
+    "title": "Ray-2.57.0",
+    "description": "Highlights Ray Data: In this Ray release, we've enabled DataSourceV2 by default (#64821), so read_parquet and friends use the new scan/listing infrastructure with row-group-aware chunking and predicate splitting. Hash Shuffle V2 eliminates the aggregator actor pool. V1 had to provision that pool up front from an estimate of the input size, and its actors accumulated partition shards in actor heap memory, invisible to Ray and unspillable, until finalization. V2 replaces it with two stateless task",
+    "url": "https://github.com/ray-project/ray/releases/tag/ray-2.57.0",
+    "publishedAt": "2026-08-12T19:26:06.000Z",
+    "category": "AI新闻",
+    "source": "Ray 官方发布",
+    "imageUrl": null,
+    "author": "sai-miduthuri",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_e3b27353733d2a7f4424",
+    "title": "Ray-2.56.1",
+    "description": "Highlights Ray Data: We added fixes for several to_pandas regressions introduced in 2.56: an opt-out flag (RAY_DATA_ENABLE_ARROW_BACKED_PANDAS_CONVERSION) for Arrow-backed conversion, an int64/double[pyarrow] overflow crash on concatenation, and a TensorDtype.__from_arrow__ crash on empty tensor columns (#64793, #64794). Ray Core: We added early detection for system-slice memory pressure: the memory monitor now snapshots the user and system cgroup slices together and logs an error when the syste",
+    "url": "https://github.com/ray-project/ray/releases/tag/ray-2.56.1",
+    "publishedAt": "2026-08-12T19:31:51.000Z",
+    "category": "AI新闻",
+    "source": "Ray 官方发布",
+    "imageUrl": null,
+    "author": "sai-miduthuri",
+    "language": "en",
+    "region": "global"
+  }
+]

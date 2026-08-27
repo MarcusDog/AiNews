@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_d68df2471f7cceabe5be",
+    "title": "Anthropic Go SDK 发布 v1.67.0",
+    "description": "1.67.0 (2026-08-26) Full Changelog: v1.66.0...v1.67.0 Features api: add updates thinking display mode (beta) (44fa7a6) api: add missing anthropic-beta values (118b499) api: add support for Organization API endpoints (713c567) Bug Fixes messages: add missing ToParam methods and exhaustiveness test (#245) (e385915) tools: keep the tool runner going on pause_turn (#250) (2fa015b) Chores docs: clarify skill version latest support and memory version retention (c5d5ac4) internal: cancel superseded CI ",
+    "url": "https://github.com/anthropics/anthropic-sdk-go/releases/tag/v1.67.0",
+    "publishedAt": "2026-08-26T17:07:29.000Z",
+    "category": "AI框架",
+    "source": "Anthropic Go SDK 发布",
+    "imageUrl": null,
+    "author": "stainless-app[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_c0fce6f59a2f8f528a10",
+    "title": "Anthropic Go SDK 发布 v1.66.0",
+    "description": "1.66.0 (2026-08-19) Full Changelog: v1.65.0...v1.66.0 Features api: managed agents web search config and self hosted sandbox memory (694b03a)",
+    "url": "https://github.com/anthropics/anthropic-sdk-go/releases/tag/v1.66.0",
+    "publishedAt": "2026-08-19T22:00:23.000Z",
+    "category": "AI框架",
+    "source": "Anthropic Go SDK 发布",
+    "imageUrl": null,
+    "author": "stainless-app[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_15e860bca932a199d6f3",
+    "title": "Anthropic Go SDK 发布 v1.65.0",
+    "description": "1.65.0 (2026-08-19) Full Changelog: v1.64.0...v1.65.0 Features api: Files and Skills APIs are now GA; add computer use and browser use toolsets (e7be7af)",
+    "url": "https://github.com/anthropics/anthropic-sdk-go/releases/tag/v1.65.0",
+    "publishedAt": "2026-08-19T16:49:40.000Z",
+    "category": "AI框架",
+    "source": "Anthropic Go SDK 发布",
+    "imageUrl": null,
+    "author": "stainless-app[bot]",
+    "language": "multi",
+    "region": "global"
+  }
+]

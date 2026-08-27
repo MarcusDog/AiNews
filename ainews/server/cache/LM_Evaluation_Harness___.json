@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_3ccede5038c28acc7748",
+    "title": "LM Evaluation Harness 发布 v0.5.0.dev1",
+    "description": "v0.5.0 dev preview 1",
+    "url": "https://github.com/EleutherAI/lm-evaluation-harness/releases/tag/v0.5.0.dev1",
+    "publishedAt": "2026-05-11T14:22:10.000Z",
+    "category": "AI新闻",
+    "source": "LM Evaluation Harness 发布",
+    "imageUrl": null,
+    "author": "baberabb",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_7605b235c482a775cc35",
+    "title": "LM Evaluation Harness 发布 v0.4.12",
+    "description": "New release with four new model backends, tensor parallel support for transformers based models (hf), new benchmarks, a TaskManager refactor, and a long tail of task correctness fixes. Highlights New Model Backends TensorRT-LLM (trt-llm) — NVIDIA TensorRT-LLM backend for optimized GPU inference by @Tracin in #3628 Megatron-LM (megatron-lm) — Megatron-LM backend with TP/EP/DP support by @shangxiaokang in #3521 (with follow-up hardening in #3607) Intel Gaudi — Gaudi support via optimum-habana by @",
+    "url": "https://github.com/EleutherAI/lm-evaluation-harness/releases/tag/v0.4.12",
+    "publishedAt": "2026-05-11T13:04:19.000Z",
+    "category": "AI新闻",
+    "source": "LM Evaluation Harness 发布",
+    "imageUrl": null,
+    "author": "baberabb",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_361bfe3d58165f4f77f4",
+    "title": "LM Evaluation Harness 发布 v0.4.11",
+    "description": "v0.4.11 Release Notes Minor release. Stay tuned for bigger changes next release. New Platform Support Windows ML Backend — Native Windows ML inference support by @chapsiru and @chemwolf6922 in #3470, #3564, #3565 New Benchmarks & Tasks BEAR knowledge probe by @plonerma in #3496 Task Version Changes The following tasks have updated versions. Results from a previous task versions may not be directly comparable. See the linked PRs or individual task READMEs for changelogs. afrobench_belebele (all v",
+    "url": "https://github.com/EleutherAI/lm-evaluation-harness/releases/tag/v0.4.11",
+    "publishedAt": "2026-02-13T20:21:47.000Z",
+    "category": "AI新闻",
+    "source": "LM Evaluation Harness 发布",
+    "imageUrl": null,
+    "author": "baberabb",
+    "language": "en",
+    "region": "global"
+  }
+]

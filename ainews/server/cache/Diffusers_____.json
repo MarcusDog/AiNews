@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_3c49cae3e27b40df8f4f",
+    "title": "Diffusers 0.40.0: New pipelines, tensor-parallel support, improved CLI, and more",
+    "description": "Tip This release features several new pipelines, including LTX2.5, MiniMax H3, and Wan Animate 2. We're also graduating Modular Diffusers out of the experimental phase and announcing its stable support. Additionally, this release includes minimal support for tensor-parallel. There's a lot more that went down in this release. So, please consult the notes for details. New Pipelines MiniMax-H3 MiniMax-H3 generates video and its soundtrack together. A single transformer denoises one packed sequence ",
+    "url": "https://github.com/huggingface/diffusers/releases/tag/v0.40.0",
+    "publishedAt": "2026-08-20T14:59:37.000Z",
+    "category": "AI新闻",
+    "source": "Diffusers 官方发布",
+    "imageUrl": null,
+    "author": "sayakpaul",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_1e508ff768ab30dd082f",
+    "title": "Diffusers 0.39.0: New image and video pipelines, core library improvements, and more",
+    "description": "New Pipelines Cosmos 3 Cosmos 3 is NVIDIA's unified world foundation model (WFM) for Physical AI — a single omni-model built on a Mixture-of-Transformers (MoT) architecture that combines world generation, physical reasoning, and action generation, replacing the separate Predict, Reason, and Transfer models from earlier Cosmos releases. A single Cosmos3OmniTransformer runs a Qwen-style language model in parallel with a diffusion generation pathway, joined by a 3D multimodal RoPE. This release als",
+    "url": "https://github.com/huggingface/diffusers/releases/tag/v0.39.0",
+    "publishedAt": "2026-07-03T08:57:37.000Z",
+    "category": "AI新闻",
+    "source": "Diffusers 官方发布",
+    "imageUrl": null,
+    "author": "sayakpaul",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_f08a6526a5200b8726c5",
+    "title": "Diffusers 0.38.0: New image and audio pipelines, Core library improvements, and more",
+    "description": "New Pipelines LLaDA2 LLaDA2 is a family of discrete diffusion language models that generate text through block-wise iterative refinement. Instead of autoregressive token-by-token generation, LLaDA2 starts with a fully masked sequence and progressively unmasks tokens by confidence over multiple refinement steps. PR: #13226 Docs: https://huggingface.co/docs/diffusers/main/api/pipelines/llada2 Nucleus-MoE NucleusMoE-Image is a 2B active 17B parameter model trained with efficiency at its core. Our n",
+    "url": "https://github.com/huggingface/diffusers/releases/tag/v0.38.0",
+    "publishedAt": "2026-05-01T05:55:12.000Z",
+    "category": "AI新闻",
+    "source": "Diffusers 官方发布",
+    "imageUrl": null,
+    "author": "sayakpaul",
+    "language": "en",
+    "region": "global"
+  }
+]

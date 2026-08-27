@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_ae3db90c542d777e0ace",
+    "title": "Mistral JavaScript SDK 发布 0.5.0",
+    "description": "API changes Fine-tuning Added support for our fine-tuning API which you can use to fine-tune our models on your datasets. See our documentation to get started. Full Changelog: 0.4.0...0.5.0",
+    "url": "https://github.com/mistralai/client-js/releases/tag/0.5.0",
+    "publishedAt": "2024-06-05T16:17:50.000Z",
+    "category": "AI框架",
+    "source": "Mistral JavaScript SDK 发布",
+    "imageUrl": null,
+    "author": "fuegoio",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_413b351219f85517e1cf",
+    "title": "Mistral JavaScript SDK 发布 0.4.0",
+    "description": "API changes Completion Added support for completion requests which you can use to query our latest model codestral. See this example to get started. Full Changelog: 0.3.0...0.4.0",
+    "url": "https://github.com/mistralai/client-js/releases/tag/0.4.0",
+    "publishedAt": "2024-05-29T15:57:08.000Z",
+    "category": "AI框架",
+    "source": "Mistral JavaScript SDK 发布",
+    "imageUrl": null,
+    "author": "jean-malo",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_4177ef37dea046d7f447",
+    "title": "Mistral JavaScript SDK 发布 0.3.0",
+    "description": "API changes The field tool_call_id on the tool message will be mandatory in the future. It can be already added to improve the model performance when dealing with tool calls, especially multiple ones (#76). Breaking changes - TS only We added the tool_call_id mandatory type on tool messages. This has no impact on runtime but should be added to pass type checking (#76). Full Changelog: 0.2.0...0.3.0",
+    "url": "https://github.com/mistralai/client-js/releases/tag/0.3.0",
+    "publishedAt": "2024-05-23T16:18:37.000Z",
+    "category": "AI框架",
+    "source": "Mistral JavaScript SDK 发布",
+    "imageUrl": null,
+    "author": "fuegoio",
+    "language": "multi",
+    "region": "global"
+  }
+]

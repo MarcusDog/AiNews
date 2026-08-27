@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_3514c39208d69d6d79a8",
+    "title": "TruLens 2.13.1",
+    "description": "TruLens 2.13.1 Patch Release Bug Fixes fix(core): allow dill 0.4.x by @sfc-gh-jreini in #2711 fix(providers): import torch and transformers lazily in huggingface provider",
+    "url": "https://github.com/truera/trulens/releases/tag/trulens-2.13.1",
+    "publishedAt": "2026-08-20T18:47:11.000Z",
+    "category": "新思路",
+    "source": "TruLens 官方发布",
+    "imageUrl": null,
+    "author": "sfc-gh-jreini",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_c8b717ce2709f623efff",
+    "title": "TruLens 2.13.0",
+    "description": "TruLens 2.13.0 TruLens 2.13 introduces TruLens Trends, a new operational monitoring experience for tracking application quality over time. The release also adds run comparison and regression detection, offline batch evaluation, and safer OpenTelemetry content capture. Monitor production quality with TruLens Trends TruLens Trends provides a time-series view of your evaluation metrics, helping you move from inspecting individual traces to monitoring the health of an application in production. Scre",
+    "url": "https://github.com/truera/trulens/releases/tag/trulens-2.13.0",
+    "publishedAt": "2026-08-14T16:08:33.000Z",
+    "category": "新思路",
+    "source": "TruLens 官方发布",
+    "imageUrl": null,
+    "author": "sfc-gh-jreini",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_01ec731b479fb2efc303",
+    "title": "TruLens 2.12.0",
+    "description": "TruLens 2.12: Conversation Evaluation, Better Judge Alignment, and RAG Citation Accuracy TruLens 2.12 expands evaluation from individual records to complete conversations. It also adds citation-quality evaluation for RAG, tools for aligning LLM judges with human labels, trace-level metrics for agents, and adapters that turn TruLens metrics into reinforcement-learning rewards. Evaluate Complete Conversations Built with contributions by @Payal2000 @maitraymukeshkumarmodi-aiml @joshreini1 Many assi",
+    "url": "https://github.com/truera/trulens/releases/tag/trulens-2.12.0",
+    "publishedAt": "2026-08-06T20:52:26.000Z",
+    "category": "AI新闻",
+    "source": "TruLens 官方发布",
+    "imageUrl": null,
+    "author": "sfc-gh-jreini",
+    "language": "multi",
+    "region": "global"
+  }
+]

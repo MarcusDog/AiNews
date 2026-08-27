@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_335533c0823fcd5834e0",
+    "title": "Google Gen AI Go SDK 发布 v1.70.0",
+    "description": "1.70.0 (2026-08-25) Features Add AudioTranscriptionConfigMode (e601aac)",
+    "url": "https://github.com/googleapis/go-genai/releases/tag/v1.70.0",
+    "publishedAt": "2026-08-25T21:10:34.000Z",
+    "category": "AI框架",
+    "source": "Google Gen AI Go SDK 发布",
+    "imageUrl": null,
+    "author": "release-please[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_95d895b6626bd174f378",
+    "title": "Google Gen AI Go SDK 发布 v1.69.0",
+    "description": "1.69.0 (2026-08-19) Features Add mode enum (VERBATIM, SMART) to AudioTranscriptionConfig and TranscriptionConfig. (5ca93e0) Add enable_data_retention to ToolParallelAiSearch, Add step_count to ReinforcementTuningHyperParameters, Add BidiGenerateContentSetup (600a8cf) Add IDLE state to live connection status enum and mark REQUIRES_ACTION as deprecated. (2bbd248)",
+    "url": "https://github.com/googleapis/go-genai/releases/tag/v1.69.0",
+    "publishedAt": "2026-08-19T22:26:45.000Z",
+    "category": "AI框架",
+    "source": "Google Gen AI Go SDK 发布",
+    "imageUrl": null,
+    "author": "release-please[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_9ec1fc10b7e9aad5b420",
+    "title": "Google Gen AI Go SDK 发布 v1.68.0",
+    "description": "1.68.0 (2026-08-12) Features Add interaction_status to LiveServerContent (b701130)",
+    "url": "https://github.com/googleapis/go-genai/releases/tag/v1.68.0",
+    "publishedAt": "2026-08-13T00:19:59.000Z",
+    "category": "AI框架",
+    "source": "Google Gen AI Go SDK 发布",
+    "imageUrl": null,
+    "author": "release-please[bot]",
+    "language": "multi",
+    "region": "global"
+  }
+]

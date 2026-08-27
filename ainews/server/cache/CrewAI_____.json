@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_e7d3332687133ef41592",
+    "title": "CrewAI 发布 1.15.17",
+    "description": "What's Changed Features Add declarative conversational flows documentation Synthesize built-in conversational methods for declarations Enable declarations to drive conversational mode Make conversational opt-in unmistakable Carry the AMP slug on tools resolved from a slug reference Handle oversized single messages during chunking Bug Fixes Fix usage of the URL hostname as MCP HTTP and SSE server_name Close the agent scope on every failed attempt Attribute tool errors to the tool that failed Pin ",
+    "url": "https://github.com/crewAIInc/crewAI/releases/tag/1.15.17",
+    "publishedAt": "2026-08-20T00:27:23.000Z",
+    "category": "AI新闻",
+    "source": "CrewAI 官方发布",
+    "imageUrl": null,
+    "author": "joaomdmoura",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_d25403924165942be1d9",
+    "title": "CrewAI 发布 1.15.16",
+    "description": "What's Changed Features Introduce execution context management with UUID support Record what kind of exception ended a flow Record when a trace batch is shared with AMP Count deployments from any origin and record where they started Bug Fixes Record the running release on every emitted span Fix MySQL search table name validation Stop a failed turn from marking the next one as failed Documentation Add Frontend guides for CopilotKit and AG-UI Contributors @joaomdmoura, @lorenzejay, @ranst91, @theC",
+    "url": "https://github.com/crewAIInc/crewAI/releases/tag/1.15.16",
+    "publishedAt": "2026-08-14T00:08:07.000Z",
+    "category": "AI新闻",
+    "source": "CrewAI 官方发布",
+    "imageUrl": null,
+    "author": "lorenzejay",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_f700a8aa0627a84bc088",
+    "title": "CrewAI 发布 1.15.15",
+    "description": "What's Changed Features Report flow outcome, duration, and human-in-the-loop signals. Bug Fixes Emit FlowStartedEvent when a boundary hook aborts the flow. Scope span export to our own tracer provider. Bump torch to version 2.13.0 to address security vulnerability. Bump gitpython to version 3.1.58 in crewai-tools[github]. Refactoring Update date injection functionality in agents. Standardize CLI flags to kebab-case. Documentation Snapshot and changelog for v1.15.14. Contributors @Vidit-Ostwal, @",
+    "url": "https://github.com/crewAIInc/crewAI/releases/tag/1.15.15",
+    "publishedAt": "2026-08-12T01:27:30.000Z",
+    "category": "AI新闻",
+    "source": "CrewAI 官方发布",
+    "imageUrl": null,
+    "author": "joaomdmoura",
+    "language": "en",
+    "region": "global"
+  }
+]

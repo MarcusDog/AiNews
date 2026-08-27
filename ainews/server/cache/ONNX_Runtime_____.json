@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_dffeef28dec23accd0d0",
+    "title": "ONNX Runtime WebGPU Plugin EP v0.3.0",
+    "description": "ONNX Runtime WebGPU Plugin EP 0.3.0 expands model and data-type coverage, improves generative-model performance, and strengthens configuration, reliability, and release tooling. These release notes were drafted with AI assistance. Highlights Model and operator coverage Added initial PagedAttention support, MRotaryEmbedding, GRU, DFT, PRelu, HardSwish, Trilu, Max and Min, and MatMulBnb4. (#31611, #31976, #29840, #29454, #30512, #29828, #29845, #29833, #29587) Expanded integer support across commo",
+    "url": "https://github.com/microsoft/onnxruntime/releases/tag/plugin-ep-webgpu%2Fv0.3.0",
+    "publishedAt": "2026-08-24T21:45:03.000Z",
+    "category": "AI框架",
+    "source": "ONNX Runtime 官方发布",
+    "imageUrl": null,
+    "author": "edgchen1",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_1fcdfc90ae8754f5214a",
+    "title": "ONNX Runtime v1.28.1",
+    "description": "This is a patch release on top of v1.28.0, containing support for device-free WebGPU compilation, improved compatibility with sandboxed Windows processes, and targeted graph-validation fixes. WebGPU EP Added support for device-free compile-only sessions, enabling offline graph transformation and optimized-model serialization without access to GPU hardware (#29681) Bug Fixes Prevented an access violation in Windows processes under Win32k lockdown by skipping DXGI device discovery (#29755) Allowed",
+    "url": "https://github.com/microsoft/onnxruntime/releases/tag/v1.28.1",
+    "publishedAt": "2026-08-18T23:29:25.000Z",
+    "category": "AI框架",
+    "source": "ONNX Runtime 官方发布",
+    "imageUrl": null,
+    "author": "tianleiwu",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_daac1ef8783cf2abf4da",
+    "title": "ONNX Runtime CUDA Plugin EP 0.1.0",
+    "description": "This is the first release of ONNX Runtime CUDA Plugin EP, providing CUDA execution as a separately packaged plugin execution provider. These notes cover commits affecting CUDA Plugin EP core code, CMake integration, and its primary build and package pipeline. Please refer to QUICK_START.md for the usage. Highlights Plugin Runtime Introduces the CUDA Plugin EP core and makes it the default CUDA provider implementation (#27816, #29544). Adds arena allocation, resource accounting, available-resourc",
+    "url": "https://github.com/microsoft/onnxruntime/releases/tag/plugin-ep-cuda%2Fv0.1.0",
+    "publishedAt": "2026-08-18T01:12:16.000Z",
+    "category": "AI框架",
+    "source": "ONNX Runtime 官方发布",
+    "imageUrl": null,
+    "author": "tianleiwu",
+    "language": "en",
+    "region": "global"
+  }
+]

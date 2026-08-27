@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_2d56896f762d1d2863bd",
+    "title": "viable/strict/1787817381: Fix _maybe_view_chunk_cat view shape for negative gather_dim (#194865)",
+    "description": "Fixes #194856 _maybe_view_chunk_cat builds the view target shape with shape[gather_dim + 1:], which wraps around for gather_dim == -1 (shape[0:] re-appends the whole shape), so all_gather_single(x, gather_dim=-1, ...) raises RuntimeError: shape '[...]' is invalid for input of size ... whenever the view optimization is eligible. The numel_between guard (if gather_dim > 1 else 1) mis-hands negative dims into the view branch, and all_gather_single's can_use_view early-wait heuristic shares the same",
+    "url": "https://github.com/pytorch/pytorch/releases/tag/viable%2Fstrict%2F1787817381",
+    "publishedAt": "2026-08-27T00:53:32.000Z",
+    "category": "AI新闻",
+    "source": "PyTorch 官方发布",
+    "imageUrl": null,
+    "author": "zwang86",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_a472c5c0a47f8d7af610",
+    "title": "viable/strict/1787807055: Move expandable_segments() out of the header (#194872)",
+    "description": "Summary CUDAAllocatorConfig::expandable_segments() branches on PYTORCH_C10_DRIVER_API_SUPPORTED, which c10/cuda/CMakeLists.txt defines PRIVATE to c10_cuda. Being inline, the function recompiles in every translation unit that includes the header without that macro, so consumers see an unconditional false while the library itself sees the real answer. CUDACachingAllocatorReserveDeviceTest hits exactly this — it enables expandable_segments via setAllocatorSettings and asserts on this function, whic",
+    "url": "https://github.com/pytorch/pytorch/releases/tag/viable%2Fstrict%2F1787807055",
+    "publishedAt": "2026-08-27T00:15:46.000Z",
+    "category": "AI新闻",
+    "source": "PyTorch 官方发布",
+    "imageUrl": null,
+    "author": "cyyever",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_f019576fb8be6e575747",
+    "title": "v2.14.0-rc10: [cuDNN] Add guards for cuDNN SDPA decode (#194963)",
+    "description": "[cuDNN] Add guards for cuDNN SDPA decode (#194927) This PR adds guards that disable cuDNN SDPA on version+device combos that expose the decoding bug from #193893. Right now this blocks cuDNN on Blackwell on 9.19+, still waiting on a confirmed fixed release build to set an upper bound. Authored with assistance from Codex #194927 https://github.com/drisspg, https://github.com/eqy, https://github.com/atalman (cherry picked from commit a5f76a0) Co-authored-by: Grayson Derossi graysonderossi@gmail.co",
+    "url": "https://github.com/pytorch/pytorch/releases/tag/v2.14.0-rc10",
+    "publishedAt": "2026-08-27T00:45:07.000Z",
+    "category": "AI框架",
+    "source": "PyTorch 官方发布",
+    "imageUrl": null,
+    "author": "pytorchbot",
+    "language": "multi",
+    "region": "global"
+  }
+]

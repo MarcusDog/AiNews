@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_a900e3dbc2a1311aee9f",
+    "title": "PaddleSeg v2.10.0",
+    "description": "🔥[2024-11-05] 添加语义分割领域低代码全流程开发能力: 飞桨低代码开发工具PaddleX，依托于PaddleSeg的先进技术，支持了图像分割领域的低代码全流程开发能力： 🎨 模型丰富一键调用：将通用语义分割和图像异常检测涉及的19个模型整合为2条模型产线，通过极简的Python API一键调用，快速体验模型效果。此外，同一套API，也支持图像分类、目标检测、文本图像智能分析、通用OCR、时序预测等共计200+模型，形成20+单功能模块，方便开发者进行模型组合使用。 🚀 提高效率降低门槛：提供基于统一命令和图形界面两种方式，实现模型简洁高效的使用、组合与定制。支持高性能部署、服务化部署和端侧部署等多种部署方式。此外，对于各种主流硬件如英伟达GPU、昆仑芯、昇腾、寒武纪和海光等，进行模型开发时，都可以无缝切换。 增加图像异常检测算法SFTPM",
+    "url": "https://github.com/PaddlePaddle/PaddleSeg/releases/tag/v2.10.0",
+    "publishedAt": "2024-11-05T11:28:52.000Z",
+    "category": "AI框架",
+    "source": "飞桨 PaddleSeg 发布",
+    "imageUrl": null,
+    "author": "Sunting78",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_9aa1a3ca1654b440efad",
+    "title": "飞桨 PaddleSeg 发布 v2.9.1",
+    "description": "merge uapi paddleseg (#3718)",
+    "url": "https://github.com/PaddlePaddle/PaddleSeg/releases/tag/v2.9.1",
+    "publishedAt": "2024-05-15T12:38:22.000Z",
+    "category": "AI框架",
+    "source": "飞桨 PaddleSeg 发布",
+    "imageUrl": null,
+    "author": "zhangyubo0722",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_cc71ea867e3d3611d8c9",
+    "title": "PaddleSeg v2.9.0",
+    "description": "New Project Add support for multi-label segmentation, including code for data conversion and result visualization. (#3479) Add quantitative awareness training support for PP-LiteSeg, PP-MobileSeg, OCRNet, and SegFormer-B0 to improve model inference speed. (#3457) Add MobileSAM model to achieve faster SAM inference (#3346) New feature Add support for mlu, npu, xpu. (#3422) Add more devices for TIPC including mlu, npu and xpu. (#3459) Bug fixes Solve the model accuracy problem of pp_mobileseg. (#3",
+    "url": "https://github.com/PaddlePaddle/PaddleSeg/releases/tag/v2.9.0",
+    "publishedAt": "2023-10-18T03:58:37.000Z",
+    "category": "AI框架",
+    "source": "飞桨 PaddleSeg 发布",
+    "imageUrl": null,
+    "author": "shiyutang",
+    "language": "multi",
+    "region": "cn"
+  }
+]

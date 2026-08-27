@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_d3e213742ee93ac5bd83",
+    "title": "FlagEmbedding 发布 v1.4.2",
+    "description": "What's Changed Fix Transformers 5 tokenizer compatibility by @hanhainebula in #1595 Bump package version to 1.4.2 by @hanhainebula in #1596 Full Changelog: v1.4.1...v1.4.2",
+    "url": "https://github.com/FlagOpen/FlagEmbedding/releases/tag/v1.4.2",
+    "publishedAt": "2026-08-24T02:55:16.000Z",
+    "category": "AI框架",
+    "source": "FlagEmbedding 官方发布",
+    "imageUrl": null,
+    "author": "hanhainebula",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_4f5515b15ad8dcd3e8ab",
+    "title": "FlagEmbedding 发布 v1.4.1",
+    "description": "What's Changed Fix Gemma reranker imports with Transformers v5 by @Gui-Yue in #1580 Fix Transformers 5 Trainer compatibility by @hanhainebula in #1592 fix(reranker): support transformers v5 tokenizer preparation by @hanhainebula in #1593 fix(reranker): normalize model mapping names by @hanhainebula in #1594 New Contributors @Gui-Yue made their first contribution in #1580 Full Changelog: v1.4.0...v1.4.1",
+    "url": "https://github.com/FlagOpen/FlagEmbedding/releases/tag/v1.4.1",
+    "publishedAt": "2026-08-23T12:48:07.000Z",
+    "category": "AI框架",
+    "source": "FlagEmbedding 官方发布",
+    "imageUrl": null,
+    "author": "hanhainebula",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_63e1a8cd727a8202a743",
+    "title": "FlagEmbedding 发布 v1.4.0",
+    "description": "What's Changed update reranker inference by @545999961 in #1466 add feature: support customized train_group_size by @hanhainebula in #1491 disable warning info: train_group_size is None by @hanhainebula in #1492 Release BGE-Reasoner-preview by @hanhainebula in #1510 fix bold values in README of BGE-Reasoner by @hanhainebula in #1511 fix link in README of BGE-Reasoner by @hanhainebula in #1512 Update BGE-Reasoner: new SOTA on BRIGHT by @hanhainebula in #1514 Fix BGE-Reasoner Table & Results Sourc",
+    "url": "https://github.com/FlagOpen/FlagEmbedding/releases/tag/v1.4.0",
+    "publishedAt": "2026-04-22T15:59:10.000Z",
+    "category": "AI新闻",
+    "source": "FlagEmbedding 官方发布",
+    "imageUrl": null,
+    "author": "hanhainebula",
+    "language": "en",
+    "region": "global"
+  }
+]

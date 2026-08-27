@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_eab4963103dc7ce068bb",
+    "title": "LMDeploy 发布 v0.16.0",
+    "description": "What's Changed 🚀 Features Support Interns2 mobius by @RunningLeon in #4816 feat: support GLM-5.2 by @CUHKSZzxy in #4737 Intern-S2-Mobius meta-MoE support, MoE gate v2, CP attention fixes by @lzhangzz in #4835 Add TurboMind ViT support for InternVL and Qwen VL models by @irexyc in #4719 feat: add Hy3 support, MTP, and FP8 optimizations by @yidingcheng0206 in #4815 💥 Improvements refactor: report cache usage directly by @lvhan028 in #4798 SM90 native BF16/FP8 GEMM kernels, fused-SiLU quantizatio",
+    "url": "https://github.com/InternLM/lmdeploy/releases/tag/v0.16.0",
+    "publishedAt": "2026-08-19T04:43:53.000Z",
+    "category": "AI框架",
+    "source": "LMDeploy 官方发布",
+    "imageUrl": null,
+    "author": "lvhan028",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_1127f9bcd2a642900248",
+    "title": "LMDeploy 发布 v0.15.0",
+    "description": "What's Changed 🚀 Features Support long-context and MTP prefix-cache hits by @grimoire in #4688 [Feature] Add guided decoding support for speculative decoding by @windreamer in #4559 feat(turbomind): memory allocator, object cache, and scheduler integration by @lzhangzz in #4717 feat: add AgRs all2all backend by @irexyc in #4739 DeepSeek V4 support by @grimoire in #4554 Support memdecode by @lvhan028 in #4767 💥 Improvements Force blksize=128 for linear attention on ascend by @jinminxi104 in #47",
+    "url": "https://github.com/InternLM/lmdeploy/releases/tag/v0.15.0",
+    "publishedAt": "2026-07-31T13:00:46.000Z",
+    "category": "AI框架",
+    "source": "LMDeploy 官方发布",
+    "imageUrl": null,
+    "author": "lvhan028",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_9ff6041921bb579e6886",
+    "title": "LMDeploy 发布 v0.14.0",
+    "description": "What's Changed 🚀 Features FP8 kv cache quantization by @CUHKSZzxy in #4563 Support Qwen3 Omni by @CUHKSZzxy in #4411 support qwen3.5(vit) inference in turbomind backend by @irexyc in #4602 Add OpenAI Responses-compatible endpoint by @CUHKSZzxy in #4582 Add /get_ppl endpoint by @irexyc in #4679 💥 Improvements Update turbomind modeling infrastructure by @lzhangzz in #4557 refactor(turbomind): consolidate CUDA error handling and add manual stacktracing by @lzhangzz in #4565 Add Qwen3.5 Moe lite a",
+    "url": "https://github.com/InternLM/lmdeploy/releases/tag/v0.14.0",
+    "publishedAt": "2026-06-24T04:36:56.000Z",
+    "category": "AI框架",
+    "source": "LMDeploy 官方发布",
+    "imageUrl": null,
+    "author": "lvhan028",
+    "language": "en",
+    "region": "global"
+  }
+]

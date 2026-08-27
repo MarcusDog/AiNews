@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_60690397b055c4af45fe",
+    "title": "Weights & Biases SDK 发布 v0.29.0",
+    "description": "What's Changed Notable Changes Removed the deprecated start_method setting that already had no effect. The .length property on paginated objects (e.g. Api.runs(), Api.sweeps(), run.files()) has been removed. Use len(...) instead. wandb.Video() now requires the format argument when initializing from a numpy array or raw bytes. Removed the deprecated summary=\"best\" option and goal argument of run.define_metric(). Use summary=\"min\" or summary=\"max\" instead. Removed the deprecated quiet argument of ",
+    "url": "https://github.com/wandb/wandb/releases/tag/v0.29.0",
+    "publishedAt": "2026-08-26T23:44:47.000Z",
+    "category": "AI框架",
+    "source": "Weights & Biases SDK 发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_37374fc6c08e84b2076b",
+    "title": "Weights & Biases SDK 发布 v0.28.2",
+    "description": "What's Changed Notable Changes The wandb sync --clean command now exits with code 1 and prints a hint to use wandb clean, which is the replacement. wandb login now verifies credentials by default. This can be disabled with wandb login --no-verify or programmatically with wandb.login(verify=False). Added Added support for gzip compression of filestream requests, reducing network traffic when logging metrics. It is currently opt-in and requires server support: set x_file_stream_no_gzip=False in wa",
+    "url": "https://github.com/wandb/wandb/releases/tag/v0.28.2",
+    "publishedAt": "2026-08-12T01:35:26.000Z",
+    "category": "AI框架",
+    "source": "Weights & Biases SDK 发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_9750c74636202ba26763",
+    "title": "Weights & Biases SDK 发布 v0.28.1",
+    "description": "What's Changed Notable Changes This version drops support for protobuf v4, and requires protobuf v5 or newer. Added New filters parameter to Api().project().sweeps() matching the runs filter format (@kmikowicz-wandb in #12059) Added Run.stop() to the public API (wandb.Api().run(...).stop()) to programmatically request that an active run stop gracefully, like the \"Stop run\" button in the W&B App UI (@dmitryduev in #12161) Added wandb.Api().organization() to fetch an Organization by name, or the c",
+    "url": "https://github.com/wandb/wandb/releases/tag/v0.28.1",
+    "publishedAt": "2026-07-23T20:12:29.000Z",
+    "category": "AI框架",
+    "source": "Weights & Biases SDK 发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  }
+]

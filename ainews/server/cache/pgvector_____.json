@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_9cc29eed5c3cdfcfe9e4",
+    "title": "pgvector 发布 v0.8.6",
+    "description": "Version bump to 0.8.6 [skip ci]",
+    "url": "https://github.com/pgvector/pgvector/releases/tag/v0.8.6",
+    "publishedAt": "2026-07-29T18:28:54.000Z",
+    "category": "AI框架",
+    "source": "pgvector 官方发布",
+    "imageUrl": null,
+    "author": "ankane",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_b6a6016c3aa01b73d56e",
+    "title": "pgvector 发布 v0.8.5",
+    "description": "Version bump to 0.8.5 [skip ci]",
+    "url": "https://github.com/pgvector/pgvector/releases/tag/v0.8.5",
+    "publishedAt": "2026-07-08T23:03:40.000Z",
+    "category": "AI框架",
+    "source": "pgvector 官方发布",
+    "imageUrl": null,
+    "author": "ankane",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_839d9fce4f754de3e0d2",
+    "title": "pgvector 发布 v0.8.4",
+    "description": "Version bump to 0.8.4 [skip ci]",
+    "url": "https://github.com/pgvector/pgvector/releases/tag/v0.8.4",
+    "publishedAt": "2026-06-30T22:24:14.000Z",
+    "category": "AI框架",
+    "source": "pgvector 官方发布",
+    "imageUrl": null,
+    "author": "ankane",
+    "language": "multi",
+    "region": "global"
+  }
+]

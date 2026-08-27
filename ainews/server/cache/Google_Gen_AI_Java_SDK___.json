@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_4942066384c770ce5f27",
+    "title": "Google Gen AI Java SDK 发布 v1.68.0",
+    "description": "1.68.0 (2026-08-25) Features Add AudioTranscriptionConfigMode (3344fa1) java: Add environments + environment files support. (4971b7d) java: regenerate Java GAOS SDK and support Java in OpenAPI generator (ac14e4c) Bug Fixes update Java SDK examples and models for Gemini and Vertex AI (4be6566)",
+    "url": "https://github.com/googleapis/java-genai/releases/tag/v1.68.0",
+    "publishedAt": "2026-08-25T21:35:00.000Z",
+    "category": "AI框架",
+    "source": "Google Gen AI Java SDK 发布",
+    "imageUrl": null,
+    "author": "release-please[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_d046cccd1861c06e7c73",
+    "title": "Google Gen AI Java SDK 发布 v1.67.0",
+    "description": "1.67.0 (2026-08-20) Features Add mode enum (VERBATIM, SMART) to AudioTranscriptionConfig and TranscriptionConfig. (97a948f) Add enable_data_retention to ToolParallelAiSearch, Add step_count to ReinforcementTuningHyperParameters, Add BidiGenerateContentSetup (5716305) Add IDLE state to live connection status enum and mark REQUIRES_ACTION as deprecated. (8259f12) Add interactions support for Java (513953f) Bug Fixes [Interactions] Update Gaos errors to use the same error hierarchy as the rest of t",
+    "url": "https://github.com/googleapis/java-genai/releases/tag/v1.67.0",
+    "publishedAt": "2026-08-20T22:04:34.000Z",
+    "category": "AI框架",
+    "source": "Google Gen AI Java SDK 发布",
+    "imageUrl": null,
+    "author": "release-please[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_9c5db4deae6fa42ef868",
+    "title": "Google Gen AI Java SDK 发布 v1.66.0",
+    "description": "1.66.0 (2026-08-12) Features Add interaction_status to LiveServerContent (d3c90d3) Bug Fixes report the API status on errors and align error messages to other SDKs (9d22aaf)",
+    "url": "https://github.com/googleapis/java-genai/releases/tag/v1.66.0",
+    "publishedAt": "2026-08-13T01:19:49.000Z",
+    "category": "AI框架",
+    "source": "Google Gen AI Java SDK 发布",
+    "imageUrl": null,
+    "author": "release-please[bot]",
+    "language": "multi",
+    "region": "global"
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_bafbda7f83d741eeb484",
+    "title": "vLLM 发布 v0.28.1rc0",
+    "description": "[Tools][Recipes] Improve sweep recommendations and short-alias parsin…",
+    "url": "https://github.com/vllm-project/vllm/releases/tag/v0.28.1rc0",
+    "publishedAt": "2026-08-27T06:58:23.000Z",
+    "category": "AI框架",
+    "source": "vLLM 官方发布",
+    "imageUrl": null,
+    "author": "louie-tsai",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_99ece13e787f34878e1a",
+    "title": "vLLM 发布 v0.28.0",
+    "description": "v0.28.0 Highlights This release features 584 commits from 270 contributors (76 new)! Kimi-K3 performance push: a major optimization effort for Kimi-K3 across the stack — Decode Context Parallel (DCP) support (#50484), fused FlashKDA decode and prefill kernels (#50654, #51311, #52458), SiTU activation support for MegaMoE (#50510), GEMM-RS for sequence parallelism (#52079), combined all-gathers with 1.5~3x kernel-level speedup (#51070), an adaptive speculative token budget delivering ~60% better D",
+    "url": "https://github.com/vllm-project/vllm/releases/tag/v0.28.0",
+    "publishedAt": "2026-08-26T10:17:05.000Z",
+    "category": "AI框架",
+    "source": "vLLM 官方发布",
+    "imageUrl": null,
+    "author": "khluu",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_31c6f260de9b1ca31ac7",
+    "title": "v0.28.0rc2: [Spec Decode] DFlash2: local convolution + candidate selector (#52816)",
+    "description": "(cherry picked from commit b389ac2) Signed-off-by: khluu khluu000@gmail.com",
+    "url": "https://github.com/vllm-project/vllm/releases/tag/v0.28.0rc2",
+    "publishedAt": "2026-08-21T06:47:39.000Z",
+    "category": "AI框架",
+    "source": "vLLM 官方发布",
+    "imageUrl": null,
+    "author": "SubSir",
+    "language": "en",
+    "region": "global"
+  }
+]

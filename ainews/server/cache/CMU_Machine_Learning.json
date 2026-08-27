@@ -1,0 +1,15 @@
+[
+  {
+    "id": "article_28bb33fbfa4c449e6732",
+    "title": "Forking-Sequences — Part II: Multi-Horizon Forecast Ensembling with Reduced Volatility",
+    "description": "Based on: Potosnak, W., Wolff, M., Cao, M., Ma, R., Konstantinova, T., Efimov, D., Mahoney, M.W., Oreshkin, B., & Olivares, K.G. \"Forking-Sequences: Statistically and Computationally Efficient Multi-Horizon Forecasting with Reduced Volatility.\" Transactions on Machine Learning Research, 2026. (Disclaimer: Code implementation not used in the paper; not affiliated with Amazon — provided as a reference for forking-sequences and forecast ensembling) TL;DR Ensembling, nearly for free. Forking-sequenc",
+    "url": "https://blog.ml.cmu.edu/2026/08/10/forking-sequences-part-ii-multi-horizon-forecast-ensembling-with-reduced-volatility",
+    "publishedAt": "2026-08-10T21:52:23.000Z",
+    "category": "AI新闻",
+    "source": "CMU Machine Learning",
+    "imageUrl": "https://blog.ml.cmu.edu/wp-content/uploads/2026/07/forking_sequences-1-scaled.jpg",
+    "author": "Willa Potosnak",
+    "language": "en",
+    "region": "global"
+  }
+]

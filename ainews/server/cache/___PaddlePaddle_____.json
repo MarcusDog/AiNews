@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_84c523eb3e4a69d8f61a",
+    "title": "飞桨 PaddlePaddle 发布 v3.4.0",
+    "description": "[Allocator] Add generic all block info API (#79272) (#79307)",
+    "url": "https://github.com/PaddlePaddle/Paddle/releases/tag/v3.4.0",
+    "publishedAt": "2026-06-12T10:41:43.000Z",
+    "category": "AI框架",
+    "source": "飞桨 PaddlePaddle 官方发布",
+    "imageUrl": null,
+    "author": "zhangting2020",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_0dde1df29f55a85ae0a4",
+    "title": "飞桨 PaddlePaddle 发布 v3.3.1",
+    "description": "[Cherry Pick | Pipeline Parallel] Merge PaddleFleet Pipeline Parallel…",
+    "url": "https://github.com/PaddlePaddle/Paddle/releases/tag/v3.3.1",
+    "publishedAt": "2026-03-19T06:53:19.000Z",
+    "category": "AI框架",
+    "source": "飞桨 PaddlePaddle 官方发布",
+    "imageUrl": null,
+    "author": "hushenwei2000",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_1da32da5b963aab0ecba",
+    "title": "PaddlePaddle 3.3.0 Release Notes",
+    "description": "重要更新 飞桨框架 3.3 版本在大模型训练效率、开发体验及国产硬件适配等关键领域持续突破创新，在计算显存高效利用、训推衔接转换、生态兼容性、调试效率、国产硬件适配等方面带来多项重要升级，全面提升大模型训推能力。 训练效率突破 FlashMaskV3升级：深度优化稀疏注意力掩码计算FlashMaskV3计算内核，性能全面超越FlexAttention，算子性能最高领先2.1 倍；原生支持上下文并行并引入计算负载均衡机制，分布式场景算子性能相比Megatron-LM快80%，全面强化长文训练能力。 FlexCheckpoint参数自动切分重组系统：基于首创的轻量级描述语言AOA (All in One Arrow)，支持从单卡视角灵活描述复杂的权重转换关系，并自动推导分片映射；通过跨机通信的高并发与负载均衡调度，在大参数规模下权重转换性能相比Megatron-LM领先1.2倍以上，有效解决大模型训推不同阶段参数转换的成本与效率难题。 虚拟内存动态碎片整理：引入基于虚拟内存技术的显存分配机制，可根据运行时显存占用情况动态进行碎片整理。在主流MoE模型训练中，显存碎片率从超过10%降至最低3",
+    "url": "https://github.com/PaddlePaddle/Paddle/releases/tag/v3.3.0",
+    "publishedAt": "2026-02-01T11:59:38.000Z",
+    "category": "AI框架",
+    "source": "飞桨 PaddlePaddle 官方发布",
+    "imageUrl": null,
+    "author": "raindrops2sea",
+    "language": "en",
+    "region": "global"
+  }
+]

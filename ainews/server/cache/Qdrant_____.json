@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_9f48979eb6ce168ba615",
+    "title": "Qdrant 发布 v1.19.0",
+    "description": "Change log Features ☝️ https://github.com/qdrant/qdrant/milestone/50 - TurboQuant 4-bit as a datatype of primary vector storage. Only store 4-bit quantized vectors and spare disk space on original vectors. [docs] #9669, #9684, #9950 - Unify definition of memory usage strategy for collection components. Use \"memory\": \"cold\" / \"cached\" / \"pinned\" to define memory behavior for each individual collection component. Allows for more fine-grained control over memory usage and performance. [docs] #9683 ",
+    "url": "https://github.com/qdrant/qdrant/releases/tag/v1.19.0",
+    "publishedAt": "2026-08-05T12:00:24.000Z",
+    "category": "AI新闻",
+    "source": "Qdrant 官方发布",
+    "imageUrl": null,
+    "author": "generall",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_828a31cba5dffdda9969",
+    "title": "Qdrant 发布 v1.18.3",
+    "description": "Change log Bug Fixes #9882 - Fix query errors when using shard keys while resharding",
+    "url": "https://github.com/qdrant/qdrant/releases/tag/v1.18.3",
+    "publishedAt": "2026-07-17T14:09:13.000Z",
+    "category": "AI框架",
+    "source": "Qdrant 官方发布",
+    "imageUrl": null,
+    "author": "timvisee",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_e3a56914226fb95ea57f",
+    "title": "backup-batch-facet-postings-47207f6b2",
+    "description": "refactor and apply to filter as id iterator",
+    "url": "https://github.com/qdrant/qdrant/releases/tag/backup-batch-facet-postings-47207f6b2",
+    "publishedAt": "2026-06-17T22:20:49.000Z",
+    "category": "AI新闻",
+    "source": "Qdrant 官方发布",
+    "imageUrl": null,
+    "author": "coszio",
+    "language": "multi",
+    "region": "global"
+  }
+]

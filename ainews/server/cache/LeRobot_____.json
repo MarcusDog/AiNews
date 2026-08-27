@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_9290c9749967e2cba841",
+    "title": "Release v0.6.1",
+    "description": "⚠️ Breaking changes (v0.6.0 -> v0.6.1) lerobot.types module was renamed to lerobot.lerobot_types: #4232 What's Changed chore(dependencies): Bump lerobot to 0.6.1 by @imstevenpmwork in #3957 Make doc builds faster by @mishig25 in #3958 docs(GR00T): Update GR00T 1.7 LIBERO checkpoints by @liorbenhorin in #3961 feat(annotate): improve VLM subtask annotation (legible contact sheets, seeded relabeling, self-hosted vLLM recipe) by @pkooij in #3896 Fix readme when using annotations by @NikodemBartnik i",
+    "url": "https://github.com/huggingface/lerobot/releases/tag/v0.6.1",
+    "publishedAt": "2026-08-03T14:24:49.000Z",
+    "category": "AI框架",
+    "source": "LeRobot 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_2566138e1e58aef8376f",
+    "title": "Release v0.6.0",
+    "description": "Release Blog https://huggingface.co/blog/lerobot-release-v060 ⚠️ Breaking changes (v0.5.1 -> v0.6.0) v0.6.0 cleans house, and a few changes need your attention when upgrading: pip install lerobot no longer includes dataset or training dependencies; add the extra you need (e.g. lerobot[training]). Some import paths have changed. Please use the canonical public entry points rather than internal submodule paths. GR00T N1.5 is replaced by N1.7 (pin lerobot==0.5.1 if you need N1.5). The minimum PyTor",
+    "url": "https://github.com/huggingface/lerobot/releases/tag/v0.6.0",
+    "publishedAt": "2026-07-08T15:39:00.000Z",
+    "category": "AI新闻",
+    "source": "LeRobot 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_3187f7aebf7b4be90a17",
+    "title": "Release v0.5.1",
+    "description": "What's Changed chore(dependencies): Bump lerobot to 0.5.1 by @imstevenpmwork in #3118 fix(unitree_g1): correct SDK detection and update installation docs by @nepyope in #3115 docs: fix HF_USER to ignore bash ANSI codes by @j3soon in #3119 chore(dependencies): Increase opencv-python-headless upper bound by @traversaro in #3120 Fix action padding key at SmolVLA by @ymd-h in #1717 Update Dockerfile.user by @heuzef in #1633 fix(policies): crop losses based on the action dof by @imstevenpmwork in #31",
+    "url": "https://github.com/huggingface/lerobot/releases/tag/v0.5.1",
+    "publishedAt": "2026-04-07T14:57:52.000Z",
+    "category": "AI框架",
+    "source": "LeRobot 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  }
+]

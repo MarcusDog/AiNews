@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_6604f6ef88bb8a01706d",
+    "title": "VLMEvalKit v0.3rc1",
+    "description": "No content.",
+    "url": "https://github.com/open-compass/VLMEvalKit/releases/tag/v0.3rc1",
+    "publishedAt": "2025-06-21T17:45:35.000Z",
+    "category": "AI新闻",
+    "source": "VLMEvalKit 官方发布",
+    "imageUrl": null,
+    "author": "kennymckormick",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_fb7854b50c258060c4a9",
+    "title": "VLMEvalKit v0.2",
+    "description": "Draft a new release, for internal evaluation use.",
+    "url": "https://github.com/open-compass/VLMEvalKit/releases/tag/v0.2",
+    "publishedAt": "2025-03-24T08:44:44.000Z",
+    "category": "AI新闻",
+    "source": "VLMEvalKit 官方发布",
+    "imageUrl": null,
+    "author": "kennymckormick",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_6f1ef00814f7f39d6a20",
+    "title": "v0.2rc1: [Dataset] Add AesBench VAL (#240)",
+    "description": "[Dataset] Add AesBench VAL (#240) * Add files via upload * update aesbench * update init * update dataset config * update md5 * update --------- Co-authored-by: kennymckormick",
+    "url": "https://github.com/open-compass/VLMEvalKit/releases/tag/v0.2rc1",
+    "publishedAt": "2024-06-29T15:46:48.000Z",
+    "category": "新算法",
+    "source": "VLMEvalKit 官方发布",
+    "imageUrl": null,
+    "author": "kennymckormick",
+    "language": "en",
+    "region": "global"
+  }
+]

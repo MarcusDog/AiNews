@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_c584c7476c532633a067",
+    "title": "Haystack 发布 v3.1.0",
+    "description": "⭐️ Highlights 🪝CompactionHook and Built-in Compactors for Context Length Management Experimental context compaction for Agent. Runs before LLM calls and shortens the conversation once it crosses a configured fraction of the context window. The built-in SlidingWindowCompactor first removes entire historical turns, then, if needed, individual steps of the current task, replacing what it removes with a short omission note. ToolResultPruningCompactor, instead of dropping whole turns, replaces older",
+    "url": "https://github.com/deepset-ai/haystack/releases/tag/v3.1.0",
+    "publishedAt": "2026-08-25T10:13:47.000Z",
+    "category": "AI框架",
+    "source": "Haystack 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_f49774be7d6096ded3ef",
+    "title": "Haystack 发布 v3.1.0-rc3",
+    "description": "Release Notes v3.1.0-rc2 Upgrade Notes Serialized OutputAdapter and ConditionalRouter components containing Jinja custom_filters must now be loaded with Pipeline.load(..., unsafe=True) (or the equivalent Pipeline.loads / Pipeline.from_dict option). New Features Added the HAYSTACK_UNSAFE_DESERIALIZATION environment variable as a process-wide equivalent of loading with unsafe=True. When set to a truthy value (1 or true), every Pipeline.load / Pipeline.loads / Pipeline.from_dict call skips all dese",
+    "url": "https://github.com/deepset-ai/haystack/releases/tag/v3.1.0-rc3",
+    "publishedAt": "2026-08-21T15:31:26.000Z",
+    "category": "AI框架",
+    "source": "Haystack 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_4e7baba70ee625fae206",
+    "title": "Haystack 发布 v3.1.0-rc2",
+    "description": "Release Notes v3.1.0-rc2 Upgrade Notes Serialized OutputAdapter and ConditionalRouter components containing Jinja custom_filters must now be loaded with Pipeline.load(..., unsafe=True) (or the equivalent Pipeline.loads / Pipeline.from_dict option). New Features Added the HAYSTACK_UNSAFE_DESERIALIZATION environment variable as a process-wide equivalent of loading with unsafe=True. When set to a truthy value (1 or true), every Pipeline.load / Pipeline.loads / Pipeline.from_dict call skips all dese",
+    "url": "https://github.com/deepset-ai/haystack/releases/tag/v3.1.0-rc2",
+    "publishedAt": "2026-08-21T14:30:15.000Z",
+    "category": "AI框架",
+    "source": "Haystack 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_5496065ef70fadaf302a",
+    "title": "Anthropic Python SDK 发布 v1.1.0",
+    "description": "1.1.0 (2026-08-26) Full Changelog: v1.0.0...v1.1.0 Features api: add updates thinking display mode (beta) (eb4a73f) api: add missing anthropic-beta values (dbebd15) api: add support for Organization API endpoints (5a5b8fc) Bug Fixes docs: correct link for long requests error (#1884) (4474f31), closes #1883 tools: keep the tool runner going on pause_turn (#343) (ab1ec60) Chores docs: clarify skill version latest support and memory version retention (a754f3b) internal: cancel superseded CI runs (c",
+    "url": "https://github.com/anthropics/anthropic-sdk-python/releases/tag/v1.1.0",
+    "publishedAt": "2026-08-26T17:14:40.000Z",
+    "category": "AI框架",
+    "source": "Anthropic Python SDK 发布",
+    "imageUrl": null,
+    "author": "stainless-app[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_75ebd816353203a61072",
+    "title": "Anthropic Python SDK 发布 v1.0.0",
+    "description": "1.0.0 (2026-08-20) Full Changelog: v0.125.0...v1.0.0 ⚠ BREAKING CHANGES client: upgrade to httpx2 and some minor breaking changes. See MIGRATION.md for details Features client: upgrade to httpx2 and some minor breaking changes. See MIGRATION.md for details (33e2967) Bug Fixes beta: stop warning about output_format= on the parse/stream/tool_runner helpers (59bf261) Chores streaming: restore the original event imports in lib/streaming/_types.py (87e9e01) Documentation examples: use adaptive thinki",
+    "url": "https://github.com/anthropics/anthropic-sdk-python/releases/tag/v1.0.0",
+    "publishedAt": "2026-08-20T19:58:48.000Z",
+    "category": "AI框架",
+    "source": "Anthropic Python SDK 发布",
+    "imageUrl": null,
+    "author": "stainless-app[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_de7397e164d680264d19",
+    "title": "Anthropic Python SDK 发布 v0.125.0",
+    "description": "0.125.0 (2026-08-19) Full Changelog: v0.124.0...v0.125.0 Features api: managed agents web search config and self hosted sandbox memory (b75afd6)",
+    "url": "https://github.com/anthropics/anthropic-sdk-python/releases/tag/v0.125.0",
+    "publishedAt": "2026-08-19T22:00:31.000Z",
+    "category": "AI框架",
+    "source": "Anthropic Python SDK 发布",
+    "imageUrl": null,
+    "author": "stainless-app[bot]",
+    "language": "multi",
+    "region": "global"
+  }
+]

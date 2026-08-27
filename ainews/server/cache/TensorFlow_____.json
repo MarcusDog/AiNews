@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_086344a5915d35bca741",
+    "title": "TensorFlow 2.21.0",
+    "description": "Release 2.21.0 TensorFlow Breaking Changes Support for Python 3.9 has been removed starting with TF 2.21. The TensorBoard (TB) dependency has been removed starting with TF 2.21. Major Features and Improvements tf.lite Adds int8 and int16x8 support for SQRT operator. Adds int16x8 support for EQUAL and NOT_EQUAL operators. Adds support for int2 type. Adds support for int2/int4 in tfl.cast . Adds support for SRQ int2 in tfl.fully_connected. Adds support for int4 in tfl.slice. Adds support for uint4",
+    "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.21.0",
+    "publishedAt": "2026-03-06T19:48:15.000Z",
+    "category": "AI新闻",
+    "source": "TensorFlow 官方发布",
+    "imageUrl": null,
+    "author": "tensorflow-jenkins",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_25241f4d1090b6f814dd",
+    "title": "TensorFlow 2.21.0-rc1",
+    "description": "Release 2.21.0 TensorFlow Breaking Changes Support for Python 3.9 has been removed starting with TF 2.21. Major Features and Improvements tf.lite Adds int8 and int16x8 support for SQRT operator. Adds int16x8 support for EQUAL and NOT_EQUAL operators. Adds support for int2 type. Adds support for int2/int4 in tfl.cast . Adds support for SRQ int2 in tfl.fully_connected. Adds support for int4 in tfl.slice. Adds support for uint4 type. tf.image Adds JPEG XL support in decode_image. Bug Fixes and Othe",
+    "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.21.0-rc1",
+    "publishedAt": "2026-03-02T22:23:56.000Z",
+    "category": "AI新闻",
+    "source": "TensorFlow 官方发布",
+    "imageUrl": null,
+    "author": "tensorflow-jenkins",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_92f0e1ab829256869b62",
+    "title": "TensorFlow 2.21.0-rc0",
+    "description": "Release 2.21.0 TensorFlow Breaking Changes Support for Python 3.9 has been removed starting with TF 2.21. Major Features and Improvements tf.lite Adds int8 and int16x8 support for SQRT operator. Adds int16x8 support for EQUAL and NOT_EQUAL operators. Adds support for int2 type. Adds support for int2/int4 in tfl.cast . Adds support for SRQ int2 in tfl.fully_connected. Adds support for int4 in tfl.slice. Adds support for uint4 type. tf.image Adds JPEG XL support in decode_image. Bug Fixes and Othe",
+    "url": "https://github.com/tensorflow/tensorflow/releases/tag/v2.21.0-rc0",
+    "publishedAt": "2026-02-09T22:49:22.000Z",
+    "category": "AI新闻",
+    "source": "TensorFlow 官方发布",
+    "imageUrl": null,
+    "author": "tensorflow-jenkins",
+    "language": "multi",
+    "region": "global"
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_b1026a25713c7dcf1201",
+    "title": "TorchTune 发布 v0.6.1",
+    "description": "v0.6.1 Patch for #2561. Full Changelog: v0.6.0...v0.6.1",
+    "url": "https://github.com/meta-pytorch/torchtune/releases/tag/v0.6.1",
+    "publishedAt": "2025-04-07T19:01:38.000Z",
+    "category": "AI框架",
+    "source": "TorchTune 官方发布",
+    "imageUrl": null,
+    "author": "joecummings",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_fea75df3af010c856a29",
+    "title": "TorchTune 发布 v0.6.1-rc3",
+    "description": "[release-only] Bump version for 0.6.1 release (#2567)",
+    "url": "https://github.com/meta-pytorch/torchtune/releases/tag/v0.6.1-rc3",
+    "publishedAt": "2025-04-07T18:51:02.000Z",
+    "category": "AI框架",
+    "source": "TorchTune 官方发布",
+    "imageUrl": null,
+    "author": "atalman",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_0719acded9a7ed1337f6",
+    "title": "v0.6.1-rc2: Reduce number of worlds (#2391)",
+    "description": "Co-authored-by: Mark Obozov markobozov@MacBook-Pro-Mark.local jrcummings27@gmail.com",
+    "url": "https://github.com/meta-pytorch/torchtune/releases/tag/v0.6.1-rc2",
+    "publishedAt": "2025-04-07T15:15:05.000Z",
+    "category": "AI框架",
+    "source": "TorchTune 官方发布",
+    "imageUrl": null,
+    "author": "krammnic",
+    "language": "multi",
+    "region": "global"
+  }
+]

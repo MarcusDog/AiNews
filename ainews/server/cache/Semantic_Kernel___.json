@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_6fb564abc361f2d78f0d",
+    "title": "dotnet-1.80.0",
+    "description": "Changes: 5e1f1fb .NET: Bump package version to 1.80.0 (#14301) 1b7b020 Update OpenAPI HTTP client defaults (#14293) c1afc86 .NET: Bump Testcontainers packages (#14294) c028a0c .Net: Honor FunctionChoiceBehavior function list in Gemini connector (#14183) 1d336b3 .Net: Bump CommunityToolkit.VectorData.InMemory and System.Numerics.Tensors (#14283) 76b5464 remove migrated .NET MEVD providers, add redirect READMEs (#14193) This list of changes was auto generated.",
+    "url": "https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.80.0",
+    "publishedAt": "2026-08-18T15:12:30.000Z",
+    "category": "AI新闻",
+    "source": "Semantic Kernel 发布",
+    "imageUrl": null,
+    "author": "dmytrostruk",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_a5d63fa3a3c1f9bf1a3a",
+    "title": "python-1.44.1",
+    "description": "What's Changed Encode OpenAPI server variable values by Eduard van Valkenburg (@eavanvalkenburg) in #14146 Consolidate Dependabot dependency updates by Evan Mattson (@moonbox3) in #14176 Suppress CodeQL false positive in internal HTTP utility by SergeyMenshykh in #14223 Python: [Breaking] Add MCP tool approval callback for Azure AI Agent by SergeyMenshykh in #14210 Consolidate Python and .NET dependency updates by Evan Mattson (@moonbox3) in #14222 Python: Skip MCP tools and prompts whose normal",
+    "url": "https://github.com/microsoft/semantic-kernel/releases/tag/python-1.44.1",
+    "publishedAt": "2026-08-06T09:55:22.000Z",
+    "category": "AI新闻",
+    "source": "Semantic Kernel 发布",
+    "imageUrl": null,
+    "author": "moonbox3",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_af8bfed112992d58d467",
+    "title": "dotnet-1.79.0",
+    "description": "Changes: fb13781 .NET: Bump package version to 1.79.0 (#14275) 383d102 Bump .NET SDK from 10.0.301 to 10.0.302 (#14235) 362cc2b Bump form-data from 4.0.5 to 4.0.6 in ProcessFrameworkWithSignalR React frontend (#14234) e78a8f5 Suppress CodeQL false positive in internal HTTP utility (#14223) 441ac99 Update Microsoft.AspNetCore.OData to 9.5.0 (#14224) 01e74b0 .NET: Harden dotnet-format workflow shell handling (#14201) See More 7481cd0 Fix cosmosdb vectorstore bug (#14182) 61a6b0c Migrate VectorStor",
+    "url": "https://github.com/microsoft/semantic-kernel/releases/tag/dotnet-1.79.0",
+    "publishedAt": "2026-08-06T11:33:35.000Z",
+    "category": "AI新闻",
+    "source": "Semantic Kernel 发布",
+    "imageUrl": null,
+    "author": "dmytrostruk",
+    "language": "multi",
+    "region": "global"
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_6af6c0be6909a4d78b1f",
+    "title": "v0.9.5: Qwen3.5/3.6, Gemma 4, Transformers v5",
+    "description": "Added primary support for Qwen3.5/Qwen3.6/Gemma4 models and compatibility with Transformers v5. What's Changed [misc] set dev version by @hiyouga in #9703 fix(fp8): add Transformer Engine backend support by @sbhavani in #9705 [misc] Compatible with an empty architectures field in config.json by @tangefly in #9709 [model] support Youtu-LLM-2B by @isLinXu in #9707 [misc] lint by @hiyouga in #9710 Update pyproject.toml and requirements by @jiaqiw09 in #9714 [v1] add init plugin by @hiyouga in #9716",
+    "url": "https://github.com/hiyouga/LlamaFactory/releases/tag/v0.9.5",
+    "publishedAt": "2026-05-30T16:02:44.000Z",
+    "category": "AI框架",
+    "source": "LLaMA Factory 官方发布",
+    "imageUrl": null,
+    "author": "hiyouga",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_0cfaca48c81b697c8019",
+    "title": "v0.9.4: Goodbye 2025",
+    "description": "Farewell to 2025. Thank you to all contributors and supporters. We will continue to deliver an easy and efficient LLM fine-tuning framework to the community in 2026. Stay tuned. Breaking Repository name updated: LLaMA-Factory → LlamaFactory Python 3.9–3.10 have been deprecated; LlamaFactory now requires Python 3.11–3.13 Migrated from pip to uv; use uv pip install llamafactory The official LlamaFactory blog is now live: https://blog.llamafactory.net/en/ New features 🔥 Support Orthogononal Fine-T",
+    "url": "https://github.com/hiyouga/LlamaFactory/releases/tag/v0.9.4",
+    "publishedAt": "2025-12-31T15:06:13.000Z",
+    "category": "AI框架",
+    "source": "LLaMA Factory 官方发布",
+    "imageUrl": null,
+    "author": "hiyouga",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_bd63e79789f3ae3109f7",
+    "title": "v0.9.3: Llama4, Gemma3, Qwen3, InternVL3, Qwen2.5-Omni",
+    "description": "We will attend the AWS Summit Shanghai 2025 on June 20th! See you in Shanghai 👋 Event info: https://aws.amazon.com/cn/events/summits/shanghai/ New features 🔥 InternVL2.5/InternVL3 model by @Kuangdd01 in #7258 🔥 Qwen2.5-Omni model by @Kuangdd01 in #7537 🔥 Llama 4 and Gemma 3 multimodal model by @hiyouga in #7273 and #7611 🔥 Official GPU docker image by @yzoaim in #8181 🔥 SGLang inference by @Qiaolin-Yu and @jhinpan in #7278 GLM-4-0414 and GLM-Z1 model by @zRzRzRzRzRzRzR in #7695 Kimi-VL mod",
+    "url": "https://github.com/hiyouga/LlamaFactory/releases/tag/v0.9.3",
+    "publishedAt": "2025-06-17T08:34:35.000Z",
+    "category": "AI框架",
+    "source": "LLaMA Factory 官方发布",
+    "imageUrl": null,
+    "author": "hiyouga",
+    "language": "en",
+    "region": "global"
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_f1208b9c7413d32358a6",
+    "title": "ChatDev 发布 v2.2.0",
+    "description": "Key Updates: OpenClaw Integration ChatDev now provides full support for OpenClaw within its backend workflows, enabling seamless invocation of agent teams and dynamic orchestration of workflows. ChatDev Python SDK The official ChatDev Python SDK has been released, allowing developers to programmatically access ChatDev workflows and utilize agent capabilities. What's Changed fix: websocket disconnect problem by @zxrys in #525 Feat/Dev tools enhancement by @LaansDole in #519 upgrade: add LaansDole",
+    "url": "https://github.com/OpenBMB/ChatDev/releases/tag/v2.2.0",
+    "publishedAt": "2026-03-23T02:10:51.000Z",
+    "category": "AI新闻",
+    "source": "ChatDev 官方发布",
+    "imageUrl": null,
+    "author": "NA-Wen",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_7290a87d3edc72f83d0b",
+    "title": "ChatDev 发布 v2.1.0",
+    "description": "Highlights of This Release 1. Batch Execution Support and the Introduction of the Laboratory Interface batch run capability has been added, enabling efficient batch-level execution of tasks and substantially improving scalability for large-scale experiments. Alongside this feature, a Laboratory interface is introduced to provide a more intuitive environment for running batch experiments, comparing configurations, and managing experimental results in research-oriented workflows. 2. Interface Upgr",
+    "url": "https://github.com/OpenBMB/ChatDev/releases/tag/v2.1.0",
+    "publishedAt": "2026-01-22T06:19:16.000Z",
+    "category": "AI新闻",
+    "source": "ChatDev 官方发布",
+    "imageUrl": null,
+    "author": "NA-Wen",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_3abb9b1a748ca9c7f882",
+    "title": "ChatDev 2.0 Release",
+    "description": "ChatDev 2.0 Release ChatDev has evolved from a software-development–focused multi-agent framework into a general-purpose multi-agent orchestration platform. This release marks a clear architectural transition: from a domain-specific virtual software company paradigm to a zero-code system for orchestrating intelligent agents across diverse tasks. ChatDev 2.0 introduces DevAll, a Zero-Code Multi-Agent Platform for “Developing Everything.” It enables users to construct, configure, and execute custo",
+    "url": "https://github.com/OpenBMB/ChatDev/releases/tag/v2.0.0",
+    "publishedAt": "2026-01-07T15:35:37.000Z",
+    "category": "AI新闻",
+    "source": "ChatDev 官方发布",
+    "imageUrl": null,
+    "author": "NA-Wen",
+    "language": "en",
+    "region": "global"
+  }
+]

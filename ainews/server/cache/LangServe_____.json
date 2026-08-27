@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_1aed44515cc2cec42c37",
+    "title": "LangServe 发布 v0.3.3",
+    "description": "What's Changed release: 0.3.3 for compatibility with langchain-core 1 by Eugene Yurtsev (@eyurtsev) in #830 Full Changelog: v0.3.2...v0.3.3",
+    "url": "https://github.com/langchain-ai/langserve/releases/tag/v0.3.3",
+    "publishedAt": "2025-10-17T15:08:25.000Z",
+    "category": "AI框架",
+    "source": "LangServe 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_1eed555c65537b4003f8",
+    "title": "LangServe 发布 v0.3.2",
+    "description": "What's Changed Update README.md Grammatical Errors by Yash Jivani (@jivaniyash) in #733 Update Chroma import to avoid deprecation warning. by ResearchAI (@wuloi) in #741 Add new contributor to .clabot configuration by Eugene Yurtsev (@eyurtsev) in #822 chore: bump some package versions by joaquin-borggio-lc in #821 chore: bump patch version by joaquin-borggio-lc in #823 ci: drop python 3.8 by joaquin-borggio-lc in #825 New Contributors Yash Jivani (@jivaniyash) made their first contribution in #",
+    "url": "https://github.com/langchain-ai/langserve/releases/tag/v0.3.2",
+    "publishedAt": "2025-09-17T20:01:06.000Z",
+    "category": "AI框架",
+    "source": "LangServe 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_6e5874d2013adc8abeb3",
+    "title": "LangServe 发布 v0.3.1",
+    "description": "What's Changed examples: update clients by Eugene Yurtsev (@eyurtsev) in #768 Update README by Eugene Yurtsev (@eyurtsev) in #769 Update README.md by Eugene Yurtsev (@eyurtsev) in #771 Update README.md by Eugene Yurtsev (@eyurtsev) in #773 migration guide by Eugene Yurtsev (@eyurtsev) in #787 docs: update local link in readme by ccurme (@ccurme) in #788 Update MIGRATION.md by Eugene Yurtsev (@eyurtsev) in #789 Update .clabot by Eugene Yurtsev (@eyurtsev) in #793 docs: Remove templates in readme ",
+    "url": "https://github.com/langchain-ai/langserve/releases/tag/v0.3.1",
+    "publishedAt": "2024-12-27T02:40:07.000Z",
+    "category": "AI框架",
+    "source": "LangServe 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  }
+]

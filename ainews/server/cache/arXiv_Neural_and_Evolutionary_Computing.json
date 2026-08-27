@@ -1,0 +1,93 @@
+[
+  {
+    "id": "article_164e2a693d123059943d",
+    "title": "Homo-RAG: Homology-Guided Retrieval-Augmented Generation for Cross-Species Gene Function Prediction",
+    "description": "arXiv:2608.25466v1 Announce Type: new Abstract: The functional annotation of genes in non-model organisms remains a significant challenge in computational biology, with 20-70% of sequenced genes lacking characterized functions. Traditional homology-based methods are often costly and strongly dependent on high sequence similarity. This study presents Homo-RAG, a framework for large language model-based gene function prediction that integrates homology-guided multi-hop retrieval with evidence-awar",
+    "url": "https://arxiv.org/abs/2608.25466",
+    "publishedAt": "2026-08-27T04:00:00.000Z",
+    "category": "新算法",
+    "source": "arXiv Neural and Evolutionary Computing",
+    "imageUrl": null,
+    "author": "Azrin Sultana",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_08015a3ae6700d5f376c",
+    "title": "Synthesis of Hopfield Neural Network: Novel Results",
+    "description": "arXiv:2608.25481v1 Announce Type: new Abstract: Using the logical basis of synthesizing Hopfield Neural Network with desired corners of hypercube as stable states (proposed in [1]), it is proved that more corners of hypercube can be programmed as stable states (whether the number of neurons is even or odd). The research paper presents a new perspective to the so called \"Programming Problem\" of Hopfield Neural Network.",
+    "url": "https://arxiv.org/abs/2608.25481",
+    "publishedAt": "2026-08-27T04:00:00.000Z",
+    "category": "新算法",
+    "source": "arXiv Neural and Evolutionary Computing",
+    "imageUrl": null,
+    "author": "Garimella Rama Murthy",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_ffadfd84bff034a6a739",
+    "title": "Real-time closed-loop protocol to assess neural variability in temporal coding",
+    "description": "arXiv:2608.24895v1 Announce Type: cross Abstract: Understanding temporal coding in neural systems is essential for decoding brain communication and advancing knowledge of neural information processing. Neural activity often conveys information through spike sequences with stereotypical temporal structures linked to specific functions. However, these sequences are subject to variability introduced by neural dynamics. Real-time closed-loop stimulation is a powerful approach to study temporal codin",
+    "url": "https://arxiv.org/abs/2608.24895",
+    "publishedAt": "2026-08-27T04:00:00.000Z",
+    "category": "新算法",
+    "source": "arXiv Neural and Evolutionary Computing",
+    "imageUrl": null,
+    "author": "Alberto Ayala, Angel Lareo, Pablo Varona, Francisco B. Rodriguez",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_bcb5d83ca2fd8b388f3b",
+    "title": "Directed walks shape a universal square-root law of entropy production rate in nonreciprocal systems",
+    "description": "arXiv:2608.25030v1 Announce Type: cross Abstract: The entropy production rate (EPR) quantifies irreversibility of a nonequilibrium steady state, yet standard formulas obscure how a complex interaction network generates it. For multivariate Ornstein-Uhlenbeck dynamics on such networks, we express the EPR as a quadratic form in antisymmetric matrices measuring the nonreciprocity of aggregate directed walks at every length, and, equivalently, as two weighted-walk quantities: pairs of directed walks",
+    "url": "https://arxiv.org/abs/2608.25030",
+    "publishedAt": "2026-08-27T04:00:00.000Z",
+    "category": "新算法",
+    "source": "arXiv Neural and Evolutionary Computing",
+    "imageUrl": null,
+    "author": "Thiparat Chotibut, Ewa Gudowska-Nowak, Maciej A. Nowak",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_c096c3e7d27d99ec0102",
+    "title": "Selection Hyper-heuristics Can Automatically Adjust the Learning Period to Optimally Solve Pseudo-Boolean Problems",
+    "description": "arXiv:2605.29916v2 Announce Type: replace Abstract: The Random Gradient hyper-heuristic was recently shown to be able to learn the optimal neighbourhood size when optimizing the LeadingOnes benchmark via the Randomised Local Search (RLS) meta-heuristic. However, for this to happen, a learning period of a certain length $\\tau$ had to be used, differently from classic hyper-heuristics, which change their behaviour based on the success of only the previous iteration. In this paper, we show how to a",
+    "url": "https://arxiv.org/abs/2605.29916",
+    "publishedAt": "2026-08-27T04:00:00.000Z",
+    "category": "新算法",
+    "source": "arXiv Neural and Evolutionary Computing",
+    "imageUrl": null,
+    "author": "Benjamin Doerr, Pietro S. Oliveto, John Alasdair Warwicker",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_852fd357411d096124f3",
+    "title": "Automating Parent Selection Configuration in Genetic Programming with Agentic AI",
+    "description": "arXiv:2608.17172v2 Announce Type: replace Abstract: We investigate whether agentic artificial intelligence can automate parts of the process of designing genetic programming systems by introducing an agentic framework that identifies and implements parent selection algorithms using large language model (LLM) reasoning and retrieval-augmented generation. Using symbolic regression as a test bed, we first conduct an ablation study across four LLM types to evaluate the effects of agentic reasoning a",
+    "url": "https://arxiv.org/abs/2608.17172",
+    "publishedAt": "2026-08-27T04:00:00.000Z",
+    "category": "新算法",
+    "source": "arXiv Neural and Evolutionary Computing",
+    "imageUrl": null,
+    "author": "Jose Guadalupe Hernandez, Jui-Hsuan Chang, Anil Kumar Saini, Xi Li, Jason H. Moore",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_9508a62f5a1ebb38fb28",
+    "title": "Deep greedy unfolding: Sorting out argsorting in greedy sparse recovery algorithms",
+    "description": "arXiv:2505.15661v2 Announce Type: replace-cross Abstract: Gradient-based learning imposes (deep) neural networks to be differentiable at all steps. This includes model-based architectures constructed by unrolling iterations of an iterative algorithm onto layers of a neural network, known as algorithm unrolling. However, greedy sparse recovery algorithms depend on the non-differentiable argsort operator, which hinders their integration into neural networks. In this paper, we address this challeng",
+    "url": "https://arxiv.org/abs/2505.15661",
+    "publishedAt": "2026-08-27T04:00:00.000Z",
+    "category": "新算法",
+    "source": "arXiv Neural and Evolutionary Computing",
+    "imageUrl": null,
+    "author": "Sina Mohammad-Taheri, Matthew J. Colbrook, Simone Brugiapaglia",
+    "language": "en",
+    "region": "global"
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "id": "article_275491b799837914ad19",
+    "title": "AutoClaw",
+    "description": "AutoClaw",
+    "url": "https://autoclaw.zhipuai.cn/?channel=AutoClaw20",
+    "publishedAt": "2026-08-27T08:22:44.090Z",
+    "category": "AI新闻",
+    "source": "智谱 GLM 官方",
+    "imageUrl": null,
+    "author": "智谱 GLM 官方",
+    "language": "zh",
+    "region": "domestic"
+  },
+  {
+    "id": "article_dd262a014feda2265f0d",
+    "title": "Zread.ai",
+    "description": "Zread.ai",
+    "url": "https://zread.ai",
+    "publishedAt": "2026-08-27T08:22:44.090Z",
+    "category": "AI新闻",
+    "source": "智谱 GLM 官方",
+    "imageUrl": null,
+    "author": "智谱 GLM 官方",
+    "language": "zh",
+    "region": "domestic"
+  },
+  {
+    "id": "article_ddf2a3d2792fb0bc194d",
+    "title": "Bigmodel",
+    "description": "Bigmodel",
+    "url": "https://bigmodel.cn",
+    "publishedAt": "2026-08-27T08:22:44.090Z",
+    "category": "AI新闻",
+    "source": "智谱 GLM 官方",
+    "imageUrl": null,
+    "author": "智谱 GLM 官方",
+    "language": "zh",
+    "region": "domestic"
+  },
+  {
+    "id": "article_c4671a68fdab9508ab99",
+    "title": "京ICP备20011824号-24",
+    "description": "京ICP备20011824号-24",
+    "url": "https://beian.miit.gov.cn/#/Integrated/index",
+    "publishedAt": "2026-08-27T08:22:44.091Z",
+    "category": "AI新闻",
+    "source": "智谱 GLM 官方",
+    "imageUrl": null,
+    "author": "智谱 GLM 官方",
+    "language": "zh",
+    "region": "domestic"
+  },
+  {
+    "id": "article_dd433f032a591d12c381",
+    "title": "北京公安备 11010802041394 号",
+    "description": "北京公安备 11010802041394 号",
+    "url": "https://beian.mps.gov.cn/#/query/webSearch",
+    "publishedAt": "2026-08-27T08:22:44.091Z",
+    "category": "AI新闻",
+    "source": "智谱 GLM 官方",
+    "imageUrl": null,
+    "author": "智谱 GLM 官方",
+    "language": "zh",
+    "region": "domestic"
+  }
+]

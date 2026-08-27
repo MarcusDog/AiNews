@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_dc8f01558b3b9f9394c8",
+    "title": "阿里 MNN 发布 3.6.1",
+    "description": "MNN 3.6.1 版本发布说明 发布日期: 2026年7月 📦 安装: pip install mnn==3.6.1 ｜ PyPI 📌 版本概述 MNN 3.6.1 版本聚焦于 Hexagon NPU 后端、Transformer C4 Fuse 全后端性能优化 与 稳定性修复 三大核心主题： Hexagon NPU 后端：新增高通 Hexagon NPU 直接编程后端，Qwen3-0.6B（W4 对称量化，block64）在骁龙 8 Elite（Hexagon v79）上 prefill 达 2667 tok/s，为 CPU 的 7.9×。 Transformer C4 Fuse 全后端性能优化：新增 fused LLM 算子（RoPE / Attention / LayerNorm 等 C4 路径）并在 CPU / Metal / OpenCL / CUDA 全后端启用 Transformer C4 图；优化 C4 导出与 packed RoPE 路径；Metal 新增 LLM prefill/decode 优化 kernel 与 Fused Q4/Q8 dequant+GE",
+    "url": "https://github.com/alibaba/MNN/releases/tag/3.6.1",
+    "publishedAt": "2026-07-23T02:13:32.000Z",
+    "category": "AI新闻",
+    "source": "阿里 MNN 官方发布",
+    "imageUrl": "https://private-user-images.githubusercontent.com/8401806/625126456-26920ba4-d0df-4df8-af46-8085964a4001.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODc4MTkxNjAsIm5iZiI6MTc4NzgxODg2MCwicGF0aCI6Ii84NDAxODA2LzYyNTEyNjQ1Ni0yNjkyMGJhNC1kMGRmLTRkZjgtYWY0Ni04MDg1OTY0YTQwMDEucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MDgyNyUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjA4MjdUMDgyMTAwWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9MDE3NGU0ZmZjODc1Mjk1NzRjZmVkYjNkMTIxNjdmNWQzZjAwMTJiNWU0OTc4ZjJhZTVkOTI0NWI0ZjQ5NmM1ZiZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.kz-QgjjWthQQOUNd2Fj-cjWO8AqogG8XUB_YiKfr0AA",
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_ddba53b4636a8c23830e",
+    "title": "阿里 MNN 发布 3.6.0",
+    "description": "MNN 3.6.0 版本发布说明 发布日期: 2026年6月 📦 安装: pip install mnn==3.6.0 ｜ PyPI 📌 版本概述 MNN 3.6.0 版本聚焦于 多模态 LLM 模型扩展与推理加速、GPU 多后端深度优化 以及 低比特量化与硬件适配增强 三大核心主题： 多模态 LLM 模型扩展与推理加速：新增 Gemma4（文本/视觉/语音）、Qwen3.5、Hymt2 等模型支持；推出 dflash 推测解码；Omni 模型 Thinker/Talker 交错生成将 TTFA 降低 2.7×；引入 fp16 存储的 weight-quant scale/zero-point；通过 onClone 重构 KV Cache 复用机制。 GPU 多后端深度优化：Vulkan 新增 VulkanConv1x1CoopA8（W8A8 coopMat）与 no-subgroup 回退路径；OpenCL 引入 GEMM/GEMV 启发式调度、int4 image1d_buffer_t 优化、原生 TopKV2 与 2/3-bit 权重量化；Metal 优化 Conv1x1 分",
+    "url": "https://github.com/alibaba/MNN/releases/tag/3.6.0",
+    "publishedAt": "2026-06-16T07:58:06.000Z",
+    "category": "AI新闻",
+    "source": "阿里 MNN 官方发布",
+    "imageUrl": "https://private-user-images.githubusercontent.com/8401806/608407646-958885de-bd8a-4749-b774-8e20f505f113.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODc4MTkxNjAsIm5iZiI6MTc4NzgxODg2MCwicGF0aCI6Ii84NDAxODA2LzYwODQwNzY0Ni05NTg4ODVkZS1iZDhhLTQ3NDktYjc3NC04ZTIwZjUwNWYxMTMucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MDgyNyUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjA4MjdUMDgyMTAwWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9YzUyYzFlYTc3ZGMwZDA3ODU1NGYyYzFkZWY2ZDU2MzVlYmY1YmU5OTZhMTkwOGJmZDBhYWI5YzRhNTgzODI4NyZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.ZPRBi9dM6r_Jdak1xArugtdU5Jpzs0qluS_vWO5QaTY",
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_c16caa3065327daf1599",
+    "title": "阿里 MNN 发布 3.5.0",
+    "description": "MNN 3.5.0 版本发布说明 发布日期: 2026年4月 📌 版本概述 MNN 3.5.0 版本聚焦于 多后端 LLM 推理能力扩展、高性能量化与采样优化 以及 端侧语音交互体验增强 三大核心主题： 多后端 LLM 推理: Vulkan 后端新增 LLM 推理支持；摩尔线程 MUSA 后端全新接入；QNN 后端支持 Attention 算子和更多 LLM 算子；RISC-V 向量扩展（RVV）支持落地。 高性能量化与采样优化: 全新 TurboQuant TQ3/TQ4 KV Cache 量化方案；Sampler 重构为 Pipeline 架构并新增 Penalty 支持；多端 TopKV2 算子优化；多轮对话 Prompt Cache 支持。 端侧语音交互增强: 异步三阶段 Token2Wav 流水线（DiT ∥ Vocoder）；智能打断（AEC Barge-in）支持；实时视觉语音交互能力；TTS 模型支持（supertonic-tts-mnn）。 🚀 版本亮点 Vulkan LLM 推理: Vulkan 后端全面支持 LLM 推理，拓展 GPU 推理覆盖面 MUSA 后",
+    "url": "https://github.com/alibaba/MNN/releases/tag/3.5.0",
+    "publishedAt": "2026-04-07T12:23:43.000Z",
+    "category": "AI新闻",
+    "source": "阿里 MNN 官方发布",
+    "imageUrl": "https://private-user-images.githubusercontent.com/8401806/574658302-34b41a3d-2dbb-4cd8-a0c8-a7eeea8f38af.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODc4MTkxNjAsIm5iZiI6MTc4NzgxODg2MCwicGF0aCI6Ii84NDAxODA2LzU3NDY1ODMwMi0zNGI0MWEzZC0yZGJiLTRjZDgtYTBjOC1hN2VlZWE4ZjM4YWYucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MDgyNyUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjA4MjdUMDgyMTAwWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9MWNmMjYxYWNhNzg0YjY0OTgzZmM1ZGVlNTY4MzQ1ZTgxNmU0OWNiNzdjNmIzMTAxYWU5ZmZkYjcyMzMzYmU4NSZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.KP3t5HDTLZbVz0gCAcNvM_IgHahcZx73wm2Z6rfIn64",
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "cn"
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_4030ad03e7a3a7681f73",
+    "title": "python-v0.7.5",
+    "description": "What's Changed Fix docs dotnet core typo by Lachlan Greenland (@lach-g) in #6950 Fix loading streaming Bedrock response with tool usage with empty argument by Paweł Dąbrowski (@pawel-dabro) in #6979 Support linear memory in RedisMemory by Justin Cechmanek (@justin-cechmanek) in #6972 Fix message ID for correlation between streaming chunks and final mes… by gym603 (@smalltalkman) in #6969 fix: extra args not work to disable thinking by @liuyunrui123 in #7006 Add thinking mode support for anthropi",
+    "url": "https://github.com/microsoft/autogen/releases/tag/python-v0.7.5",
+    "publishedAt": "2025-09-30T06:18:26.000Z",
+    "category": "AI新闻",
+    "source": "Microsoft AutoGen 发布",
+    "imageUrl": null,
+    "author": "ekzhu",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_79c9720701799faf00bb",
+    "title": "python-v0.7.4",
+    "description": "What's Changed Update docs for 0.7.3 by Eric Zhu (@ekzhu) in #6948 Update readme with agent-as-tool by Eric Zhu (@ekzhu) in #6949 Fix Redis Deserialization Error by Ben Constable (@BenConstable9) in #6952 Redis Doesn't Support Streaming by Ben Constable (@BenConstable9) in #6954 update version to 0.7.4 by Eric Zhu (@ekzhu) in #6955 Update doc 0.7.4 by Eric Zhu (@ekzhu) in #6956 New Contributors Ben Constable (@BenConstable9) made their first contribution in #6952 Full Changelog: python-v0.7.3...",
+    "url": "https://github.com/microsoft/autogen/releases/tag/python-v0.7.4",
+    "publishedAt": "2025-08-19T18:50:49.000Z",
+    "category": "AI框架",
+    "source": "Microsoft AutoGen 发布",
+    "imageUrl": null,
+    "author": "ekzhu",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_95a9395903c9db5363c8",
+    "title": "python-v0.7.3",
+    "description": "What's Changed Update website for 0.7.2 by Eric Zhu (@ekzhu) in #6902 Typo in docs for 'NoOpTracerProvider' by Nicolas Suzor (@nicsuzor) in #6915 Fix MCP example in readme by Eric Zhu (@ekzhu) in #6919 Extend pydantic model capability for anyOf/oneOf item typing by fiow123 in #6925 Update README.md with correct stable version by JAY NITINBHAI PATEL (@Jp3132) in #6942 fix: Add proper serialization to RedisStore for complex objects by Tejas Dharani (@tejas-dharani) in #6905 Fix OpenAIAgent functio",
+    "url": "https://github.com/microsoft/autogen/releases/tag/python-v0.7.3",
+    "publishedAt": "2025-08-19T08:07:55.000Z",
+    "category": "AI框架",
+    "source": "Microsoft AutoGen 发布",
+    "imageUrl": null,
+    "author": "ekzhu",
+    "language": "multi",
+    "region": "global"
+  }
+]

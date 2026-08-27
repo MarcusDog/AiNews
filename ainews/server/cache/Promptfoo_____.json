@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_8203d3635ca58152791f",
+    "title": "Promptfoo 发布 0.122.1",
+    "description": "0.122.1 (2026-08-26) Features eval: distinguish scan footprint from incurred token usage (#10497) (8df8ef0) providers: add Gemini 3.7 Flash and Flash-Lite (#10389) (bc6b189) redteam: account for multi-turn attacker and grading tokens (#10407) (33cc8bc) redteam: report generation, target, attacker, and grading tokens (#10408) (0891e4e) tracing: add test-case roots and universal target spans (#10328) (334586e) tracing: align spans with OpenTelemetry GenAI conventions (#10361) (e6f44f8) tracing: fe",
+    "url": "https://github.com/promptfoo/promptfoo/releases/tag/0.122.1",
+    "publishedAt": "2026-08-26T20:33:34.000Z",
+    "category": "AI新闻",
+    "source": "Promptfoo 官方发布",
+    "imageUrl": null,
+    "author": "promptfoobot[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_cef0aa4a4eeb9dbfcb7e",
+    "title": "Promptfoo 发布 0.122.0",
+    "description": "0.122.0 (2026-08-04) ⚠ BREAKING CHANGES drop Node.js 20 support (#10260) Bug Fixes deps: keep the Shai-Hulud compromised versions unreachable (#10301) (db2a066) deps: patch undici in code-scan-action and guard both lockfiles (#10278) (15bf41f) deps: pin socket.io-parser above the packet-decoder DoS (#10279) (d0f2a83) deps: repair Biome and undici upgrade regressions (#10292) (3565a3c) deps: restore XML entity decoding for xlsx test files (#10249) (00cdeb9) deps: update anthropic packages (#10234",
+    "url": "https://github.com/promptfoo/promptfoo/releases/tag/0.122.0",
+    "publishedAt": "2026-08-04T17:45:40.000Z",
+    "category": "新思路",
+    "source": "Promptfoo 官方发布",
+    "imageUrl": null,
+    "author": "promptfoobot[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_ec3cfe9a9517332c292c",
+    "title": "Promptfoo 发布 0.121.20",
+    "description": "0.121.20 (2026-07-30) Features providers: add Claude Opus 5 support (#10210) (ff84f13) providers: add current Azure, Claude, and Gemini models (#10128) (5c216a1) providers: add Kimi K3 support to Moonshot provider (#10132) (a1168b6) websocket: support URL templating (#10171) (a9aaced) Bug Fixes assertions: default conversation-relevance threshold to 0.5 (#10142) (2812d76) azure: avoid crash on empty completion choices (#10124) (17d8d03) deps: align Renovate npm registry (#10115) (688a905) deps: ",
+    "url": "https://github.com/promptfoo/promptfoo/releases/tag/0.121.20",
+    "publishedAt": "2026-07-31T03:54:07.000Z",
+    "category": "新思路",
+    "source": "Promptfoo 官方发布",
+    "imageUrl": null,
+    "author": "promptfoobot[bot]",
+    "language": "multi",
+    "region": "global"
+  }
+]

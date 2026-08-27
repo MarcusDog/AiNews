@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_5abf42da5b5acdf19006",
+    "title": "Keras 3.15.1",
+    "description": "Release Notes Keras 3.15.1 is a patch release containing important security hardening, bug fixes, and Python 3.14 compatibility improvements. Security Fixes Restrict unpickling when loading IMDB and Reuters datasets — Prevents insecure deserialization (CWE-502) by replacing bare np.load(allow_pickle=True) with a restricted unpickler that only permits numpy array reconstruction. (#23047) by @LinZiyuu Verify all intermediary H5 groups when navigating H5 files — Manually resolves nested H5 group pa",
+    "url": "https://github.com/keras-team/keras/releases/tag/v3.15.1",
+    "publishedAt": "2026-07-29T18:25:38.000Z",
+    "category": "AI新闻",
+    "source": "Keras 官方发布",
+    "imageUrl": null,
+    "author": "laxmareddyp",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_2f09fc51ef02ecbc17c1",
+    "title": "Keras 3.12.4",
+    "description": "Keras 3.12.4 Keras 3.12.4 is a security patch release that hardens dataset loading and model file handling against insecure deserialization and decompression-bomb attacks. Security Fixes Restrict unpickling when loading IMDB and Reuters datasets — Replaces np.load(allow_pickle=True) with a restricted unpickler that only permits numpy array reconstruction, preventing arbitrary code execution via crafted .npz files (CWE-502). (#23047) by @LinZiyuu Verify all intermediary H5 groups when navigating ",
+    "url": "https://github.com/keras-team/keras/releases/tag/v3.12.4",
+    "publishedAt": "2026-07-29T22:19:46.000Z",
+    "category": "AI新闻",
+    "source": "Keras 官方发布",
+    "imageUrl": null,
+    "author": "laxmareddyp",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_fa54f53b1effc1e6cd9d",
+    "title": "Keras 发布 v3.12.3",
+    "description": "Keras 3.12.3 is a security patch release that hardens model saving, loading, and deserialization against a range of attack vectors. HDF5 Hardening Eject ExternalLink/SoftLink groups in KerasFileEditor (#22899) Prevents HDF5 external/soft links from being exploited to read arbitrary files during model editing. Reject ExternalLink/SoftLink on legacy .h5 dispatcher (#22900) Extends HDF5 link rejection to the legacy load_weights path for .h5 files. Reject HDF5 shape-bomb datasets (#22975) Blocks HDF",
+    "url": "https://github.com/keras-team/keras/releases/tag/v3.12.3",
+    "publishedAt": "2026-06-26T17:52:51.000Z",
+    "category": "AI框架",
+    "source": "Keras 官方发布",
+    "imageUrl": null,
+    "author": "laxmareddyp",
+    "language": "multi",
+    "region": "global"
+  }
+]

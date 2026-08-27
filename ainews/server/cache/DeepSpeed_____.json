@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_26946d618b96e3dae539",
+    "title": "v0.19.5 Patch Release",
+    "description": "What's Changed Update version.txt after 0.19.4 release by @loadams in #8219 Restore the custom DCO workflow by @tohtana in #8220 Update actions versions for workflows. by @loadams in #8228 Do not let one op builder's compatibility probe break importing deepspeed by @adityasingh2400 in #8216 Fix ZeRO++ secondary shard copy for small params by @ZyEng-Art in #8210 fix(zero3): async grad offload + pinned offload buffers by default by @delock in #8207 Fix AutoEP ZeRO-1/2 universal conversion by @toht",
+    "url": "https://github.com/deepspeedai/DeepSpeed/releases/tag/v0.19.5",
+    "publishedAt": "2026-08-10T19:00:51.000Z",
+    "category": "AI框架",
+    "source": "DeepSpeed 官方发布",
+    "imageUrl": null,
+    "author": "loadams",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_4746e67c54d989a9e9af",
+    "title": "v0.19.4 Patch Release",
+    "description": "What's Changed Validate warmup_type in WarmupCosineLR like WarmupLR by @sohumt123 in #8151 Run pull request code only inside a Modal Sandbox by @tohtana in #8170 [AutoTP] Allow ZeRO stage 3 inference with tensor parallelism by @delock in #8167 Fix autotuning get_val_by_key to search all nested subdicts by @ebarkhordar in #8177 Enable support for Tutel when k != 1 for shared moe by @jinyouzhi in #8174 NVMe write warning by @sfc-gh-truwase in #8164 Guard LRRangeTest and OneCycle schedulers against",
+    "url": "https://github.com/deepspeedai/DeepSpeed/releases/tag/v0.19.4",
+    "publishedAt": "2026-08-06T02:10:42.000Z",
+    "category": "AI框架",
+    "source": "DeepSpeed 官方发布",
+    "imageUrl": null,
+    "author": "loadams",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_821001bbe3499b4efff2",
+    "title": "v0.19.3 Patch Release",
+    "description": "What's Changed Update version post release by @loadams in #8070 Validate fp16 dynamic loss scaling parameters are positive by @aryanputta in #8050 Add merge queue DCO workflow by @tohtana in #8086 Stop obsolete CI jobs on workflow cancellation by @tohtana in #8034 Fix ZeRO-3: Use per-param dtype for output buffers in _allgather_params_coalesced by @albertvillanova in #8073 fix: close file descriptor in deepspeed_io_handle_t::wait() to prevent fd leak by @MarkCLChang in #8075 Add type hints to to",
+    "url": "https://github.com/deepspeedai/DeepSpeed/releases/tag/v0.19.3",
+    "publishedAt": "2026-07-23T01:08:19.000Z",
+    "category": "AI框架",
+    "source": "DeepSpeed 官方发布",
+    "imageUrl": null,
+    "author": "loadams",
+    "language": "multi",
+    "region": "global"
+  }
+]

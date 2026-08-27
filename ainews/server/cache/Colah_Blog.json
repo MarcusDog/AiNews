@@ -1,0 +1,80 @@
+[
+  {
+    "id": "article_e560f6b41387c279a346",
+    "title": "Collaboration and Credit Principles",
+    "description": "A lot of the best research in machine learning comes from collaborations. In fact, many of the most significant papers in the last few years (TensorFlow, AlphaGo, etc) come from collaborations of 20+ people. These collaborations are made possible by goodwill and trust between researchers.",
+    "url": "http://colah.github.io/posts/2019-05-Collaboration/index.html",
+    "publishedAt": "2019-05-30T00:00:00.000Z",
+    "category": "AI新闻",
+    "source": "Colah Blog",
+    "imageUrl": null,
+    "author": "Colah Blog",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_70c434ed8f1630f05777",
+    "title": "Visual Information Theory",
+    "description": "I love the feeling of having a new way to think about the world. I especially love when there’s some vague idea that gets formalized into a concrete concept. Information theory is a prime example of this. Information theory gives us precise language for describing a lot of things. How uncertain am I? How much does knowing the answer to question A tell me about the answer to question B? How similar is one set of beliefs to another? I’ve had informal versions of these ideas since I was a young chi",
+    "url": "http://colah.github.io/posts/2015-09-Visual-Information",
+    "publishedAt": "2015-09-03T00:00:00.000Z",
+    "category": "AI新闻",
+    "source": "Colah Blog",
+    "imageUrl": null,
+    "author": "Colah Blog",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_daded1d85832daa65a26",
+    "title": "Neural Networks, Types, and Functional Programming",
+    "description": "Deep learning, despite its remarkable successes, is a young field – perhaps ten years old. While models called artificial neural networks have been studied for decades, much of that work seems only tenuously connected to modern results. It’s often the case that young fields start in a very ad-hoc manner. Later, the mature field is understood very differently than it was understood by its early practitioners. It seems quite likely that deep learning is in this ad-hoc state... Read more.",
+    "url": "http://colah.github.io/posts/2015-09-NN-Types-FP",
+    "publishedAt": "2015-09-03T00:00:00.000Z",
+    "category": "AI新闻",
+    "source": "Colah Blog",
+    "imageUrl": null,
+    "author": "Colah Blog",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_8733c586cf88b3adc822",
+    "title": "Calculus on Computational Graphs: Backpropagation",
+    "description": "Backpropagation is the key algorithm that makes training deep models computationally tractable. For modern neural networks, it can make training with gradient descent as much as ten million times faster, relative to a naive implementation. That’s the difference between a model taking a week to train and taking 200,000 years. Beyond its use in deep learning, backpropagation is a powerful computational tool in many other areas, ranging from weather forecasting to analyzing numerical stability – it",
+    "url": "http://colah.github.io/posts/2015-08-Backprop/index.html",
+    "publishedAt": "2015-08-31T00:00:00.000Z",
+    "category": "AI新闻",
+    "source": "Colah Blog",
+    "imageUrl": null,
+    "author": "Colah Blog",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_3d2d4973a932b1c50f8b",
+    "title": "Understanding LSTM Networks",
+    "description": "Humans don’t start their thinking from scratch every second. As you read this essay, you understand each word based on your understanding of previous words. You don’t throw everything away and start thinking from scratch again. Your thoughts have persistence. Traditional neural networks can’t do this, and it seems like a major shortcoming. For example, imagine you want to classify what kind of event is happening at every point in a movie. It’s unclear how a traditional neural network could use i",
+    "url": "http://colah.github.io/posts/2015-08-Understanding-LSTMs/index.html",
+    "publishedAt": "2015-08-27T00:00:00.000Z",
+    "category": "AI新闻",
+    "source": "Colah Blog",
+    "imageUrl": null,
+    "author": "Colah Blog",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_0ff623114b0523e55827",
+    "title": "Visualizing Representations: Deep Learning and Human Beings",
+    "description": "In a previous post, we explored techniques for visualizing high-dimensional data. Trying to visualize high dimensional data is, by itself, very interesting, but my real goal is something else. I think these techniques form a set of basic building blocks to try and understand machine learning, and specifically to understand the internal operations of deep neural networks. Deep neural networks are an approach to machine learning that has revolutionized computer vision and speech recognition in the",
+    "url": "http://colah.github.io/posts/2015-01-Visualizing-Representations",
+    "publishedAt": "2015-01-16T00:00:00.000Z",
+    "category": "AI新闻",
+    "source": "Colah Blog",
+    "imageUrl": null,
+    "author": "Colah Blog",
+    "language": "en",
+    "region": "global"
+  }
+]

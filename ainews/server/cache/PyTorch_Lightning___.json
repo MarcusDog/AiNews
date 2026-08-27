@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_06193fabd4c622df4282",
+    "title": "Lightning 2.6.5",
+    "description": "Changes in 2.6.5 Lightning Fabric Changed Use fs.pipe() for S3/GCS checkpoint uploads in _atomic_save (#21595 Full commit list: 2.6.4 -> 2.6.5 Contributors New Contributors @c-pozzi made their first contribution in #21595 We thank all folks who submitted issues, features, fixes and doc changes. It's the only way we can collectively make Lightning ⚡ better for everyone, nice job! In particular, we would like to thank the authors and co-authors of the pull-requests above: @c-pozzi @justusschock",
+    "url": "https://github.com/Lightning-AI/pytorch-lightning/releases/tag/2.6.5",
+    "publishedAt": "2026-05-27T14:33:37.000Z",
+    "category": "AI新闻",
+    "source": "PyTorch Lightning 发布",
+    "imageUrl": null,
+    "author": "justusschock",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_896e2ff609ab54036efb",
+    "title": "Lightning 2.6.4",
+    "description": "Changes in 2.6.4 PyTorch Lightning Removed Removed support for Neptune logger (#21572). Note: We usually don't remove features in a patch release, however in this case it's an exception since even without removing it the integration would be broken due to Neptune being acquired and sunsetting public service Changed Raised minimum LitLogger version to 2026-03-17 (#21591) Fixed Fixed val_check_interval raising ValueError when limit_val_batches=0 and interval exceeds training batches (#21560) Fixed",
+    "url": "https://github.com/Lightning-AI/pytorch-lightning/releases/tag/2.6.4",
+    "publishedAt": "2026-05-20T22:09:43.000Z",
+    "category": "AI新闻",
+    "source": "PyTorch Lightning 发布",
+    "imageUrl": null,
+    "author": "justusschock",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_5491fdd6a1970beac9bd",
+    "title": "Lightning v2.6.1",
+    "description": "Changes in 2.6.1 PyTorch Lightning Added Added method chaining support to LightningModule.freeze() and LightningModule.unfreeze() by returning self (#21469) Added litlogger integration(#21430) Deprecated Deprecated to_torchscript method due to deprecation of TorchScript in PyTorch (#21397) Removed Removed support for Python 3.9 due to end-of-life status (#21398) Fixed Fixed save_hyperparameters(ignore=...) behavior so subclass ignore rules override base class rules (#21490) Fixed LightningDataMo",
+    "url": "https://github.com/Lightning-AI/pytorch-lightning/releases/tag/2.6.1",
+    "publishedAt": "2026-01-30T14:59:01.000Z",
+    "category": "AI框架",
+    "source": "PyTorch Lightning 发布",
+    "imageUrl": null,
+    "author": "bhimrazy",
+    "language": "multi",
+    "region": "global"
+  }
+]

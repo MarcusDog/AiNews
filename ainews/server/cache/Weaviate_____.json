@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_61a4c2d644460a35c839",
+    "title": "v1.37.15 - LSM store and HFresh Fixes, New multi2vec-twelvelabs and generative-digitalocean modules",
+    "description": "Breaking Changes none New Features none Fixes Remove support for restoring old backup formats by @dirkkul in #12338 Route shard access through Index.withShardOrRemote by @dirkkul in #12366 Allocate per-tenant vector cache memory lazily and proportionally to tenant size by @asdine in #12116 fix(replication): unify the loading-shard readiness check and fix FetchObjects by @moogacs in #12370 Add retry to module base client by @dirkkul in #12377 fix(queue): fix data race in TestPartialChunkRecovery ",
+    "url": "https://github.com/weaviate/weaviate/releases/tag/v1.37.15",
+    "publishedAt": "2026-08-27T06:44:17.000Z",
+    "category": "AI新闻",
+    "source": "Weaviate 官方发布",
+    "imageUrl": null,
+    "author": "antas-marcin",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_99c215a23801be9a5caf",
+    "title": "v1.39.2 - DB user API-key export/import, generative-digitalocean module, async replication & shard lifecycle fixes",
+    "description": "Breaking Changes none New Features none Fixes ci: upgrade modules light and modules api runners to ubicloud-standard-4 by @antas-marcin in #12776 Make the resource scanner's shard status check-and-set atomic by @dirkkul in #12703 fix(aggregator): merge remote shard aggregations after JSON round trip (mean/median/mode panic on multi-node) by @amourao in #12746 Keep a per-namespace collection count and report it as a metric by @dirkkul in #12772 perf(async-replication): batch root pre-filter acros",
+    "url": "https://github.com/weaviate/weaviate/releases/tag/v1.39.2",
+    "publishedAt": "2026-08-27T06:18:02.000Z",
+    "category": "AI框架",
+    "source": "Weaviate 官方发布",
+    "imageUrl": null,
+    "author": "aliszka",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_cec8c9b0075860a3888d",
+    "title": "v1.38.12 - Async replication performance, multi-node aggregation & backup fixes",
+    "description": "Breaking Changes none New Features none Fixes fix(runtime-config): register disable_dimension_metrics as a runtime override by @amourao in #12733 fix(hnsw): restore cache reads for uncompressed non-MUVERA late-interaction rescore by @trengrj in #12731 fix(lsmkv): write WAL tombstone pair before publishing inverted doc tombstone by @amourao in #12741 Resource scan: Dont load lazy shards and set newly loaded shards to ReadOnly too by @dirkkul in #12674 Fix all linter issues coming form golangci-li",
+    "url": "https://github.com/weaviate/weaviate/releases/tag/v1.38.12",
+    "publishedAt": "2026-08-25T13:41:08.000Z",
+    "category": "AI框架",
+    "source": "Weaviate 官方发布",
+    "imageUrl": null,
+    "author": "aliszka",
+    "language": "en",
+    "region": "global"
+  }
+]

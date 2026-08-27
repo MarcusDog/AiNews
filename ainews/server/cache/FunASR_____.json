@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_c9b32e174d0d07fb248f",
+    "title": "FunASR 1.4.4",
+    "description": "FunASR 1.4.4 Install or upgrade: python -m pip install -U \"funasr==1.4.4\" PyPI package Realtime WebSocket concurrency Removes the process-wide lock that serialized realtime sessions. Batches compatible vLLM decode requests across sessions while preserving request-local outputs. Isolates per-session VAD state while sharing encoder weights. Recovers individual requests after batch failures and keeps the worker alive. On one H100 with 12 concurrent clients, aggregate throughput improved from 8.431x",
+    "url": "https://github.com/modelscope/FunASR/releases/tag/v1.4.4",
+    "publishedAt": "2026-08-26T15:46:04.000Z",
+    "category": "AI新闻",
+    "source": "FunASR 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_9942d87cf5e32f41ce27",
+    "title": "FunASR llama.cpp runtime v0.2.1",
+    "description": "Prebuilt self-contained binaries for the FunASR llama.cpp / GGUF runtime: SenseVoice, Paraformer and Fun-ASR-Nano with built-in FSMN-VAD. Download the default quantized model with bash download-funasr-model.sh (the helper requires the Hugging Face CLI: pip install -U huggingface_hub), then run llama-funasr-cli / llama-funasr-sensevoice / llama-funasr-paraformer. Use the default x64 asset for maximum CPU compatibility; use the x64-avx2 asset on CPUs with AVX2/FMA/F16C/BMI2 for higher throughput. ",
+    "url": "https://github.com/modelscope/FunASR/releases/tag/runtime-llamacpp-v0.2.1",
+    "publishedAt": "2026-08-26T17:33:35.000Z",
+    "category": "AI框架",
+    "source": "FunASR 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_35e1f8746644cdc69743",
+    "title": "FunASR 1.4.3",
+    "description": "FunASR 1.4.3 Install or upgrade the Python package: python -m pip install -U \"funasr==1.4.3\" Enable the optional Silero VAD adapter: python -m pip install -U \"funasr[silero]==1.4.3\" PyPI: https://pypi.org/project/funasr/1.4.3/ Python package Adds an optional Silero VAD adapter for AutoModel(vad_model=\"silero-vad\"), with FunASR-compatible millisecond segments, configurable thresholds, 8/16 kHz input, ONNX mode, and bounded segment lengths. Routes large speaker-embedding sets with a known speaker ",
+    "url": "https://github.com/modelscope/FunASR/releases/tag/v1.4.3",
+    "publishedAt": "2026-08-21T03:48:11.000Z",
+    "category": "AI新闻",
+    "source": "FunASR 官方发布",
+    "imageUrl": null,
+    "author": "LauraGPT",
+    "language": "en",
+    "region": "global"
+  }
+]

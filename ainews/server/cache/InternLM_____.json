@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_7b852a12438267e7266b",
+    "title": "InternLM-v0.2.1dev20240102",
+    "description": "What's Changed fix(timeout): larger timeout by @JiaoPL in #495 feat(doc): add GPU memory info for 7B & 20B models by @li126com in #507 feat(model): add rope_base interface by @00INDEX in #512 Feat(QA): Check loss when swapping micro_num and micro_bsz && Check grad norm by @li126com in #510 Fix(QA): the py name in main is wrong by @li126com in #514 fix/feat: small fix and enhancement by @SolenoidWGT in #515 test(workflow): add workflow for loss test and change trigger event by @kkscilife in #513 ",
+    "url": "https://github.com/InternLM/InternLM/releases/tag/v0.2.1dev20240102",
+    "publishedAt": "2024-01-02T05:05:11.000Z",
+    "category": "AI新闻",
+    "source": "InternLM 官方发布",
+    "imageUrl": null,
+    "author": "sunpengsdu",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_a9af94cc9b0b7040be87",
+    "title": "InternLM-v0.2.1dev20230922",
+    "description": "TBD",
+    "url": "https://github.com/InternLM/InternLM/releases/tag/v0.2.1dev20231121",
+    "publishedAt": "2023-11-21T09:01:10.000Z",
+    "category": "AI新闻",
+    "source": "InternLM 官方发布",
+    "imageUrl": null,
+    "author": "sunpengsdu",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_92af30253f65368e7322",
+    "title": "InternLM-v0.2.1dev20230915",
+    "description": "Highlights fix the bug that may have grad overflow when total_steps is small fix the rotary_emb.inv_freq KeyError in tool convert2hf.py add unit test for model What's Changed 🚀 Features feat(core/trainer.py): add more tgs metrics by @li126com in #310 🐞 Bug fixes fix(convert2hf.py): fix the rotary_emb.inv_freq KeyError by @jiangtann in #299 fix(configs/7B_sft.py): model dtype float16 to bfloat16 by @huangting4201 in #302 fix(chat): fix stream_chat to return generator by @zhjunqin in #123 📚 Doc",
+    "url": "https://github.com/InternLM/InternLM/releases/tag/v0.2.1dev20230915",
+    "publishedAt": "2023-09-15T11:55:59.000Z",
+    "category": "AI新闻",
+    "source": "InternLM 官方发布",
+    "imageUrl": null,
+    "author": "huangting4201",
+    "language": "en",
+    "region": "global"
+  }
+]

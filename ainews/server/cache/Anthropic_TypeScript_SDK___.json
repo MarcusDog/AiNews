@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_2f4f5522f155f754dbbb",
+    "title": "Anthropic TypeScript SDK 发布 vertex-sdk v0.19.6",
+    "description": "0.19.6 (2026-08-26) Full Changelog: vertex-sdk-v0.19.5...vertex-sdk-v0.19.6 Chores examples: remove redundant main().catch boilerplate (154ace7)",
+    "url": "https://github.com/anthropics/anthropic-sdk-typescript/releases/tag/vertex-sdk-v0.19.6",
+    "publishedAt": "2026-08-26T17:24:20.000Z",
+    "category": "AI框架",
+    "source": "Anthropic TypeScript SDK 发布",
+    "imageUrl": null,
+    "author": "stainless-app[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_c6ae8beb5f58727cefe1",
+    "title": "Anthropic TypeScript SDK 发布 sdk v0.121.0",
+    "description": "0.121.0 (2026-08-26) Full Changelog: sdk-v0.120.0...sdk-v0.121.0 Features api: add updates thinking display mode (beta) (22274ea) api: add missing anthropic-beta values (0779f02) api: add support for Organization API endpoints (8b61e7a) helpers: support Standard Schema for structured outputs and tools (7880078) Bug Fixes tools: keep the tool runner going on pause_turn (#288) (f040dc9) types: don't reference NodeJS.ProcessEnv from published types (#367) (fd38dfd) Chores docs: clarify skill versio",
+    "url": "https://github.com/anthropics/anthropic-sdk-typescript/releases/tag/sdk-v0.121.0",
+    "publishedAt": "2026-08-26T17:24:14.000Z",
+    "category": "AI框架",
+    "source": "Anthropic TypeScript SDK 发布",
+    "imageUrl": null,
+    "author": "stainless-app[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_99afbc378c5e94537c31",
+    "title": "Anthropic TypeScript SDK 发布 google-cloud-sdk v0.0.11",
+    "description": "0.0.11 (2026-08-26) Full Changelog: google-cloud-sdk-v0.0.10...google-cloud-sdk-v0.0.11 Chores examples: remove redundant main().catch boilerplate (154ace7)",
+    "url": "https://github.com/anthropics/anthropic-sdk-typescript/releases/tag/google-cloud-sdk-v0.0.11",
+    "publishedAt": "2026-08-26T17:24:32.000Z",
+    "category": "AI框架",
+    "source": "Anthropic TypeScript SDK 发布",
+    "imageUrl": null,
+    "author": "stainless-app[bot]",
+    "language": "multi",
+    "region": "global"
+  }
+]

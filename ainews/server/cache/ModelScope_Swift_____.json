@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_05cd8c43693cb4de06d9",
+    "title": "ModelScope Swift 发布 v4.5.2",
+    "description": "Bug Fixes Fixed: Corrected the incorrect size configuration for Qwen3.8-35B-A3B, which was mistakenly copied from the previous Qwen3.5/3.6 series during development. We apologize for the confusion and inconvenience this caused. Thanks to the community for reporting this issue.",
+    "url": "https://github.com/modelscope/ms-swift/releases/tag/v4.5.2",
+    "publishedAt": "2026-08-16T02:44:21.000Z",
+    "category": "AI框架",
+    "source": "ModelScope Swift 官方发布",
+    "imageUrl": null,
+    "author": "hjh0119",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_b0e4964bfc9aff5896b2",
+    "title": "ModelScope Swift 发布 v4.5.1",
+    "description": "No content.",
+    "url": "https://github.com/modelscope/ms-swift/releases/tag/v4.5.1",
+    "publishedAt": "2026-08-16T02:02:30.000Z",
+    "category": "AI框架",
+    "source": "ModelScope Swift 官方发布",
+    "imageUrl": null,
+    "author": "tastelikefeet",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_9e1ccb88e9adb0a4cb77",
+    "title": "ModelScope Swift 发布 v4.5.0",
+    "description": "New Models Qwen3.8 Qwen3.8, the strongest open Qwen generation so far. Same Gated DeltaNet hybrid backbone as Qwen3.5/3.6, native vision/video, hybrid thinking on by default, plus tunable reasoning effort and preserved historical thinking. (#9914) NVIDIA Nemotron 3.5 Lightning Nemotron 3.5 Lightning 30B-A3B: hybrid Mamba-2 + MoE + Attention, 30B total / 3B active, 1M context, MTP. (#9894) Muse Glimmer Muse-Glimmer-30B, Meta’s 30B dense multimodal model distilled from Muse Spark for local agents.",
+    "url": "https://github.com/modelscope/ms-swift/releases/tag/v4.5.0",
+    "publishedAt": "2026-08-14T17:07:42.000Z",
+    "category": "AI框架",
+    "source": "ModelScope Swift 官方发布",
+    "imageUrl": null,
+    "author": "hjh0119",
+    "language": "en",
+    "region": "global"
+  }
+]

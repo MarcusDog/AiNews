@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_b1e7330df258091a7429",
+    "title": "TRL 发布 v1.12.0",
+    "description": "⚠️ v1.12.0 is an accidental duplicate of v1.11.0 During the v1.11.0 release, VERSION was bumped to 1.12.0 instead of 1.12.0.dev0. Our publish workflow fires on any push to main that touches VERSION and only skips the upload when the version contains \"dev\", so trl 1.12.0 was auto-published to PyPI at 19:46 on 2026-08-26, 90 seconds after 1.11.0, with identical code. trl==1.12.0 on PyPI is bit-identical to trl==1.11.0. There are no features, fixes, or behavior changes in this version. The version ",
+    "url": "https://github.com/huggingface/trl/releases/tag/v1.12.0",
+    "publishedAt": "2026-08-26T20:05:50.000Z",
+    "category": "AI框架",
+    "source": "TRL 官方发布",
+    "imageUrl": null,
+    "author": "qgallouedec",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_1087f72e4edc4f107458",
+    "title": "TRL 发布 v1.11.0",
+    "description": "Features Use vLLM's own server instead of TRL's trl vllm-serve used to run a custom FastAPI app around vLLM's LLM, with its own data-parallel fan-out and a worker extension for weight sync. vLLM's own server covers all of that. The custom server is gone: trl/scripts/vllm_serve.py drops from 1218 to ~130 lines and now translates its flags into vllm serve, prints the equivalent command, forwards any extra argument, and sets the three settings TRL needs (--weight-transfer-config, --logprobs-mode pr",
+    "url": "https://github.com/huggingface/trl/releases/tag/v1.11.0",
+    "publishedAt": "2026-08-26T20:02:08.000Z",
+    "category": "AI框架",
+    "source": "TRL 官方发布",
+    "imageUrl": null,
+    "author": "qgallouedec",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_6712987905e113b110c5",
+    "title": "TRL 发布 v1.10.0",
+    "description": "Features 🎓 DistillationTrainer is now a stable trainer After a ~30-PR refactor that reshaped its data contract, loss path, generation stack, config surface, and tests, DistillationTrainer and DistillationConfig graduate from trl.experimental.distillation to the top-level trl package. Same import surface as SFT / DPO / GRPO / KTO. The old experimental path still works and emits a FutureWarning (removal in v2.0.0). # Before from trl.experimental.distillation import DistillationConfig, Distillatio",
+    "url": "https://github.com/huggingface/trl/releases/tag/v1.10.0",
+    "publishedAt": "2026-08-13T01:36:04.000Z",
+    "category": "AI框架",
+    "source": "TRL 官方发布",
+    "imageUrl": null,
+    "author": "qgallouedec",
+    "language": "multi",
+    "region": "global"
+  }
+]

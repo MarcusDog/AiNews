@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_ca0a4cff0402f0dd9f31",
+    "title": "v1.14.0: AMD ROCm support, FSDP2 hardening",
+    "description": "FSDP2 Improvements This release brings a large batch of FSDP2 fixes and quality-of-life improvements: correct dtype handling on load, sharding of embeddings/norms, QLoRA crash prevention, and a more robust auto-wrap policy. Fsdp2 fully_shard embedding and norm by @SunMarc in #4015 Fix fsdp2 load full state dict dtype mismatch by @SunMarc in #4021 Fix region compilation fsdpv2 by @SunMarc in #4022 [FSDP2] Cast model to uniform dtype before fully_shard to fix mixed-dtype AssertionError by @roycho9",
+    "url": "https://github.com/huggingface/accelerate/releases/tag/v1.14.0",
+    "publishedAt": "2026-06-11T13:58:31.000Z",
+    "category": "AI框架",
+    "source": "Accelerate 官方发布",
+    "imageUrl": null,
+    "author": "SunMarc",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_58a4a2ab4014f94744f1",
+    "title": "v1.13.0: Neuron support, IPEX removal, and distributed training fixes",
+    "description": "AWS Neuron support We now have support for AWS Neuron (Trainium/Inferentia) devices. Thanks @michaelbenayoun for adding this. Neuron integration by @michaelbenayoun in #3935 XPU Improvements We've removed IPEX dependency and improved device-agnostic code for XPU. using spawn instead of fork for XPU device by @kaixuanliu in #3884 Remove ipex by @yao-matrix in #3883 enhance new codes to XPU, and make them be device agnostic by @yao-matrix in #3890 Fix KMP_AFFINITY incorrectly set for non-CPU train",
+    "url": "https://github.com/huggingface/accelerate/releases/tag/v1.13.0",
+    "publishedAt": "2026-03-04T20:15:55.000Z",
+    "category": "AI框架",
+    "source": "Accelerate 官方发布",
+    "imageUrl": null,
+    "author": "SunMarc",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_2a8e0b1f03b3a2ff43c9",
+    "title": "v1.12.0: Deepspeed Ulysses/ALST",
+    "description": "Deepspeed Ulysses/ALST integration Deepspeed Ulysses/ALST is an efficient way of training on long sequences by employing sequence parallelism and attention head parallelism. You can learn more about this technology in this paper https://arxiv.org/abs/2506.13996 or this deepspeed tutorial https://www.deepspeed.ai/tutorials/ulysses-alst-sequence-parallelism/. To enable Deepspeed Ulysses, you first need to create ParallelismConfig and setting sp related args: parallelism_config = ParallelismConfig(",
+    "url": "https://github.com/huggingface/accelerate/releases/tag/v1.12.0",
+    "publishedAt": "2025-11-21T12:47:55.000Z",
+    "category": "AI框架",
+    "source": "Accelerate 官方发布",
+    "imageUrl": "https://private-user-images.githubusercontent.com/57196510/517387211-b94e90c9-4368-4711-ad57-58de3c714ebc.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODc4MTg0MTgsIm5iZiI6MTc4NzgxODExOCwicGF0aCI6Ii81NzE5NjUxMC81MTczODcyMTEtYjk0ZTkwYzktNDM2OC00NzExLWFkNTctNThkZTNjNzE0ZWJjLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA4MjclMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwODI3VDA4MDgzOFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWE0ZmQ5N2NiYTdhZjI3NmNiMjVkNzUzNzIxYWFmZTExNmIzNmFmMTgwZjA3MzA4YzNkM2IxMzEyMDlkZDdmYjImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.XiuWOp0RDJMuvKDO_qy-qn0P59pa9u7GU93d4dwWLXY",
+    "author": "SunMarc",
+    "language": "multi",
+    "region": "global"
+  }
+]

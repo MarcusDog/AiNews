@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_bef7478184585b3266ca",
+    "title": "Outlines v1.3.3",
+    "description": "What's Changed Support PEP 604 unions (int | str) as output types by @sohumt123 in #1932 fix: reject negative counts in exactly/at_least/at_most/between by @chuenchen309 in #1922 fix: raise clearly instead of asserting on a rejected XGrammar token by @chuenchen309 in #1923 fix(models): handle nullable object type (list form) in additionalProperties pass by @ErenAta16 in #1918 fix: reject leading-zero octets in the ipv4 type by @NishchayMahor in #1904 fix: reject leading-zero octets in ipv6 IPv4-",
+    "url": "https://github.com/dottxt-ai/outlines/releases/tag/1.3.3",
+    "publishedAt": "2026-08-06T12:26:25.000Z",
+    "category": "AI框架",
+    "source": "Outlines 官方发布",
+    "imageUrl": null,
+    "author": "RobinPicard",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_309a462a03064f720f47",
+    "title": "Outlines v1.3.2",
+    "description": "What's Changed fix(types): map JSON Schema const to a Literal by @sarathfrancis90 in #1894 fix: reject invalid day '00' in the date type regex by @hoangsonww in #1897 fix(exceptions): don't require a provider's optional SDK to normalize errors by @Sanjays2402 in #1898 fix(vllm): send structured_outputs instead of removed guided_* keys by @pablopupo in #1888 Escape regex metacharacters in numeric literal constraints by @ritsth in #1902 Stop omitting lmstudio.py from the coverage report by @ErenAt",
+    "url": "https://github.com/dottxt-ai/outlines/releases/tag/1.3.2",
+    "publishedAt": "2026-07-20T06:32:50.000Z",
+    "category": "AI框架",
+    "source": "Outlines 官方发布",
+    "imageUrl": null,
+    "author": "RobinPicard",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_e13f84bde66a7f2298cd",
+    "title": "Outlines v1.3.1",
+    "description": "What's Changed Add semver and MAC address custom types by @Yeuvoir in #1863 Update docs with OrcaRouter guide by @xilema2 in #1865 fix(types): handle bool instances in python_types_to_terms for Literal[True/False] by @devteamaegis in #1869 Add ipv6 custom type by @u7k4rs6 in #1867 Fix unformatted f-string in List type error message by @tan7vir in #1870 Docs: remove stale content by @plpxsk in #1873 Pin down actions to specific SHA to comply with org rule by @RobinPicard in #1885 Accept unsigned ",
+    "url": "https://github.com/dottxt-ai/outlines/releases/tag/1.3.1",
+    "publishedAt": "2026-06-30T10:06:19.000Z",
+    "category": "AI框架",
+    "source": "Outlines 官方发布",
+    "imageUrl": null,
+    "author": "RobinPicard",
+    "language": "en",
+    "region": "global"
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_4f3358ab27040e2be785",
+    "title": "飞桨 PaddleMIX 发布 v3.0.0-beta",
+    "description": "2025.05.09 发布PaddleMIX 3.0.0-beta 多模态理解 新增模型：Qwen2VL/Qwen2.5VL系列，DeepSeek-VL2, miniCPM-V 2.6, Janus系列，LLaVA-Critic, LLaVA-DenseConnector, LLaVA-OneVision, GOT-OCR2.0, mPLUG-Owl3 PP系列模型：发布自研PP-DocBee文档理解多模态大模型，在学术界权威的英文文档理解评测榜单上达到同参数量级别模型SOTA 工具链升级：完善高性能推理部署，新增支持Qwen2.5VL系列，A800推理性能较vllm领先11.5%。LLaVA、InternVL2模型训练和推理适配昇腾910B 多模态生成 新增模型：Open-MAGVIT2，文生视频模型CogVideoX, HunyuanVideo PP系列模型：发布自研可控视频模型PP-VCtrl，支持在多种控制条件下的视频生成 工具链升级：发布ppdiffusers 0.29.1版本，新增对SD3 ControlNet和SD3.5的支持。SD3高性能推理性能打平TensorRT。S",
+    "url": "https://github.com/PaddlePaddle/PaddleMIX/releases/tag/v3.0.0-beta",
+    "publishedAt": "2025-05-09T11:38:56.000Z",
+    "category": "AI框架",
+    "source": "飞桨 PaddleMIX 发布",
+    "imageUrl": null,
+    "author": "jerrywgz",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_5288d90779b3175dca0e",
+    "title": "飞桨 PaddleMIX 发布 v2.1.0",
+    "description": "更新内容 发布自研多模数据能力标签模型PP-InsCapTagger；可用于数据的分析和过滤，试验案例表明在保持模型效果的条件下可减少50%的数据量，大幅提高训练效率。 新增Qwen2-VL、InternVL2、Stable Diffusion 3 (SD3)等前沿模型。 多模态大模型InternVL2、LLaVA、SD3、SDXL适配昇腾910B，提供国产计算芯片上的训推能力。 What's Changed 【pir 】modify dy2static Sd and 3. Grounding DINO model by @xiaoguoguo626807 in #689 fix llava pretrain config by @pkhk-1 in #685 Re-network the DIT, fix some parameters, and simplify the model networking code by @chang-wenbin in #632 update DIT doc by @chang-wenbin in #693 [NPU] Add llava npu ",
+    "url": "https://github.com/PaddlePaddle/PaddleMIX/releases/tag/v2.1.0",
+    "publishedAt": "2024-10-23T02:44:03.000Z",
+    "category": "AI框架",
+    "source": "飞桨 PaddleMIX 发布",
+    "imageUrl": null,
+    "author": "lyuwenyu",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_9743065035f6427f7a87",
+    "title": "飞桨 PaddleMIX 发布 v2.0.0",
+    "description": "多模态理解 新增模型：LLaVA: v1.5-7b, v1.5-13b, v1,6-7b，CogAgent, CogVLM, Qwen-VL, InternLM-XComposer2 数据集增强：新增chatml_dataset图文对话数据读取方案，可自定义chat_template文件适配，支持混合数据集 工具链升级：新增Auto模块，统一SFT训练流程，兼容全参数、lora训练。新增mixtoken训练策略，SFT吞吐量提升5.6倍。支持Qwen-VL，LLaVA推理部署，较torch推理性能提升2.38倍 多模态生成 视频生成能力：支持Sora相关技术，支持DiT、SiT、UViT训练推理，新增NaViT、MAGVIT-v2模型； 新增视频生成模型SVD、Open Sora，支持模型微调和推理； 新增姿态可控视频生成模型AnimateAnyone、即插即用视频生成模型AnimateDiff、GIF视频生成模型Hotshot-XL； 文生图模型库：新增高速推理文图生成模型LCM，适配SD/SDXL训练和推理； 工具链升级：发布ppdiffusers 0.24.1版本，新增peft，",
+    "url": "https://github.com/PaddlePaddle/PaddleMIX/releases/tag/v2.0.0",
+    "publishedAt": "2024-07-29T14:54:25.000Z",
+    "category": "AI框架",
+    "source": "飞桨 PaddleMIX 发布",
+    "imageUrl": null,
+    "author": "jerrywgz",
+    "language": "multi",
+    "region": "cn"
+  }
+]

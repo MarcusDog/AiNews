@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_25716ad997961a15aa4c",
+    "title": "OpenAI Node SDK 发布 v7.7.0",
+    "description": "7.7.0 (2026-08-26) Features api: make function call output call IDs optional (#2488) (b932ae6) Bug Fixes streaming: honor cancellation while decoding SSE responses (#2487) (ababe12)",
+    "url": "https://github.com/openai/openai-node/releases/tag/v7.7.0",
+    "publishedAt": "2026-08-27T01:04:11.000Z",
+    "category": "AI框架",
+    "source": "OpenAI Node SDK 发布",
+    "imageUrl": null,
+    "author": "openai-sdks[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_cb79c84f423ac84148ca",
+    "title": "OpenAI Node SDK 发布 v7.6.0",
+    "description": "7.6.0 (2026-08-26) Features api: Add obfuscation field to ChatCompletionChunk (#2423) (39afa3a) api: Add project residency and usage quantity_unit fields (#2461) (26d8158) api: support backend-mediated Realtime WebRTC calls (#2469) (0d12ca8) auth: add pinned X.509 workload token exchange (#2470) (9dd8648) auth: attest cross-module X.509 transport capabilities (#2471) (c6769fa) auth: harden X.509 token lifecycle and tenant isolation (#2473) (6992683) auth: integrate attested X.509 workload identi",
+    "url": "https://github.com/openai/openai-node/releases/tag/v7.6.0",
+    "publishedAt": "2026-08-26T21:52:04.000Z",
+    "category": "AI框架",
+    "source": "OpenAI Node SDK 发布",
+    "imageUrl": null,
+    "author": "openai-sdks[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_e3d289c7cc0ec8faa7ab",
+    "title": "OpenAI Node SDK 发布 v7.5.0",
+    "description": "7.5.0 (2026-08-17) Features add Bedrock Runtime endpoint support (SDK-290) (#2348) (4a199af) api: add new Daybreak and gpt-5.6-cyber model identifiers (9a38e63) api: add new Daybreak and gpt-5.6-cyber model identifiers (#2278) (9a38e63) api: Add ServiceTier and ImageDetail types (#2364) (602d481) api: add WebSocket stream IDs (#2314) (156a8db) api: add workload identity access token issued event (#2307) (322a5b1) api: deprecate Sora video APIs (#2313) (4424b40) api: Ultrafast tier, structured MC",
+    "url": "https://github.com/openai/openai-node/releases/tag/v7.5.0",
+    "publishedAt": "2026-08-17T19:13:41.000Z",
+    "category": "AI框架",
+    "source": "OpenAI Node SDK 发布",
+    "imageUrl": null,
+    "author": "openai-sdks[bot]",
+    "language": "multi",
+    "region": "global"
+  }
+]

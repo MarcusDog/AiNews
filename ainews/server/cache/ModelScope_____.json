@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_04c403464ed83798848b",
+    "title": "ModelScope 发布 v1.39.1",
+    "description": "What's Changed update modelscope-hub>=0.2.0 by @wangxingjun778 in #1768 Full Changelog: v1.39.0...v1.39.1",
+    "url": "https://github.com/modelscope/modelscope/releases/tag/v1.39.1",
+    "publishedAt": "2026-08-04T08:26:00.000Z",
+    "category": "AI框架",
+    "source": "ModelScope 官方发布",
+    "imageUrl": null,
+    "author": "wangxingjun778",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_0fb130567f52ffe71401",
+    "title": "ModelScope 发布 v1.39.0",
+    "description": "What's Changed Fix some bugs by @tastelikefeet in #1746 Fix RecursionError on Repeated Streaming Dataset Loads via Idempotent HfFileSystem Patching by @wangxingjun778 in #1754 [Fix]dynamic module auto map double dash by @suluyana in #1761 [Fix] Fix progress_callbacks for snapshot_download func by @wangxingjun778 in #1760 fix: forward download kwargs in HF patcher snapshot_download calls by @suluyana in #1762 Full Changelog: v1.38.1...v1.39.0",
+    "url": "https://github.com/modelscope/modelscope/releases/tag/v1.39.0",
+    "publishedAt": "2026-07-28T09:23:04.000Z",
+    "category": "AI框架",
+    "source": "ModelScope 官方发布",
+    "imageUrl": null,
+    "author": "suluyana",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_14554d95188826af8cdc",
+    "title": "ModelScope 发布 v1.38.1",
+    "description": "What's Changed [Backport] Docker fixes from release/1.38 by @Yunnglin in #1735 add property session in HubApi by @wangxingjun778 in #1748 Fix release workflow hub dependency by @Yunnglin in #1749 Full Changelog: v1.38.0...v1.38.1",
+    "url": "https://github.com/modelscope/modelscope/releases/tag/v1.38.1",
+    "publishedAt": "2026-07-06T15:13:01.000Z",
+    "category": "AI框架",
+    "source": "ModelScope 官方发布",
+    "imageUrl": null,
+    "author": "wangxingjun778",
+    "language": "en",
+    "region": "global"
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_ac83c2cf54bccbc9417b",
+    "title": "OpenAI Python SDK 发布 v3.5.0",
+    "description": "3.5.0 (2026-08-27) Features api: make function call output call IDs optional (#3738) (c74501d)",
+    "url": "https://github.com/openai/openai-python/releases/tag/v3.5.0",
+    "publishedAt": "2026-08-27T01:00:03.000Z",
+    "category": "AI框架",
+    "source": "OpenAI Python SDK 发布",
+    "imageUrl": null,
+    "author": "openai-sdks[bot]",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_061d8f848ebfdfae85dd",
+    "title": "OpenAI Python SDK 发布 v3.4.0",
+    "description": "3.4.0 (2026-08-25) Features api: Add obfuscation field to ChatCompletionChunk (#3690) (c7d8e1d) api: add project residency configuration and cost quantity units (#3726) (bc4f8ef) Bug Fixes api: encode Realtime call offers and session configuration (#3736) (555ac48) apply consistent origin checks to WebSocket redirects (#3693) (1b324d0) azure: encode deployment names consistently (#3683) (689538d) azure: keep provider validation errors value-free (#3691) (72529c0) azure: resolve one authenticatio",
+    "url": "https://github.com/openai/openai-python/releases/tag/v3.4.0",
+    "publishedAt": "2026-08-26T21:48:40.000Z",
+    "category": "AI框架",
+    "source": "OpenAI Python SDK 发布",
+    "imageUrl": null,
+    "author": "openai-sdks[bot]",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_9bdce75173eae3613073",
+    "title": "OpenAI Python SDK 发布 v3.3.1",
+    "description": "3.3.1 (2026-08-19) Bug Fixes deps: update dependencies with published security fixes (#3680) (53aa4fc) Chores build: migrate to uv (#3653) (b37e85d) deps: remove jsonschema and unused fixture-validation dependencies (0dfdfdd) lock the repository Pyright toolchain (#3678) (3079be2) run the mock server from locked local tooling (#3679) (370fcc6) Refactors deps: use the standard library for platform detection (d5b0065) Build System replace the external README metadata hook (e673ca8)",
+    "url": "https://github.com/openai/openai-python/releases/tag/v3.3.1",
+    "publishedAt": "2026-08-19T16:30:47.000Z",
+    "category": "AI框架",
+    "source": "OpenAI Python SDK 发布",
+    "imageUrl": null,
+    "author": "openai-sdks[bot]",
+    "language": "en",
+    "region": "global"
+  }
+]

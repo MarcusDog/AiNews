@@ -1,0 +1,15 @@
+[
+  {
+    "id": "article_315b074b9edb5ea5ba33",
+    "title": "llama.cpp 发布 v0.3.0",
+    "description": "Overview llama.cpp 0.3.0 introduces the dots3-note multimodal model (with a new DSA-ISWA KV cache), MTP support for GLM-4.5-Air, and tensor-split (-sm tensor) plus multi-sequence rollback fixes for DeepSeek 4. ggml is bumped to v0.22.0 (meta-backend tensor split, per-op Metal kernels with parallel compilation, non-in-place ggml_clamp), while mtmd gains dots3-note vision/audio, WebP decoding and a Pillow-accurate resize. The server adds a LLAMA_SERVER_SLOTS_N_DIFF debug knob, and the web UI gets ",
+    "url": "https://github.com/ggml-org/llama.cpp/releases/tag/v0.3.0",
+    "publishedAt": "2026-08-25T10:29:52.000Z",
+    "category": "AI框架",
+    "source": "llama.cpp 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  }
+]

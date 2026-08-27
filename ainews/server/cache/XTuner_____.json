@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_f1686b8039cfae730bbc",
+    "title": "bk main",
+    "description": "Fix rollout_is_seq metrics by excluding padded tokens in packed seque… …nces (#1788) * fix rollout_is count packed pad sequence * fix redundant mismatch/valid all reduce ,fix is metrics lint --------- Co-authored-by: shenshuo",
+    "url": "https://github.com/InternLM/xtuner/releases/tag/v1.0.1",
+    "publishedAt": "2026-05-15T06:57:47.000Z",
+    "category": "AI新闻",
+    "source": "XTuner 官方发布",
+    "imageUrl": null,
+    "author": "hhaAndroid",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_563c6a024f4525366fb5",
+    "title": "XTuner 发布 v1.0.0rc0",
+    "description": "No content.",
+    "url": "https://github.com/InternLM/xtuner/releases/tag/v1.0.0rc0",
+    "publishedAt": "2025-11-18T10:16:19.000Z",
+    "category": "AI框架",
+    "source": "XTuner 官方发布",
+    "imageUrl": null,
+    "author": "HAOCHENYE",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_353157eae5fe597ed5b7",
+    "title": "XTuner Release V0.2.0",
+    "description": "What's Changed Add Support for Pre-trained RM by @RowitZou in #1038 Fix a bug when import reward model client. by @RowitZou in #1039 bump version to v0.2.0 by @pppppM in #1040 New Contributors @RowitZou made their first contribution in #1038 Full Changelog: v0.2.0rc0...v0.2.0",
+    "url": "https://github.com/InternLM/xtuner/releases/tag/v0.2.0",
+    "publishedAt": "2025-07-11T05:43:37.000Z",
+    "category": "AI框架",
+    "source": "XTuner 官方发布",
+    "imageUrl": null,
+    "author": "pppppM",
+    "language": "en",
+    "region": "global"
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_180d015a4e7c1fe13ee4",
+    "title": "Jina 发布 v3.34.0",
+    "description": "🙇 We'd like to thank all contributors for this new release! In partic…",
+    "url": "https://github.com/jina-ai/serve/releases/tag/v3.34.0",
+    "publishedAt": "2025-03-24T13:59:53.000Z",
+    "category": "AI框架",
+    "source": "Jina 官方发布",
+    "imageUrl": null,
+    "author": "jina-bot",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_4e433ec56286e2933ca3",
+    "title": "Jina 发布 v3.33.1",
+    "description": "🙇 We'd like to thank all contributors for this new release! In partic…",
+    "url": "https://github.com/jina-ai/serve/releases/tag/v3.33.1",
+    "publishedAt": "2025-02-25T12:09:09.000Z",
+    "category": "AI框架",
+    "source": "Jina 官方发布",
+    "imageUrl": null,
+    "author": "jina-bot",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_0c0bf18c814d2903f026",
+    "title": "Jina 发布 v3.33.0",
+    "description": "🙇 We'd like to thank all contributors for this new release! In partic…",
+    "url": "https://github.com/jina-ai/serve/releases/tag/v3.33.0",
+    "publishedAt": "2024-12-20T12:13:57.000Z",
+    "category": "AI框架",
+    "source": "Jina 官方发布",
+    "imageUrl": null,
+    "author": "jina-bot",
+    "language": "multi",
+    "region": "global"
+  }
+]

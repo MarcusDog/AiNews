@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_2f9b2069cff65822ccc2",
+    "title": "TypeScript 0.9.13",
+    "description": "New to deepeval? Get started here. ⚡ Improvement update changelogs for 2026 till August's latest release (#3106 by @A-Vamshi) 🐛 Bug Fix Refactor metrics to standardize score. (Higher is better) (#3102 by @A-Vamshi) A huge thank you to everyone who contributed to this release ❤️",
+    "url": "https://github.com/confident-ai/deepeval/releases/tag/typescript-v0.9.13",
+    "publishedAt": "2026-08-24T21:58:21.000Z",
+    "category": "新思路",
+    "source": "DeepEval 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_1f2ef1b6a886b343e8af",
+    "title": "Python 4.2.0",
+    "description": "New to deepeval? Get started here. This release also collects the changes from 4.1.2 through 4.1.10, which shipped to PyPI without a GitHub release. ✨ New Feature Features/voice (#3036 by @penguine-ip) 4.1.10 support user credentials for Vertex AI (#3017 by @ykocaogullar) 4.1.8 add support for mcp servers (#3046 by @tanayvaswani) 4.1.8 Add SDK support for golden update and delete (#2945 by @A-Vamshi) 4.1.6 Revamp DAG metrics to be constructed in a top-down approach (#2912 by @A-Vamshi) 4.1.3 sup",
+    "url": "https://github.com/confident-ai/deepeval/releases/tag/python-v4.2.0",
+    "publishedAt": "2026-08-24T22:02:25.000Z",
+    "category": "新思路",
+    "source": "DeepEval 官方发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_c19f266e2289b323b8ba",
+    "title": "typescript-v0.9.12",
+    "description": "new release",
+    "url": "https://github.com/confident-ai/deepeval/releases/tag/typescript-v0.9.12",
+    "publishedAt": "2026-08-21T19:24:18.000Z",
+    "category": "新思路",
+    "source": "DeepEval 官方发布",
+    "imageUrl": null,
+    "author": "penguine-ip",
+    "language": "multi",
+    "region": "global"
+  }
+]

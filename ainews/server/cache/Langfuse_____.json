@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_0967c2f2d7bbffd28fc5",
+    "title": "Langfuse 发布 v4.22.0",
+    "description": "What's Changed Features feat(evals): track evaluator creation configuration by @wochinge in #16624 feat(web): allow serving build output from a dedicated asset host by @Steffen911 in #16546 feat(billing): implement CHB api client by @Steffen911 in #15462 feat(web): instrument dashboard and widget usage in PostHog by @nmtrang29 in #16626 feat(trace): Improve status message rendering by @bezbac in #16547 feat(in-app-agent): default Assistant worker surfaces to LANGFUSE_IN_APP_AGENT_ENABLED by @Lys",
+    "url": "https://github.com/langfuse/langfuse/releases/tag/v4.22.0",
+    "publishedAt": "2026-08-27T07:24:31.000Z",
+    "category": "AI框架",
+    "source": "Langfuse 官方发布",
+    "imageUrl": null,
+    "author": "LysanderKie",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_b3cf95c7b3646dbc626f",
+    "title": "Langfuse 发布 v4.21.0",
+    "description": "What's Changed Features feat(auth): read custom OIDC profile from the userinfo endpoint by @Steffen911 in #16607 Fixes fix(shared): truncate() no longer splits surrogate pairs (#16172) by @greekera1000 in #16234 Chores chore(storybook): Move non-component stories out of design-system dir by @bezbac in #16606 feat(agents): add grill-me skill by @marksalpeter in #16614 refactor(web): Clean up DetailHeaderActionsMenu by @bezbac in #16591 refactor(web): Clean up UpsertScoreConfigDialog by @bezbac in",
+    "url": "https://github.com/langfuse/langfuse/releases/tag/v4.21.0",
+    "publishedAt": "2026-08-26T12:36:06.000Z",
+    "category": "AI框架",
+    "source": "Langfuse 官方发布",
+    "imageUrl": null,
+    "author": "Steffen911",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_0c04a9fea41c3a84535b",
+    "title": "Langfuse 发布 v4.20.0",
+    "description": "What's Changed Features feat(evals): reuse rule filters in search bar by @wochinge in #16554 feat(scores): add inline categories and open configs in a new tab by @nkabardin in #16271 feat(evals): add evaluator execution SLO metrics by @hassiebp in #16589 feat(web): collapse the trace-table facet list behind a Show N more control by @nmtrang29 in #16071 Fixes fix(evals): clarify evaluator saved dialog heading by @wochinge in #16557 fix(web): hide product feedback in HIPAA deployments by @Lysander",
+    "url": "https://github.com/langfuse/langfuse/releases/tag/v4.20.0",
+    "publishedAt": "2026-08-26T11:13:56.000Z",
+    "category": "AI新闻",
+    "source": "Langfuse 官方发布",
+    "imageUrl": null,
+    "author": "niklassemmler",
+    "language": "multi",
+    "region": "global"
+  }
+]

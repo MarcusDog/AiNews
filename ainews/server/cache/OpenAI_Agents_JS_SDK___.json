@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_47775f147566337b59d3",
+    "title": "OpenAI Agents JS SDK 发布 v0.17.0",
+    "description": "Key Changes Output-guardrail replay safety Serialized output-bearing approval checkpoints now fail closed with UserError when the SDK cannot prove which response owns a pending terminal tool output. Continue with the live RunState when possible, or start a new run from safe input instead of replaying ambiguous serialized items. When an output guardrail rejects a completed function-tool result used as final output, the SDK replaces rejected content in SDK-owned replay surfaces with Output withhel",
+    "url": "https://github.com/openai/openai-agents-js/releases/tag/v0.17.0",
+    "publishedAt": "2026-08-19T14:38:44.000Z",
+    "category": "AI新闻",
+    "source": "OpenAI Agents JS SDK 发布",
+    "imageUrl": null,
+    "author": "seratch",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_fdd7b01bdc855e404c57",
+    "title": "OpenAI Agents JS SDK 发布 v0.16.1",
+    "description": "What's Changed feat(core): add model call timeouts by @seratch in #1679 feat(sandbox): add run-scoped sandbox working directories by @seratch in #1683 feat(sandbox): allow Docker sandboxes to disable networking by @seratch in #1695 feat(extensions): add Modal sandbox resource options by @seratch in #1693 fix(core): honor exact call approval decisions by @seratch in #1694 fix(sandbox): validate view_image raster content by @seratch in #1704 fix(sandbox): validate dynamic compaction ratios by @syl",
+    "url": "https://github.com/openai/openai-agents-js/releases/tag/v0.16.1",
+    "publishedAt": "2026-08-16T22:25:00.000Z",
+    "category": "AI框架",
+    "source": "OpenAI Agents JS SDK 发布",
+    "imageUrl": null,
+    "author": "seratch",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_8ca994fe85ebf51684af",
+    "title": "OpenAI Agents JS SDK 发布 v0.16.0",
+    "description": "Key Changes Deterministic SDK testing utilities This release adds provider-neutral testing utilities through @openai/agents/testing, @openai/agents-core/testing, @openai/agents/realtime/testing, and @openai/agents-realtime/testing. ScriptedModel, scriptedSandboxSession(), and ScriptedRealtimeTransport let applications exercise runner, sandbox, and Realtime workflows without live model, sandbox, WebRTC, or WebSocket dependencies. Existing runtime entry points and defaults remain unchanged. Standa",
+    "url": "https://github.com/openai/openai-agents-js/releases/tag/v0.16.0",
+    "publishedAt": "2026-08-15T03:07:55.000Z",
+    "category": "AI框架",
+    "source": "OpenAI Agents JS SDK 发布",
+    "imageUrl": null,
+    "author": "seratch",
+    "language": "multi",
+    "region": "global"
+  }
+]

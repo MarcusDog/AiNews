@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_94d811a499d8180625fd",
+    "title": "MMSegmentation v1.2.2 release",
+    "description": "v1.2.2 (12/14/2023) Bug Fixes Fix bug in cross entropy loss (#3457) Allow custom visualizer (#3455) test resize with pad_shape (#3421) add with-labels args to inferencer for visualization without labels (#3466) New Contributors @okotaku made their first contribution in #3421",
+    "url": "https://github.com/open-mmlab/mmsegmentation/releases/tag/v1.2.2",
+    "publishedAt": "2023-12-14T05:04:26.000Z",
+    "category": "AI框架",
+    "source": "OpenMMLab MMSegmentation 发布",
+    "imageUrl": null,
+    "author": "xiexinch",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_9dad97007c542c0bc3be",
+    "title": "MMSegmentation v1.2.1 release",
+    "description": "v1.2.1 (10/17/2023) Bug Fixes Add bpe_simple_vocab_16e6.txt.gz to release (#3386) Fix init api (#3388)",
+    "url": "https://github.com/open-mmlab/mmsegmentation/releases/tag/v1.2.1",
+    "publishedAt": "2023-10-17T11:51:45.000Z",
+    "category": "AI框架",
+    "source": "OpenMMLab MMSegmentation 发布",
+    "imageUrl": null,
+    "author": "xiexinch",
+    "language": "multi",
+    "region": "cn"
+  },
+  {
+    "id": "article_b6af373a0f90f7e8d472",
+    "title": "MMSegmentation v1.2.0 release",
+    "description": "MMSegmentation v1.2.0 (10/12/2023) From v1.1.0 to v1.2.0, we are delighted that MMSegmentation supports full-flow open-vocabulary semantic segmentation and monocular depth estimation tasks! Open-vocabulary semantic segmentation: SAN and CAT-Seg: Side Adapter Network for Open-Vocabulary Semantic Segmentation Cost Aggregation for Open-Vocabulary Semantic Segmentation Monocular depth estimation: VPD and AdaBins: Visual Perception with Pre-trained Diffusion Models AdaBins: Depth Estimation using Ada",
+    "url": "https://github.com/open-mmlab/mmsegmentation/releases/tag/v1.2.0",
+    "publishedAt": "2023-10-12T14:27:03.000Z",
+    "category": "AI框架",
+    "source": "OpenMMLab MMSegmentation 发布",
+    "imageUrl": "https://private-user-images.githubusercontent.com/15952744/274563402-4a88f146-962f-4b77-9f03-feae88daa751.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODc4MTkyMTAsIm5iZiI6MTc4NzgxODkxMCwicGF0aCI6Ii8xNTk1Mjc0NC8yNzQ1NjM0MDItNGE4OGYxNDYtOTYyZi00Yjc3LTlmMDMtZmVhZTg4ZGFhNzUxLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA4MjclMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwODI3VDA4MjE1MFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTRjMjc2ZGYyOTFkMWJlZjdmYzA1OGJiYmZjZmU3OGY1YmViYTQ0NGFjZjcyYWEyZjAzMmM1YTBhMmQ2MDdkZTYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.ikQuYpTZ_wGGTuZZnM0te-RoPU1_WUQw3QkMZwezOc4",
+    "author": "xiexinch",
+    "language": "multi",
+    "region": "cn"
+  }
+]

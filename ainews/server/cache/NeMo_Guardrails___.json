@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_8461a7cf62e326001284",
+    "title": "NeMo Guardrails 发布 v0.24.0",
+    "description": "What's Changed NeMo Guardrails 0.24.0 substantially expands the built-in rails available through IORails. IORails can now execute 59 of the library's 67 action-backed input and output surfaces, including community integrations and rails that transform content, while sharing the same underlying rail implementations with LLMRails. Three related foundations make this possible: RailOutcome: decide once, render many. A rail action returns one engine-neutral allow, block, or transform result that eith",
+    "url": "https://github.com/NVIDIA-NeMo/Guardrails/releases/tag/v0.24.0",
+    "publishedAt": "2026-08-26T19:31:04.000Z",
+    "category": "AI新闻",
+    "source": "NeMo Guardrails 发布",
+    "imageUrl": null,
+    "author": "Pouyanpi",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_26bd2eeebfc2e8a166ce",
+    "title": "fern-docs-snapshot-v0.24.0",
+    "description": "Fern docs snapshot for v0.24.0",
+    "url": "https://github.com/NVIDIA-NeMo/Guardrails/releases/tag/fern-docs-snapshot-v0.24.0",
+    "publishedAt": "2026-08-26T17:06:05.000Z",
+    "category": "AI新闻",
+    "source": "NeMo Guardrails 发布",
+    "imageUrl": null,
+    "author": "miyoungc",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_531f2aedadc762403ce1",
+    "title": "fern-docs-snapshot-v0.23.0",
+    "description": "Fern documentation snapshot for v0.23.0",
+    "url": "https://github.com/NVIDIA-NeMo/Guardrails/releases/tag/fern-docs-snapshot-v0.23.0",
+    "publishedAt": "2026-08-18T16:49:52.000Z",
+    "category": "AI新闻",
+    "source": "NeMo Guardrails 发布",
+    "imageUrl": null,
+    "author": "miyoungc",
+    "language": "en",
+    "region": "global"
+  }
+]

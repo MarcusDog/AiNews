@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_6f89d0e77dedf372e8b5",
+    "title": "Release 2.2.364",
+    "description": "What's Changed Fix CI and release container publishing by @SharonHart in #2127 docs: show compact mascot on mobile homepage by @SharonHart in #2130 Run documentation release on ubuntu-latest by @SharonHart with @Copilot in #2131 Resolving docs build issues on main by @SharonHart with @Copilot in #2132 chore: replace presidio@microsoft.com with presidio@dataprivacystack.org in PyPI metadata by @SharonHart with @Copilot in #2128 Fix UK_NINO regex matching a numeric suffix character by @jichaowang0",
+    "url": "https://github.com/data-privacy-stack/presidio/releases/tag/2.2.364",
+    "publishedAt": "2026-07-22T08:30:12.000Z",
+    "category": "AI新闻",
+    "source": "Microsoft Presidio 发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_c0026a742d241ee46460",
+    "title": "Release 2.2.363",
+    "description": "What's Changed feat(analyzer): add German PII recognizers (DE_*) by @MvdB in #1909 build(deps): bump azure/login from 2.3.0 to 3.0.0 by @dependabot[bot] in #1915 build(deps): bump github/codeql-action from 4.32.6 to 4.34.1 by @dependabot[bot] in #1914 build(deps): bump actions/cache from 5.0.3 to 5.0.4 by @dependabot[bot] in #1913 Fix: config path resolution for PyPI installs (langextract recognizer) by @RonShakutai in #1917 build(deps): bump github/codeql-action from 4.34.1 to 4.35.1 by @depend",
+    "url": "https://github.com/data-privacy-stack/presidio/releases/tag/2.2.363",
+    "publishedAt": "2026-06-28T16:21:00.000Z",
+    "category": "AI新闻",
+    "source": "Microsoft Presidio 发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_ce7a47d916974193a189",
+    "title": "Release 2.2.362",
+    "description": "What's Changed Feature - GPU Device Control via Environment Variable by @RonShakutai in #1844 feat: Add HuggingFaceNerRecognizer for direct NER model inference by @ultramancode in #1834 Fix Broken Links by @andyjessen in #1856 Pin dependencies to mitigate supply chain attacks by @Copilot in #1861 Fixing CVE-2024-47874 and CVE-2025-54121 by @SharonHart in #1860 Fixing CVE-2025-2953 and CVE-2025-3730 by @SharonHart in #1859 fix: Fixed context enhancement substring matching bug by @ravi-jindal in #",
+    "url": "https://github.com/data-privacy-stack/presidio/releases/tag/2.2.362",
+    "publishedAt": "2026-03-18T05:32:57.000Z",
+    "category": "AI新闻",
+    "source": "Microsoft Presidio 发布",
+    "imageUrl": null,
+    "author": "github-actions[bot]",
+    "language": "en",
+    "region": "global"
+  }
+]

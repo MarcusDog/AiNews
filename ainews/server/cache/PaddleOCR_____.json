@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_25c634964549f844d059",
+    "title": "PaddleOCR 发布 v3.7.0",
+    "description": "2026.6.11 v3.7.0 released Release PP-OCRv6 Accuracy boost: Medium tier achieves +4.6% detection and +5.1% recognition over PP-OCRv5_server, surpassing mainstream VLMs (Qwen3-VL-235B, GPT-5.5) with only 34.5M parameters. 50 languages unified: Single model covers Chinese, English, Japanese, and 46 Latin-script languages — no model switching needed. Specialized scenarios: Major improvements in digital displays, dot-matrix characters, tire prints, and industrial text recognition. Faster inference: 5",
+    "url": "https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v3.7.0",
+    "publishedAt": "2026-06-11T12:09:14.000Z",
+    "category": "AI框架",
+    "source": "PaddleOCR 官方发布",
+    "imageUrl": null,
+    "author": "Bobholamovic",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_59e61da6653c3b92b0fd",
+    "title": "api_sdk/go/v0.2.0: [Feat] Support PP-OCRv6 (#18104)",
+    "description": "Fix bugs Fix for python3.8 Fix mcp server Optimize Fix bugs Refactor Fix MCP Bump MCP to 0.8.1 Fix bugs Bump version to 0.8.2 Fix bugs and update docs Update docs and fix bugs Fix bugs update pp-ocrv6 update pp-ocrv6 Conflicts: docs/version3.x/module_usage/text_detection.md docs/version3.x/module_usage/text_recognition.md docs/version3.x/pipeline_usage/OCR.md paddleocr/_api_client/models.py paddleocr/_pipelines/ocr.py Bump paddleocr version update PP-OCRv6 docs: add model metrics, fix sizes, upd",
+    "url": "https://github.com/PaddlePaddle/PaddleOCR/releases/tag/api_sdk%2Fgo%2Fv0.2.0",
+    "publishedAt": "2026-06-11T11:27:04.000Z",
+    "category": "AI框架",
+    "source": "PaddleOCR 官方发布",
+    "imageUrl": null,
+    "author": "Bobholamovic",
+    "language": "en",
+    "region": "global"
+  },
+  {
+    "id": "article_1b59b806e0e7fd410afb",
+    "title": "PaddleOCR 发布 v3.6.0",
+    "description": "2026.5.28 v3.6.0 released Release the PaddleOCR-VL-1.6 document parsing solution. PaddleOCR-VL-1.6 is an upgraded compact document parsing model built upon PaddleOCR-VL-1.5. Through a newly introduced region-aware data optimization framework and a progressive post-training recipe, the model further enhances parsing robustness and overall recognition accuracy. PaddleOCR-VL-1.6 achieves a new state-of-the-art score of 96.33% on the authoritative benchmark OmniDocBench v1.6, while also setting new ",
+    "url": "https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v3.6.0",
+    "publishedAt": "2026-05-28T11:42:29.000Z",
+    "category": "AI框架",
+    "source": "PaddleOCR 官方发布",
+    "imageUrl": null,
+    "author": "Bobholamovic",
+    "language": "en",
+    "region": "global"
+  }
+]

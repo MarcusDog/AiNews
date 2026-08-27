@@ -1,0 +1,41 @@
+[
+  {
+    "id": "article_cc047cee93c396d460f3",
+    "title": "Scikit-learn 1.9.0",
+    "description": "We're happy to announce the 1.9.0 release. You can read the release highlights under https://scikit-learn.org/stable/auto_examples/release_highlights/plot_release_highlights_1_9_0.html and the long version of the change log under https://scikit-learn.org/stable/whats_new/v1.9.html This release adds narwhals as a new dependency that will help to improve dataframe interoperability across the project. This version supports Python versions 3.11 to 3.14. You can upgrade with pip as usual: pip install",
+    "url": "https://github.com/scikit-learn/scikit-learn/releases/tag/1.9.0",
+    "publishedAt": "2026-06-02T13:10:06.000Z",
+    "category": "AI新闻",
+    "source": "scikit-learn 官方发布",
+    "imageUrl": null,
+    "author": "jeremiedbb",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_d5c970083e4f359974c8",
+    "title": "scikit-learn 发布 1.9.0rc1",
+    "description": "scikit-learn 1.9.0rc1",
+    "url": "https://github.com/scikit-learn/scikit-learn/releases/tag/1.9.0rc1",
+    "publishedAt": "2026-05-19T15:16:30.000Z",
+    "category": "AI新闻",
+    "source": "scikit-learn 官方发布",
+    "imageUrl": null,
+    "author": "jeremiedbb",
+    "language": "multi",
+    "region": "global"
+  },
+  {
+    "id": "article_0a8c63eb726939e94d60",
+    "title": "Release 1.8.0",
+    "description": "We're happy to announce the 1.8.0 release. You can read the release highlights under https://scikit-learn.org/stable/auto_examples/release_highlights/plot_release_highlights_1_8_0.html and the long version of the change log under https://scikit-learn.org/stable/whats_new/v1.8.html This version supports Python versions 3.11 to 3.14 and features support of free-threaded CPython. You can upgrade with pip as usual: pip install -U scikit-learn The conda-forge builds can be installed using: conda inst",
+    "url": "https://github.com/scikit-learn/scikit-learn/releases/tag/1.8.0",
+    "publishedAt": "2025-12-10T13:32:02.000Z",
+    "category": "AI框架",
+    "source": "scikit-learn 官方发布",
+    "imageUrl": null,
+    "author": "lesteve",
+    "language": "multi",
+    "region": "global"
+  }
+]
