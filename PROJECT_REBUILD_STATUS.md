@@ -253,7 +253,7 @@
 | N. 来源与开源项目审计 | 已完成 | `docs/research/2026-08-28-cross-vertical-creator-source-audit.md` 已记录现有缺口、项目热度/许可证、14 类平台接入矩阵、来源等级、本地保存、Hotness 与推送正确性边界。 |
 | O. 产品/数据/接口规格 | 已完成 | `docs/superpowers/specs/2026-08-28-cross-vertical-creator-intelligence.md` 已冻结领域模型、签名 Sidecar、回填状态机、垂类规则、`creator-hotness-v1`、Creator API、订阅/outbox、前端页面、保留期和发布门槛。 |
 | P. TDD 实施计划与评审 | 已完成 | `docs/superpowers/plans/2026-08-28-cross-vertical-creator-intelligence.md` 已形成 18 个任务、三条可独立交付 Slice；经过四轮独立审查，前三轮累计关闭 14 个阻断问题，第四轮结果为 `Approved`。 |
-| Q. Slice A 可信采集与历史回填 | 进行中 | Task 0–2 已完成：基线保护与 CreatorStore 已落地；新增 `vertical-v1` 美妆/穿搭/AI 科技/娱乐规则、关键词/负向词/内容形式/受众意图，以及 10 个已审核主体、11 个 YouTube/RSS/GitHub 公开账号的示例观察名单。实际运营名单路径由 `AYA_CREATOR_SEEDS_PATH` 提供并已忽略入 Git；候选账号未核验前不能启用。Task 2 定向 `7/7`，联动回归 `25/25` 通过。Task 3 待开始。 |
+| Q. Slice A 可信采集与历史回填 | 进行中 | Task 0–3 已完成：基线、CreatorStore、四垂类与首批核验观察名单已落地；新增严格 Connector Page/CreatorPost 标准化契约，覆盖稳定 ID、原帖 URL、时钟偏差、编辑/删除 tombstone、转发归属、轮播/线程、可空指标、不透明 cursor 和原始字段白名单。Task 3 定向 `9/9`，联动回归 `33/33` 通过。Task 4 待开始。 |
 | R. Slice B 爆款/共题/选题 | 未开始 | 依赖帖子与指标快照真实入库。 |
 | S. Slice C 持久推送与产品页面 | 未开始 | 依赖事件/outbox 与查询 API。 |
 | T. 真实来源 Canary 与 GitHub 更新 | 未开始 | 必须逐平台记录真实成功、零结果、`partial`、`blocked` 或 `unconfigured`，不能只凭理论支持标记完成。 |
@@ -269,3 +269,4 @@
 - 2026-08-28：开始执行 Slice A。Task 0 按 RED→GREEN 完成：先观察到基线清单缺失导致保护测试失败，再创建不含密钥/Cookie/数据库内容的 baseline；最终 `creator-baseline.test.js` 为 `5/5`，`git diff --check` 通过。
 - 2026-08-28：完成 Slice A Task 1 RED→GREEN。CreatorStore 测试先因模块缺失失败，最小模块落地后 7 项行为用例继续按预期失败，完成实现后定向测试 `8/8` 通过；加上 baseline、SignalStore 和 DatabaseService 回归共 `27/27` 通过，`git diff --check` 通过。
 - 2026-08-28：完成 Slice A Task 2 RED→GREEN。目录测试先因四垂类/观察名单模块不存在而 `0/7` 失败，实现后 `7/7` 通过；已实际反查 YouTube channel 规范链接与 Atom Feed、GitHub 组织数字 ID/API、Lab Muffin/Vogue/Variety RSS 及最新时间，联动回归 `25/25` 通过，`git diff --check` 通过。
+- 2026-08-28：完成 Slice A Task 3 RED→GREEN。标准化测试先因模块不存在失败，最小导出落地后 `0/9` 按预期失败，完成严格契约后 `9/9` 通过；未公开指标保持 `null`，Cookie/Authorization/Token/未知 raw 字段不会进入标准对象。联动回归 `33/33` 与 `git diff --check` 通过。
