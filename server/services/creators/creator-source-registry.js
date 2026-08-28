@@ -2,6 +2,55 @@ function present(value) {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
+const SIDECAR_ADAPTERS = Object.freeze([
+  'rsshub',
+  'newsnow',
+  'mediacrawler',
+  'xiaohongshu-mcp',
+  'douyin-parser'
+]);
+
+function parseBridgeSources(env = process.env) {
+  const raw = env.AYA_CREATOR_BRIDGES_JSON || '[]';
+  let items;
+  try {
+    items = JSON.parse(raw);
+  } catch {
+    throw new TypeError('AYA_CREATOR_BRIDGES_JSON must be valid JSON');
+  }
+  if (!Array.isArray(items)) throw new TypeError('AYA_CREATOR_BRIDGES_JSON must be an array');
+  const ids = new Set();
+  return items.map((item, index) => {
+    if (!item || typeof item !== 'object' || Array.isArray(item)) {
+      throw new TypeError(`creator bridge ${index} must be an object`);
+    }
+    const id = String(item.id || '').trim();
+    const adapter = String(item.adapter || '').trim().toLowerCase();
+    const secretEnv = String(item.secretEnv || '').trim();
+    if (!/^[a-z0-9][a-z0-9-]{2,63}$/.test(id)) throw new TypeError(`invalid creator bridge id: ${id}`);
+    if (ids.has(id)) throw new TypeError(`duplicate creator bridge id: ${id}`);
+    if (!SIDECAR_ADAPTERS.includes(adapter)) throw new TypeError(`unsupported creator bridge adapter: ${adapter}`);
+    if (!/^AYA_CREATOR_BRIDGE_[A-Z0-9_]+_SECRET$/.test(secretEnv)) {
+      throw new TypeError(`invalid creator bridge secretEnv for ${id}`);
+    }
+    if (!Array.isArray(item.bindings) || item.bindings.length === 0) {
+      throw new TypeError(`creator bridge ${id} requires bindings`);
+    }
+    const bindingKeys = new Set();
+    const bindings = item.bindings.map((binding) => {
+      const platform = String(binding?.platform || '').trim().toLowerCase();
+      const externalAccountId = String(binding?.externalAccountId || '').trim();
+      if (!platform || !externalAccountId) throw new TypeError(`invalid creator bridge binding for ${id}`);
+      const key = `${platform}\u0000${externalAccountId}`;
+      if (bindingKeys.has(key)) throw new TypeError(`duplicate creator bridge binding for ${id}`);
+      bindingKeys.add(key);
+      return { platform, externalAccountId };
+    });
+    ids.add(id);
+    return { id, adapter, secretEnv, bindings };
+  });
+}
+
 function buildCreatorSourceCatalog(env = process.env) {
   const source = (value) => ({
     configured: true,
@@ -11,7 +60,7 @@ function buildCreatorSourceCatalog(env = process.env) {
     lastAttemptAt: null,
     ...value
   });
-  return [
+  const officialSources = [
     source({ id: 'youtube-atom', platform: 'youtube', tier: 'L1', credentialLabel: null }),
     source({ id: 'bluesky-author-feed', platform: 'bluesky', tier: 'L1', credentialLabel: null }),
     source({ id: 'mastodon-account', platform: 'mastodon', tier: 'L1', credentialLabel: null }),
@@ -42,6 +91,29 @@ function buildCreatorSourceCatalog(env = process.env) {
       setupHint: 'TikTok Research API requires separately proven research eligibility and is not a general creator connector.'
     })
   ].map((item) => ({ ...item, schedulable: item.configured && item.schedulable }));
+  const bridgeSources = parseBridgeSources(env).map((bridge) => {
+    const configured = present(env[bridge.secretEnv]);
+    return {
+      id: bridge.id,
+      platform: bridge.bindings.length === 1 ? bridge.bindings[0].platform : 'multi',
+      tier: bridge.adapter === 'rsshub' || bridge.adapter === 'newsnow' ? 'L3' : 'L4',
+      credentialLabel: null,
+      configured,
+      schedulable: false,
+      status: configured ? 'awaiting_signed_canary' : 'unconfigured',
+      lastSuccessAt: null,
+      lastAttemptAt: null,
+      adapter: bridge.adapter,
+      allowedPlatforms: [...new Set(bridge.bindings.map((binding) => binding.platform))].sort(),
+      bindingCount: bridge.bindings.length,
+      ingestionMode: 'signed-sidecar'
+    };
+  });
+  const officialIds = new Set(officialSources.map((source) => source.id));
+  for (const source of bridgeSources) {
+    if (officialIds.has(source.id)) throw new TypeError(`creator bridge id conflicts with built-in source: ${source.id}`);
+  }
+  return [...officialSources, ...bridgeSources];
 }
 
 function failureStatus(error) {
@@ -56,11 +128,45 @@ class CreatorSourceRegistry {
   constructor(options = {}) {
     this.env = options.env || process.env;
     this.now = options.now || (() => new Date().toISOString());
+    this.bridgeSources = new Map(parseBridgeSources(this.env).map((source) => [source.id, source]));
     this.sources = new Map(buildCreatorSourceCatalog(this.env).map((source) => [source.id, source]));
   }
 
   list() {
     return [...this.sources.values()].map((source) => ({ ...source }));
+  }
+
+  getBridgeAuthorization(sourceId) {
+    const source = this.bridgeSources.get(sourceId);
+    if (!source) return null;
+    const secret = this.env[source.secretEnv];
+    if (!present(secret)) return { ...source, secret: null, configured: false };
+    return { ...source, secret, configured: true };
+  }
+
+  isBridgeBindingAllowed(sourceId, platform, externalAccountId) {
+    const source = this.bridgeSources.get(sourceId);
+    if (!source) return false;
+    const normalizedPlatform = String(platform || '').trim().toLowerCase();
+    const normalizedAccountId = String(externalAccountId || '').trim();
+    return source.bindings.some((binding) => (
+      binding.platform === normalizedPlatform && binding.externalAccountId === normalizedAccountId
+    ));
+  }
+
+  markBridgeSuccess(sourceId) {
+    const prior = this.sources.get(sourceId);
+    if (!prior || !this.bridgeSources.has(sourceId)) throw new Error(`Unknown creator bridge: ${sourceId}`);
+    const succeededAt = this.now();
+    const source = {
+      ...prior,
+      status: 'online',
+      lastAttemptAt: succeededAt,
+      lastSuccessAt: succeededAt,
+      lastFailureCode: null
+    };
+    this.sources.set(sourceId, source);
+    return { ...source };
   }
 
   async execute(sourceId, connector, account, options = {}) {
@@ -107,5 +213,7 @@ class CreatorSourceRegistry {
 module.exports = {
   CreatorSourceRegistry,
   buildCreatorSourceCatalog,
-  failureStatus
+  failureStatus,
+  parseBridgeSources,
+  SIDECAR_ADAPTERS
 };

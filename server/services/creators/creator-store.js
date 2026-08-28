@@ -620,6 +620,90 @@ class CreatorStore {
     return result;
   }
 
+  findVerifiedAccount(platform, externalAccountId) {
+    this.ensureInitialized();
+    const row = this.db.prepare(`
+      SELECT a.*
+      FROM creator_accounts a
+      JOIN creators c ON c.id = a.creator_id
+      WHERE a.platform = ? AND a.external_account_id = ?
+        AND a.enabled = 1 AND c.review_status = 'verified'
+    `).get(String(platform || '').toLowerCase(), String(externalAccountId || ''));
+    if (!row) return null;
+    const account = this.mapAccount(row);
+    account.profileUrl = row.profile_url;
+    account.verticalIds = this.db.prepare(
+      'SELECT vertical_id FROM creator_vertical_memberships WHERE creator_id = ? ORDER BY vertical_id'
+    ).all(row.creator_id).map((item) => item.vertical_id);
+    return account;
+  }
+
+  commitBridgeBatch(batch = {}) {
+    this.ensureInitialized();
+    if (!batch.sourceId || !batch.nonce || !batch.runId || !batch.payloadId) {
+      throw new TypeError('sourceId/nonce/runId/payloadId required');
+    }
+    if (!batch.accountId || !Array.isArray(batch.posts)) {
+      throw new TypeError('accountId/posts required');
+    }
+    const receivedAt = iso(batch.receivedAt || Date.now(), 'receivedAt');
+    const nonceExpiresAt = iso(
+      batch.nonceExpiresAt || Date.parse(receivedAt) + 10 * 60 * 1000,
+      'nonceExpiresAt'
+    );
+    const payloadExpiresAt = iso(
+      batch.payloadExpiresAt || Date.parse(receivedAt) + 30 * 24 * 60 * 60 * 1000,
+      'payloadExpiresAt'
+    );
+    const insertNonce = this.db.prepare(`
+      INSERT INTO creator_bridge_nonces (source_id, nonce, received_at, expires_at)
+      VALUES (?, ?, ?, ?)
+    `);
+    const insertPayload = this.db.prepare(`
+      INSERT INTO creator_bridge_payloads (
+        id, source_id, run_id, received_at, expires_at, body_sha256, item_count, payload_json
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+    const linkPost = this.db.prepare(`
+      INSERT INTO creator_bridge_payload_posts (payload_id, post_id) VALUES (?, ?)
+    `);
+    const transaction = this.db.transaction(() => {
+      insertNonce.run(batch.sourceId, batch.nonce, receivedAt, nonceExpiresAt);
+      this.recordRun({
+        id: batch.runId,
+        sourceId: batch.sourceId,
+        accountId: batch.accountId,
+        status: 'completed',
+        startedAt: receivedAt,
+        finishedAt: receivedAt,
+        received: batch.posts.length,
+        saved: batch.posts.length,
+        metadata: batch.runMetadata || {}
+      });
+      const pageResult = this.commitPage({
+        accountId: batch.accountId,
+        cursorKind: `bridge:${batch.sourceId}`,
+        posts: batch.posts,
+        nextCursor: batch.nextCursor ?? null,
+        exhausted: batch.exhausted === true,
+        collectedAt: receivedAt
+      });
+      insertPayload.run(
+        batch.payloadId,
+        batch.sourceId,
+        batch.runId,
+        receivedAt,
+        payloadExpiresAt,
+        batch.bodySha256,
+        batch.posts.length,
+        json(batch.safePayload, {})
+      );
+      for (const post of batch.posts) linkPost.run(batch.payloadId, post.id);
+      return pageResult;
+    });
+    return transaction();
+  }
+
   getCursor(accountId, cursorKind = 'incremental') {
     this.ensureInitialized();
     const row = this.db.prepare(

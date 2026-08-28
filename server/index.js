@@ -14,9 +14,14 @@ const server = http.createServer(app);
 const PORT = process.env.PORT || 3002;
 const CreatorStore = require('./services/creators/creator-store');
 const YoutubeWebSubService = require('./services/creators/youtube-websub-service');
+const { CreatorSourceRegistry } = require('./services/creators/creator-source-registry');
+const { BridgeVerifier } = require('./services/creators/bridge-verifier');
 const { createYoutubeWebSubRouter } = require('./routes/youtube-websub');
+const { createCreatorIngestRouter } = require('./routes/creator-ingest');
 const creatorStore = new CreatorStore();
 creatorStore.initialize();
+const creatorSourceRegistry = new CreatorSourceRegistry({ env: process.env });
+const creatorBridgeVerifier = new BridgeVerifier({ sourceRegistry: creatorSourceRegistry });
 const youtubeWebSubService = new YoutubeWebSubService({
   creatorStore,
   env: process.env,
@@ -63,6 +68,16 @@ app.use(cors({
 
 // 基础中间件
 app.use('/api/ingest/v1/youtube/websub', createYoutubeWebSubRouter({ service: youtubeWebSubService }));
+app.use(
+  '/api/ingest/v1/creator-bridge',
+  express.raw({ type: 'application/json', limit: '2mb' }),
+  createCreatorIngestRouter({
+    creatorStore,
+    sourceRegistry: creatorSourceRegistry,
+    verifier: creatorBridgeVerifier,
+    mountRawParser: false
+  })
+);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
@@ -139,6 +154,9 @@ app.get('/health', async (req, res) => {
 // 错误处理中间件
 app.use((err, req, res, next) => {
   console.error('Error:', err.message);
+  const statusCode = err?.type === 'entity.too.large'
+    ? 413
+    : Number(err.statusCode || err.status) || 500;
   
   // 记录错误到日志
   const errorLog = {
@@ -150,10 +168,10 @@ app.use((err, req, res, next) => {
   };
   console.error(JSON.stringify(errorLog));
   
-  res.status(500).json({
+  res.status(statusCode).json({
     success: false,
-    error: '服务器内部错误',
-    message: process.env.NODE_ENV === 'development' ? err.message : undefined
+    error: statusCode === 413 ? 'payload_too_large' : '服务器内部错误',
+    message: statusCode >= 500 && process.env.NODE_ENV === 'development' ? err.message : undefined
   });
 });
 
@@ -458,6 +476,8 @@ module.exports = {
   io,
   signalService,
   creatorStore,
+  creatorSourceRegistry,
+  creatorBridgeVerifier,
   youtubeWebSubService,
   getLifecycleFlags,
   initializeSystem,
