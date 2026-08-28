@@ -254,7 +254,7 @@
 | O. 产品/数据/接口规格 | 已完成 | `docs/superpowers/specs/2026-08-28-cross-vertical-creator-intelligence.md` 已冻结领域模型、签名 Sidecar、回填状态机、垂类规则、`creator-hotness-v1`、Creator API、订阅/outbox、前端页面、保留期和发布门槛。 |
 | P. TDD 实施计划与评审 | 已完成 | `docs/superpowers/plans/2026-08-28-cross-vertical-creator-intelligence.md` 已形成 18 个任务、三条可独立交付 Slice；经过四轮独立审查，前三轮累计关闭 14 个阻断问题，第四轮结果为 `Approved`。 |
 | Q. Slice A 可信采集与历史回填 | 已完成 | Task 0–7 已完成：公开主干、WebSub、官方受控 Connector、签名 Sidecar、增量优先队列、请求预算、账号互斥锁、逐页事务 cursor、可恢复历史回填和二次 reconciliation 均已落地。历史页不发送新帖事件；API/Feed 历史窗口会标记 `partial`，权限/风控失败会标记 `blocked`。重启不会重置 cursor，首次导入会自动安排增量时间。Creator 全量回归 `77/77`；真实临时库调度 canary 从 GitHub OpenAI/Hugging Face 与 Lab Muffin RSS 写入 229 条，三次 run 全部 success；RSS/无 YouTube Key 回填分别以明确原因落为 `partial`。 |
-| R. Slice B 爆款/共题/选题 | 未开始 | 依赖帖子与指标快照真实入库。 |
+| R. Slice B 爆款/共题/选题 | 进行中 | Task 8 已完成：`creator-hotness-v1` 已实现 15/60/180 分钟互动速度、加速度、同平台/同垂类/同发布年龄 peer 分位数、30 天博主中位数相对表现、独立博主采用、跨平台扩散、新鲜度与证据完整度；广告、转发、旧帖回流、缺失证据及低可信 Bridge 分项扣分。每次评分保存完整输入/组件/惩罚/置信度；细粒度指标保留 72 小时，之后保留 180 天日快照。Task 8 定向 `7/7`，Creator 全量 `84/84`。Task 9 待开始。 |
 | S. Slice C 持久推送与产品页面 | 未开始 | 依赖事件/outbox 与查询 API。 |
 | T. 真实来源 Canary 与 GitHub 更新 | 未开始 | 必须逐平台记录真实成功、零结果、`partial`、`blocked` 或 `unconfigured`，不能只凭理论支持标记完成。 |
 
@@ -274,3 +274,4 @@
 - 2026-08-28：完成 Slice A Task 5 RED→GREEN。官方连接器测试先因模块缺失失败，最小导出后 `0/7` 按预期失败，实现与环境文档完成后 `8/8` 通过；验证四类缺失凭据时零网络、授权账号绑定、凭据不进响应、指标可空与失败状态保留上次成功时间。公开/官方/标准化/目录联动回归 `33/33`，`git diff --check` 通过。
 - 2026-08-29：完成 Slice A Task 6 RED→GREEN。Bridge 测试先因验签模块缺失失败；实现后 `11/11` 通过，覆盖原始字节 body hash、固定长度 timing-safe 比较、五分钟时间窗、未知来源、错误签名、2 MiB/500 条边界、私密/已删除内容、已核验账号绑定、重复/并发 nonce、持久化失败全量回滚和 payload allowlist 脱敏。合法签名 canary 后来源才转为 `online`；Creator/Connector/生命周期联动回归 `41/41`，`git diff --check` 通过。
 - 2026-08-29：完成 Slice A Task 7 RED→GREEN。新增有界并发增量采集、账号级锁、单源失败隔离、请求预算、持久 cursor、可恢复回填、耗尽后二次 reconciliation、每日复核与最近 100 条指标刷新调度；修复首次 seed 无 `next_run_at`、重启重置回填进度及来源成功结果缺少顶层 `online` 状态三个真实链路问题。Creator 全量 `77/77`；真实临时 SQLite canary 写入 GitHub OpenAI 100、Hugging Face 119、Lab Muffin RSS 10 条，共 229 条，run 全部 success。RSS 与无 YouTube Key 历史测试分别保存 `rss_feed_retention_window`、`youtube_data_api_key_required_for_full_history` 并标记 `partial`，未误报全量完成。
+- 2026-08-29：完成 Slice B Task 8 RED→GREEN。Hotness 测试先因模块缺失失败，实现后定向 `7/7`、Creator 全量 `84/84`。评分按同平台/同垂类/同年龄桶 peer 分位数与博主 30 天基线组合，小号按相同比例获得同等 creator-relative 分；缺失指标保持 `null` 并降低置信度，广告、转发、旧帖回流、低可信来源和缺失证据分别留痕扣分。`creator_post_scores` 保存可复算输入与每个加权分项；指标快照实行 72 小时细粒度、180 天每日保留，压缩不删除评分复算数据。

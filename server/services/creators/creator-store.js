@@ -168,6 +168,23 @@ class CreatorStore {
       CREATE INDEX IF NOT EXISTS idx_creator_metrics_post_time
         ON creator_post_metrics(post_id, captured_at DESC, id DESC);
 
+      CREATE TABLE IF NOT EXISTS creator_post_scores (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        post_id TEXT NOT NULL,
+        captured_at TEXT NOT NULL,
+        formula_version TEXT NOT NULL,
+        score REAL NOT NULL,
+        unrounded_score REAL NOT NULL,
+        confidence TEXT NOT NULL,
+        inputs_json TEXT NOT NULL,
+        components_json TEXT NOT NULL,
+        penalties_json TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        FOREIGN KEY(post_id) REFERENCES creator_posts(id) ON DELETE CASCADE
+      );
+      CREATE INDEX IF NOT EXISTS idx_creator_scores_post_time
+        ON creator_post_scores(post_id, captured_at DESC, id DESC);
+
       CREATE TABLE IF NOT EXISTS creator_cursors (
         account_id TEXT NOT NULL,
         cursor_kind TEXT NOT NULL,
@@ -842,6 +859,80 @@ class CreatorStore {
     this.ensureInitialized();
     const row = this.db.prepare('SELECT * FROM creator_posts WHERE id = ?').get(id);
     return row ? this.mapPost(row) : null;
+  }
+
+  recordHotnessScore(postId, score = {}, capturedAt = Date.now()) {
+    this.ensureInitialized();
+    if (!postId || !score.formulaVersion || !Number.isFinite(Number(score.score))) {
+      throw new TypeError('postId/formulaVersion/score required');
+    }
+    const timestamp = iso(capturedAt, 'capturedAt');
+    this.db.prepare(`
+      INSERT INTO creator_post_scores (
+        post_id, captured_at, formula_version, score, unrounded_score, confidence,
+        inputs_json, components_json, penalties_json, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      postId,
+      timestamp,
+      score.formulaVersion,
+      Number(score.score),
+      Number(score.unroundedScore),
+      score.confidence || 'low',
+      json(score.inputs, {}),
+      json(score.components, {}),
+      json(score.penalties, {}),
+      timestamp
+    );
+  }
+
+  getLatestHotnessScore(postId) {
+    this.ensureInitialized();
+    const row = this.db.prepare(`
+      SELECT * FROM creator_post_scores
+      WHERE post_id = ? ORDER BY captured_at DESC, id DESC LIMIT 1
+    `).get(postId);
+    return row ? {
+      postId: row.post_id,
+      capturedAt: row.captured_at,
+      formulaVersion: row.formula_version,
+      score: row.score,
+      unroundedScore: row.unrounded_score,
+      confidence: row.confidence,
+      inputs: parseJson(row.inputs_json, {}),
+      components: parseJson(row.components_json, {}),
+      penalties: parseJson(row.penalties_json, {})
+    } : null;
+  }
+
+  compactMetricSnapshots(options = {}) {
+    this.ensureInitialized();
+    const nowMs = Date.parse(iso(options.now || Date.now(), 'now'));
+    const fineCutoff = new Date(nowMs - Number(options.fineHours || 72) * 3_600_000).toISOString();
+    const dailyCutoff = new Date(nowMs - Number(options.dailyDays || 180) * 86_400_000).toISOString();
+    const rows = this.db.prepare(`
+      SELECT id, post_id, captured_at
+      FROM creator_post_metrics WHERE captured_at < ?
+      ORDER BY post_id, captured_at DESC, id DESC
+    `).all(fineCutoff);
+    const keepDaily = new Set();
+    const deleteIds = [];
+    for (const row of rows) {
+      if (row.captured_at < dailyCutoff) {
+        deleteIds.push(row.id);
+        continue;
+      }
+      const day = row.captured_at.slice(0, 10);
+      const key = `${row.post_id}\u0000${day}`;
+      if (keepDaily.has(key)) deleteIds.push(row.id);
+      else keepDaily.add(key);
+    }
+    const remove = this.db.prepare('DELETE FROM creator_post_metrics WHERE id = ?');
+    const transaction = this.db.transaction(() => {
+      for (const id of deleteIds) remove.run(id);
+    });
+    transaction();
+    return { deleted: deleteIds.length, dailyKept: keepDaily.size, fineCutoff, dailyCutoff };
   }
 
   mapAccount(row) {

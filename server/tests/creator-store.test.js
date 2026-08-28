@@ -124,6 +124,7 @@ test('initialization is idempotent and creates the complete creator schema', { s
     for (const table of [
       'creator_verticals', 'creators', 'creator_accounts', 'creator_vertical_memberships',
       'creator_posts', 'creator_post_verticals', 'creator_post_metrics',
+      'creator_post_scores',
       'creator_cursors', 'creator_runs', 'creator_backfills',
       'creator_topics', 'creator_topic_posts', 'creator_topic_snapshots',
       'creator_events', 'creator_subscriptions', 'creator_delivery_endpoints',
