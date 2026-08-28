@@ -227,3 +227,42 @@
 - 2026-08-28：完成真实 API 与 Chrome 页面验收。6 个 News 路由、OpenAPI 2.3、Skill Markdown、Topic Feed 均为 HTTP 200；24h/48h Qwen 证据数为 5/6，响应不再相同；随机接口补齐稳定 `id` 后，带 `exclude` 的两次调用返回不同 Topic。桌面与 390×844 移动端完成选题、画像/窗口切换、研究证据和 Skill 页面流程，控制台无错误。详细证据见 `docs/verification/2026-08-28-hotspot-creator-workflow-verification.md`。
 - 2026-08-28：最终提交候选复验通过：服务端 `159/159`、客户端 `34/34`、AyaNewsSkill `15/15`；TypeScript/Vite 构建、客户端生产依赖审计、Skill ZIP/TAR SHA256、两个工作树 `git diff --check` 全部通过。
 - 2026-08-28：完成 GitHub 上传与 PR 更新。AI News 代码提交 `dc56dc9a` 已推送至 [AiNews PR #1](https://github.com/MarcusDog/AiNews/pull/1)；AyaNewsSkill 2.3 提交 `33b6e73` 已推送至 [AyaNewsSkill PR #1](https://github.com/MarcusDog/AyaNewsSkill/pull/1)。Skill Actions 注释明确为账号 billing 锁定，job 步骤数为 0；不是代码或测试失败，恢复账号运行资格后需重新运行。
+
+---
+
+## 第四阶段：跨垂类博主内容、爆款与持久推送
+
+### 用户目标
+
+将 AyaNews 从 AI 新闻/Signal 产品继续扩展为跨垂类创作者情报系统，首发覆盖美妆、穿搭、AI 科技、娱乐。系统要对核验观察名单中的博主持续获取公开帖子，保存平台允许读取的历史，识别单博主爆款、多博主共题和跨平台扩散，生成适合不同博主类型的真实选题，并支持按垂类/平台/博主正确推送。
+
+“所有对应博主内容”在本项目中的可验收定义是：对已导入并核验的观察名单账号，分页读取平台或已配置 Bridge 当前允许访问的全部公开历史直至 cursor 耗尽，再持续获取新增/编辑内容。它不等于平台全部用户，也不包含私人、付费、已删除、超出官方历史窗口或受权限/风控阻止的内容。账号必须公开显示 `pending/running/complete/partial/blocked`、历史起止时间、cursor 和限制原因。
+
+### 当前审计结论
+
+- 现有 SQLite/WAL、Signal 来源健康、Topic、24/48/72 小时窗口、证据 URL、changes Feed 和 30 分钟调度可以复用。
+- 现有 `signals.author` 不是稳定博主身份；没有跨平台账号映射、逐帖生命周期、互动量历史快照、垂类观察名单、博主自身基线、跨博主扩散、历史回填 cursor、全文检索或持久推送 outbox。
+- Socket.IO 当前订阅只是进程内 room，刷新后不保留，也不能保证外部 Webhook/消息推送。
+- YouTube、Bluesky、Mastodon、GitHub、RSS 可作为公开主链；Reddit、X、Instagram、抖音官方能力需要 OAuth/付费/审批或账号授权；小红书、任意抖音/微博/B站深挖需要人工维护的登录态 Sidecar。
+- 已研究 Agent-Reach、MediaCrawler、TrendRadar、RSSHub、NewsNow、Douyin_TikTok_Download_API、xiaohongshu-mcp、Harken；只借鉴其能力边界和架构，不直接复制受许可证、登录态或用途限制约束的代码。
+
+### 第四阶段状态
+
+| 里程碑 | 状态 | 证据 |
+|---|---|---|
+| N. 来源与开源项目审计 | 已完成 | `docs/research/2026-08-28-cross-vertical-creator-source-audit.md` 已记录现有缺口、项目热度/许可证、14 类平台接入矩阵、来源等级、本地保存、Hotness 与推送正确性边界。 |
+| O. 产品/数据/接口规格 | 已完成 | `docs/superpowers/specs/2026-08-28-cross-vertical-creator-intelligence.md` 已冻结领域模型、签名 Sidecar、回填状态机、垂类规则、`creator-hotness-v1`、Creator API、订阅/outbox、前端页面、保留期和发布门槛。 |
+| P. TDD 实施计划与评审 | 已完成 | `docs/superpowers/plans/2026-08-28-cross-vertical-creator-intelligence.md` 已形成 18 个任务、三条可独立交付 Slice；经过四轮独立审查，前三轮累计关闭 14 个阻断问题，第四轮结果为 `Approved`。 |
+| Q. Slice A 可信采集与历史回填 | 未开始 | 待计划评审通过；可以从无需凭据的 YouTube Atom、Bluesky、Mastodon、GitHub、RSS 开始。 |
+| R. Slice B 爆款/共题/选题 | 未开始 | 依赖帖子与指标快照真实入库。 |
+| S. Slice C 持久推送与产品页面 | 未开始 | 依赖事件/outbox 与查询 API。 |
+| T. 真实来源 Canary 与 GitHub 更新 | 未开始 | 必须逐平台记录真实成功、零结果、`partial`、`blocked` 或 `unconfigured`，不能只凭理论支持标记完成。 |
+
+### 第四阶段更新日志
+
+- 2026-08-28：完成跨垂类博主来源与开源项目审计；确认“新闻热榜”和“指定博主逐帖监听”是两个不同数据链，第四阶段新增独立 Creator Intelligence bounded context。
+- 2026-08-28：完成产品规格与实施计划草案；补齐观察名单范围内全公开历史的定义、每账号回填状态机、二次 reconciliation、四垂类、稳定身份、互动快照、博主相对基线、多博主/跨平台扩散、FTS5、本地 SQLite、持久 outbox 和签名 Sidecar。
+- 2026-08-28：实施计划第一轮独立审查未通过；已修订脏工作树分片暂存、YouTube WebSub、Bridge 原始字节签名与账号白名单、单调 changes/SSE 恢复、FTS `q`/游标契约、预览式清理/在线备份/JSONL 导出，以及 Nginx SSE 无缓冲部署验证，进入第二轮复审。
+- 2026-08-28：第二轮复审确认首轮 7 项全部关闭，但新增发现状态/event/outbox 缺少原子生产入口、`review`/`tool-review` 画像冲突、Webhook SSRF 策略不可执行、maintenance audit schema 缺失；现已加入统一 `applyCreatorStateChange` 事务、现有画像兼容回归、HTTPS/DNS/IP/重定向 SSRF 策略及可持久审计的单次 preview，进入第三轮复审。
+- 2026-08-28：第三轮复审确认第二轮 4 项全部关闭，但新增发现白名单化 Bridge payload 缺少表/关联/30 天清理链、最终命令仍会整文件暂存状态 MD、AyaNewsSkill 缺少最终 push 与远端 SHA 核验；现已补齐 payload/run/post schema 与安全清理、默认排除重叠状态文件，并将两个仓库 push/远端 SHA 一致性加入最终门槛，进入第四轮复审。
+- 2026-08-28：第四轮独立复审通过，结果为 `Approved`，无阻断项。计划最终冻结为 18 个 TDD 任务，实施仍未开始；下一步从 Slice A 的基线、CreatorStore、核验观察名单和公开主链连接器开始。
