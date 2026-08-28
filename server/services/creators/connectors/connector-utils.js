@@ -2,6 +2,20 @@ const crypto = require('node:crypto');
 
 const TRACKING_PARAMS = /^(utm_.+|fbclid|gclid|dclid|mc_cid|mc_eid|ref_src)$/i;
 
+function createConnectorFetch(options = {}) {
+  const fetchImpl = options.fetchImpl || global.fetch;
+  if (typeof fetchImpl !== 'function') throw new TypeError('fetch implementation is required');
+  const env = options.env || (options.fetchImpl ? {} : process.env);
+  const proxyUrl = env.HTTPS_PROXY || env.https_proxy || env.HTTP_PROXY || env.http_proxy;
+  if (!proxyUrl) return fetchImpl;
+  const ProxyAgentClass = options.ProxyAgentClass || require('undici').ProxyAgent;
+  const dispatcher = new ProxyAgentClass(proxyUrl);
+  return (url, requestOptions = {}) => fetchImpl(url, {
+    ...requestOptions,
+    dispatcher: requestOptions.dispatcher || dispatcher
+  });
+}
+
 function canonicalizeCreatorUrl(rawUrl) {
   if (typeof rawUrl !== 'string' || !rawUrl.trim()) return null;
   try {
@@ -64,16 +78,92 @@ function normalizePublishedAt(value, { now, maxFutureMs = 10 * 60 * 1000 } = {})
   return normalized;
 }
 
+function normalizeRateLimitReset(value) {
+  if (value === null || value === undefined || value === '') return null;
+  const text = String(value).trim();
+  if (/^\d{10}$/.test(text)) return new Date(Number(text) * 1000).toISOString();
+  if (/^\d{13}$/.test(text)) return new Date(Number(text)).toISOString();
+  return normalizeIso(text, 'rateLimit.resetAt');
+}
+
 function boundedText(value, maximum = 20000) {
   if (value === null || value === undefined) return '';
   return String(value).replace(/\u0000/g, '').slice(0, maximum);
 }
 
+function parseRetryAfter(value, now = new Date()) {
+  if (value === null || value === undefined || value === '') return null;
+  const seconds = Number(value);
+  if (Number.isFinite(seconds) && seconds >= 0) return Math.round(seconds * 1000);
+  const timestamp = Date.parse(String(value));
+  if (Number.isNaN(timestamp)) return null;
+  return Math.max(0, timestamp - now.getTime());
+}
+
+async function fetchWithTimeout(fetchImpl, url, options = {}, timeoutMs = 10000) {
+  if (typeof fetchImpl !== 'function') throw new TypeError('fetch implementation is required');
+  const controller = new AbortController();
+  const onAbort = () => controller.abort(options.signal.reason || new Error('request aborted'));
+  options.signal?.addEventListener('abort', onAbort, { once: true });
+  const timer = setTimeout(() => controller.abort(new Error(`request timed out after ${timeoutMs}ms`)), timeoutMs);
+  timer.unref?.();
+  try {
+    return await fetchImpl(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+    options.signal?.removeEventListener('abort', onAbort);
+  }
+}
+
+function responseError(response, now = new Date()) {
+  const error = new Error(`upstream request failed with HTTP ${response.status}`);
+  error.status = response.status;
+  error.retryAfterMs = parseRetryAfter(response.headers?.get?.('retry-after'), now);
+  return error;
+}
+
+async function readJsonResponse(response, now = new Date()) {
+  if (!response.ok) throw responseError(response, now);
+  return response.json();
+}
+
+async function readTextResponse(response, now = new Date()) {
+  if (!response.ok) throw responseError(response, now);
+  return response.text();
+}
+
+function encodeConnectorCursor(prefix, value) {
+  return `${prefix}:${Buffer.from(JSON.stringify(value), 'utf8').toString('base64url')}`;
+}
+
+function decodeConnectorCursor(prefix, cursor) {
+  if (!cursor) return {};
+  if (typeof cursor !== 'string' || !cursor.startsWith(`${prefix}:`)) {
+    throw new TypeError(`invalid ${prefix} cursor`);
+  }
+  try {
+    const value = JSON.parse(Buffer.from(cursor.slice(prefix.length + 1), 'base64url').toString('utf8'));
+    if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('object required');
+    return value;
+  } catch {
+    throw new TypeError(`invalid ${prefix} cursor`);
+  }
+}
+
 module.exports = {
+  createConnectorFetch,
   canonicalizeCreatorUrl,
   createStableId,
   normalizeOpaqueCursor,
   normalizeIso,
   normalizePublishedAt,
-  boundedText
+  normalizeRateLimitReset,
+  boundedText,
+  parseRetryAfter,
+  fetchWithTimeout,
+  responseError,
+  readJsonResponse,
+  readTextResponse,
+  encodeConnectorCursor,
+  decodeConnectorCursor
 };

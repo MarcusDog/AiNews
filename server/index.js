@@ -12,6 +12,16 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 const app = express();
 const server = http.createServer(app);
 const PORT = process.env.PORT || 3002;
+const CreatorStore = require('./services/creators/creator-store');
+const YoutubeWebSubService = require('./services/creators/youtube-websub-service');
+const { createYoutubeWebSubRouter } = require('./routes/youtube-websub');
+const creatorStore = new CreatorStore();
+creatorStore.initialize();
+const youtubeWebSubService = new YoutubeWebSubService({
+  creatorStore,
+  env: process.env,
+  allowLegacySignature: process.env.AYA_YOUTUBE_WEBSUB_ALLOW_SHA1 === '1'
+});
 
 // WebSocket配置 - 允许所有来源（开发环境）
 const io = new Server(server, {
@@ -52,6 +62,7 @@ app.use(cors({
 }));
 
 // 基础中间件
+app.use('/api/ingest/v1/youtube/websub', createYoutubeWebSubRouter({ service: youtubeWebSubService }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
@@ -321,6 +332,7 @@ function registerCronJobs(options = {}) {
   const currentSignalService = options.signalService || signalService;
   const databaseService = options.databaseService || require('./services/DatabaseService');
   const diversityAuditService = options.diversityAuditService || require('./services/DiversityAuditService').diversityAuditService;
+  const currentYoutubeWebSubService = options.youtubeWebSubService || youtubeWebSubService;
   const sourceLimit = getLifecycleFlags(env).signalSourceLimit;
 
   const refreshNewsAndSignals = async (label) => {
@@ -346,6 +358,15 @@ function registerCronJobs(options = {}) {
         await currentSignalService.refreshAll({ sourceLimit, windowHours: newsSchedules.signalWindowHours });
       } catch (error) {
         console.error('❌ Signal 定时更新失败:', error.message);
+      }
+    }, cronOptions),
+    cronLib.schedule(newsSchedules.creatorWebSubRenewal, async () => {
+      try {
+        await currentYoutubeWebSubService.renewDue({
+          requestSubscription: (request) => currentYoutubeWebSubService.requestSubscription(request)
+        });
+      } catch (error) {
+        console.error('❌ YouTube WebSub 续租失败:', error.message);
       }
     }, cronOptions),
     cronLib.schedule(newsSchedules.diversityAudit, async () => {
@@ -390,6 +411,7 @@ async function shutdown(options = {}) {
   scheduledJobs = [];
   io.close();
   signalService.close();
+  creatorStore.close();
   try {
     const DatabaseService = require('./services/DatabaseService');
     await DatabaseService.close();
@@ -435,6 +457,8 @@ module.exports = {
   server,
   io,
   signalService,
+  creatorStore,
+  youtubeWebSubService,
   getLifecycleFlags,
   initializeSystem,
   registerCronJobs,
