@@ -9,6 +9,45 @@ const FORMAT_SECTIONS = {
 };
 
 class ContentService {
+  buildBriefFromCreatorTopic(topicId, options = {}) {
+    const creatorStore = options.creatorStore;
+    if (!creatorStore?.db) throw new TypeError('initialized creatorStore is required');
+    const row = creatorStore.db.prepare('SELECT * FROM creator_topics WHERE id = ?').get(topicId);
+    if (!row) return { status: 'not_found', topicId };
+    const payload = JSON.parse(row.payload_json || '{}');
+    const posts = creatorStore.db.prepare(`
+      SELECT p.*, a.creator_id
+      FROM creator_topic_posts tp
+      JOIN creator_posts p ON p.id = tp.post_id
+      JOIN creator_accounts a ON a.id = p.account_id
+      WHERE tp.topic_id = ? ORDER BY tp.adopted_at, p.id
+    `).all(topicId);
+    const evidence = posts.map((post) => ({
+      postId: post.id,
+      creatorId: post.creator_id,
+      title: post.title,
+      url: post.url,
+      sourceConfidence: post.source_confidence,
+      claimBoundary: post.source_confidence === 'bridge'
+        ? '签名 Bridge 公开内容；仍需打开原帖复核可见性与上下文'
+        : '公开创作者原帖；互动指标是采集时快照'
+    }));
+    const { buildContentIdea } = require('./creators/content-idea-engine');
+    return {
+      status: 'ready',
+      topicId,
+      evidence,
+      evidenceBoundary: '仅覆盖已核验观察名单与当前可访问的公开内容。',
+      idea: buildContentIdea({
+        id: row.id, verticalId: row.vertical_id, title: row.title,
+        creatorCount: row.creator_count, platformCount: row.platform_count,
+        maxHotness: row.hotness, firstSeenAt: row.first_seen_at, latestSeenAt: row.latest_seen_at,
+        evidence: evidence.map((item) => ({ ...item }))
+      }, { profile: options.profile || 'general' }),
+      topicSnapshot: payload
+    };
+  }
+
   matchesTopic(article, topic) {
     if (!topic) return true;
     const normalizedTopic = String(topic).toLowerCase().trim();
