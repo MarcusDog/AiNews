@@ -253,7 +253,7 @@
 | N. 来源与开源项目审计 | 已完成 | `docs/research/2026-08-28-cross-vertical-creator-source-audit.md` 已记录现有缺口、项目热度/许可证、14 类平台接入矩阵、来源等级、本地保存、Hotness 与推送正确性边界。 |
 | O. 产品/数据/接口规格 | 已完成 | `docs/superpowers/specs/2026-08-28-cross-vertical-creator-intelligence.md` 已冻结领域模型、签名 Sidecar、回填状态机、垂类规则、`creator-hotness-v1`、Creator API、订阅/outbox、前端页面、保留期和发布门槛。 |
 | P. TDD 实施计划与评审 | 已完成 | `docs/superpowers/plans/2026-08-28-cross-vertical-creator-intelligence.md` 已形成 18 个任务、三条可独立交付 Slice；经过四轮独立审查，前三轮累计关闭 14 个阻断问题，第四轮结果为 `Approved`。 |
-| Q. Slice A 可信采集与历史回填 | 进行中 | Task 0–4 已完成：基线/Store/垂类名单/标准契约已落地；公开主干实现 YouTube Atom + 可选 Data API 历史与指标、Bluesky Author Feed、Mastodon 账号 statuses、GitHub 仓库/Release/公开事件、RSS/Atom 条件请求，支持超时、Retry-After、ETag/游标和标准代理环境。YouTube WebSub 原始字节 HMAC、频道白名单、重放幂等、持久 lease/收据与 6 小时续租已实现。Task 4 指定回归 `40/40` 通过；真实只读探测收到 YouTube 15、Vogue RSS 29、GitHub 100 条。Task 5 待开始。 |
+| Q. Slice A 可信采集与历史回填 | 进行中 | Task 0–5 已完成：公开主干与 WebSub 已落地；新增 Reddit OAuth 用户投稿、X 用户时间线、Instagram Business Discovery、抖音授权账号 `video.list` 四类官方 Connector 和统一来源状态目录。无凭据为 `unconfigured` 且零网络；401/429/403 分别映射 `auth_expired`/`rate_limited`/`permission_missing`，保留上次成功时间。TikTok Research API 仅为资格能力记录，不冒充商业可用 Connector。Task 5 定向 `8/8`，联动回归 `33/33` 通过。Task 6 待开始。 |
 | R. Slice B 爆款/共题/选题 | 未开始 | 依赖帖子与指标快照真实入库。 |
 | S. Slice C 持久推送与产品页面 | 未开始 | 依赖事件/outbox 与查询 API。 |
 | T. 真实来源 Canary 与 GitHub 更新 | 未开始 | 必须逐平台记录真实成功、零结果、`partial`、`blocked` 或 `unconfigured`，不能只凭理论支持标记完成。 |
@@ -271,3 +271,4 @@
 - 2026-08-28：完成 Slice A Task 2 RED→GREEN。目录测试先因四垂类/观察名单模块不存在而 `0/7` 失败，实现后 `7/7` 通过；已实际反查 YouTube channel 规范链接与 Atom Feed、GitHub 组织数字 ID/API、Lab Muffin/Vogue/Variety RSS 及最新时间，联动回归 `25/25` 通过，`git diff --check` 通过。
 - 2026-08-28：完成 Slice A Task 3 RED→GREEN。标准化测试先因模块不存在失败，最小导出落地后 `0/9` 按预期失败，完成严格契约后 `9/9` 通过；未公开指标保持 `null`，Cookie/Authorization/Token/未知 raw 字段不会进入标准对象。联动回归 `33/33` 与 `git diff --check` 通过。
 - 2026-08-28：完成 Slice A Task 4 RED→GREEN。五类公开 Connector 先 `0/8` 按预期失败，实现后 `8/8`；WebSub 先 `0/6` 失败，补齐原始 XML 签名、精确 Topic/频道、重复回调、历史回填并行和 lease 续租后全部通过；最终指定回归 `40/40`。发现并修复本机 Node 不继承系统代理导致 YouTube 直连超时；修复后真实只读探测得到 YouTube 15、Vogue RSS 29、GitHub 100 条并保留可打开原帖 URL。测试数据库已隔离到临时路径，未提交任何 SQLite 内容，`git diff --check` 通过。
+- 2026-08-28：完成 Slice A Task 5 RED→GREEN。官方连接器测试先因模块缺失失败，最小导出后 `0/7` 按预期失败，实现与环境文档完成后 `8/8` 通过；验证四类缺失凭据时零网络、授权账号绑定、凭据不进响应、指标可空与失败状态保留上次成功时间。公开/官方/标准化/目录联动回归 `33/33`，`git diff --check` 通过。
