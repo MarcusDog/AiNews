@@ -17,6 +17,8 @@ server/data/backups/
 server/data/*.db
 server/data/*.db-shm
 server/data/*.db-wal
+server/config/creatorSeeds.json
+server/data/creator-seeds*.json
 
 # Logs
 *.log
