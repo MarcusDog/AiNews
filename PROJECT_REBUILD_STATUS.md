@@ -253,7 +253,7 @@
 | N. 来源与开源项目审计 | 已完成 | `docs/research/2026-08-28-cross-vertical-creator-source-audit.md` 已记录现有缺口、项目热度/许可证、14 类平台接入矩阵、来源等级、本地保存、Hotness 与推送正确性边界。 |
 | O. 产品/数据/接口规格 | 已完成 | `docs/superpowers/specs/2026-08-28-cross-vertical-creator-intelligence.md` 已冻结领域模型、签名 Sidecar、回填状态机、垂类规则、`creator-hotness-v1`、Creator API、订阅/outbox、前端页面、保留期和发布门槛。 |
 | P. TDD 实施计划与评审 | 已完成 | `docs/superpowers/plans/2026-08-28-cross-vertical-creator-intelligence.md` 已形成 18 个任务、三条可独立交付 Slice；经过四轮独立审查，前三轮累计关闭 14 个阻断问题，第四轮结果为 `Approved`。 |
-| Q. Slice A 可信采集与历史回填 | 未开始 | 待计划评审通过；可以从无需凭据的 YouTube Atom、Bluesky、Mastodon、GitHub、RSS 开始。 |
+| Q. Slice A 可信采集与历史回填 | 进行中 | Task 0 已完成：基线清单位于 `docs/verification/2026-08-28-creator-intelligence-baseline.md`，保护测试 `5/5` 通过；旧 News/Signal/Auth/User Data 路由、生命周期标记与 10 张 legacy 表已冻结。Task 1 CreatorStore 待开始。 |
 | R. Slice B 爆款/共题/选题 | 未开始 | 依赖帖子与指标快照真实入库。 |
 | S. Slice C 持久推送与产品页面 | 未开始 | 依赖事件/outbox 与查询 API。 |
 | T. 真实来源 Canary 与 GitHub 更新 | 未开始 | 必须逐平台记录真实成功、零结果、`partial`、`blocked` 或 `unconfigured`，不能只凭理论支持标记完成。 |
@@ -266,3 +266,4 @@
 - 2026-08-28：第二轮复审确认首轮 7 项全部关闭，但新增发现状态/event/outbox 缺少原子生产入口、`review`/`tool-review` 画像冲突、Webhook SSRF 策略不可执行、maintenance audit schema 缺失；现已加入统一 `applyCreatorStateChange` 事务、现有画像兼容回归、HTTPS/DNS/IP/重定向 SSRF 策略及可持久审计的单次 preview，进入第三轮复审。
 - 2026-08-28：第三轮复审确认第二轮 4 项全部关闭，但新增发现白名单化 Bridge payload 缺少表/关联/30 天清理链、最终命令仍会整文件暂存状态 MD、AyaNewsSkill 缺少最终 push 与远端 SHA 核验；现已补齐 payload/run/post schema 与安全清理、默认排除重叠状态文件，并将两个仓库 push/远端 SHA 一致性加入最终门槛，进入第四轮复审。
 - 2026-08-28：第四轮独立复审通过，结果为 `Approved`，无阻断项。计划最终冻结为 18 个 TDD 任务，实施仍未开始；下一步从 Slice A 的基线、CreatorStore、核验观察名单和公开主链连接器开始。
+- 2026-08-28：开始执行 Slice A。Task 0 按 RED→GREEN 完成：先观察到基线清单缺失导致保护测试失败，再创建不含密钥/Cookie/数据库内容的 baseline；最终 `creator-baseline.test.js` 为 `5/5`，`git diff --check` 通过。
