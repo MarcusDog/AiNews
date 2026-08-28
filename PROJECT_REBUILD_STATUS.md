@@ -253,7 +253,7 @@
 | N. 来源与开源项目审计 | 已完成 | `docs/research/2026-08-28-cross-vertical-creator-source-audit.md` 已记录现有缺口、项目热度/许可证、14 类平台接入矩阵、来源等级、本地保存、Hotness 与推送正确性边界。 |
 | O. 产品/数据/接口规格 | 已完成 | `docs/superpowers/specs/2026-08-28-cross-vertical-creator-intelligence.md` 已冻结领域模型、签名 Sidecar、回填状态机、垂类规则、`creator-hotness-v1`、Creator API、订阅/outbox、前端页面、保留期和发布门槛。 |
 | P. TDD 实施计划与评审 | 已完成 | `docs/superpowers/plans/2026-08-28-cross-vertical-creator-intelligence.md` 已形成 18 个任务、三条可独立交付 Slice；经过四轮独立审查，前三轮累计关闭 14 个阻断问题，第四轮结果为 `Approved`。 |
-| Q. Slice A 可信采集与历史回填 | 进行中 | Task 0–6 已完成：公开主干、WebSub 与官方受控 Connector 已落地；新增 `POST /api/ingest/v1/creator-bridge` 原始字节验签边界，按来源绑定平台/已核验账号，使用五分钟时间窗、HMAC-SHA256、原子 nonce 防重放和 2 MiB/500 条上限。错误签名、私密/已删除内容、未绑定账号或持久化失败均零写入；合法批次原子保存 run、post、脱敏 payload 与关联。Sidecar 在签名 canary 成功前保持 `awaiting_signed_canary`，主服务不启动浏览器或保存 Cookie。Task 6 定向 `11/11`，联动回归 `41/41` 通过。Task 7 待开始。 |
+| Q. Slice A 可信采集与历史回填 | 已完成 | Task 0–7 已完成：公开主干、WebSub、官方受控 Connector、签名 Sidecar、增量优先队列、请求预算、账号互斥锁、逐页事务 cursor、可恢复历史回填和二次 reconciliation 均已落地。历史页不发送新帖事件；API/Feed 历史窗口会标记 `partial`，权限/风控失败会标记 `blocked`。重启不会重置 cursor，首次导入会自动安排增量时间。Creator 全量回归 `77/77`；真实临时库调度 canary 从 GitHub OpenAI/Hugging Face 与 Lab Muffin RSS 写入 229 条，三次 run 全部 success；RSS/无 YouTube Key 回填分别以明确原因落为 `partial`。 |
 | R. Slice B 爆款/共题/选题 | 未开始 | 依赖帖子与指标快照真实入库。 |
 | S. Slice C 持久推送与产品页面 | 未开始 | 依赖事件/outbox 与查询 API。 |
 | T. 真实来源 Canary 与 GitHub 更新 | 未开始 | 必须逐平台记录真实成功、零结果、`partial`、`blocked` 或 `unconfigured`，不能只凭理论支持标记完成。 |
@@ -273,3 +273,4 @@
 - 2026-08-28：完成 Slice A Task 4 RED→GREEN。五类公开 Connector 先 `0/8` 按预期失败，实现后 `8/8`；WebSub 先 `0/6` 失败，补齐原始 XML 签名、精确 Topic/频道、重复回调、历史回填并行和 lease 续租后全部通过；最终指定回归 `40/40`。发现并修复本机 Node 不继承系统代理导致 YouTube 直连超时；修复后真实只读探测得到 YouTube 15、Vogue RSS 29、GitHub 100 条并保留可打开原帖 URL。测试数据库已隔离到临时路径，未提交任何 SQLite 内容，`git diff --check` 通过。
 - 2026-08-28：完成 Slice A Task 5 RED→GREEN。官方连接器测试先因模块缺失失败，最小导出后 `0/7` 按预期失败，实现与环境文档完成后 `8/8` 通过；验证四类缺失凭据时零网络、授权账号绑定、凭据不进响应、指标可空与失败状态保留上次成功时间。公开/官方/标准化/目录联动回归 `33/33`，`git diff --check` 通过。
 - 2026-08-29：完成 Slice A Task 6 RED→GREEN。Bridge 测试先因验签模块缺失失败；实现后 `11/11` 通过，覆盖原始字节 body hash、固定长度 timing-safe 比较、五分钟时间窗、未知来源、错误签名、2 MiB/500 条边界、私密/已删除内容、已核验账号绑定、重复/并发 nonce、持久化失败全量回滚和 payload allowlist 脱敏。合法签名 canary 后来源才转为 `online`；Creator/Connector/生命周期联动回归 `41/41`，`git diff --check` 通过。
+- 2026-08-29：完成 Slice A Task 7 RED→GREEN。新增有界并发增量采集、账号级锁、单源失败隔离、请求预算、持久 cursor、可恢复回填、耗尽后二次 reconciliation、每日复核与最近 100 条指标刷新调度；修复首次 seed 无 `next_run_at`、重启重置回填进度及来源成功结果缺少顶层 `online` 状态三个真实链路问题。Creator 全量 `77/77`；真实临时 SQLite canary 写入 GitHub OpenAI 100、Hugging Face 119、Lab Muffin RSS 10 条，共 229 条，run 全部 success。RSS 与无 YouTube Key 历史测试分别保存 `rss_feed_retention_window`、`youtube_data_api_key_required_for_full_history` 并标记 `partial`，未误报全量完成。

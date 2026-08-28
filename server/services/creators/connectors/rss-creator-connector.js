@@ -35,9 +35,11 @@ class RssCreatorConnector {
       this.timeoutMs
     );
     if (response.status === 304) {
-      return normalizeCreatorPage({
+      const unchanged = normalizeCreatorPage({
         account, posts: [], nextCursor: options.cursor, exhausted: true, rateLimit: null, collectedAt: this.now()
       }, { now: this.now() });
+      if (options.history) unchanged.partialReason = 'rss_feed_retention_window';
+      return unchanged;
     }
     const xml = await readTextResponse(response, new Date(this.now()));
     const feed = await this.parser.parseString(xml);
@@ -63,9 +65,11 @@ class RssCreatorConnector {
       etag: response.headers.get('etag'),
       lastModified: response.headers.get('last-modified')
     });
-    return normalizeCreatorPage({
+    const normalized = normalizeCreatorPage({
       account, posts, nextCursor, exhausted: true, rateLimit: null, collectedAt: this.now()
     }, { now: this.now() });
+    if (options.history) normalized.partialReason = 'rss_feed_retention_window';
+    return normalized;
   }
 }
 

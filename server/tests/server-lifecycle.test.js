@@ -40,10 +40,29 @@ test('disabled cron registers no jobs; enabled cron registers all explicit sched
     databaseService: { initialize: async () => {}, cleanOldNews: async () => 0 },
     diversityAuditService: { runDailyAudit: async () => ({ status: 'ok' }) }
   });
-  assert.equal(enabled.length, 6);
+  assert.equal(enabled.length, 9);
   assert(expressions.includes('*/30 * * * *'));
   assert(expressions.includes('17 */6 * * *'));
+  assert(expressions.includes('*/10 * * * *'));
+  assert(expressions.includes('43 3 * * *'));
+  assert(expressions.includes('7,27,47 * * * *'));
   enabled.forEach((job) => job.stop());
+});
+
+test('creator scheduler flag removes only creator acquisition jobs', () => {
+  const { registerCronJobs } = require('../index');
+  const expressions = [];
+  const cronLib = { schedule: (expression) => { expressions.push(expression); return { stop() {} }; } };
+  const jobs = registerCronJobs({
+    env: { AYA_DISABLE_CREATOR_SCHEDULER: '1' }, cronLib,
+    newsService: { updateAllNews: async () => ({}) },
+    signalService: { refreshAll: async () => ({}), store: { purgeOldData: () => ({}) } },
+    databaseService: { initialize: async () => {}, cleanOldNews: async () => 0 },
+    diversityAuditService: { runDailyAudit: async () => ({ status: 'ok' }) }
+  });
+  assert.equal(jobs.length, 6);
+  assert(!expressions.includes('*/10 * * * *'));
+  jobs.forEach((job) => job.stop());
 });
 
 test('startup skip initializes stores but performs no external refresh', async () => {

@@ -16,12 +16,18 @@ const CreatorStore = require('./services/creators/creator-store');
 const YoutubeWebSubService = require('./services/creators/youtube-websub-service');
 const { CreatorSourceRegistry } = require('./services/creators/creator-source-registry');
 const { BridgeVerifier } = require('./services/creators/bridge-verifier');
+const CreatorService = require('./services/creators/creator-service');
 const { createYoutubeWebSubRouter } = require('./routes/youtube-websub');
 const { createCreatorIngestRouter } = require('./routes/creator-ingest');
 const creatorStore = new CreatorStore();
 creatorStore.initialize();
 const creatorSourceRegistry = new CreatorSourceRegistry({ env: process.env });
 const creatorBridgeVerifier = new BridgeVerifier({ sourceRegistry: creatorSourceRegistry });
+const creatorService = new CreatorService({
+  env: process.env,
+  store: creatorStore,
+  sourceRegistry: creatorSourceRegistry
+});
 const youtubeWebSubService = new YoutubeWebSubService({
   creatorStore,
   env: process.env,
@@ -280,6 +286,7 @@ async function initializeSystem(options = {}) {
   const databaseService = options.databaseService || require('./services/DatabaseService');
   const newsService = options.newsService || require('./services/NewsService');
   const currentSignalService = options.signalService || signalService;
+  const currentCreatorService = options.creatorService || creatorService;
   const diversityAuditService = options.diversityAuditService || require('./services/DiversityAuditService').diversityAuditService;
   const socketServer = options.socketServer || io;
   const result = { skippedRefresh: flags.skipStartupRefresh, errors: [] };
@@ -290,6 +297,7 @@ async function initializeSystem(options = {}) {
     console.log('✅ 数据库初始化完成');
     newsService.setSocketIO(socketServer);
     currentSignalService.initialize();
+    currentCreatorService.initialize();
   } catch (error) {
     result.errors.push(`database: ${error.message}`);
     console.error('❌ 数据库或 Signal 存储初始化失败:', error);
@@ -351,6 +359,7 @@ function registerCronJobs(options = {}) {
   const databaseService = options.databaseService || require('./services/DatabaseService');
   const diversityAuditService = options.diversityAuditService || require('./services/DiversityAuditService').diversityAuditService;
   const currentYoutubeWebSubService = options.youtubeWebSubService || youtubeWebSubService;
+  const currentCreatorService = options.creatorService || creatorService;
   const sourceLimit = getLifecycleFlags(env).signalSourceLimit;
 
   const refreshNewsAndSignals = async (label) => {
@@ -406,6 +415,31 @@ function registerCronJobs(options = {}) {
       }
     }, cronOptions)
   ];
+  if (env.AYA_DISABLE_CREATOR_SCHEDULER !== '1') {
+    jobs.push(
+      cronLib.schedule(newsSchedules.creatorIncremental, async () => {
+        try {
+          await currentCreatorService.tick();
+        } catch (error) {
+          console.error('❌ Creator 增量采集失败:', error.message);
+        }
+      }, cronOptions),
+      cronLib.schedule(newsSchedules.creatorReconciliation, async () => {
+        try {
+          await currentCreatorService.reconcile();
+        } catch (error) {
+          console.error('❌ Creator 每日复核失败:', error.message);
+        }
+      }, cronOptions),
+      cronLib.schedule(newsSchedules.creatorMetricRefresh, async () => {
+        try {
+          await currentCreatorService.refreshMetrics();
+        } catch (error) {
+          console.error('❌ Creator 指标刷新失败:', error.message);
+        }
+      }, cronOptions)
+    );
+  }
   scheduledJobs.push(...jobs);
   return jobs;
 }
@@ -478,6 +512,7 @@ module.exports = {
   creatorStore,
   creatorSourceRegistry,
   creatorBridgeVerifier,
+  creatorService,
   youtubeWebSubService,
   getLifecycleFlags,
   initializeSystem,

@@ -466,13 +466,17 @@ class CreatorStore {
         enabled = excluded.enabled,
         last_verified_at = excluded.last_verified_at,
         auth_state = excluded.auth_state,
-        backfill_state = excluded.backfill_state,
+        backfill_state = CASE
+          WHEN creator_accounts.backfill_state IN ('running', 'reconciling', 'complete', 'partial', 'blocked')
+            THEN creator_accounts.backfill_state
+          ELSE excluded.backfill_state
+        END,
         oldest_fetched_at = COALESCE(excluded.oldest_fetched_at, creator_accounts.oldest_fetched_at),
         newest_fetched_at = COALESCE(excluded.newest_fetched_at, creator_accounts.newest_fetched_at),
         last_reconciled_at = COALESCE(excluded.last_reconciled_at, creator_accounts.last_reconciled_at),
-        next_cursor = excluded.next_cursor,
-        history_limit_reason = excluded.history_limit_reason,
-        next_run_at = excluded.next_run_at,
+        next_cursor = COALESCE(excluded.next_cursor, creator_accounts.next_cursor),
+        history_limit_reason = COALESCE(excluded.history_limit_reason, creator_accounts.history_limit_reason),
+        next_run_at = COALESCE(excluded.next_run_at, creator_accounts.next_run_at),
         updated_at = excluded.updated_at
     `);
     const transaction = this.db.transaction((items) => {
@@ -723,6 +727,24 @@ class CreatorStore {
     `).all(before, limit).map((row) => this.mapAccount(row));
   }
 
+  scheduleAccount(accountId, nextRunAt) {
+    this.ensureInitialized();
+    const result = this.db.prepare(`
+      UPDATE creator_accounts SET next_run_at = ?, updated_at = ? WHERE id = ?
+    `).run(iso(nextRunAt, 'nextRunAt'), iso(Date.now(), 'updatedAt'), accountId);
+    if (result.changes !== 1) throw new Error(`Unknown creator account: ${accountId}`);
+  }
+
+  scheduleUnscheduledAccounts(nextRunAt) {
+    this.ensureInitialized();
+    const timestamp = iso(nextRunAt, 'nextRunAt');
+    return this.db.prepare(`
+      UPDATE creator_accounts
+      SET next_run_at = ?, updated_at = ?
+      WHERE enabled = 1 AND next_run_at IS NULL
+    `).run(timestamp, timestamp).changes;
+  }
+
   recordRun(run = {}) {
     this.ensureInitialized();
     if (!run.id || !run.sourceId || !run.status) throw new TypeError('run id/sourceId/status required');
@@ -823,6 +845,9 @@ class CreatorStore {
   }
 
   mapAccount(row) {
+    const verticalIds = this.db.prepare(
+      'SELECT vertical_id FROM creator_vertical_memberships WHERE creator_id = ? ORDER BY vertical_id'
+    ).all(row.creator_id).map((item) => item.vertical_id);
     return {
       id: row.id,
       creatorId: row.creator_id,
@@ -835,7 +860,11 @@ class CreatorStore {
       enabled: bool(row.enabled),
       authState: row.auth_state,
       backfillState: row.backfill_state,
-      nextRunAt: row.next_run_at
+      nextRunAt: row.next_run_at,
+      profileUrl: row.profile_url,
+      nextCursor: row.next_cursor,
+      historyLimitReason: row.history_limit_reason,
+      verticalIds
     };
   }
 

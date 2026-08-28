@@ -194,7 +194,7 @@ class CreatorSourceRegistry {
         retryAfterMs: null
       };
       this.sources.set(sourceId, source);
-      return { ...result, source: { ...source } };
+      return { ...result, status: result?.status || 'online', source: { ...source } };
     } catch (error) {
       const status = failureStatus(error);
       const source = {

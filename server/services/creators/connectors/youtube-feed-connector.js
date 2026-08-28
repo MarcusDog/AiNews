@@ -32,9 +32,13 @@ class YoutubeFeedConnector {
     if (options.cursor) headers['if-none-match'] = options.cursor;
     const response = await this.request(feedUrl, { headers, signal: options.signal });
     if (response.status === 304) {
-      return normalizeCreatorPage({
+      const unchanged = normalizeCreatorPage({
         account, posts: [], nextCursor: options.cursor, exhausted: true, rateLimit: null, collectedAt: this.now()
       }, { now: this.now() });
+      if (options.history && !this.apiKey) {
+        unchanged.partialReason = 'youtube_data_api_key_required_for_full_history';
+      }
+      return unchanged;
     }
     const xml = await readTextResponse(response, new Date(this.now()));
     const feed = await this.parser.parseString(xml);
@@ -58,7 +62,7 @@ class YoutubeFeedConnector {
         metadata: { etag: response.headers.get('etag') || null }
       };
     });
-    return normalizeCreatorPage({
+    const normalized = normalizeCreatorPage({
       account,
       posts,
       nextCursor: response.headers.get('etag') || null,
@@ -66,6 +70,10 @@ class YoutubeFeedConnector {
       rateLimit: null,
       collectedAt: this.now()
     }, { now: this.now() });
+    if (options.history && !this.apiKey) {
+      normalized.partialReason = 'youtube_data_api_key_required_for_full_history';
+    }
+    return normalized;
   }
 
   async collectHistory(account, options = {}) {

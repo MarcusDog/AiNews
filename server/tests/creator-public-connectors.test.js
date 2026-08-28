@@ -85,6 +85,30 @@ test('YouTube Data API paginates upload history and statistics failure never dro
   assert.equal(result.exhausted, false);
 });
 
+test('YouTube Atom and RSS report partial history instead of claiming full backfill', async () => {
+  const youtube = new YoutubeFeedConnector({
+    fetchImpl: async () => new Response(`<?xml version="1.0"?><feed xmlns:yt="http://www.youtube.com/xml/schemas/2015">
+      <entry><yt:videoId>recent-1</yt:videoId><yt:channelId>UC_recent</yt:channelId>
+      <title>Recent</title><link rel="alternate" href="https://www.youtube.com/watch?v=recent-1"/>
+      <published>2026-08-28T10:00:00Z</published><updated>2026-08-28T10:00:00Z</updated></entry></feed>`),
+    now: () => NOW
+  });
+  const youtubeResult = await youtube.collect(account('youtube', {
+    externalAccountId: 'UC_recent', profileUrl: 'https://www.youtube.com/channel/UC_recent'
+  }), { history: true });
+  assert.equal(youtubeResult.partialReason, 'youtube_data_api_key_required_for_full_history');
+
+  const rss = new RssCreatorConnector({
+    fetchImpl: async () => new Response('<?xml version="1.0"?><rss version="2.0"><channel><title>Recent</title></channel></rss>'),
+    now: () => NOW
+  });
+  const rssResult = await rss.collect(account('rss', {
+    externalAccountId: 'https://creator.example/feed.xml',
+    profileUrl: 'https://creator.example'
+  }), { history: true });
+  assert.equal(rssResult.partialReason, 'rss_feed_retention_window');
+});
+
 test('Bluesky author feed preserves pagination and canonical repost attribution', async () => {
   const fetchImpl = fixtureFetch(async (url) => {
     assert.match(url, /app\.bsky\.feed\.getAuthorFeed/);

@@ -189,6 +189,7 @@ test('registry classifies auth, rate-limit and permission failures while preserv
     }
   };
   const success = await registry.execute('x-user-timeline', connector, account('x'));
+  assert.equal(success.status, 'online');
   assert.equal(success.source.status, 'online');
   assert.equal(success.source.lastSuccessAt, NOW);
 
