@@ -67,7 +67,8 @@ npm run client:dev
 3. **诚实降级**：后端不可用时，页面明确显示「创作练习」，不冒充实时热点。
 4. **自动化测试**：`cd client && npm test`。
 5. **生产构建**：`cd client && npm run build`，产物位于 `client/dist`。
-6. **来源健康**：打开 `http://localhost:3002/api/signals/v1/health` 和 `/api/signals/v1/sources`，区分在线、降级、未配置与禁用。
+6. **来源健康**：打开 `http://localhost:3002/api/signals/v1/health`、`/api/signals/v1/sources` 和 `/api/creators/v1/sources`，区分在线、降级、部分历史、受限、未配置与禁用。
+7. **跨垂类页面**：检查 `/creators`、`/verticals/beauty`、`/verticals/fashion`、`/verticals/ai-tech`、`/verticals/entertainment`、`/sources` 与 `/alerts`。
 
 ## 多源热点首次配置
 
@@ -101,7 +102,12 @@ curl -X POST http://localhost:3002/api/signals/v1/admin/refresh \
 curl 'http://localhost:3002/api/news/hot-rank?window=24h'
 curl 'http://localhost:3002/api/news/discover?window=48h&profile=short-video'
 curl 'http://localhost:3002/api/content/v1/brief?topic=Qwen&topicId=TOPIC_ID&format=article'
+curl 'http://localhost:3002/api/creators/v1/posts?q=Agent&vertical=ai-tech'
+curl 'http://localhost:3002/api/creators/v1/hot?window=24h&type=post&vertical=ai-tech'
+curl http://localhost:3002/api/creators/v1/sources
 ```
+
+Creator 观察名单、回填、Sidecar 与推送配置分别见 [docs/CREATOR_SOURCES.md](./docs/CREATOR_SOURCES.md)、[docs/CREATOR_SIDECAR.md](./docs/CREATOR_SIDECAR.md) 和 [docs/CREATOR_ALERTS.md](./docs/CREATOR_ALERTS.md)。可选平台没有密钥或账号授权时保持 `unconfigured`，不会阻止 L1 公开主干启动。
 
 ## 数据源说明
 

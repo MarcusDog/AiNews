@@ -117,6 +117,15 @@ RSSHUB_BASE_URL=
 NEWSNOW_BASE_URL=
 SIGNAL_BRIDGES_JSON=[]
 AINEWS_SIGNAL_CONCURRENCY=4
+AYA_CREATOR_SEEDS_PATH=./config/creatorSeeds.local.json
+AYA_DISABLE_CREATOR_SCHEDULER=0
+AYA_CREATOR_CONCURRENCY=4
+AYA_CREATOR_REQUEST_BUDGET=100
+AYA_CREATOR_BRIDGES_JSON=[]
+AYA_YOUTUBE_WEBSUB_SECRET=
+AYA_CREATOR_WEBHOOK_DEFAULT_SECRET=
+AYA_CREATOR_BACKUP_DIR=./data/backups
+AYA_CREATOR_EXPORT_DIR=./data/exports
 ```
 
 `MINIMAX_API_KEY` 只保存在服务器环境变量或部署平台的 Secret 中，不要写入前端、镜像或 Git。MiniMax Agent 使用 Anthropic 兼容接口；网站在每天 08:30（Asia/Shanghai）生成一次带来源的信息茧房复核。
@@ -124,6 +133,8 @@ AINEWS_SIGNAL_CONCURRENCY=4
 `ADMIN_API_KEY` 只配置在服务端。管理页位于 `/#/admin`，密钥仅保存在浏览器当前页面内存中，不写入 LocalStorage、SessionStorage 或 URL。
 
 Compose 会把 `server/.env` 整体传入后端，可选 Signal 变量保持为空即可，不会阻止启动。RSSHub、NewsNow 与 JSON Bridge 只接受 HTTPS 地址；MediaCrawler、Agent-Reach 必须作为独立 Sidecar 运行，不能把 Cookie 或登录态放进本仓库。
+
+Creator 观察名单应使用 Git 忽略的运营文件。X、Reddit、Instagram、抖音、YouTube Data 和消息通道缺少授权时会显示 `unconfigured`；小红书/微博/任意抖音或 B 站深挖只允许独立 Sidecar 经原始字节 HMAC Bridge 接入。完整配置见 [docs/CREATOR_SOURCES.md](./docs/CREATOR_SOURCES.md)、[docs/CREATOR_SIDECAR.md](./docs/CREATOR_SIDECAR.md) 与 [docs/CREATOR_ALERTS.md](./docs/CREATOR_ALERTS.md)。
 
 默认每 30 分钟刷新 Signal/Topic、每日 02:00 清理并保留 45 天。部署后的运维检查：
 
@@ -139,6 +150,12 @@ curl -I http://localhost:8080/topics/rss.xml
 curl -I http://localhost:8080/topics
 curl -I http://localhost:8080/research
 curl -I http://localhost:8080/skills
+curl http://localhost:8080/api/creators/v1/sources
+curl 'http://localhost:8080/api/creators/v1/creators?status=verified&limit=20'
+curl 'http://localhost:8080/api/creators/v1/posts?vertical=ai-tech&limit=20'
+curl -I http://localhost:8080/creators
+curl -I http://localhost:8080/sources
+curl -I http://localhost:8080/alerts
 ```
 
 Topic Feed 在 Nginx 中使用精确匹配代理，位于 SPA fallback 之前。JSON 应返回 `application/feed+json`，RSS 应返回 XML 内容类型；若返回 HTML，说明仍在使用旧 Nginx 配置。
@@ -154,6 +171,8 @@ Topic Feed 在 Nginx 中使用精确匹配代理，位于 SPA fallback 之前。
 - `./server/data:/app/data` - SQLite 数据库
 - `./server/logs:/app/logs` - 日志文件
 - `./server/cache:/app/cache` - 缓存文件
+- `./server/data/backups:/app/data/backups` - Creator online backup
+- `./server/data/exports:/app/data/exports` - 校验和 JSONL 导出
 
 ## 健康检查
 

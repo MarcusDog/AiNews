@@ -6,10 +6,10 @@
 
 - 前端：React 18 + Vite 8 + TypeScript 7 + Tailwind CSS + shadcn/ui 式本地组件。
 - 首页：电影感首屏 + 24/48/72 小时「视野监测台」。
-- 数据链路：公开 Signal → Topic 聚类 → 窗口化 `trend-v1` → 五画像 `opportunity-v2` → 创作者选题与证据研究。
-- 来源：既有新闻/官方发布、GitHub、Hacker News、Mastodon、Reddit、Hugging Face、Bilibili，以及可选 YouTube、X、自托管 RSSHub/NewsNow/JSON Bridge。
-- 核心交互：首页雷达、独立 `/topics` 选题工作台、独立 `/research` 证据研究台和 `/skills` 人类说明页；随机选题会排除上一题。
-- 开放能力：REST、OpenAPI 3.1、Topic JSON Feed、RSS 与 AyaNewsSkill 2.3。MCP、A2A、Webhook 尚未实现，文档不会冒充可用。
+- 数据链路：公开 Signal → Topic 聚类 → 窗口化 `trend-v1` → 核验博主公开帖子 → `creator-hotness-v1` / 跨博主共题 → 证据型选题与推送。
+- 来源：新闻/官方发布、GitHub、Hacker News、Mastodon、Reddit、Hugging Face、Bilibili；Creator 主干支持 YouTube Atom、Bluesky、Mastodon、GitHub、RSS，可选 Reddit、X、Instagram、抖音官方 API 和签名 Sidecar。
+- 核心交互：首页雷达、`/topics`、`/research`、`/creators`、`/verticals/:id`、`/sources`、`/alerts` 和 `/skills`。
+- 开放能力：REST、OpenAPI 3.1（2.4）、Topic JSON Feed、RSS、登录态 SSE、安全签名 Webhook 与 AyaNewsSkill。MCP、A2A 尚未实现，文档不会冒充可用。
 - Node.js 要求：`>=20.19.0`。
 
 ```bash
@@ -57,6 +57,23 @@ curl http://localhost:3002/topics/rss.xml
 兼容聚合路由还包括 `/api/news/feed` 与 `/api/news/domestic`。`profile` 可取 `general`、`short-video`、`tool-review`、`news-commentary`、`deep-dive`。
 
 公开接口的完整契约以 `/openapi.json` 为准。匿名 GitHub、Reddit、Bilibili 等端点可能限流或临时拒绝请求；单源失败不会阻断其他来源，健康接口会保留真实失败状态。
+
+## 跨垂类 Creator Intelligence
+
+首发覆盖美妆、穿搭、AI 科技和娱乐。系统只对人工核验观察名单账号采集平台当前允许读取的公开历史；`complete` 必须经过 cursor 耗尽和 reconciliation，受平台历史窗口限制时显示 `partial`，权限/风控时显示 `blocked`，缺少密钥或授权时显示 `unconfigured`。未知互动指标保持 `null`，不会伪造成 0。
+
+```bash
+curl 'http://localhost:3002/api/creators/v1/creators?status=verified&vertical=ai-tech'
+curl 'http://localhost:3002/api/creators/v1/posts?q=Agent&vertical=ai-tech'
+curl 'http://localhost:3002/api/creators/v1/hot?window=24h&type=cross_platform'
+curl http://localhost:3002/api/creators/v1/sources
+```
+
+运营文档：
+
+- [Creator 来源、观察名单与回填](./docs/CREATOR_SOURCES.md)
+- [Creator Sidecar 签名接入](./docs/CREATOR_SIDECAR.md)
+- [Creator 推送、重试、保留、备份与导出](./docs/CREATOR_ALERTS.md)
 
 ## 现有 v2.0 系统资料（迁移参考）
 
