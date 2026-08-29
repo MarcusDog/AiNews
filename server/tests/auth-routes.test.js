@@ -129,6 +129,33 @@ test('auth routes reject invalid credentials', async () => {
   }
 });
 
+test('session status is a quiet 200 probe for both anonymous and authenticated browsers', async () => {
+  await DatabaseService.close();
+  const server = createServer();
+  try {
+    const anonymous = await request(server, '/api/auth/session');
+    assert.equal(anonymous.status, 200);
+    assert.deepEqual(await anonymous.json(), { success: true, data: { authenticated: false } });
+
+    const register = await request(server, '/api/auth/register', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: 'session@example.com', password: 'StrongPass123', displayName: 'Session User' })
+    });
+    const authenticated = await request(server, '/api/auth/session', {
+      headers: { cookie: getCookieFromResponse(register) }
+    });
+    assert.equal(authenticated.status, 200);
+    const payload = await authenticated.json();
+    assert.equal(payload.success, true);
+    assert.equal(payload.data.authenticated, true);
+    assert.equal(payload.data.user.email, 'session@example.com');
+  } finally {
+    await DatabaseService.close();
+    await new Promise((resolve) => server.close(resolve));
+  }
+});
+
 test('auth routes allow profile updates and password rotation for authenticated users', async () => {
   await DatabaseService.close();
   const server = createServer();

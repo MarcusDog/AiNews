@@ -21,7 +21,7 @@ const PUBLIC_CREATOR_PATHS = [
 ];
 
 const ACCOUNT_PATHS = [
-  '/api/auth/register', '/api/auth/login', '/api/auth/me',
+  '/api/auth/register', '/api/auth/login', '/api/auth/session', '/api/auth/me',
   '/api/creators/v1/subscriptions',
   '/api/creators/v1/subscriptions/{id}',
   '/api/creators/v1/delivery-endpoints',

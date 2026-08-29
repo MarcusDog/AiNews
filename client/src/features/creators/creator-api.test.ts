@@ -35,6 +35,14 @@ describe('Creator Intelligence API', () => {
     await expect(authApi.loadAlerts()).rejects.toMatchObject({ code: 'auth_required', status: 401 } satisfies Partial<CreatorApiError>)
   })
 
+  it('does not fan out protected alert requests for an anonymous session', async () => {
+    const fetchImpl = vi.fn<typeof fetch>(async () => response({ success: true, data: { authenticated: false } }))
+    const api = createCreatorApi({ fetchImpl })
+    await expect(api.loadAlerts()).rejects.toMatchObject({ code: 'auth_required', status: 401 })
+    expect(fetchImpl).toHaveBeenCalledTimes(1)
+    expect(fetchImpl).toHaveBeenCalledWith('/api/auth/session', expect.objectContaining({ credentials: 'same-origin' }))
+  })
+
   it('creates subscriptions with same-origin credentials and exact endpoint ownership payload', async () => {
     const fetchImpl = vi.fn<typeof fetch>(async () => response({ success: true, data: { id: 'subscription-a' } }))
     const api = createCreatorApi({ fetchImpl })
@@ -56,5 +64,12 @@ describe('Creator Intelligence API', () => {
       method: 'POST', credentials: 'same-origin',
       headers: expect.objectContaining({ Accept: 'application/json', 'Content-Type': 'application/json' }),
     }))
+  })
+
+  it('checks realtime eligibility through the quiet session probe', async () => {
+    const fetchImpl = vi.fn<typeof fetch>(async () => response({ success: true, data: { authenticated: false } }))
+    const api = createCreatorApi({ fetchImpl })
+    await expect(api.canStream()).resolves.toBe(false)
+    expect(fetchImpl).toHaveBeenCalledWith('/api/auth/session', expect.objectContaining({ credentials: 'same-origin' }))
   })
 })

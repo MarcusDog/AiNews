@@ -117,8 +117,15 @@ async function fetchWithTimeout(fetchImpl, url, options = {}, timeoutMs = 10000)
 
 function responseError(response, now = new Date()) {
   const error = new Error(`upstream request failed with HTTP ${response.status}`);
-  error.status = response.status;
+  const quotaExhausted = response.status === 403
+    && response.headers?.get?.('x-ratelimit-remaining') === '0';
+  error.status = quotaExhausted ? 429 : response.status;
+  error.code = quotaExhausted ? 'rate_limited' : null;
+  const reset = response.headers?.get?.('x-ratelimit-reset');
   error.retryAfterMs = parseRetryAfter(response.headers?.get?.('retry-after'), now);
+  if (quotaExhausted && error.retryAfterMs === null && /^\d{10}$/.test(String(reset || ''))) {
+    error.retryAfterMs = Math.max(0, Number(reset) * 1000 - now.getTime());
+  }
   return error;
 }
 

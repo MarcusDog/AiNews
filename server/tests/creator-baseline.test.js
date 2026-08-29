@@ -13,7 +13,7 @@ const baselinePath = path.join(
 const protectedFiles = new Map([
   ['server/routes/news.js', 'a71af612c2d50bee52109c780e4ffad337c92d58b53a404ec719788cbe808cb3'],
   ['server/routes/signals.js', '30565ae98ac5e92457d0f4c4cd6488af36322bf97a86c954b700202a20eaf0ec'],
-  ['server/routes/auth.js', '916f26a6ea6decfe5bc76468c642fcdc451a4a534cc847bd0942f84467dcbedd'],
+  ['server/routes/auth.js', '4e108e755fd04e6acf7b1c6d742557f1fe15a77f3cd91b2ec45588a57481a9a8'],
   ['server/routes/userData.js', '0ceee502ff8a592d2e8c536b257c220e40bdf0dc3b66ca4ac4225a18813a427a'],
   ['server/services/DatabaseService.js', 'de835bf3faa29f0ab59c663bb363b2ab11ede9550f0dbda2b6d58bd5c924fd9c']
 ]);

@@ -1380,18 +1380,41 @@ class CreatorStore {
       GROUP BY a.platform
     `).all();
     const coverage = new Map(byPlatform.map((row) => [row.platform, row]));
+    const persistedRuns = this.db.prepare(`
+      SELECT latest.source_id, latest.status, latest.finished_at, latest.started_at, latest.error,
+        (SELECT MAX(success.finished_at) FROM creator_runs success
+         WHERE success.source_id = latest.source_id AND success.status = 'success') AS last_success_at
+      FROM creator_runs latest
+      WHERE latest.id = (
+        SELECT candidate.id FROM creator_runs candidate
+        WHERE candidate.source_id = latest.source_id
+        ORDER BY COALESCE(candidate.finished_at, candidate.started_at) DESC, candidate.id DESC LIMIT 1
+      )
+    `).all();
+    const runs = new Map(persistedRuns.map((row) => [row.source_id, row]));
+    const publicFailureCode = (run) => {
+      if (!run || run.status === 'success') return null;
+      const value = String(run.error || '');
+      return /^[a-z][a-z0-9_.:-]{0,119}$/.test(value) ? value : run.status;
+    };
     return sources.map((source) => {
       const row = coverage.get(source.platform) || {};
+      const run = runs.get(source.id) || null;
+      const persistedAttemptAt = run?.finished_at || run?.started_at || null;
+      const memoryIsNewer = source.lastAttemptAt && (!persistedAttemptAt || source.lastAttemptAt >= persistedAttemptAt);
+      const persistedStatus = run?.status === 'success' ? 'online' : run?.status || null;
       return {
         id: source.id,
         platform: source.platform,
         tier: source.tier,
         configured: source.configured === true,
         schedulable: source.schedulable === true,
-        status: source.status || 'unconfigured',
-        lastSuccessAt: source.lastSuccessAt || null,
-        lastAttemptAt: source.lastAttemptAt || null,
-        lastFailureCode: source.lastFailureCode || null,
+        status: memoryIsNewer ? source.status : persistedStatus || source.status || 'unconfigured',
+        lastSuccessAt: source.lastSuccessAt || run?.last_success_at || null,
+        lastAttemptAt: memoryIsNewer ? source.lastAttemptAt : persistedAttemptAt || source.lastAttemptAt || null,
+        lastFailureCode: memoryIsNewer
+          ? source.lastFailureCode || null
+          : publicFailureCode(run),
         setupHint: source.setupHint || null,
         accountCount: Number(row.account_count || 0),
         enabledAccountCount: Number(row.enabled_account_count || 0),
@@ -1790,6 +1813,20 @@ class CreatorStore {
     this.ensureInitialized();
     const row = this.db.prepare('SELECT * FROM creator_posts WHERE id = ?').get(id);
     return row ? this.mapPost(row) : null;
+  }
+
+  replacePostVerticals(postId, verticalIds = [], updatedAt = Date.now()) {
+    this.ensureInitialized();
+    if (!postId || !Array.isArray(verticalIds)) throw new TypeError('postId and verticalIds are required');
+    const timestamp = iso(updatedAt, 'updatedAt');
+    const clear = this.db.prepare('DELETE FROM creator_post_verticals WHERE post_id = ?');
+    const insert = this.db.prepare(
+      'INSERT INTO creator_post_verticals (post_id, vertical_id, created_at) VALUES (?, ?, ?)'
+    );
+    this.db.transaction(() => {
+      clear.run(postId);
+      for (const verticalId of [...new Set(verticalIds)]) insert.run(postId, verticalId, timestamp);
+    })();
   }
 
   recordHotnessScore(postId, score = {}, capturedAt = Date.now()) {

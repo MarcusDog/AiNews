@@ -295,12 +295,32 @@ test('cross-platform topic filtering and hotness ranking happen before applying 
 test('source coverage redacts credentials and reports configured accounts and latest post', async () => {
   const fixture = makeFixture();
   try {
+    fixture.store.recordRun({
+      id: 'persisted-youtube-run', sourceId: 'youtube-atom', accountId: 'account-a', status: 'success',
+      startedAt: '2026-08-29T11:58:00.000Z', finishedAt: '2026-08-29T11:59:00.000Z', received: 2, saved: 2
+    });
+    fixture.store.recordRun({
+      id: 'persisted-rss-failure', sourceId: 'rss-creator', accountId: 'account-a', status: 'failed',
+      startedAt: '2026-08-29T12:00:00.000Z', finishedAt: '2026-08-29T12:01:00.000Z',
+      error: 'request failed at https://private.example/token?secret=must-not-leak'
+    });
+    fixture.sourceRegistry.list = () => [{
+      id: 'youtube-atom', platform: 'youtube', tier: 'L1', configured: true,
+      schedulable: true, status: 'configured', secretRef: 'env:YOUTUBE_SECRET'
+    }, {
+      id: 'rss-creator', platform: 'rss', tier: 'L1', configured: true,
+      schedulable: true, status: 'configured'
+    }];
     await withServer(fixture, async (origin) => {
       const result = await json(origin, '/sources');
       assert.equal(result.payload.data.items[0].accountCount, 1);
       assert.equal(result.payload.data.items[0].latestPostAt, '2026-08-29T11:00:00.000Z');
+      assert.equal(result.payload.data.items[0].status, 'online');
+      assert.equal(result.payload.data.items[0].lastSuccessAt, '2026-08-29T11:59:00.000Z');
+      assert.equal(result.payload.data.items[1].lastFailureCode, 'failed');
       assert.equal(JSON.stringify(result.payload).includes('YOUTUBE_SECRET'), false);
       assert.equal(JSON.stringify(result.payload).includes('must-not-leak'), false);
+      assert.equal(JSON.stringify(result.payload).includes('private.example'), false);
       assertMetadata(result.payload);
     });
   } finally { fixture.close(); }

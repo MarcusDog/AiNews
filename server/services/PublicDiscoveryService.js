@@ -231,6 +231,7 @@ function buildCreatorPaths() {
   return {
     '/api/auth/register': { post: { summary: '注册推送管理账号并创建同站 Session', tags: ['Creator Alerts'], requestBody: jsonBody({ type: 'object', required: ['email', 'password', 'displayName'], properties: { email: { type: 'string', format: 'email' }, password: { type: 'string', format: 'password' }, displayName: { type: 'string' } } }), responses: { 201: jsonResponse('注册成功') } } },
     '/api/auth/login': { post: { summary: '登录推送管理账号', tags: ['Creator Alerts'], requestBody: jsonBody({ type: 'object', required: ['email', 'password'], properties: { email: { type: 'string', format: 'email' }, password: { type: 'string', format: 'password' } } }), responses: { 200: jsonResponse('登录成功'), 401: jsonResponse('凭据无效') } } },
+    '/api/auth/session': { get: { summary: '无噪声检查当前会话状态', tags: ['Creator Alerts'], responses: { 200: jsonResponse('会话状态；anonymous 时 authenticated=false') } } },
     '/api/auth/me': authenticated('读取当前登录账号'),
     '/api/creators/v1/verticals': { get: { ...getOperation('读取已配置垂类和真实覆盖统计'), tags: ['Creators'] } },
     '/api/creators/v1/creators': { get: { ...getOperation('搜索核验观察名单中的 Creator', creatorListParameters([queryParameter('status', { schema: { enum: ['verified', 'candidate', 'rejected'] } }), queryParameter('vertical'), queryParameter('platform')])), tags: ['Creators'] } },

@@ -138,14 +138,16 @@ export function createCreatorApi(options: { fetchImpl?: typeof fetch; now?: () =
       return items<CreatorSource>(await request('/api/creators/v1/sources', { signal }))
     },
     async loadAlerts(signal): Promise<CreatorAlertData> {
-      const [me, endpoints, subscriptions, deliveries] = await Promise.all([
-        request('/api/auth/me', { signal }),
+      const session = await request('/api/auth/session', { signal })
+      const sessionData = record(session.data) ? session.data : null
+      const user = sessionData && sessionData.authenticated === true && record(sessionData.user)
+        ? sessionData.user : null
+      if (!user || typeof user.id !== 'string') throw new CreatorApiError('auth_required', 'auth_required', 401)
+      const [endpoints, subscriptions, deliveries] = await Promise.all([
         request('/api/creators/v1/delivery-endpoints', { signal }),
         request('/api/creators/v1/subscriptions', { signal }),
         request('/api/creators/v1/deliveries?limit=50', { signal }),
       ])
-      const user = record(me.data) && record(me.data.user) ? me.data.user : null
-      if (!user || typeof user.id !== 'string') throw new CreatorApiError('invalid_payload', '登录用户结构不正确')
       return {
         user: { id: user.id },
         endpoints: items<DeliveryEndpoint>(endpoints),
@@ -177,10 +179,10 @@ export function createCreatorApi(options: { fetchImpl?: typeof fetch; now?: () =
       return payload.data as { status: string }
     },
     async canStream() {
-      try { await request('/api/auth/me'); return true } catch (error) {
-        if (error instanceof CreatorApiError && error.status === 401) return false
-        return false
-      }
+      try {
+        const payload = await request('/api/auth/session')
+        return record(payload.data) && payload.data.authenticated === true
+      } catch { return false }
     },
     async login(input) {
       await request('/api/auth/login', {

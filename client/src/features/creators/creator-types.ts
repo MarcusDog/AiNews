@@ -122,6 +122,8 @@ export interface CreatorSubscription {
   id: string
   name?: string
   endpointIds?: string[]
+  enabled?: boolean
+  filters?: { verticals?: string[]; minimumScore?: number | null }
 }
 
 export interface CreatorDelivery {

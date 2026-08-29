@@ -129,6 +129,18 @@ router.get('/me', async (req, res) => {
   }
 });
 
+router.get('/session', async (req, res) => {
+  try {
+    const user = await authService.getAuthenticatedUser(getSessionToken(req));
+    res.json({
+      success: true,
+      data: user ? { authenticated: true, user } : { authenticated: false }
+    });
+  } catch (error) {
+    sendAuthError(res, error);
+  }
+});
+
 router.post('/logout', async (req, res) => {
   try {
     await authService.logout(getSessionToken(req));

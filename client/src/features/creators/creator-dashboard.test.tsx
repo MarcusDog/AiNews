@@ -33,7 +33,7 @@ function api(overrides: Partial<CreatorApiClient> = {}): CreatorApiClient {
     loadSources: vi.fn(async () => [{ id: 'x', platform: 'x', tier: 'L2', configured: false, schedulable: true, status: 'unconfigured', setupHint: '配置 X_BEARER_TOKEN', accountCount: 1, enabledAccountCount: 1, postCount: 0 }]),
     loadAlerts: vi.fn(async () => ({ user: { id: 'user-a' }, endpoints: [{ id: 'endpoint-a', type: 'in_app', destination: 'user-a', enabled: true }], subscriptions: [], deliveries: [{ id: 'delivery-a', endpointId: 'endpoint-a', status: 'dead', attemptCount: 3, eventType: 'post.hot', createdAt: '2026-08-29T10:00:00.000Z', latestAttempt: { attemptedAt: '2026-08-29T10:01:00.000Z', status: 'dead', responseCode: 400, error: 'http_400' } }] })),
     createEndpoint: vi.fn(async () => ({ id: 'endpoint-new', type: 'in_app', destination: 'user-a', enabled: true })),
-    createSubscription: vi.fn(async () => ({ id: 'subscription-new' })),
+    createSubscription: vi.fn(async (input) => ({ id: 'subscription-new', name: input.name, endpointIds: input.endpointIds, enabled: true, filters: { verticals: [input.vertical], minimumScore: input.minimumScore } })),
     testEndpoint: vi.fn(async () => ({ status: 'delivered' })),
     canStream: vi.fn(async () => false),
     login: vi.fn(async () => undefined),
@@ -102,6 +102,19 @@ describe('Creator Intelligence workspaces', () => {
     expect(screen.queryByText('Agent 工具真实实测')).not.toBeInTheDocument()
   })
 
+  it('explains when the selected hot or topic tab has no threshold-qualified result', async () => {
+    const user = userEvent.setup()
+    const client = api({ loadDashboard: vi.fn(async () => ({
+      ...dashboard,
+      posts: { items: [], nextCursor: null },
+      topics: { items: [], nextCursor: null },
+    })) })
+    render(<CreatorDashboard api={client} />)
+    expect(await screen.findByText('当前窗口暂无达到爆款阈值的帖子')).toBeInTheDocument()
+    await user.click(screen.getByRole('tab', { name: '共题热点' }))
+    expect(screen.getByText('当前窗口暂无多博主共题')).toBeInTheDocument()
+  })
+
   it('shows failed delivery details and creates a vertical subscription', async () => {
     const user = userEvent.setup()
     const client = api()
@@ -112,6 +125,8 @@ describe('Creator Intelligence workspaces', () => {
     await user.selectOptions(screen.getByRole('combobox', { name: '订阅垂类' }), 'ai-tech')
     await user.click(screen.getByRole('button', { name: '创建站内订阅' }))
     expect(client.createSubscription).toHaveBeenCalledWith(expect.objectContaining({ name: 'AI 每日爆款', vertical: 'ai-tech', endpointIds: ['endpoint-a'] }))
+    expect(await screen.findByText('AI 每日爆款')).toBeInTheDocument()
+    expect(screen.getByText('ai-tech · 最低分 70')).toBeInTheDocument()
   })
 
   it('authenticates inline and creates an external endpoint without exposing secret values', async () => {

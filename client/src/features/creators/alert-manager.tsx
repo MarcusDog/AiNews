@@ -129,6 +129,15 @@ export function AlertManager({ api }: { api?: CreatorApiClient }) {
           </form>
 
           <div className="mt-10">
+            <h3 className="text-sm font-medium">当前订阅</h3>
+            {data.subscriptions.map((subscription) => <article key={subscription.id} className="mt-3 border-t border-white/10 py-4">
+              <div className="flex items-center justify-between gap-4"><span className="text-sm">{subscription.name || '未命名订阅'}</span><span className="text-[10px] text-white/42">{subscription.enabled === false ? '停用' : '启用'}</span></div>
+              <p className="mt-2 text-xs text-white/42">{subscription.filters?.verticals?.join(' / ') || '全部垂类'} · 最低分 {subscription.filters?.minimumScore ?? '不限'}</p>
+            </article>)}
+            {!data.subscriptions.length && <p className="mt-3 border-t border-white/10 py-4 text-xs text-white/42">尚未创建订阅。</p>}
+          </div>
+
+          <div className="mt-10">
             <h3 className="text-sm font-medium">投递端点</h3>
             {data.endpoints.map((endpoint) => <div key={endpoint.id} className="mt-3 flex items-center justify-between border-t border-white/10 py-4 text-sm"><span>{endpoint.type} · {endpoint.enabled ? '启用' : '停用'}</span><button onClick={() => void test(endpoint.id)} className="inline-flex items-center gap-1.5 text-xs text-white/55 hover:text-white"><TestTube2 className="h-4 w-4" />测试</button></div>)}
             {!data.endpoints.length && <p className="mt-3 border-t border-white/10 py-4 text-xs text-white/42">尚未创建投递端点。</p>}

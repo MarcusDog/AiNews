@@ -1,6 +1,7 @@
 const path = require('node:path');
 const CreatorCollector = require('./creator-collector');
 const BackfillService = require('./backfill-service');
+const CreatorIntelligenceService = require('./creator-intelligence-service');
 const { CREATOR_VERTICALS } = require('../../config/creatorVerticals');
 const { loadCreatorCatalog, toStoreRecords } = require('./creator-catalog');
 
@@ -57,6 +58,11 @@ class CreatorService {
     this.backfillService = options.backfillService || new BackfillService({
       store: this.store, collector: this.collector, now: this.now
     });
+    this.processor = options.processor === null
+      ? null
+      : options.processor || (this.store.db
+        ? new CreatorIntelligenceService({ store: this.store, now: this.now })
+        : null);
     this.initialized = false;
   }
 
@@ -96,7 +102,8 @@ class CreatorService {
     const incremental = await this.collector.collectMany(due, { mode: 'incremental', budget });
     due.forEach((account, index) => this.scheduleAfterIncremental(account, incremental[index] || {}));
     const backfill = await this.backfillService.runPending({ budget, limit: 100 });
-    return { status: 'success', incremental, backfill, remainingBudget: budget.remaining };
+    const intelligence = this.processor?.process?.() || null;
+    return { status: 'success', incremental, backfill, intelligence, remainingBudget: budget.remaining };
   }
 
   listEnabledAccounts(limit = 500) {
@@ -134,7 +141,8 @@ class CreatorService {
         updatedAt: this.now()
       });
     });
-    return { status: 'success', results };
+    const intelligence = this.processor?.process?.() || null;
+    return { status: 'success', results, intelligence };
   }
 
   async refreshMetrics() {
@@ -142,7 +150,8 @@ class CreatorService {
     const results = await this.collector.collectMany(this.listEnabledAccounts(), {
       mode: 'metric-refresh', recentLimit: 100, budget: this.requestBudget()
     });
-    return { status: 'success', results };
+    const intelligence = this.processor?.process?.() || null;
+    return { status: 'success', results, intelligence };
   }
 }
 

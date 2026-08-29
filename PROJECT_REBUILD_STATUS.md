@@ -257,14 +257,12 @@
 | R. Slice B 爆款/共题/选题 | 已完成 | Task 8–11 已完成：Hotness、规则垂类分类、独立博主/跨平台扩散、证据型选题与可搜索 Creator API 已串联。`/api/creators/v1` 提供垂类、博主、帖子、热点、主题、来源覆盖、增量变化与管理回填接口；帖子正文使用 SQLite FTS5，普通列表与全文搜索都使用绑定查询和不透明 keyset cursor。跨平台/多博主主题先过滤、按全局热度排序后再 limit。四垂类与五类画像输出具体对象、why-now、受众、形式、钩子、提纲、原帖来源、不确定性与披露风险。公开响应会剥离凭据、私有 cursor 和内部 payload。服务端全量 `275/275`；10 万帖子、每类 20 次查询的最慢 P95 为 `107.09ms`，通过 `<300ms` 门槛。 |
 | S. Slice C 持久推送与产品页面 | 已完成 | Task 12–15 已完成：除持久订阅/outbox、安全签名 Webhook、登录态 SSE、端点审计、preview-first 维护、备份与导出外，新增 `/creators`、`/creators/:id`、`/verticals/:id`、`/sources`、`/alerts` 产品页。四垂类/窗口/帖子/共题可切换，原帖证据、评分公式、cursor 加载、partial/blocked/unconfigured、空态/错态均真实呈现；推送页支持页内注册/登录、站内订阅和 Webhook/飞书/企微/钉钉/Telegram/ntfy/Bark 端点，密钥仅保存服务端引用。首次 SSE 从当前末尾追新，显式 cursor 才回放。客户端 `45/45`、服务端 `313/313`，TypeScript/Vite 构建与 `git diff --check` 通过。 |
 | T. OpenAPI、AyaNewsSkill 与运营文档 | 已完成 | Task 16 已完成：OpenAPI 2.4 覆盖 Creator 公开/认证/管理路由、FTS 与不透明 cursor、单调 changes、SSE `Last-Event-ID`/410、回填状态、YouTube WebSub、Sidecar 原始字节 HMAC、维护 preview/execute、备份与导出；网页 Skill 同步四垂类、真实覆盖和推送边界。新增来源/回填、Sidecar、推送/维护三份运营手册。独立 AyaNewsSkill 2.4 新增只读 Creator CLI，保持不调用登录/订阅/管理端点；Skill `17/17`、ZIP/TAR SHA256 通过。网站发现面 `9/9`、服务端全量 `317/317`。 |
-| U. 真实来源 Canary、浏览器验收与 GitHub 更新 | 未开始 | 必须逐平台记录真实成功、零结果、`partial`、`blocked` 或 `unconfigured`，亲自启动并验证每个新增页面/交互，再推送两个现有 PR 分支；不能只凭理论支持标记完成。 |
+| U. 真实来源 Canary、浏览器验收与 GitHub 更新 | 进行中 | 真实来源、浏览器与全量自动化验收已完成：11 账号首轮 358 条、重放新增 0、三页回填后 526 条；100/100 条 HTTPS 证据结构合格、20/20 原链可打开。Server `327/327`、Client `48/48`、Skill `17/17`，10 万帖子最慢 P95 `116.33ms` 通过。详见 `docs/verification/2026-08-29-creator-intelligence-final-verification.md`；待推送两个 PR 分支并核对远端 SHA 后标记完成。 |
 
 ### 第四阶段更新日志
 
 - 2026-08-29：完成 Task 15 产品页面。新增跨垂类博主雷达、博主历史覆盖、垂类详情、来源监测和持久推送页面；页内认证替代无实现的 `/login` 跳转，并可创建外部消息端点。补充 unsafe evidence URL、来源降级/受限、无数据不伪造、外部端点和首次 SSE 只追新事件测试；最终客户端 `45/45`、服务端 `313/313`，生产构建通过。
 - 2026-08-29：完成 Task 16 发现面与运营文档。OpenAPI/网页 Skill 已同步 Creator 全部真实路由和协议边界；AyaNewsSkill 升级 2.4 并加入跨垂类只读 CLI。网站服务端 `317/317`，Skill `17/17`，归档校验和通过；签名 Webhook/SSE 已标记为需要认证与服务端配置，MCP/A2A 继续明确未实现。
-
-### 第四阶段更新日志
 
 - 2026-08-28：完成跨垂类博主来源与开源项目审计；确认“新闻热榜”和“指定博主逐帖监听”是两个不同数据链，第四阶段新增独立 Creator Intelligence bounded context。
 - 2026-08-28：完成产品规格与实施计划草案；补齐观察名单范围内全公开历史的定义、每账号回填状态机、二次 reconciliation、四垂类、稳定身份、互动快照、博主相对基线、多博主/跨平台扩散、FTS5、本地 SQLite、持久 outbox 和签名 Sidecar。
