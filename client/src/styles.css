@@ -164,6 +164,13 @@
   color: rgb(254 226 226);
 }
 
+.source-status-unconfigured,
+.source-status-disabled,
+.source-status-blocked {
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.46);
+}
+
 @keyframes radar-reveal {
   from {
     opacity: 0;

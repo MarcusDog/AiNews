@@ -119,6 +119,20 @@ test('creator SSE delivers post-commit live events and reconnects from the last 
   assert.match(second, /id: 3\b/);
 });
 
+test('creator SSE first-time subscribers tail from the committed end instead of replaying history', async (t) => {
+  const item = await fixture();
+  t.after(() => { item.server.close(); item.store.close(); fs.rmSync(item.directory, { recursive: true, force: true }); });
+  append(item.store, 'historical-1');
+  append(item.store, 'historical-2');
+
+  const response = await fetch(item.url, { headers: { authorization: 'Bearer test-user' } });
+  setTimeout(() => append(item.store, 'live-3'), 25);
+  const body = await readUntil(response, (text) => text.includes('id: 3'));
+  assert.doesNotMatch(body, /id: 1\b/);
+  assert.doesNotMatch(body, /id: 2\b/);
+  assert.match(body, /id: 3\b/);
+});
+
 test('creator SSE returns 410 and a filtered resync URL for an expired cursor', async (t) => {
   const item = await fixture();
   t.after(() => { item.server.close(); item.store.close(); fs.rmSync(item.directory, { recursive: true, force: true }); });

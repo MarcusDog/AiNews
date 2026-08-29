@@ -255,8 +255,12 @@
 | P. TDD 实施计划与评审 | 已完成 | `docs/superpowers/plans/2026-08-28-cross-vertical-creator-intelligence.md` 已形成 18 个任务、三条可独立交付 Slice；经过四轮独立审查，前三轮累计关闭 14 个阻断问题，第四轮结果为 `Approved`。 |
 | Q. Slice A 可信采集与历史回填 | 已完成 | Task 0–7 已完成：公开主干、WebSub、官方受控 Connector、签名 Sidecar、增量优先队列、请求预算、账号互斥锁、逐页事务 cursor、可恢复历史回填和二次 reconciliation 均已落地。历史页不发送新帖事件；API/Feed 历史窗口会标记 `partial`，权限/风控失败会标记 `blocked`。重启不会重置 cursor，首次导入会自动安排增量时间。Creator 全量回归 `77/77`；真实临时库调度 canary 从 GitHub OpenAI/Hugging Face 与 Lab Muffin RSS 写入 229 条，三次 run 全部 success；RSS/无 YouTube Key 回填分别以明确原因落为 `partial`。 |
 | R. Slice B 爆款/共题/选题 | 已完成 | Task 8–11 已完成：Hotness、规则垂类分类、独立博主/跨平台扩散、证据型选题与可搜索 Creator API 已串联。`/api/creators/v1` 提供垂类、博主、帖子、热点、主题、来源覆盖、增量变化与管理回填接口；帖子正文使用 SQLite FTS5，普通列表与全文搜索都使用绑定查询和不透明 keyset cursor。跨平台/多博主主题先过滤、按全局热度排序后再 limit。四垂类与五类画像输出具体对象、why-now、受众、形式、钩子、提纲、原帖来源、不确定性与披露风险。公开响应会剥离凭据、私有 cursor 和内部 payload。服务端全量 `275/275`；10 万帖子、每类 20 次查询的最慢 P95 为 `107.09ms`，通过 `<300ms` 门槛。 |
-| S. Slice C 持久推送与产品页面 | 进行中 | Task 12–14 已完成：持久订阅/outbox、安全签名 Webhook、登录态 SSE、端点审计，以及 preview-first 数据维护均已落地。维护冻结“时间边界 + 最大 rowid”，执行 token 单次、限时、绑定操作者；覆盖帖子 365 天、Bridge payload 30 天、快照 72 小时细粒度/180 天每日、成功投递 30 天、失败 90 天、事件 30 天、预览/审计 90 天，级联不会删除帖子/run。SQLite online backup 只写配置目录、拒绝覆盖并以只读 `integrity_check` 验证；一致性 JSONL 导出含 schema/time-range/SHA256，显式排除 cursor、secret reference 和请求凭据。服务端全量 `312/312`，真实 CLI 空库预览成功。Task 15 产品页面待完成。 |
+| S. Slice C 持久推送与产品页面 | 已完成 | Task 12–15 已完成：除持久订阅/outbox、安全签名 Webhook、登录态 SSE、端点审计、preview-first 维护、备份与导出外，新增 `/creators`、`/creators/:id`、`/verticals/:id`、`/sources`、`/alerts` 产品页。四垂类/窗口/帖子/共题可切换，原帖证据、评分公式、cursor 加载、partial/blocked/unconfigured、空态/错态均真实呈现；推送页支持页内注册/登录、站内订阅和 Webhook/飞书/企微/钉钉/Telegram/ntfy/Bark 端点，密钥仅保存服务端引用。首次 SSE 从当前末尾追新，显式 cursor 才回放。客户端 `45/45`、服务端 `313/313`，TypeScript/Vite 构建与 `git diff --check` 通过。 |
 | T. 真实来源 Canary 与 GitHub 更新 | 未开始 | 必须逐平台记录真实成功、零结果、`partial`、`blocked` 或 `unconfigured`，不能只凭理论支持标记完成。 |
+
+### 第四阶段更新日志
+
+- 2026-08-29：完成 Task 15 产品页面。新增跨垂类博主雷达、博主历史覆盖、垂类详情、来源监测和持久推送页面；页内认证替代无实现的 `/login` 跳转，并可创建外部消息端点。补充 unsafe evidence URL、来源降级/受限、无数据不伪造、外部端点和首次 SSE 只追新事件测试；最终客户端 `45/45`、服务端 `313/313`，生产构建通过。
 
 ### 第四阶段更新日志
 

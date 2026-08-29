@@ -32,7 +32,8 @@ function createCreatorStreamRouter(options = {}) {
 
   router.get('/', requireUser, (req, res, next) => {
     const headerCursor = req.get('last-event-id');
-    const since = integer(headerCursor ?? req.query.since, 0, 0, Number.MAX_SAFE_INTEGER);
+    const requestedCursor = headerCursor ?? req.query.since;
+    let since = integer(requestedCursor, 0, 0, Number.MAX_SAFE_INTEGER);
     const filters = {
       vertical: optionalText(req.query.vertical, 80),
       platform: optionalText(req.query.platform, 40),
@@ -40,6 +41,13 @@ function createCreatorStreamRouter(options = {}) {
     };
     if (since === null || Object.values(filters).some((value) => value === null)) {
       return res.status(400).json({ success: false, error: 'invalid_query' });
+    }
+
+    // A first-time browser subscriber tails from the current committed end.
+    // Replay remains explicit through ?since= or Last-Event-ID.
+    if (requestedCursor === undefined) {
+      const bounds = store.listCreatorChanges({ since: Number.MAX_SAFE_INTEGER, limit: 1, ...filters });
+      since = bounds.latestCursor;
     }
 
     let initial;
