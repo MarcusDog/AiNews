@@ -88,6 +88,8 @@ const SignalService = require('./services/signals/signal-service');
 const { createSignalsRouter } = require('./routes/signals');
 const { createCreatorsRouter } = require('./routes/creators');
 const { createAlertsRouter } = require('./routes/creators-alerts');
+const { createSkillsRouter } = require('./routes/skills');
+const { createSignalMockRouter } = require('./routes/signal-mocks');
 const CreatorStore = require('./services/creators/creator-store');
 const { newsSchedules } = require('./config/schedules');
 const cronOptions = { timezone: newsSchedules.timezone };
@@ -120,6 +122,8 @@ app.use('/api/creators/v1', createAlertsRouter({
 }));
 const contactRoutes = require('./routes/contact');
 app.use('/api/contact', contactRoutes);
+app.use(createSkillsRouter());
+app.use('/api/_mock', createSignalMockRouter());
 
 // 不依赖前端 JavaScript 的公开发现与订阅入口。
 app.use(publicRoutes.createPublicRouter({ signalService }));
