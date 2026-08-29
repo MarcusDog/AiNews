@@ -2,6 +2,8 @@ const express = require('express');
 const { isAdminKeyValid } = require('../middleware/adminAuth');
 const { CREATOR_VERTICALS } = require('../config/creatorVerticals');
 const { validateCreatorCatalog, toStoreRecords } = require('../services/creators/creator-catalog');
+const SubscriptionService = require('../services/creators/subscription-service');
+const { requireSessionUser } = require('../middleware/sessionAuth');
 
 const WINDOWS = new Map([['24h', 24], ['48h', 48], ['72h', 72]]);
 const HOT_TYPES = new Set(['post', 'multi_creator', 'cross_platform']);
@@ -72,6 +74,8 @@ function createCreatorsRouter(options = {}) {
   const sourceRegistry = options.sourceRegistry || null;
   const now = options.now || (() => new Date().toISOString());
   const configuredAdminKey = options.adminKey === undefined ? process.env.ADMIN_API_KEY : options.adminKey;
+  const requireUser = options.requireUser || requireSessionUser;
+  const subscriptions = options.subscriptionService || new SubscriptionService({ store, now });
 
   const meta = (extra = {}) => ({
     generatedAt: now(),
@@ -248,6 +252,62 @@ function createCreatorsRouter(options = {}) {
     } catch (error) { return next(error); }
   });
 
+  router.get('/subscriptions', requireUser, (req, res, next) => {
+    try {
+      const items = subscriptions.listSubscriptions(req.authUser.id);
+      return ok(res, { items }, { count: items.length });
+    } catch (error) { return next(error); }
+  });
+
+  router.post('/subscriptions', requireUser, (req, res, next) => {
+    try { return ok(res, subscriptions.createSubscription(req.authUser.id, req.body || {})); }
+    catch (error) { return next(error); }
+  });
+
+  router.patch('/subscriptions/:id', requireUser, (req, res, next) => {
+    try {
+      const item = subscriptions.updateSubscription(req.authUser.id, req.params.id, req.body || {});
+      if (!item) return res.status(404).json({ success: false, error: 'subscription_not_found' });
+      return ok(res, item);
+    } catch (error) { return next(error); }
+  });
+
+  router.delete('/subscriptions/:id', requireUser, (req, res, next) => {
+    try {
+      const removed = subscriptions.deleteSubscription(req.authUser.id, req.params.id);
+      if (!removed) return res.status(404).json({ success: false, error: 'subscription_not_found' });
+      return ok(res, { removed: true });
+    } catch (error) { return next(error); }
+  });
+
+  router.get('/delivery-endpoints', requireUser, (req, res, next) => {
+    try {
+      const items = subscriptions.listEndpoints(req.authUser.id);
+      return ok(res, { items }, { count: items.length });
+    } catch (error) { return next(error); }
+  });
+
+  router.post('/delivery-endpoints', requireUser, (req, res, next) => {
+    try { return ok(res, subscriptions.createEndpoint(req.authUser.id, req.body || {})); }
+    catch (error) { return next(error); }
+  });
+
+  router.patch('/delivery-endpoints/:id', requireUser, (req, res, next) => {
+    try {
+      const item = subscriptions.updateEndpoint(req.authUser.id, req.params.id, req.body || {});
+      if (!item) return res.status(404).json({ success: false, error: 'endpoint_not_found' });
+      return ok(res, item);
+    } catch (error) { return next(error); }
+  });
+
+  router.delete('/delivery-endpoints/:id', requireUser, (req, res, next) => {
+    try {
+      const removed = subscriptions.deleteEndpoint(req.authUser.id, req.params.id);
+      if (!removed) return res.status(404).json({ success: false, error: 'endpoint_not_found' });
+      return ok(res, { removed: true });
+    } catch (error) { return next(error); }
+  });
+
   router.post('/admin/creators/import', requireAdmin, (req, res, next) => {
     try {
       const catalog = validateCreatorCatalog(req.body, { verticals: CREATOR_VERTICALS });
@@ -307,6 +367,9 @@ function createCreatorsRouter(options = {}) {
 
   router.use((error, req, res, next) => {
     if (res.headersSent) return next(error);
+    if (error instanceof TypeError) {
+      return res.status(400).json({ success: false, error: error.code || error.message || 'invalid_request' });
+    }
     if (['invalid_cursor', 'cursor_mismatch', 'invalid_query'].includes(error?.code || error?.message)) {
       return res.status(400).json({ success: false, error: error.code || error.message });
     }

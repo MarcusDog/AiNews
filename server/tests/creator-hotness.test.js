@@ -5,6 +5,7 @@ const os = require('node:os');
 const path = require('node:path');
 
 const CreatorStore = require('../services/creators/creator-store');
+const SubscriptionService = require('../services/creators/subscription-service');
 const {
   FORMULA_VERSION,
   calculateVelocities,
@@ -187,4 +188,26 @@ test('store persists reproducible scores and compacts snapshots to 72-hour fine 
   } finally {
     current.close();
   }
+});
+
+test('persisted score threshold crossing creates one durable event and outbox delivery', () => {
+  const current = storeFixture();
+  try {
+    current.store.commitPage({ accountId: 'account-1', posts: [storedPost()], exhausted: true, collectedAt: NOW });
+    const subscriptions = new SubscriptionService({ store: current.store, now: () => NOW });
+    subscriptions.createEndpoint('user-a', { id: 'endpoint-a', type: 'in_app', destination: 'user-a' });
+    subscriptions.createSubscription('user-a', {
+      id: 'subscription-a', name: '75 分热点', deliveryMode: 'immediate', endpointIds: ['endpoint-a'],
+      filters: { eventTypes: ['post.hot'], minimumScore: 75 }
+    });
+    const base = { formulaVersion: FORMULA_VERSION, unroundedScore: 74, confidence: 'medium', inputs: {}, components: {}, penalties: {} };
+    current.store.recordHotnessScore('post-1', { ...base, score: 74 }, '2026-08-29T11:59:00.000Z');
+    current.store.recordHotnessScore('post-1', { ...base, score: 76, unroundedScore: 76 }, NOW);
+    current.store.recordHotnessScore('post-1', { ...base, score: 80, unroundedScore: 80 }, '2026-08-29T12:01:00.000Z');
+    assert.deepEqual(current.store.db.prepare("SELECT event_type, transition_bucket FROM creator_events WHERE transition_bucket = 'score:75'").all(), [
+      { event_type: 'post.hot', transition_bucket: 'score:75' }
+    ]);
+    assert.equal(current.store.db.prepare('SELECT COUNT(*) AS count FROM creator_events').get().count, 2);
+    assert.equal(current.store.db.prepare('SELECT COUNT(*) AS count FROM creator_delivery_outbox').get().count, 1);
+  } finally { current.close(); }
 });

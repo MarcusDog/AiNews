@@ -119,6 +119,7 @@ async function withServer(fixture, run, options = {}) {
     service: fixture.service,
     sourceRegistry: fixture.sourceRegistry,
     adminKey: options.adminKey === undefined ? 'correct-key' : options.adminKey,
+    requireUser: options.requireUser,
     now: () => NOW
   }));
   const server = await new Promise((resolve) => {
@@ -304,6 +305,7 @@ test('source coverage redacts credentials and reports configured accounts and la
 test('changes use ascending AUTOINCREMENT seq and return 410 with a filtered resync after retention gaps', async () => {
   const fixture = makeFixture();
   try {
+    const startingSeq = fixture.store.db.prepare('SELECT COALESCE(MAX(seq), 0) AS seq FROM creator_events').get().seq;
     fixture.store.appendCreatorEvent({
       id: 'event-1', eventType: 'post_created', entityType: 'post', entityId: 'post-ai-2',
       verticalId: 'ai-tech', platform: 'youtube', occurredAt: '2026-08-29T10:00:00.000Z',
@@ -312,9 +314,11 @@ test('changes use ascending AUTOINCREMENT seq and return 410 with a filtered res
     fixture.store.appendCreatorEvent({ id: 'event-2', eventType: 'post_hot', entityType: 'post', entityId: 'post-ai-3', verticalId: 'ai-tech', platform: 'youtube', score: 88, formulaVersion: 'creator-hotness-v1', occurredAt: '2026-08-29T11:00:00.000Z' });
     await withServer(fixture, async (origin) => {
       const changes = await json(origin, '/changes?since=0&limit=10');
-      assert.deepEqual(changes.payload.data.items.map((item) => item.seq), [1, 2]);
-      assert.equal(changes.payload.meta.next_cursor, 2);
-      assert.deepEqual(changes.payload.data.items[0].payload, {
+      const sequences = changes.payload.data.items.map((item) => item.seq);
+      assert.deepEqual(sequences, [...sequences].sort((left, right) => left - right));
+      assert.deepEqual(changes.payload.data.items.filter((item) => item.id.startsWith('event-')).map((item) => item.seq), [startingSeq + 1, startingSeq + 2]);
+      assert.equal(changes.payload.meta.next_cursor, startingSeq + 2);
+      assert.deepEqual(changes.payload.data.items.find((item) => item.id === 'event-1').payload, {
         title: '公开标题', evidenceUrls: ['https://example.com/evidence']
       });
       assert.equal(JSON.stringify(changes.payload).includes('must-not-leak'), false);
@@ -384,6 +388,47 @@ test('admin routes return 503 when no management key is configured', async () =>
       assert.equal(result.response.status, 503);
       assert.equal(result.payload.error, 'admin_not_configured');
     }, { adminKey: '' });
+  } finally { fixture.close(); }
+});
+
+test('authenticated users manage only their own subscriptions and delivery endpoints', async () => {
+  const fixture = makeFixture();
+  try {
+    const requireUser = (req, res, next) => {
+      const userId = req.get('x-test-user');
+      if (!userId) return res.status(401).json({ success: false, error: '未登录' });
+      req.authUser = { id: userId };
+      return next();
+    };
+    await withServer(fixture, async (origin) => {
+      const unauthorized = await json(origin, '/subscriptions');
+      assert.equal(unauthorized.response.status, 401);
+      const headers = { 'content-type': 'application/json', 'x-test-user': 'user-a' };
+      const endpoint = await json(origin, '/delivery-endpoints', {
+        method: 'POST', headers,
+        body: JSON.stringify({ id: 'endpoint-a', type: 'in_app', destination: 'user-a', secretRef: 'env:PRIVATE' })
+      });
+      assert.equal(endpoint.response.status, 200);
+      assert.equal(JSON.stringify(endpoint.payload).includes('PRIVATE'), false);
+      const subscription = await json(origin, '/subscriptions', {
+        method: 'POST', headers,
+        body: JSON.stringify({
+          id: 'subscription-a', name: 'AI 热点', deliveryMode: 'immediate', endpointIds: ['endpoint-a'],
+          filters: { verticals: ['ai-tech'], minimumScore: 75 }
+        })
+      });
+      assert.equal(subscription.payload.data.id, 'subscription-a');
+      const ownerList = await json(origin, '/subscriptions', { headers });
+      const otherList = await json(origin, '/subscriptions', { headers: { 'x-test-user': 'user-b' } });
+      assert.deepEqual(ownerList.payload.data.items.map((item) => item.id), ['subscription-a']);
+      assert.deepEqual(otherList.payload.data.items, []);
+      const disabled = await json(origin, '/subscriptions/subscription-a', {
+        method: 'PATCH', headers, body: JSON.stringify({ enabled: false })
+      });
+      assert.equal(disabled.payload.data.enabled, false);
+      const removed = await json(origin, '/subscriptions/subscription-a', { method: 'DELETE', headers });
+      assert.equal(removed.payload.data.removed, true);
+    }, { requireUser });
   } finally { fixture.close(); }
 });
 

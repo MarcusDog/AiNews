@@ -1,4 +1,5 @@
 const crypto = require('node:crypto');
+const { detectCreatorEvents } = require('./creator-event-detector');
 
 async function mapLimit(items, limit, worker) {
   const results = new Array(items.length);
@@ -72,27 +73,59 @@ class CreatorCollector {
           posts: [], nextCursor: options.cursor ?? null, exhausted: false
         };
       }
-      const committed = this.store.commitPage({
+      const mode = options.mode || 'incremental';
+      const collectedAt = result.collectedAt || this.now();
+      const commit = () => this.store.commitPage({
         accountId: account.id,
-        cursorKind: options.mode || 'incremental',
+        cursorKind: mode,
         posts: result.posts || [],
         nextCursor: result.nextCursor ?? null,
         exhausted: result.exhausted === true,
-        collectedAt: result.collectedAt || this.now()
+        collectedAt
       });
+      let committed;
+      let durableEvents = [];
+      if (mode === 'incremental' && typeof this.store.applyCreatorStateChange === 'function') {
+        const change = this.store.applyCreatorStateChange({
+          producer: 'collector', entityType: 'account', entityId: account.id, stateVersion: collectedAt,
+          applyState: () => {
+            const existingIds = (result.posts || [])
+              .filter((post) => this.store.getPost?.(post.id))
+              .map((post) => post.id);
+            const value = commit();
+            return {
+              before: { existingIds }, value,
+              after: {
+                posts: (result.posts || []).map((post) => ({
+                  ...post,
+                  creatorId: post.creatorId || account.creatorId,
+                  verticalId: post.verticalId || post.verticalIds?.[0] || account.verticalIds?.[0] || null,
+                  historical: false
+                }))
+              }
+            };
+          },
+          detectEvents: detectCreatorEvents
+        });
+        committed = change.value;
+        durableEvents = change.events;
+      } else {
+        committed = commit();
+      }
       if (budget && result.rateLimit?.remaining !== null
         && Number(result.rateLimit?.remaining) <= 0) budget.remaining = 0;
       this.store.recordRun?.({
         id: runId, sourceId, accountId: account.id, status: 'success',
         startedAt, finishedAt: this.now(), received: result.posts?.length || 0,
         saved: Number(committed.inserted || 0) + Number(committed.updated || 0),
-        metadata: { mode: options.mode || 'incremental' }
-      });
-      if ((options.mode || 'incremental') === 'incremental' && committed.inserted > 0 && this.eventPublisher) {
+          metadata: { mode }
+        });
+      if (mode === 'incremental' && committed.inserted > 0 && this.eventPublisher) {
         this.eventPublisher({
           type: 'creator.posts.collected',
           accountId: account.id,
           postIds: (result.posts || []).map((post) => post.id),
+          eventIds: durableEvents.map((event) => event.id),
           occurredAt: this.now()
         });
       }
@@ -103,7 +136,8 @@ class CreatorCollector {
         exhausted: result.exhausted === true,
         rateLimit: result.rateLimit || null,
         partialReason: result.partialReason || result.historyLimitReason || null,
-        ...committed
+        ...committed,
+        eventCount: durableEvents.length
       };
     } catch (error) {
       try {

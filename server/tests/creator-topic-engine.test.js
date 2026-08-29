@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const CreatorStore = require('../services/creators/creator-store');
+const SubscriptionService = require('../services/creators/subscription-service');
 const { buildCreatorTopics, persistCreatorTopics } = require('../services/creators/creator-topic-engine');
 
 function post(id, creatorId, platform, hour, overrides = {}) {
@@ -118,6 +119,35 @@ test('creator topics persist separately with evidence, adoption order and versio
     assert.equal(JSON.parse(row.payload_json).evidence.length, 3);
     assert.equal(store.db.prepare('SELECT COUNT(*) AS count FROM creator_topic_posts').get().count, 3);
     assert.equal(store.db.prepare('SELECT COUNT(*) AS count FROM creator_topic_snapshots').get().count, 1);
+  } finally {
+    store.close();
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test('persisting a topic crossing creates durable multi-creator and cross-platform events', () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'aya-topic-events-'));
+  const store = new CreatorStore({ dbPath: path.join(directory, 'creator.db') }).initialize();
+  try {
+    store.syncVerticals([{ id: 'ai-tech', name: 'AI 科技', version: 'v1', keywords: [], negativeKeywords: [], createdAt: '2026-08-29T00:00:00.000Z' }]);
+    const subscriptions = new SubscriptionService({ store, now: () => '2026-08-29T06:00:00.000Z' });
+    subscriptions.createEndpoint('user-a', { id: 'endpoint-a', type: 'in_app', destination: 'user-a' });
+    subscriptions.createSubscription('user-a', { id: 'subscription-a', name: '扩散提醒', deliveryMode: 'immediate', endpointIds: ['endpoint-a'], filters: {} });
+    const sourcePosts = [post('a', 'creator-a', 'youtube', 1), post('b', 'creator-b', 'x', 3), post('c', 'creator-c', 'youtube', 5)];
+    for (const item of sourcePosts) {
+      store.upsertCreators([{ id: item.creatorId, displayName: item.creatorId, reviewStatus: 'verified', reviewedAt: item.publishedAt, verticalIds: ['ai-tech'] }]);
+      store.upsertAccounts([{ id: `account-${item.id}`, creatorId: item.creatorId, platform: item.platform, externalAccountId: `external-${item.id}`, profileUrl: `https://${item.platform}.example/users/${item.creatorId}`, enabled: true, lastVerifiedAt: item.publishedAt, authState: 'not_required' }]);
+      store.commitPage({ accountId: `account-${item.id}`, posts: [{
+        id: item.id, platform: item.platform, externalPostId: item.id, url: item.url, title: item.title,
+        text: item.text, contentType: 'post', publishedAt: item.publishedAt, collectedAt: item.publishedAt,
+        language: 'zh-CN', verticalIds: ['ai-tech'], sourceConfidence: 'public', provenanceUrl: item.url
+      }], exhausted: true, collectedAt: item.publishedAt });
+    }
+    persistCreatorTopics(store, buildCreatorTopics(sourcePosts), '2026-08-29T06:00:00.000Z');
+    assert.deepEqual(store.db.prepare('SELECT event_type FROM creator_events ORDER BY seq').all().map((row) => row.event_type), [
+      'topic.multi_creator', 'topic.cross_platform'
+    ]);
+    assert.equal(store.db.prepare('SELECT COUNT(*) AS count FROM creator_delivery_outbox').get().count, 2);
   } finally {
     store.close();
     fs.rmSync(directory, { recursive: true, force: true });

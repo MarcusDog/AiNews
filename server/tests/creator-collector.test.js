@@ -121,3 +121,30 @@ test('an exhausted request budget pauses without network or cursor writes', asyn
   assert.equal(networks, 0);
   assert.equal(writes, 0);
 });
+
+test('incremental collection uses the atomic creator state-change boundary', async () => {
+  let atomicCalls = 0;
+  let directCalls = 0;
+  const currentAccount = account('atomic');
+  const store = {
+    applyCreatorStateChange(change) {
+      atomicCalls += 1;
+      assert.equal(change.producer, 'collector');
+      assert.equal(change.entityType, 'account');
+      const state = change.applyState();
+      assert.equal(state.after.posts[0].id, 'post-atomic');
+      return { value: state.value, events: [{ id: 'event-1' }] };
+    },
+    commitPage() { directCalls += 1; return { inserted: 1, updated: 0 }; },
+    recordRun: () => {}
+  };
+  const collector = new CreatorCollector({
+    store,
+    sourceRegistry: { execute: async () => page(currentAccount, { posts: [{ id: 'post-atomic' }] }) },
+    connectorResolver: () => ({ sourceId: 'youtube-atom', connector: {} })
+  });
+  const result = await collector.collectAccount(currentAccount, { mode: 'incremental' });
+  assert.equal(result.status, 'success');
+  assert.equal(atomicCalls, 1);
+  assert.equal(directCalls, 1);
+});

@@ -108,7 +108,7 @@ function safeHttps(value) {
 function publicEventPayload(value) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
   const allowed = {};
-  for (const key of ['title', 'summary', 'reason', 'topicId', 'postId', 'window']) {
+  for (const key of ['title', 'summary', 'reason', 'topicId', 'postId', 'creatorId', 'window']) {
     if (typeof value[key] === 'string') allowed[key] = boundedText(value[key], 1000, false);
   }
   for (const key of ['previousScore', 'currentScore']) {
@@ -386,6 +386,15 @@ class CreatorStore {
         enabled INTEGER NOT NULL DEFAULT 1,
         created_at TEXT NOT NULL,
         updated_at TEXT NOT NULL
+      );
+
+      CREATE TABLE IF NOT EXISTS creator_subscription_endpoints (
+        subscription_id TEXT NOT NULL,
+        endpoint_id TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        PRIMARY KEY(subscription_id, endpoint_id),
+        FOREIGN KEY(subscription_id) REFERENCES creator_subscriptions(id) ON DELETE CASCADE,
+        FOREIGN KEY(endpoint_id) REFERENCES creator_delivery_endpoints(id) ON DELETE CASCADE
       );
 
       CREATE TABLE IF NOT EXISTS creator_delivery_outbox (
@@ -1429,6 +1438,159 @@ class CreatorStore {
     return Number(result.lastInsertRowid);
   }
 
+  resolveSubscriptionDeliveries(event, occurredAt) {
+    this.ensureInitialized();
+    const SubscriptionService = require('./subscription-service');
+    return new SubscriptionService({ store: this, now: () => occurredAt }).matchEvent(event, occurredAt);
+  }
+
+  applyCreatorStateChange(change = {}) {
+    this.ensureInitialized();
+    if (!change.producer || !change.entityType || !change.entityId || !change.stateVersion
+      || typeof change.applyState !== 'function' || typeof change.detectEvents !== 'function') {
+      throw new TypeError('producer/entity/stateVersion/applyState/detectEvents required');
+    }
+    const insertEvent = this.db.prepare(`
+      INSERT OR IGNORE INTO creator_events (
+        id, event_type, entity_type, entity_id, vertical_id, platform, score,
+        formula_version, transition_bucket, payload_json, occurred_at, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+    const insertOutbox = this.db.prepare(`
+      INSERT OR IGNORE INTO creator_delivery_outbox (
+        id, event_id, subscription_id, endpoint_id, status, attempt_count,
+        next_attempt_at, last_error, created_at, delivered_at
+      ) VALUES (?, ?, ?, ?, 'pending', 0, ?, NULL, ?, NULL)
+    `);
+    const transaction = this.db.transaction(() => {
+      const state = change.applyState({ store: this, db: this.db }) || {};
+      const detected = change.detectEvents({
+        producer: change.producer,
+        entityType: change.entityType,
+        entityId: change.entityId,
+        stateVersion: change.stateVersion,
+        occurredAt: change.occurredAt || change.stateVersion,
+        before: state.before ?? null,
+        after: state.after ?? null
+      }) || [];
+      const events = [];
+      let outboxCount = 0;
+      for (const detectedEvent of detected) {
+        const { eventId } = require('./creator-event-detector');
+        const event = detectedEvent?.id ? detectedEvent : { ...detectedEvent, id: eventId(detectedEvent) };
+        if (!event?.id || !event.eventType || !event.entityType || !event.entityId || !event.transitionBucket) {
+          throw new TypeError('invalid_creator_event');
+        }
+        const occurredAt = iso(event.occurredAt || change.stateVersion, 'occurredAt');
+        const payload = { ...(event.payload || {}) };
+        if (event.creatorId) payload.creatorId = event.creatorId;
+        const inserted = insertEvent.run(
+          event.id, event.eventType, event.entityType, event.entityId,
+          event.verticalId || null, event.platform || null,
+          Number.isFinite(Number(event.score)) ? Number(event.score) : null,
+          event.formulaVersion || change.stateVersion,
+          event.transitionBucket, json(payload, {}), occurredAt, occurredAt
+        );
+        if (!inserted.changes) continue;
+        const normalizedEvent = { ...event, payload, occurredAt };
+        events.push(normalizedEvent);
+        const deliveries = this.resolveSubscriptionDeliveries(normalizedEvent, occurredAt);
+        for (const delivery of deliveries) {
+          const outboxId = `creator-outbox_${stableHash([event.id, delivery.subscriptionId, delivery.endpointId])}`;
+          outboxCount += insertOutbox.run(
+            outboxId, event.id, delivery.subscriptionId, delivery.endpointId,
+            iso(delivery.nextAttemptAt || occurredAt, 'nextAttemptAt'), occurredAt
+          ).changes;
+        }
+      }
+      return { value: state.value, before: state.before ?? null, after: state.after ?? null, events, outboxCount };
+    });
+    return transaction();
+  }
+
+  claimDueOutbox(options = {}) {
+    this.ensureInitialized();
+    const now = iso(options.now || Date.now(), 'now');
+    const leaseUntil = new Date(Date.parse(now) + Math.max(Number(options.leaseMs || 60_000), 1000)).toISOString();
+    const limit = Math.min(Math.max(Number(options.limit || 50), 1), 500);
+    const transaction = this.db.transaction(() => {
+      const candidates = this.db.prepare(`
+        SELECT id FROM creator_delivery_outbox
+        WHERE status IN ('pending', 'retry', 'processing') AND next_attempt_at <= ?
+        ORDER BY next_attempt_at, id LIMIT ?
+      `).all(now, limit);
+      const claim = this.db.prepare(`
+        UPDATE creator_delivery_outbox
+        SET status='processing', attempt_count=attempt_count+1, next_attempt_at=?
+        WHERE id=? AND status IN ('pending', 'retry', 'processing') AND next_attempt_at <= ?
+      `);
+      const claimed = [];
+      for (const candidate of candidates) {
+        if (claim.run(leaseUntil, candidate.id, now).changes) claimed.push(candidate.id);
+      }
+      if (!claimed.length) return [];
+      const select = this.db.prepare(`
+        SELECT o.*, e.event_type, e.entity_type, e.entity_id, e.vertical_id, e.platform,
+          e.score, e.formula_version, e.payload_json, e.occurred_at,
+          d.type AS endpoint_type, d.destination, d.secret_ref, d.enabled AS endpoint_enabled
+        FROM creator_delivery_outbox o
+        JOIN creator_events e ON e.id = o.event_id
+        JOIN creator_delivery_endpoints d ON d.id = o.endpoint_id
+        WHERE o.id = ?
+      `);
+      return claimed.map((id) => select.get(id)).filter(Boolean).map((row) => ({
+        id: row.id,
+        attemptCount: row.attempt_count,
+        event: {
+          id: row.event_id, eventType: row.event_type, entityType: row.entity_type,
+          entityId: row.entity_id, verticalId: row.vertical_id, platform: row.platform,
+          score: row.score, formulaVersion: row.formula_version,
+          payload: publicEventPayload(parseJson(row.payload_json, {})), occurredAt: row.occurred_at
+        },
+        endpoint: {
+          id: row.endpoint_id, type: row.endpoint_type, destination: row.destination,
+          secretRef: row.secret_ref, enabled: bool(row.endpoint_enabled)
+        }
+      }));
+    });
+    return transaction();
+  }
+
+  finishOutboxAttempt(outboxId, result = {}) {
+    this.ensureInitialized();
+    const attemptedAt = iso(result.attemptedAt || Date.now(), 'attemptedAt');
+    const status = ['delivered', 'retry', 'dead'].includes(result.status) ? result.status : 'retry';
+    const transaction = this.db.transaction(() => {
+      this.db.prepare(`
+        INSERT INTO creator_delivery_attempts (outbox_id, attempted_at, status, response_code, error)
+        VALUES (?, ?, ?, ?, ?)
+      `).run(outboxId, attemptedAt, status, result.responseCode ?? null, boundedText(result.error, 2000));
+      const update = this.db.prepare(`
+        UPDATE creator_delivery_outbox
+        SET status=?, next_attempt_at=?, last_error=?, delivered_at=?
+        WHERE id=? AND status='processing'
+      `).run(
+        status, iso(result.nextAttemptAt || attemptedAt, 'nextAttemptAt'),
+        boundedText(result.error, 2000),
+        status === 'delivered' ? iso(result.deliveredAt || attemptedAt, 'deliveredAt') : null,
+        outboxId
+      );
+      if (!update.changes) throw new Error('outbox_not_claimed');
+    });
+    transaction();
+  }
+
+  replayDeadOutbox(options = {}) {
+    this.ensureInitialized();
+    const now = iso(options.now || Date.now(), 'now');
+    if (options.id) {
+      return this.db.prepare(`UPDATE creator_delivery_outbox SET status='pending', attempt_count=0, next_attempt_at=?, last_error=NULL, delivered_at=NULL WHERE id=? AND status='dead'`)
+        .run(now, options.id).changes;
+    }
+    return this.db.prepare(`UPDATE creator_delivery_outbox SET status='pending', attempt_count=0, next_attempt_at=?, last_error=NULL, delivered_at=NULL WHERE status='dead'`)
+      .run(now).changes;
+  }
+
   listCreatorChanges(options = {}) {
     this.ensureInitialized();
     const since = Math.max(Number(options.since || 0), 0);
@@ -1538,23 +1700,40 @@ class CreatorStore {
       throw new TypeError('postId/formulaVersion/score required');
     }
     const timestamp = iso(capturedAt, 'capturedAt');
-    this.db.prepare(`
+    const insert = this.db.prepare(`
       INSERT INTO creator_post_scores (
         post_id, captured_at, formula_version, score, unrounded_score, confidence,
         inputs_json, components_json, penalties_json, created_at
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(
-      postId,
-      timestamp,
-      score.formulaVersion,
-      Number(score.score),
-      Number(score.unroundedScore),
-      score.confidence || 'low',
-      json(score.inputs, {}),
-      json(score.components, {}),
-      json(score.penalties, {}),
-      timestamp
-    );
+    `);
+    const { detectCreatorEvents } = require('./creator-event-detector');
+    const stateChange = this.applyCreatorStateChange({
+      producer: 'hotness', entityType: 'post', entityId: postId, stateVersion: score.formulaVersion,
+      occurredAt: timestamp,
+      applyState: () => {
+        const before = this.getLatestHotnessScore(postId);
+        insert.run(
+          postId, timestamp, score.formulaVersion, Number(score.score), Number(score.unroundedScore),
+          score.confidence || 'low', json(score.inputs, {}), json(score.components, {}),
+          json(score.penalties, {}), timestamp
+        );
+        const post = this.db.prepare(`
+          SELECT p.platform, a.creator_id, pv.vertical_id
+          FROM creator_posts p JOIN creator_accounts a ON a.id = p.account_id
+          LEFT JOIN creator_post_verticals pv ON pv.post_id = p.id
+          WHERE p.id = ? ORDER BY pv.vertical_id LIMIT 1
+        `).get(postId) || {};
+        return {
+          before,
+          after: {
+            ...score, score: Number(score.score), platform: post.platform || null,
+            creatorId: post.creator_id || null, verticalId: post.vertical_id || null
+          }
+        };
+      },
+      detectEvents: detectCreatorEvents
+    });
+    return stateChange;
   }
 
   getLatestHotnessScore(postId) {

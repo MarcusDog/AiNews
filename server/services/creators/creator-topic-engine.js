@@ -1,4 +1,5 @@
 const crypto = require('node:crypto');
+const { detectCreatorEvents } = require('./creator-event-detector');
 
 const SNAPSHOT_VERSION = 'creator-topic-v1';
 const STOP_WORDS = new Set(['the', 'and', 'with', 'from', 'new', '发布', '全新', '产品']);
@@ -139,17 +140,26 @@ function persistCreatorTopics(store, topics = [], capturedAt = new Date().toISOS
         evidence: topic.evidence,
         signals: topic.signals
       };
-      upsert.run(
-        topic.id, topic.verticalId, topic.title, null, topic.firstSeenAt, topic.latestSeenAt,
-        topic.maxHotness, topic.snapshotVersion, topic.creatorCount, topic.platformCount,
-        JSON.stringify(payload), capturedAt, capturedAt
-      );
-      clear.run(topic.id);
-      for (const postId of topic.postIds) {
-        const adoption = topic.adoptionSequence.find((item) => item.postId === postId);
-        link.run(topic.id, postId, adoption?.adoptedAt || topic.firstSeenAt);
-      }
-      snapshot.run(topic.id, capturedAt, JSON.stringify(payload));
+      store.applyCreatorStateChange({
+        producer: 'topic-engine', entityType: 'topic', entityId: topic.id,
+        stateVersion: topic.snapshotVersion, occurredAt: capturedAt,
+        applyState: () => {
+          const before = store.getCreatorTopic(topic.id);
+          upsert.run(
+            topic.id, topic.verticalId, topic.title, null, topic.firstSeenAt, topic.latestSeenAt,
+            topic.maxHotness, topic.snapshotVersion, topic.creatorCount, topic.platformCount,
+            JSON.stringify(payload), capturedAt, capturedAt
+          );
+          clear.run(topic.id);
+          for (const postId of topic.postIds) {
+            const adoption = topic.adoptionSequence.find((item) => item.postId === postId);
+            link.run(topic.id, postId, adoption?.adoptedAt || topic.firstSeenAt);
+          }
+          snapshot.run(topic.id, capturedAt, JSON.stringify(payload));
+          return { before, after: store.getCreatorTopic(topic.id) };
+        },
+        detectEvents: detectCreatorEvents
+      });
     }
   });
   transaction();
