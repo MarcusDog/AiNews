@@ -78,6 +78,7 @@ const newsRoutes = require('./routes/news');
 const analyticsRoutes = require('./routes/analytics');
 const glossaryRoutes = require('./routes/glossary');
 const authRoutes = require('./routes/auth');
+const { authService } = require('./services/AuthService');
 const userDataRoutes = require('./routes/userData');
 const contentRoutes = require('./routes/content');
 const agentRoutes = require('./routes/agent');
@@ -86,6 +87,7 @@ const publicRoutes = require('./routes/public');
 const SignalService = require('./services/signals/signal-service');
 const { createSignalsRouter } = require('./routes/signals');
 const { createCreatorsRouter } = require('./routes/creators');
+const { createAlertsRouter } = require('./routes/creators-alerts');
 const CreatorStore = require('./services/creators/creator-store');
 const { newsSchedules } = require('./config/schedules');
 const cronOptions = { timezone: newsSchedules.timezone };
@@ -104,6 +106,18 @@ app.use('/api/signals/v1', createSignalsRouter({ service: signalService }));
 const creatorStore = new CreatorStore();
 try { creatorStore.initialize(); } catch (e) { console.error('[creators] store init failed:', e.message); }
 app.use('/api/creators/v1', createCreatorsRouter({ store: creatorStore }));
+app.use('/api/creators/v1', createAlertsRouter({
+  store: creatorStore,
+  getCurrentUser: async (req) => {
+    const token = require('./middleware/sessionAuth').getSessionToken(req);
+    if (!token) return null;
+    try {
+      return await authService.getAuthenticatedUser(token);
+    } catch (_) {
+      return null;
+    }
+  }
+}));
 const contactRoutes = require('./routes/contact');
 app.use('/api/contact', contactRoutes);
 

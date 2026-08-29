@@ -66,16 +66,19 @@ function publicPost(post = {}) {
   return {
     id: post.id,
     creatorId: post.creatorId || post.creator_id || null,
+    creatorName: post.creatorName || post.creator_name || null,
     accountId: post.accountId || post.account_id || null,
     platform: post.platform || null,
     externalPostId: post.externalPostId || post.external_post_id || null,
     url: post.url || null,
     title: post.title || null,
+    text: post.text || null,
     summary: post.summary || null,
     language: post.language || null,
     region: post.region || null,
     publishedAt: post.publishedAt || post.published_at || null,
     collectedAt: post.collectedAt || post.collected_at || null,
+    verticalIds: post.verticalIds || post.vertical_ids || [],
     verticals: post.verticals || [],
     metrics: post.metrics || {},
     hotness: post.hotness || null,
@@ -84,18 +87,26 @@ function publicPost(post = {}) {
 }
 
 function publicTopic(topic = {}) {
+  const evidence = Array.isArray(topic.evidence) ? topic.evidence.map((item) => ({
+    postId: item.postId || item.post_id || null,
+    url: item.url || null
+  })).filter((item) => item.url) : [];
   return {
     id: topic.id,
     title: topic.title || null,
     summary: topic.summary || null,
     vertical: topic.vertical || topic.verticalId || topic.vertical_id || null,
+    verticalId: topic.verticalId || topic.vertical_id || null,
     firstSeenAt: topic.firstSeenAt || topic.first_seen_at || null,
     latestSeenAt: topic.latestSeenAt || topic.latest_seen_at || null,
-    postCount: topic.postCount ?? topic.post_count ?? null,
+    postCount: topic.postCount ?? topic.post_count ?? (evidence.length || null),
     creatorCount: topic.creatorCount ?? topic.creator_count ?? null,
+    platformCount: topic.platformCount ?? topic.platform_count ?? null,
     platforms: topic.platforms || [],
+    hotness: topic.hotness ?? null,
+    formulaVersion: topic.formulaVersion || topic.formula_version || null,
     evidenceState: topic.evidenceState || topic.evidence_state || null,
-    formulaVersion: topic.formulaVersion || topic.formula_version || null
+    evidence
   };
 }
 
@@ -117,13 +128,18 @@ function publicSourceCoverage(source = {}) {
 }
 
 function publicChange(change = {}) {
+  const entityType = change.entityType || change.entity_type || null;
+  const entityId = change.entityId || change.entity_id || null;
   return {
     seq: change.seq,
+    id: change.id || null,
     eventType: change.eventType || change.event_type || null,
-    vertical: change.vertical || null,
+    entityType,
+    entityId,
+    verticalId: change.verticalId || change.vertical_id || null,
     platform: change.platform || null,
-    creatorId: change.creatorId || change.creator_id || null,
-    postId: change.postId || change.post_id || null,
+    score: typeof change.score === 'number' ? change.score : (change.score == null ? null : Number(change.score) || null),
+    formulaVersion: change.formulaVersion || change.formula_version || null,
     occurredAt: change.occurredAt || change.occurred_at || null,
     payload: change.payload || {}
   };
@@ -133,6 +149,68 @@ function createCreatorsRouter(options = {}) {
   const store = options.store instanceof CreatorStore
     ? options.store
     : new CreatorStore(options.storeOptions || {});
+
+  // Enrich helpers: take store rows and join display_name + creator_id
+  // for posts, and creatorCount + platformCount + real evidence for
+  // topics, so that <CreatorDashboard /> in the SPA can render without
+  // guessing. Each helper issues a small SQL on the same store.db
+  // (better-sqlite3 WAL allows many concurrent readers).
+  const enrichPost = (post) => {
+    if (!post || !post.id) return post;
+    if (!post.creatorId) {
+      const row = store.db.prepare(`
+        SELECT a.creator_id, c.display_name AS creator_name
+        FROM creator_accounts a
+        JOIN creators c ON c.id = a.creator_id
+        WHERE a.id = ?
+      `).get(post.accountId || post.account_id || null);
+      if (row) {
+        post.creatorId = row.creator_id;
+        post.creatorName = row.creator_name;
+      }
+    }
+    return post;
+  };
+
+  const enrichTopic = (topic) => {
+    if (!topic || !topic.id) return topic;
+    // Real evidence from creator_topic_posts join creator_posts url
+    const evidence = store.db.prepare(`
+      SELECT tp.post_id, p.url
+      FROM creator_topic_posts tp
+      JOIN creator_posts p ON p.id = tp.post_id
+      WHERE tp.topic_id = ?
+      ORDER BY tp.adopted_at DESC
+      LIMIT 12
+    `).all(topic.id).filter((row) => row.url).map((row) => ({ postId: row.post_id, url: row.url }));
+    if (evidence.length) topic.evidence = evidence;
+    // creatorCount + platformCount recompute if missing/zero
+    if (!topic.creatorCount || !topic.platformCount) {
+      const stats = store.db.prepare(`
+        SELECT COUNT(DISTINCT a.creator_id) AS creator_count,
+               COUNT(DISTINCT p.platform) AS platform_count
+        FROM creator_topic_posts tp
+        JOIN creator_posts p ON p.id = tp.post_id
+        JOIN creator_accounts a ON a.id = p.account_id
+        WHERE tp.topic_id = ?
+      `).get(topic.id);
+      topic.creatorCount = Number(stats.creator_count || 0);
+      topic.platformCount = Number(stats.platform_count || 0);
+    }
+    return topic;
+  };
+
+  const enrichVertical = (vertical) => {
+    if (!vertical || !vertical.id) return vertical;
+    const stats = store.db.prepare(`
+      SELECT
+        (SELECT COUNT(DISTINCT creator_id) FROM creator_vertical_memberships WHERE vertical_id = ?) AS creator_count,
+        (SELECT COUNT(DISTINCT pv.post_id) FROM creator_post_verticals pv WHERE pv.vertical_id = ?) AS post_count
+    `).get(vertical.id, vertical.id);
+    vertical.creatorCount = Number(stats.creator_count || 0);
+    vertical.postCount = Number(stats.post_count || 0);
+    return vertical;
+  };
 
   const router = express.Router();
 
@@ -153,18 +231,36 @@ function createCreatorsRouter(options = {}) {
 
   router.get('/verticals', (req, res, next) => {
     try {
-      const items = store.listVerticals();
+      const items = store.listVerticals().map((item) => ({
+        id: item.id,
+        name: item.name || null,
+        version: item.version || null,
+        enabled: item.enabled === 1 || item.enabled === true,
+        keywords: item.keywords || [],
+        negativeKeywords: item.negativeKeywords || item.negative_keywords || []
+      }));
+      // enrich counts from db
+      const enriched = items.map((item) => enrichVertical({
+        id: item.id,
+        name: item.name,
+        version: item.version,
+        enabled: item.enabled,
+        keywords: item.keywords,
+        negativeKeywords: item.negativeKeywords
+      }));
       return res.json({
         success: true,
-        data: { items: items.map((item) => ({
+        data: { items: enriched.map((item) => ({
           id: item.id,
           name: item.name || null,
           version: item.version || null,
           enabled: item.enabled === 1 || item.enabled === true,
+          creatorCount: item.creatorCount || 0,
+          postCount: item.postCount || 0,
           keywords: item.keywords || [],
-          negativeKeywords: item.negativeKeywords || item.negative_keywords || []
+          negativeKeywords: item.negativeKeywords || []
         })) },
-        meta: { count: items.length }
+        meta: { count: enriched.length }
       });
     } catch (error) {
       return next(error);
@@ -217,7 +313,7 @@ function createCreatorsRouter(options = {}) {
       });
       return res.json({
         success: true,
-        data: { items: result.items.map(publicPost) },
+        data: { items: result.items.map((p) => publicPost(enrichPost(p))) },
         meta: { count: result.items.length, nextCursor: result.nextCursor }
       });
     } catch (error) {
@@ -243,7 +339,7 @@ function createCreatorsRouter(options = {}) {
       });
       return res.json({
         success: true,
-        data: { items: result.items.map(publicPost) },
+        data: { items: result.items.map((p) => publicPost(enrichPost(p))) },
         meta: { count: result.items.length, nextCursor: result.nextCursor }
       });
     } catch (error) {
@@ -262,10 +358,10 @@ function createCreatorsRouter(options = {}) {
       const vertical = req.query.vertical ? String(req.query.vertical) : null;
       const items = type === 'post'
         ? store.queryHotPosts({ windowHours: window.hours, vertical, limit }).items
-        : store.queryHotTopics({ windowHours: window.hours, type, vertical, limit });
+        : store.queryHotTopics({ windowHours: window.hours, type, vertical, limit }).items;
       return res.json({
         success: true,
-        data: { items: items.map((item) => type === 'post' ? publicPost(item) : publicTopic(item)) },
+        data: { items: items.map((item) => type === 'post' ? publicPost(enrichPost(item)) : publicTopic(enrichTopic(item))) },
         meta: { window: window.key, type, count: items.length }
       });
     } catch (error) {
@@ -289,7 +385,7 @@ function createCreatorsRouter(options = {}) {
       });
       return res.json({
         success: true,
-        data: { items: result.items.map(publicTopic) },
+        data: { items: result.items.map((t) => publicTopic(enrichTopic(t))) },
         meta: { count: result.items.length, nextCursor: result.nextCursor }
       });
     } catch (error) {
@@ -301,7 +397,7 @@ function createCreatorsRouter(options = {}) {
     try {
       const topic = store.getCreatorTopic(req.params.id);
       if (!topic) return res.status(404).json({ success: false, error: 'topic_not_found' });
-      return res.json({ success: true, data: publicTopic(topic) });
+      return res.json({ success: true, data: publicTopic(enrichTopic(topic)) });
     } catch (error) {
       return next(error);
     }
