@@ -259,13 +259,20 @@ function buildSignalSourceCatalog(env = process.env) {
       platform: 'multi-global',
       region: 'global',
       mode: 'sidecar',
-      adapter: 'external-sidecar',
+      adapter: 'agent-reach',
       trustClass: 'bridge',
-      enabled: isDev,
-      configured: isDev,
-      schedulable: false,
-      endpoint: `${DEV_MOCK_BASE}/agent-reach`,
-      setupHint: isDev ? 'dev mock 已启用；正式部署需在已登录的个人工作站运行 Agent-Reach，再通过 Bridge 接入' : '需在已登录的个人工作站运行 Agent-Reach，再通过 Bridge 接入'
+      enabled: true,
+      configured: true,
+      schedulable: true,
+      endpoint: 'http://127.0.0.1:3002/api/agent-reach',
+      routes: [
+        'GET /doctor',
+        'GET /youtube-search?q=...',
+        'GET /web-read?url=...',
+        'GET /rss?url=...',
+        'GET /version'
+      ],
+      setupHint: '已对接 Panniantong/Agent-Reach CLI（pip3 install -e /opt/Agent-Reach）。详见 /docs/AGENT_REACH.md 与 /skills 页面。'
     })
   ];
 }
