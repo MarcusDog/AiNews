@@ -16,7 +16,7 @@
   - NVIDIA Blog - AI硬件
   - WIRED AI - AI新闻
   - DeepMind Blog - 研究动态
-- **集成NewsAPI**：使用提供的API Key (`fae1e349d73345b2a5b8ead577c69b94`) 作为备用数据源
+- **集成 NewsAPI**：通过服务端环境变量 `NEWSAPI_KEY` 配置备用数据源；凭据不进入文档或 Git
   - 每日100次免费配额
   - 查询关键词：AI、machine learning、deep learning
   - 支持分页获取最新20条

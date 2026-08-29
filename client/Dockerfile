@@ -1,31 +1,33 @@
-# 客户端 Dockerfile - 静态文件服务
-FROM node:20-alpine
+FROM node:20.19-alpine AS builder
 
-# 安装 serve 用于静态文件服务
-RUN npm install -g serve@14.2.4
-
-# 创建非 root 用户
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodeuser -u 1001 -G nodejs
-
-# 设置工作目录
 WORKDIR /app
 
-# 复制构建好的静态文件
-COPY --chown=nodeuser:nodejs build ./build
+COPY package.json package-lock.json ./
+RUN npm ci
 
-# 复制健康检查脚本
-COPY --chown=nodeuser:nodejs healthcheck.js .
+COPY index.html vite.config.ts tsconfig.json tsconfig.app.json tsconfig.node.json ./
+COPY tailwind.config.cjs postcss.config.cjs components.json ./
+COPY public ./public
+COPY src ./src
 
-# 切换到非 root 用户
+RUN npm run build
+
+FROM node:20.19-alpine
+
+RUN npm install -g serve@14.2.4 && \
+    addgroup -g 1001 -S nodejs && \
+    adduser -S nodeuser -u 1001 -G nodejs
+
+WORKDIR /app
+
+COPY --from=builder --chown=nodeuser:nodejs /app/dist ./dist
+COPY --chown=nodeuser:nodejs healthcheck.js ./healthcheck.js
+
 USER nodeuser
 
-# 健康检查
 HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
     CMD node healthcheck.js || exit 1
 
-# 暴露端口
 EXPOSE 3003
 
-# 启动命令（单页应用模式）
-CMD ["serve", "-s", "build", "-l", "3003", "--cors"]
+CMD ["serve", "-s", "dist", "-l", "3003", "--cors"]

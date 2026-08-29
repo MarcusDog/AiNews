@@ -33,7 +33,7 @@ show_help() {
     echo ""
     echo "日志命令:"
     echo "  logs server    查看服务器日志"
-    echo "  logs client    查看客户端日志"
+    echo "  logs client    查看前端 Nginx 日志"
     echo "  logs -f        实时跟踪日志"
 }
 
@@ -67,6 +67,9 @@ COMPOSE_CMD=$(get_compose_cmd)
 start_services() {
     echo -e "${BLUE}🚀 正在启动 AInews 服务...${NC}"
     cd $PROJECT_DIR
+
+    echo -e "${BLUE}🏗️  构建 Vite 前端产物...${NC}"
+    (cd client && npm ci && npm run build)
     
     # 检查是否有旧容器在运行
     if [ "$($COMPOSE_CMD ps -q)" ]; then
@@ -80,8 +83,8 @@ start_services() {
     echo ""
     echo -e "${GREEN}✅ 服务已启动！${NC}"
     echo ""
-    echo "📊 服务器: http://localhost:3002"
-    echo "🌐 客户端: http://localhost:3003"
+    echo "📊 健康检查: http://localhost:8080/health"
+    echo "🌐 网站入口: http://localhost:8080"
     echo ""
     echo "等待服务启动中..."
     sleep 5
@@ -121,18 +124,18 @@ show_status() {
     echo ""
     
     # 检查服务器
-    if curl -s http://localhost:3002/health > /dev/null 2>&1; then
-        echo -e "${GREEN}✅ 服务器 (3002): 正常${NC}"
-        curl -s http://localhost:3002/health | python3 -c "import json,sys; d=json.load(sys.stdin); print(f\"   新闻数: {d.get('newsCount', 0)} | 状态: {d.get('status', 'unknown')}\")" 2>/dev/null || echo "   无法获取详细信息"
+    if curl -s http://localhost:8080/health > /dev/null 2>&1; then
+        echo -e "${GREEN}✅ 服务器（经 Nginx）: 正常${NC}"
+        curl -s http://localhost:8080/health | python3 -c "import json,sys; d=json.load(sys.stdin); print(f\"   新闻数: {d.get('newsCount', 0)} | 状态: {d.get('status', 'unknown')}\")" 2>/dev/null || echo "   无法获取详细信息"
     else
-        echo -e "${RED}❌ 服务器 (3002): 无法连接${NC}"
+        echo -e "${RED}❌ 服务器（经 Nginx）: 无法连接${NC}"
     fi
     
     # 检查客户端
-    if curl -s http://localhost:3003 > /dev/null 2>&1; then
-        echo -e "${GREEN}✅ 客户端 (3003): 正常${NC}"
+    if curl -s http://localhost:8080 > /dev/null 2>&1; then
+        echo -e "${GREEN}✅ 网站入口 (8080): 正常${NC}"
     else
-        echo -e "${RED}❌ 客户端 (3003): 无法连接${NC}"
+        echo -e "${RED}❌ 网站入口 (8080): 无法连接${NC}"
     fi
 }
 
@@ -148,7 +151,7 @@ show_logs() {
         $COMPOSE_CMD logs --tail=100 -f ainews-server
     elif [ "$2" = "client" ]; then
         echo -e "${BLUE}📋 查看客户端日志${NC}"
-        $COMPOSE_CMD logs --tail=100 -f ainews-client
+        $COMPOSE_CMD logs --tail=100 -f nginx
     else
         echo -e "${YELLOW}未知的服务: $2${NC}"
         echo "可用选项: server, client"
@@ -159,6 +162,7 @@ show_logs() {
 build_services() {
     echo -e "${BLUE}🔨 正在重新构建镜像...${NC}"
     cd $PROJECT_DIR
+    (cd client && npm ci && npm run build)
     $COMPOSE_CMD build --no-cache
     echo -e "${GREEN}✅ 构建完成${NC}"
 }
@@ -172,19 +176,19 @@ check_health() {
     
     # 获取容器状态
     SERVER_STATUS=$($COMPOSE_CMD ps ainews-server --format "{{.State}}" 2>/dev/null || echo "not found")
-    CLIENT_STATUS=$($COMPOSE_CMD ps ainews-client --format "{{.State}}" 2>/dev/null || echo "not found")
+    CLIENT_STATUS=$($COMPOSE_CMD ps nginx --format "{{.State}}" 2>/dev/null || echo "not found")
     
     echo -e "容器状态:"
     echo -e "  服务器: ${BLUE}$SERVER_STATUS${NC}"
-    echo -e "  客户端: ${BLUE}$CLIENT_STATUS${NC}"
+    echo -e "  前端 Nginx: ${BLUE}$CLIENT_STATUS${NC}"
     echo ""
     
     # 检查服务器
     echo -n "检查服务器健康... "
     for i in {1..10}; do
-        if curl -s http://localhost:3002/health > /dev/null 2>&1; then
+        if curl -s http://localhost:8080/health > /dev/null 2>&1; then
             echo -e "${GREEN}✅ 通过${NC}"
-            curl -s http://localhost:3002/health | python3 -c "import json,sys; d=json.load(sys.stdin); print(f\"  新闻数: {d.get('newsCount', 0)}\")" 2>/dev/null || true
+            curl -s http://localhost:8080/health | python3 -c "import json,sys; d=json.load(sys.stdin); print(f\"  新闻数: {d.get('newsCount', 0)}\")" 2>/dev/null || true
             break
         else
             echo -n "."
@@ -202,7 +206,7 @@ check_health() {
     # 检查客户端
     echo -n "检查客户端健康... "
     for i in {1..5}; do
-        if curl -s http://localhost:3003 > /dev/null 2>&1; then
+        if curl -s http://localhost:8080 > /dev/null 2>&1; then
             echo -e "${GREEN}✅ 通过${NC}"
             break
         else

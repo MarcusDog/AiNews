@@ -1,4 +1,86 @@
-# AI资讯平台 v2.0
+# Aya Creator Intelligence Radar
+
+> 当前正从「AI 新闻聚合站」迁移为「AI 热点发现 + 创作选题 + 素材情报平台」。所有当前范围、决策、进度、验证结果和下一步统一记录在 [PROJECT_REBUILD_STATUS.md](./PROJECT_REBUILD_STATUS.md)。
+
+完整安装、页面、来源、观察名单、回填、选题、推送、API、维护与上线流程见 [AyaNews 整个系统使用方案](./docs/SYSTEM_USAGE_GUIDE.md)。
+
+## 当前能力
+
+- 前端：React 18 + Vite 8 + TypeScript 7 + Tailwind CSS + shadcn/ui 式本地组件。
+- 首页：电影感首屏 + 24/48/72 小时「视野监测台」。
+- 数据链路：公开 Signal → Topic 聚类 → 窗口化 `trend-v1` → 核验博主公开帖子 → `creator-hotness-v1` / 跨博主共题 → 证据型选题与推送。
+- 来源：新闻/官方发布、GitHub、Hacker News、Mastodon、Reddit、Hugging Face、Bilibili；Creator 主干支持 YouTube Atom、Bluesky、Mastodon、GitHub、RSS，可选 Reddit、X、Instagram、抖音官方 API 和签名 Sidecar。
+- 核心交互：首页雷达、`/topics`、`/research`、`/creators`、`/verticals/:id`、`/sources`、`/alerts` 和 `/skills`。
+- 开放能力：REST、OpenAPI 3.1（2.4）、Topic JSON Feed、RSS、登录态 SSE、安全签名 Webhook 与 AyaNewsSkill。MCP、A2A 尚未实现，文档不会冒充可用。
+- Node.js 要求：`>=20.19.0`。
+
+```bash
+# 开发
+npm run dev
+
+# 新前端测试
+cd client && npm test
+
+# 生产构建（输出 client/dist）
+cd client && npm run build
+```
+
+## Signal 来源与运维
+
+配置模板位于 `server/.env.example`。复制为 `server/.env` 后按需填写；所有 Token 都只放在服务端，空值不会让可选来源被误报为在线。
+
+| 层级 | 默认能力 | 配置方式 |
+|---|---|---|
+| L1 | News、HN、GitHub、Mastodon、Reddit、Hugging Face、Bilibili | 免密可运行；`GITHUB_TOKEN` 提升 GitHub 额度；`MASTODON_INSTANCES` 与 `REDDIT_COMMUNITIES` 可用逗号调整 |
+| L2 | YouTube、X | 分别配置 `YOUTUBE_API_KEY`、`X_BEARER_TOKEN` |
+| L3 | 微博/知乎/抖音等桥接与自定义 JSON Signal | 自托管 `RSSHUB_BASE_URL`、`NEWSNOW_BASE_URL` 或 `SIGNAL_BRIDGES_JSON`；仅接受 HTTPS |
+| L4 | MediaCrawler、Agent-Reach 深挖 | 独立登录态 Sidecar，Web 服务不会直接调度；清洗后通过 JSON Bridge 接入 |
+
+来源状态含义：`online` 表示最近成功，`degraded` 表示本轮失败但保留过往成功时间，`offline` 表示持续失败，`unconfigured` 表示缺少可选凭据/地址，`disabled` 表示明确禁用，`pending` 表示尚未首次采集。“已配置”不等于“本轮在线”。
+
+默认 Signal 每 30 分钟刷新，Topic 使用 72 小时窗口重建；每日 02:00 清理，Signal 保留 45 天。默认时区为 `Asia/Shanghai`。首次启动会采集；也可人工触发：
+
+```bash
+curl -X POST http://localhost:3002/api/signals/v1/admin/refresh \
+  -H 'Content-Type: application/json' \
+  -H 'x-admin-api-key: YOUR_ADMIN_API_KEY' \
+  -d '{"refreshLegacy":false,"itemLimit":20}'
+
+curl http://localhost:3002/api/signals/v1/health
+curl 'http://localhost:3002/api/signals/v1/topics?window=72h'
+curl 'http://localhost:3002/api/news/hot-rank?window=24h'
+curl 'http://localhost:3002/api/news/discover?window=48h&profile=tool-review'
+curl 'http://localhost:3002/api/news/dashboard?window=72h'
+curl http://localhost:3002/api/news/by-source
+curl http://localhost:3002/topics/feed.json
+curl http://localhost:3002/topics/rss.xml
+```
+
+兼容聚合路由还包括 `/api/news/feed` 与 `/api/news/domestic`。`profile` 可取 `general`、`short-video`、`tool-review`、`news-commentary`、`deep-dive`。
+
+公开接口的完整契约以 `/openapi.json` 为准。匿名 GitHub、Reddit、Bilibili 等端点可能限流或临时拒绝请求；单源失败不会阻断其他来源，健康接口会保留真实失败状态。
+
+## 跨垂类 Creator Intelligence
+
+首发覆盖美妆、穿搭、AI 科技和娱乐。系统只对人工核验观察名单账号采集平台当前允许读取的公开历史；`complete` 必须经过 cursor 耗尽和 reconciliation，受平台历史窗口限制时显示 `partial`，权限/风控时显示 `blocked`，缺少密钥或授权时显示 `unconfigured`。未知互动指标保持 `null`，不会伪造成 0。
+
+```bash
+curl 'http://localhost:3002/api/creators/v1/creators?status=verified&vertical=ai-tech'
+curl 'http://localhost:3002/api/creators/v1/posts?q=Agent&vertical=ai-tech'
+curl 'http://localhost:3002/api/creators/v1/hot?window=24h&type=cross_platform'
+curl http://localhost:3002/api/creators/v1/sources
+```
+
+运营文档：
+
+- [整个系统使用方案](./docs/SYSTEM_USAGE_GUIDE.md)
+- [Creator 来源、观察名单与回填](./docs/CREATOR_SOURCES.md)
+- [Creator Sidecar 签名接入](./docs/CREATOR_SIDECAR.md)
+- [Creator 推送、重试、保留、备份与导出](./docs/CREATOR_ALERTS.md)
+
+## 现有 v2.0 系统资料（历史迁移参考）
+
+> 以下内容仅保留为旧版本迁移背景，不作为当前操作手册；当前行为以 [整个系统使用方案](./docs/SYSTEM_USAGE_GUIDE.md) 和 `/openapi.json` 为准。
 
 一个实时获取并分析AI科技新闻的Web平台，帮助用户跟上AI技术发展的步伐，减少信息差。
 
@@ -67,16 +149,17 @@
 - **Express-rate-limit** - API限流
 
 ### 前端
-- **React 18** - 用户界面框架
-- **Socket.io-client** - WebSocket客户端
-- **React Router** - 路由管理
-- **Tailwind CSS** - 样式框架
+- **React 18 + TypeScript** - 类型安全的用户界面
+- **Vite 8** - 开发服务与生产构建
+- **Tailwind CSS + shadcn/ui** - 设计 Token 与可访问组件
+- **Radix UI** - Dialog 焦点管理与键盘交互
 - **Lucide React** - 图标库
+- **Vitest + Testing Library** - 前端行为测试
 
 ## 快速开始
 
 ### 环境要求
-- Node.js 16+ 
+- Node.js 20.19+
 - npm 7+
 
 ### 一键启动
@@ -105,7 +188,7 @@ cd ../client && npm install
 cd server && node index.js
 
 # 终端2 - 启动前端
-cd client && npm start
+cd client && npm run dev
 ```
 
 ### 访问应用
@@ -391,10 +474,13 @@ POST /api/admin/refresh
 
 ### 数据库问题
 ```bash
-# 删除数据库重新初始化
-rm server/data/ainews.db
-# 重启服务
+# 先执行在线备份与完整性检查，不要删除生产数据库
+cd server
+node scripts/creator-maintenance.js backup
+sqlite3 "${AINEWS_DB_PATH:-./data/ainews.db}" 'PRAGMA integrity_check;'
 ```
+
+如仍异常，保留数据库和日志，在独立临时库复现后再决定恢复或迁移。
 
 ## 定时任务
 
@@ -415,7 +501,7 @@ cd server && pm2 start index.js --name ainews-server
 
 # 构建前端
 cd client && npm run build
-# 使用nginx托管build目录
+# 使用 Nginx 托管 dist 目录
 ```
 
 ### Docker部署

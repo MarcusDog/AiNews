@@ -59,8 +59,8 @@ check_files() {
         fi
     fi
 
-    if [ ! -f "client/build/index.html" ]; then
-        print_warning "client/build/index.html 不存在"
+    if [ ! -f "client/dist/index.html" ]; then
+        print_warning "client/dist/index.html 不存在"
         print_info "请先构建前端应用: cd client && npm run build"
     fi
 
@@ -77,11 +77,8 @@ check_files() {
 build() {
     print_info "开始构建 Docker 镜像..."
 
-    # 检查前端构建
-    if [ ! -f "client/build/index.html" ]; then
-        print_error "请先构建前端应用: cd client && npm run build"
-        exit 1
-    fi
+    # Compose 由 Nginx 挂载宿主机的 Vite 产物。
+    (cd client && npm ci && npm run build)
 
     # 构建镜像
     docker-compose build --no-cache
@@ -93,6 +90,9 @@ build() {
 start() {
     print_info "启动 AI News Platform 服务..."
 
+    # Nginx 直接挂载 client/dist，启动前必须生成最新产物。
+    (cd client && npm ci && npm run build)
+
     # 创建必要的目录
     mkdir -p server/data server/logs server/cache
 
@@ -100,8 +100,8 @@ start() {
     docker-compose up -d
 
     print_success "服务已启动"
-    print_info "前端访问: http://localhost:3003"
-    print_info "后端 API: http://localhost:3002"
+    print_info "网站入口: http://localhost:8080"
+    print_info "后端 API（经 Nginx）: http://localhost:8080/api"
 }
 
 # 停止服务
@@ -128,7 +128,7 @@ logs-server() {
 }
 
 logs-client() {
-    docker-compose logs -f --tail=100 ainews-client
+    docker-compose logs -f --tail=100 nginx
 }
 
 # 进入容器 shell
@@ -137,7 +137,7 @@ shell-server() {
 }
 
 shell-client() {
-    docker-compose exec ainews-client sh
+    docker-compose exec nginx sh
 }
 
 # 查看服务状态
@@ -164,6 +164,7 @@ status() {
 update() {
     print_info "更新服务..."
     git pull origin main
+    (cd client && npm ci && npm run build)
     docker-compose build --no-cache
     docker-compose up -d
     print_success "更新完成"
@@ -242,9 +243,9 @@ case "${1:-start}" in
         echo "  restart       - 重启服务"
         echo "  logs          - 查看所有服务日志"
         echo "  logs-server   - 查看后端服务日志"
-        echo "  logs-client   - 查看前端服务日志"
+        echo "  logs-client   - 查看前端 Nginx 日志"
         echo "  shell-server  - 进入后端容器 shell"
-        echo "  shell-client  - 进入前端容器 shell"
+        echo "  shell-client  - 进入前端 Nginx 容器 shell"
         echo "  status        - 查看服务状态"
         echo "  clean         - 清理所有容器、镜像和数据"
         echo "  update        - 更新代码并重启"

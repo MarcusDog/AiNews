@@ -133,7 +133,7 @@ start_frontend() {
     fi
     
     # 启动服务
-    nohup env PORT="$CLIENT_PORT" BROWSER=none npm start > client.log 2>&1 &
+    nohup npm run dev -- --host 0.0.0.0 --port "$CLIENT_PORT" --strictPort > client.log 2>&1 &
     echo $! > client.pid
     
     log_info "前端进程ID: $(cat client.pid)"

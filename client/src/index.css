@@ -48,6 +48,14 @@ body {
   animation: editorialEnter 520ms cubic-bezier(.2,.8,.2,1) both;
 }
 
+.skill-hero-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: linear-gradient(to right, transparent 2%, black 52%, black 100%);
+}
+
 @keyframes editorialEnter {
   from {
     opacity: 0;

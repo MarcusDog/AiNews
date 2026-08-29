@@ -1,9 +1,149 @@
 const express = require('express');
-const router = express.Router();
-const NewsService = require('../services/NewsService');
+const DefaultNewsService = require('../services/NewsService');
 const { adminAuth } = require('../middleware/adminAuth');
+const { publicTopic } = require('./signals');
+const { normalizeCreatorProfile } = require('../services/signals/opportunity-engine');
+
+const NEWS_WINDOWS = new Map([['24h', 24], ['48h', 48], ['72h', 72]]);
+
+function boundedInteger(value, fallback, min, max) {
+  if (value === undefined) return fallback;
+  if (!/^\d+$/.test(String(value))) return null;
+  const parsed = Number(value);
+  return parsed >= min && parsed <= max ? parsed : null;
+}
+
+function newsQuery(req) {
+  const page = boundedInteger(req.query.page, 1, 1, 100000);
+  const limit = boundedInteger(req.query.limit, 20, 1, 100);
+  if (page === null || limit === null) return null;
+  return { page, limit, category: req.query.category, search: req.query.search };
+}
+
+function topicQuery(req) {
+  const window = req.query.window || '72h';
+  const windowHours = NEWS_WINDOWS.get(window);
+  const limit = boundedInteger(req.query.limit, 20, 1, 100);
+  if (!windowHours || limit === null) return null;
+  return { window, windowHours, limit };
+}
+
+function topicDetails(signalService, query) {
+  const listed = signalService.listTopics({ windowHours: query.windowHours, limit: query.limit, offset: 0 });
+  return listed.map((topic) => topic.signals
+    ? topic
+    : (signalService.getTopic(topic.id, { windowHours: query.windowHours }) || topic));
+}
+
+function requireSignals(signalService, res) {
+  if (signalService) return true;
+  res.status(503).json({ success: false, error: 'signal_service_unavailable' });
+  return false;
+}
+
+function createNewsRouter(options = {}) {
+const router = express.Router();
+const NewsService = options.newsService || DefaultNewsService;
+const signalService = options.signalService || null;
 
 // ========== 具体路由（必须放在参数路由之前）==========
+
+// 统一新闻流（真实历史库兼容入口）
+router.get('/feed', async (req, res) => {
+  try {
+    const query = newsQuery(req);
+    if (!query) return res.status(400).json({ success: false, error: 'invalid_query' });
+    const result = await NewsService.getLatestNews(query);
+    return res.json({
+      success: true,
+      data: { items: result.data || [] },
+      meta: { page: query.page, limit: query.limit, total: Number(result.total || 0), citationField: 'url' }
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// 国内公开信号热点，不用旧新闻标题推断全网热度。
+router.get('/domestic', (req, res) => {
+  try {
+    if (!requireSignals(signalService, res)) return;
+    const query = topicQuery(req);
+    if (!query) return res.status(400).json({ success: false, error: 'invalid_query' });
+    const items = topicDetails(signalService, { ...query, limit: 100 })
+      .filter((topic) => (topic.signals || []).some((signal) => signal.region === 'cn'))
+      .slice(0, query.limit)
+      .map((topic) => publicTopic(topic, true));
+    return res.json({ success: true, data: { items }, meta: { window: query.window, count: items.length } });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/hot-rank', (req, res) => {
+  try {
+    if (!requireSignals(signalService, res)) return;
+    const query = topicQuery(req);
+    if (!query) return res.status(400).json({ success: false, error: 'invalid_query' });
+    const items = signalService.listTopics({ windowHours: query.windowHours, limit: query.limit, offset: 0 })
+      .map((topic) => publicTopic(topic));
+    return res.json({ success: true, data: { items }, meta: { window: query.window, count: items.length } });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/discover', (req, res) => {
+  try {
+    if (!requireSignals(signalService, res)) return;
+    const query = topicQuery(req);
+    if (!query) return res.status(400).json({ success: false, error: 'invalid_query' });
+    const profile = normalizeCreatorProfile(req.query.profile);
+    if (!profile) return res.status(400).json({ success: false, error: 'invalid_profile' });
+    const candidates = typeof signalService.listCreatorOpportunities === 'function'
+      ? signalService.listCreatorOpportunities({ windowHours: query.windowHours, limit: query.limit, offset: 0, profile })
+      : topicDetails(signalService, { ...query, limit: 100 });
+    const items = candidates
+      .sort((a, b) => b.creatorScore - a.creatorScore || b.trendScore - a.trendScore || a.id.localeCompare(b.id))
+      .slice(0, query.limit)
+      .map((topic) => publicTopic(topic, true));
+    return res.json({ success: true, data: { items }, meta: { window: query.window, profile, count: items.length } });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/dashboard', async (req, res) => {
+  try {
+    if (!requireSignals(signalService, res)) return;
+    const query = topicQuery(req);
+    if (!query) return res.status(400).json({ success: false, error: 'invalid_query' });
+    const [news, sources] = await Promise.all([NewsService.getStatistics(), Promise.resolve(signalService.listSources())]);
+    const topics = signalService.listTopics({ windowHours: query.windowHours, limit: query.limit, offset: 0 })
+      .map((topic) => publicTopic(topic));
+    return res.json({
+      success: true,
+      data: { news, topics: { items: topics }, sources: { items: sources } },
+      meta: { window: query.window, generatedAt: new Date().toISOString() }
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/by-source', async (req, res) => {
+  try {
+    if (!requireSignals(signalService, res)) return;
+    const [news, signals] = await Promise.all([NewsService.getSources(), Promise.resolve(signalService.listSources())]);
+    return res.json({
+      success: true,
+      data: { news, signals },
+      meta: { newsSources: news.length, signalSources: signals.length, generatedAt: new Date().toISOString() }
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+});
 
 // 获取最新新闻列表
 router.get('/latest', async (req, res) => {
@@ -311,4 +451,9 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+return router;
+}
+
+const defaultRouter = createNewsRouter();
+module.exports = defaultRouter;
+module.exports.createNewsRouter = createNewsRouter;

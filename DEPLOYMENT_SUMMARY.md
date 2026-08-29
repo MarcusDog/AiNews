@@ -245,9 +245,7 @@ curl http://localhost:3002/api/admin/sources
 
 ## 📝 测试账户
 
-已创建测试账户：
-- **邮箱**: test@xiaotianaya.com
-- **密码**: test123456
+测试账户不写入仓库。需要时在目标环境临时创建，并在验收后删除或禁用；凭据通过部署方的安全渠道传递。
 
 ---
 

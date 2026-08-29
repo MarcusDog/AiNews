@@ -1,4 +1,6 @@
-# AI News Platform Docker 部署指南
+# Aya Signals Docker 部署指南
+
+> 从安装到来源、观察名单、选题、推送、维护和验收的完整流程见 [整个系统使用方案](./docs/SYSTEM_USAGE_GUIDE.md)。
 
 ## 快速开始
 
@@ -10,31 +12,34 @@ cd client && npm run build && cd ..
 ./docker-deploy.sh start
 
 # 3. 访问应用
-# 前端: http://localhost:3003
-# 后端 API: http://localhost:3002
+# 网站: http://localhost:8080
+# 后端 API: http://localhost:8080/api
 ```
 
 ## 部署要求
 
 - Docker 20.10+
 - Docker Compose 1.29+
+- Node.js 20.19+ 和 npm（用于在宿主机/CI 构建 `client/dist`）
 - 至少 2GB 内存
 - 至少 5GB 磁盘空间
 
 ## 部署选项
 
-### 选项 1：基础部署（推荐用于开发/测试）
+### 选项 1：Compose 部署（推荐）
 
 ```bash
-# 仅启动后端和前端服务
+# 先构建 Vite 静态产物，再启动 Nginx + 后端
+cd client && npm ci && npm run build && cd ..
 docker-compose up -d
 ```
 
-### 选项 2：完整部署（包含 Nginx）
+### 选项 2：独立前端镜像
 
 ```bash
-# 启动所有服务，包括 Nginx 反向代理
-docker-compose --profile with-nginx up -d
+# client/Dockerfile 是可选的独立静态服务镜像
+docker build -t aya-signals-client ./client
+docker run --rm -p 3003:3003 aya-signals-client
 ```
 
 ### 选项 3：生产部署（使用部署脚本）
@@ -54,7 +59,7 @@ docker-compose --profile with-nginx up -d
 # 查看日志
 ./docker-deploy.sh logs           # 所有服务
 ./docker-deploy.sh logs-server    # 仅后端
-./docker-deploy.sh logs-client    # 仅前端
+./docker-deploy.sh logs-client    # 前端 Nginx
 
 # 管理服务
 ./docker-deploy.sh stop           # 停止
@@ -63,7 +68,7 @@ docker-compose --profile with-nginx up -d
 
 # 进入容器
 ./docker-deploy.sh shell-server   # 进入后端容器
-./docker-deploy.sh shell-client   # 进入前端容器
+./docker-deploy.sh shell-client   # 进入 Nginx 容器
 
 # 备份和清理
 ./docker-deploy.sh backup         # 备份数据库
@@ -82,7 +87,7 @@ docker-compose --profile with-nginx up -d
 ├── client/
 │   ├── Dockerfile          # 前端 Dockerfile
 │   ├── .dockerignore       # 前端 Docker 忽略文件
-│   ├── build/              # 前端构建输出
+│   ├── dist/               # Vite 前端构建输出
 │   └── ...
 ├── docker-compose.yml      # Docker Compose 配置
 ├── docker-deploy.sh        # 部署脚本
@@ -99,21 +104,67 @@ docker-compose --profile with-nginx up -d
 ```bash
 NODE_ENV=production
 PORT=3002
-DATABASE_PATH=./data/ainews.db
+AINEWS_DB_PATH=./data/ainews.db
 MINIMAX_API_KEY=replace_with_a_new_server_side_key
 MINIMAX_BASE_URL=https://api.minimaxi.com/anthropic
 MINIMAX_MODEL=MiniMax-M2.5
 AYA_NEWS_SKILL_PATH=/opt/aya-news-skill/SKILL.md
 ADMIN_API_KEY=replace_with_a_long_random_admin_key
+GITHUB_TOKEN=
+MASTODON_INSTANCES=https://mastodon.social
+REDDIT_COMMUNITIES=LocalLLaMA,MachineLearning,artificial
+YOUTUBE_API_KEY=
+X_BEARER_TOKEN=
+RSSHUB_BASE_URL=
+NEWSNOW_BASE_URL=
+SIGNAL_BRIDGES_JSON=[]
+AINEWS_SIGNAL_CONCURRENCY=4
+AYA_CREATOR_SEEDS_PATH=./config/creatorSeeds.local.json
+AYA_DISABLE_CREATOR_SCHEDULER=0
+AYA_CREATOR_CONCURRENCY=4
+AYA_CREATOR_REQUEST_BUDGET=100
+AYA_CREATOR_BRIDGES_JSON=[]
+AYA_YOUTUBE_WEBSUB_SECRET=
+AYA_CREATOR_WEBHOOK_DEFAULT_SECRET=
+AYA_CREATOR_BACKUP_DIR=./data/backups
+AYA_CREATOR_EXPORT_DIR=./data/exports
 ```
 
 `MINIMAX_API_KEY` 只保存在服务器环境变量或部署平台的 Secret 中，不要写入前端、镜像或 Git。MiniMax Agent 使用 Anthropic 兼容接口；网站在每天 08:30（Asia/Shanghai）生成一次带来源的信息茧房复核。
 
 `ADMIN_API_KEY` 只配置在服务端。管理页位于 `/#/admin`，密钥仅保存在浏览器当前页面内存中，不写入 LocalStorage、SessionStorage 或 URL。
 
-### 2. 前端环境变量
+Compose 会把 `server/.env` 整体传入后端，可选 Signal 变量保持为空即可，不会阻止启动。RSSHub、NewsNow 与 JSON Bridge 只接受 HTTPS 地址；MediaCrawler、Agent-Reach 必须作为独立 Sidecar 运行，不能把 Cookie 或登录态放进本仓库。
 
-前端在构建时通过 `docker-compose.yml` 中的 `REACT_APP_API_URL` 环境变量配置 API 地址。
+Creator 观察名单应使用 Git 忽略的运营文件。X、Reddit、Instagram、抖音、YouTube Data 和消息通道缺少授权时会显示 `unconfigured`；小红书/微博/任意抖音或 B 站深挖只允许独立 Sidecar 经原始字节 HMAC Bridge 接入。完整配置见 [docs/CREATOR_SOURCES.md](./docs/CREATOR_SOURCES.md)、[docs/CREATOR_SIDECAR.md](./docs/CREATOR_SIDECAR.md) 与 [docs/CREATOR_ALERTS.md](./docs/CREATOR_ALERTS.md)。
+
+默认每 30 分钟刷新 Signal/Topic、每日 02:00 清理并保留 45 天。部署后的运维检查：
+
+```bash
+curl http://localhost:8080/api/signals/v1/health
+curl http://localhost:8080/api/signals/v1/sources
+curl 'http://localhost:8080/api/signals/v1/topics?window=72h'
+curl 'http://localhost:8080/api/news/hot-rank?window=24h'
+curl 'http://localhost:8080/api/news/discover?window=48h&profile=tool-review'
+curl 'http://localhost:8080/api/news/dashboard?window=72h'
+curl -I http://localhost:8080/topics/feed.json
+curl -I http://localhost:8080/topics/rss.xml
+curl -I http://localhost:8080/topics
+curl -I http://localhost:8080/research
+curl -I http://localhost:8080/skills
+curl http://localhost:8080/api/creators/v1/sources
+curl 'http://localhost:8080/api/creators/v1/creators?status=verified&limit=20'
+curl 'http://localhost:8080/api/creators/v1/posts?vertical=ai-tech&limit=20'
+curl -I http://localhost:8080/creators
+curl -I http://localhost:8080/sources
+curl -I http://localhost:8080/alerts
+```
+
+Topic Feed 在 Nginx 中使用精确匹配代理，位于 SPA fallback 之前。JSON 应返回 `application/feed+json`，RSS 应返回 XML 内容类型；若返回 HTML，说明仍在使用旧 Nginx 配置。
+
+### 2. 前端 API 路径
+
+前端使用同源 `/api` 路径。开发环境由 Vite 代理到 `localhost:3002`，生产环境由 Nginx 代理，不向浏览器注入服务端密钥。
 
 ## 数据持久化
 
@@ -122,13 +173,15 @@ ADMIN_API_KEY=replace_with_a_long_random_admin_key
 - `./server/data:/app/data` - SQLite 数据库
 - `./server/logs:/app/logs` - 日志文件
 - `./server/cache:/app/cache` - 缓存文件
+- `./server/data/backups:/app/data/backups` - Creator online backup
+- `./server/data/exports:/app/data/exports` - 校验和 JSONL 导出
 
 ## 健康检查
 
 所有服务都配置了健康检查：
 
-- **后端**: `http://localhost:3002/health`
-- **前端**: `http://localhost:3003/`
+- **后端（经 Nginx）**: `http://localhost:8080/health`
+- **前端**: `http://localhost:8080/`
 
 ## 故障排查
 
@@ -158,11 +211,11 @@ ls -la data/
 
 ### 端口冲突
 
-如果 3002 或 3003 端口被占用，修改 `docker-compose.yml`：
+如果 8080 端口被占用，修改 `docker-compose.yml`：
 
 ```yaml
 ports:
-  - "3004:3002"  # 将宿主机的 3004 映射到容器的 3002
+  - "8081:80"  # 将宿主机的 8081 映射到 Nginx 80
 ```
 
 ## 生产环境建议
@@ -183,6 +236,7 @@ git pull origin main
 ./docker-deploy.sh update
 
 # 或手动执行
+cd client && npm ci && npm run build && cd ..
 docker-compose build --no-cache
 docker-compose up -d
 ```
