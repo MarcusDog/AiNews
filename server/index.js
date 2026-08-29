@@ -26,6 +26,7 @@ const { createWebhookTransport } = require('./services/creators/transports/webho
 const { createSocketTransport } = require('./services/creators/transports/socket-transport');
 const { createEmailTransport } = require('./services/creators/transports/email-transport');
 const { createGenericMessageTransport } = require('./services/creators/transports/generic-message-transport');
+const CreatorMaintenance = require('./services/creators/creator-maintenance');
 const creatorStore = new CreatorStore();
 creatorStore.initialize();
 const creatorSourceRegistry = new CreatorSourceRegistry({ env: process.env });
@@ -69,6 +70,7 @@ const creatorOutboxWorker = new OutboxWorker({
     bark: genericMessageTransport
   }
 });
+const creatorMaintenance = new CreatorMaintenance({ store: creatorStore });
 
 // 信任代理设置
 app.set('trust proxy', 1);
@@ -158,7 +160,8 @@ app.use('/api/creators/v1', createCreatorsRouter({
   store: creatorStore,
   service: creatorService,
   sourceRegistry: creatorSourceRegistry,
-  outboxWorker: creatorOutboxWorker
+  outboxWorker: creatorOutboxWorker,
+  maintenance: creatorMaintenance
 }));
 const contactRoutes = require('./routes/contact');
 app.use('/api/contact', contactRoutes);
@@ -551,6 +554,7 @@ module.exports = {
   creatorBridgeVerifier,
   creatorService,
   creatorOutboxWorker,
+  creatorMaintenance,
   youtubeWebSubService,
   getLifecycleFlags,
   initializeSystem,

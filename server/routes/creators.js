@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('node:path');
 const { isAdminKeyValid } = require('../middleware/adminAuth');
 const { CREATOR_VERTICALS } = require('../config/creatorVerticals');
 const { validateCreatorCatalog, toStoreRecords } = require('../services/creators/creator-catalog');
@@ -77,6 +78,7 @@ function createCreatorsRouter(options = {}) {
   const requireUser = options.requireUser || requireSessionUser;
   const subscriptions = options.subscriptionService || new SubscriptionService({ store, now });
   const outboxWorker = options.outboxWorker || null;
+  const maintenance = options.maintenance || null;
 
   const meta = (extra = {}) => ({
     generatedAt: now(),
@@ -371,6 +373,45 @@ function createCreatorsRouter(options = {}) {
         budget: service.requestBudget?.()
       });
       return ok(res, { accountId, ...result });
+    } catch (error) { return next(error); }
+  });
+
+  router.post('/admin/maintenance/preview', requireAdmin, (req, res, next) => {
+    try {
+      if (!maintenance?.previewCleanup) return res.status(503).json({ success: false, error: 'maintenance_unavailable' });
+      return ok(res, maintenance.previewCleanup(`admin-api:${req.ip || 'unknown'}`));
+    } catch (error) { return next(error); }
+  });
+
+  router.post('/admin/maintenance/execute', requireAdmin, (req, res, next) => {
+    try {
+      if (!maintenance?.executeCleanup) return res.status(503).json({ success: false, error: 'maintenance_unavailable' });
+      return ok(res, maintenance.executeCleanup(`admin-api:${req.ip || 'unknown'}`, req.body?.token));
+    } catch (error) { return next(error); }
+  });
+
+  router.post('/admin/backup', requireAdmin, async (req, res, next) => {
+    try {
+      if (!maintenance?.backup) return res.status(503).json({ success: false, error: 'maintenance_unavailable' });
+      const result = await maintenance.backup(`admin-api:${req.ip || 'unknown'}`, {
+        fileName: req.body?.fileName
+      });
+      return ok(res, {
+        file: path.basename(result.path), integrity: result.integrity, bytes: result.bytes
+      });
+    } catch (error) { return next(error); }
+  });
+
+  router.post('/admin/export', requireAdmin, (req, res, next) => {
+    try {
+      if (!maintenance?.exportJsonl) return res.status(503).json({ success: false, error: 'maintenance_unavailable' });
+      const result = maintenance.exportJsonl(`admin-api:${req.ip || 'unknown'}`, {
+        fileName: req.body?.fileName
+      });
+      return ok(res, {
+        file: path.basename(result.path), sha256: result.sha256, records: result.records,
+        bytes: result.bytes, schemaVersion: result.schemaVersion
+      });
     } catch (error) { return next(error); }
   });
 

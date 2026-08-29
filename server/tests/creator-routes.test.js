@@ -8,6 +8,7 @@ const path = require('node:path');
 const CreatorStore = require('../services/creators/creator-store');
 const { createCreatorsRouter } = require('../routes/creators');
 const OutboxWorker = require('../services/creators/outbox-worker');
+const CreatorMaintenance = require('../services/creators/creator-maintenance');
 
 const NOW = '2026-08-29T12:00:00.000Z';
 
@@ -122,6 +123,7 @@ async function withServer(fixture, run, options = {}) {
     adminKey: options.adminKey === undefined ? 'correct-key' : options.adminKey,
     requireUser: options.requireUser,
     outboxWorker: options.outboxWorker,
+    maintenance: options.maintenance,
     now: () => NOW
   }));
   const server = await new Promise((resolve) => {
@@ -468,6 +470,39 @@ test('endpoint test delivery runs only through the outbox worker and exposes an 
       assert.equal(owned.payload.data.items[0].status, 'delivered');
       assert.deepEqual(other.payload.data.items, []);
     }, { requireUser, outboxWorker: worker });
+  } finally { fixture.close(); }
+});
+
+test('admin maintenance routes require preview execution and expose verified backup/export artifacts', async () => {
+  const fixture = makeFixture();
+  const maintenance = new CreatorMaintenance({
+    store: fixture.store,
+    now: () => NOW,
+    backupDir: path.join(fixture.directory, 'route-backups'),
+    exportDir: path.join(fixture.directory, 'route-exports')
+  });
+  try {
+    await withServer(fixture, async (origin) => {
+      const headers = { 'content-type': 'application/json', 'x-admin-api-key': 'correct-key' };
+      const preview = await json(origin, '/admin/maintenance/preview', { method: 'POST', headers, body: '{}' });
+      assert.equal(preview.response.status, 200);
+      assert.match(preview.payload.data.token, /^[A-Za-z0-9_-]+$/);
+      const execute = await json(origin, '/admin/maintenance/execute', {
+        method: 'POST', headers, body: JSON.stringify({ token: preview.payload.data.token })
+      });
+      assert.equal(execute.response.status, 200);
+
+      const backup = await json(origin, '/admin/backup', {
+        method: 'POST', headers, body: JSON.stringify({ fileName: 'route-backup.db' })
+      });
+      const exported = await json(origin, '/admin/export', {
+        method: 'POST', headers, body: JSON.stringify({ fileName: 'route-export.jsonl' })
+      });
+      assert.equal(backup.payload.data.integrity, 'ok');
+      assert.equal(exported.payload.data.schemaVersion, 'aya-creator-export-v1');
+      assert.equal('path' in backup.payload.data, false, 'public admin response does not reveal server filesystem paths');
+      assert.equal('path' in exported.payload.data, false, 'public admin response does not reveal server filesystem paths');
+    }, { maintenance });
   } finally { fixture.close(); }
 });
 
