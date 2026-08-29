@@ -6,6 +6,7 @@ import { TopicIdeaDialog } from '@/features/topic-idea/topic-idea-dialog'
 import type { TopicLoader } from '@/features/topic-idea/use-topic-idea'
 import { RadarDashboard } from '@/features/radar/radar-dashboard'
 import type { RadarLoader } from '@/features/radar/radar-types'
+import { CreatorSection } from '@/components/creator-section'
 
 interface AppProps {
   loadArticles?: TopicLoader
@@ -27,6 +28,7 @@ export default function App({ loadArticles, loadRadar, random }: AppProps) {
         <Hero onGenerate={() => setTopicDialogOpen(true)} />
       </section>
       <RadarDashboard loadRadar={loadRadar} />
+      <CreatorSection />
       <TopicIdeaDialog
         open={topicDialogOpen}
         onOpenChange={setTopicDialogOpen}
