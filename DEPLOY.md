@@ -1,5 +1,7 @@
 # Aya Signals Docker 部署指南
 
+> 从安装到来源、观察名单、选题、推送、维护和验收的完整流程见 [整个系统使用方案](./docs/SYSTEM_USAGE_GUIDE.md)。
+
 ## 快速开始
 
 ```bash
@@ -102,7 +104,7 @@ docker run --rm -p 3003:3003 aya-signals-client
 ```bash
 NODE_ENV=production
 PORT=3002
-DATABASE_PATH=./data/ainews.db
+AINEWS_DB_PATH=./data/ainews.db
 MINIMAX_API_KEY=replace_with_a_new_server_side_key
 MINIMAX_BASE_URL=https://api.minimaxi.com/anthropic
 MINIMAX_MODEL=MiniMax-M2.5

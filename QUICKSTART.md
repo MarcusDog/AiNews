@@ -1,6 +1,6 @@
 # 快速启动指南
 
-> 需要 Node.js 20.19 或更高版本。当前重构状态见 [PROJECT_REBUILD_STATUS.md](./PROJECT_REBUILD_STATUS.md)。
+> 需要 Node.js 20.19 或更高版本。完整角色、页面、来源、选题、推送与维护流程见 [整个系统使用方案](./docs/SYSTEM_USAGE_GUIDE.md)；当前重构状态见 [PROJECT_REBUILD_STATUS.md](./PROJECT_REBUILD_STATUS.md)。
 
 ## 一键启动
 
@@ -119,7 +119,7 @@ Creator 观察名单、回填、Sidecar 与推送配置分别见 [docs/CREATOR_S
 
 ### 付费API（可选配置）
 - 🔑 NewsAPI - 更多主流媒体新闻
-- 🔑 OpenAI API - 智能内容分析
+- 🔑 MiniMax - 可选的带引用内容复核与研究增强
 
 > **提示**: 默认配置无需任何API密钥即可使用基础功能
 
@@ -129,21 +129,19 @@ Creator 观察名单、回填、Sidecar 与推送配置分别见 [docs/CREATOR_S
 ```bash
 # 查看端口占用
 lsof -ti:3000  # 前端端口
-lsof -ti:5000  # 后端端口
+lsof -ti:3002  # 后端端口
 
 # 杀死占用进程
 kill $(lsof -ti:3000)
-kill $(lsof -ti:5000)
+kill $(lsof -ti:3002)
 ```
 
 ### 依赖安装失败
 ```bash
-# 清理npm缓存
-npm cache clean --force
-
-# 删除node_modules重新安装
-rm -rf node_modules server/node_modules client/node_modules
-npm install
+# 优先使用锁文件做可重复安装；分别查看具体失败日志
+npm ci
+(cd server && npm ci)
+(cd client && npm ci)
 ```
 
 ### RSS源获取失败

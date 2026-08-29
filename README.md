@@ -2,6 +2,8 @@
 
 > 当前正从「AI 新闻聚合站」迁移为「AI 热点发现 + 创作选题 + 素材情报平台」。所有当前范围、决策、进度、验证结果和下一步统一记录在 [PROJECT_REBUILD_STATUS.md](./PROJECT_REBUILD_STATUS.md)。
 
+完整安装、页面、来源、观察名单、回填、选题、推送、API、维护与上线流程见 [AyaNews 整个系统使用方案](./docs/SYSTEM_USAGE_GUIDE.md)。
+
 ## 当前能力
 
 - 前端：React 18 + Vite 8 + TypeScript 7 + Tailwind CSS + shadcn/ui 式本地组件。
@@ -71,11 +73,14 @@ curl http://localhost:3002/api/creators/v1/sources
 
 运营文档：
 
+- [整个系统使用方案](./docs/SYSTEM_USAGE_GUIDE.md)
 - [Creator 来源、观察名单与回填](./docs/CREATOR_SOURCES.md)
 - [Creator Sidecar 签名接入](./docs/CREATOR_SIDECAR.md)
 - [Creator 推送、重试、保留、备份与导出](./docs/CREATOR_ALERTS.md)
 
-## 现有 v2.0 系统资料（迁移参考）
+## 现有 v2.0 系统资料（历史迁移参考）
+
+> 以下内容仅保留为旧版本迁移背景，不作为当前操作手册；当前行为以 [整个系统使用方案](./docs/SYSTEM_USAGE_GUIDE.md) 和 `/openapi.json` 为准。
 
 一个实时获取并分析AI科技新闻的Web平台，帮助用户跟上AI技术发展的步伐，减少信息差。
 
@@ -469,10 +474,13 @@ POST /api/admin/refresh
 
 ### 数据库问题
 ```bash
-# 删除数据库重新初始化
-rm server/data/ainews.db
-# 重启服务
+# 先执行在线备份与完整性检查，不要删除生产数据库
+cd server
+node scripts/creator-maintenance.js backup
+sqlite3 "${AINEWS_DB_PATH:-./data/ainews.db}" 'PRAGMA integrity_check;'
 ```
+
+如仍异常，保留数据库和日志，在独立临时库复现后再决定恢复或迁移。
 
 ## 定时任务
 

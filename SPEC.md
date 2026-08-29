@@ -114,7 +114,7 @@ API推荐（免费 + 付费）
 
 名称描述特点链接Hugging Face Inference API免费调用数千个开源AI模型、数据集和论文相关工具有免费额度，适合算法实验和资料获取https://huggingface.co/docs/api-inferenceSemantic Scholar API免费获取AI论文摘要、引用、作者信息（覆盖arXiv等）学术导向，完全免费，无需付费https://api.semanticscholar.org/NewsAPI.org全球新闻API，可搜索“AI”“machine learning”等关键词免费层每天100次请求，适合AI新闻监控https://newsapi.org/arXiv OAI-PMH API批量获取arXiv论文元数据和全文（包括AI类别）完全免费，适合研究资料采集https://arxiv.org/help/oa
 
-newsapi.org：fae1e349d73345b2a5b8ead577c69b94
+NewsAPI 凭据通过服务端环境变量 `NEWSAPI_KEY` 配置，禁止写入文档或 Git。
 
 ---
 
