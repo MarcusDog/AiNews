@@ -19,6 +19,7 @@ const { BridgeVerifier } = require('./services/creators/bridge-verifier');
 const CreatorService = require('./services/creators/creator-service');
 const { createYoutubeWebSubRouter } = require('./routes/youtube-websub');
 const { createCreatorIngestRouter } = require('./routes/creator-ingest');
+const { createCreatorsRouter } = require('./routes/creators');
 const creatorStore = new CreatorStore();
 creatorStore.initialize();
 const creatorSourceRegistry = new CreatorSourceRegistry({ env: process.env });
@@ -131,6 +132,11 @@ app.use('/api/content/v1', createContentRouter({ signalService }));
 app.use('/api/agent', agentRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/signals/v1', createSignalsRouter({ service: signalService }));
+app.use('/api/creators/v1', createCreatorsRouter({
+  store: creatorStore,
+  service: creatorService,
+  sourceRegistry: creatorSourceRegistry
+}));
 const contactRoutes = require('./routes/contact');
 app.use('/api/contact', contactRoutes);
 

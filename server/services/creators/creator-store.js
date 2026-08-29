@@ -1,4 +1,5 @@
 const Database = require('better-sqlite3');
+const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -40,6 +41,83 @@ function bool(value) {
 
 function sameMetric(left, right) {
   return METRIC_FIELDS.every((field) => (left?.[field] ?? null) === (right?.[field] ?? null));
+}
+
+function stableHash(value) {
+  return crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex').slice(0, 24);
+}
+
+function encodeCursor(value) {
+  return Buffer.from(JSON.stringify({ v: 1, ...value }), 'utf8').toString('base64url');
+}
+
+function decodeCursor(value, expectedHash) {
+  if (!value) return null;
+  let parsed;
+  try {
+    parsed = JSON.parse(Buffer.from(String(value), 'base64url').toString('utf8'));
+  } catch {
+    const error = new TypeError('invalid_cursor');
+    error.code = 'invalid_cursor';
+    throw error;
+  }
+  if (parsed?.v !== 1 || parsed.h !== expectedHash || !Array.isArray(parsed.sort)) {
+    const error = new TypeError('cursor_mismatch');
+    error.code = 'cursor_mismatch';
+    throw error;
+  }
+  return parsed;
+}
+
+function normalizeSearch(value) {
+  if (value === undefined || value === null) return null;
+  const normalized = String(value).normalize('NFKC').trim().replace(/\s+/g, ' ');
+  if (normalized.length < 1 || [...normalized].length > 200) {
+    const error = new TypeError('invalid_query');
+    error.code = 'invalid_query';
+    throw error;
+  }
+  return normalized;
+}
+
+function expandCjk(value) {
+  const normalized = String(value || '').normalize('NFKC');
+  const characters = normalized.match(/[\u3400-\u9fff]/g) || [];
+  return characters.length ? `${normalized} ${characters.join(' ')}` : normalized;
+}
+
+function literalFtsQuery(value) {
+  const normalized = normalizeSearch(value);
+  const rawTokens = normalized.match(/[\p{L}\p{N}_-]+/gu) || [];
+  const tokens = rawTokens.flatMap((token) => (
+    /[\u3400-\u9fff]/.test(token) ? (token.match(/[\u3400-\u9fff]/g) || []) : [token]
+  ));
+  if (!tokens.length) return '"__aya_no_literal_match__"';
+  return tokens.map((token) => `"${token.replace(/"/g, '""')}"`).join(' AND ');
+}
+
+function safeHttps(value) {
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === 'https:' && !parsed.username && !parsed.password ? parsed.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
+function publicEventPayload(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+  const allowed = {};
+  for (const key of ['title', 'summary', 'reason', 'topicId', 'postId', 'window']) {
+    if (typeof value[key] === 'string') allowed[key] = boundedText(value[key], 1000, false);
+  }
+  for (const key of ['previousScore', 'currentScore']) {
+    if (Number.isFinite(Number(value[key]))) allowed[key] = Number(value[key]);
+  }
+  if (Array.isArray(value.evidenceUrls)) {
+    allowed.evidenceUrls = value.evidenceUrls.map(safeHttps).filter(Boolean).slice(0, 20);
+  }
+  return allowed;
 }
 
 class CreatorStore {
@@ -141,6 +219,13 @@ class CreatorStore {
         ON creator_posts(platform, external_post_id);
       CREATE INDEX IF NOT EXISTS idx_creator_posts_account_published
         ON creator_posts(account_id, published_at DESC, id DESC);
+
+      CREATE VIRTUAL TABLE IF NOT EXISTS creator_posts_fts USING fts5(
+        post_id UNINDEXED,
+        title,
+        text,
+        tokenize = 'unicode61 remove_diacritics 2'
+      );
 
       CREATE TABLE IF NOT EXISTS creator_post_verticals (
         post_id TEXT NOT NULL,
@@ -385,6 +470,18 @@ class CreatorStore {
         FOREIGN KEY(preview_id) REFERENCES creator_maintenance_previews(id) ON DELETE SET NULL
       );
     `);
+    const indexedPost = this.db.prepare('SELECT 1 FROM creator_posts_fts WHERE post_id = ?');
+    const insertIndexedPost = this.db.prepare(
+      'INSERT INTO creator_posts_fts (post_id, title, text) VALUES (?, ?, ?)'
+    );
+    const indexMissingPosts = this.db.transaction(() => {
+      for (const row of this.db.prepare('SELECT id, title, text FROM creator_posts').iterate()) {
+        if (!indexedPost.get(row.id)) {
+          insertIndexedPost.run(row.id, expandCjk(row.title), expandCjk(row.text));
+        }
+      }
+    });
+    indexMissingPosts();
     this.initialized = true;
     return this;
   }
@@ -560,6 +657,10 @@ class CreatorStore {
         provenance_url = excluded.provenance_url,
         updated_at = excluded.updated_at
     `);
+    const deleteFts = this.db.prepare('DELETE FROM creator_posts_fts WHERE post_id = ?');
+    const insertFts = this.db.prepare(
+      'INSERT INTO creator_posts_fts (post_id, title, text) VALUES (?, ?, ?)'
+    );
     const clearVerticals = this.db.prepare('DELETE FROM creator_post_verticals WHERE post_id = ?');
     const addVertical = this.db.prepare(`
       INSERT INTO creator_post_verticals (post_id, vertical_id, created_at) VALUES (?, ?, ?)
@@ -603,6 +704,8 @@ class CreatorStore {
           boundedText(item.language, 40), item.sourceConfidence, item.provenanceUrl,
           itemCollectedAt, itemCollectedAt
         );
+        deleteFts.run(item.id);
+        insertFts.run(item.id, expandCjk(item.title), expandCjk(item.text));
         result[wasPresent ? 'updated' : 'inserted'] += 1;
         clearVerticals.run(item.id);
         for (const verticalId of item.verticalIds || []) addVertical.run(item.id, verticalId, itemCollectedAt);
@@ -853,6 +956,574 @@ class CreatorStore {
       ORDER BY published_at DESC, id DESC LIMIT ?
     `).all(...params);
     return rows.map((row) => this.mapPost(row));
+  }
+
+  listVerticals() {
+    this.ensureInitialized();
+    return this.db.prepare(`
+      SELECT v.*,
+        (SELECT COUNT(*) FROM creator_vertical_memberships m WHERE m.vertical_id = v.id) AS creator_count,
+        (SELECT COUNT(*) FROM creator_post_verticals pv WHERE pv.vertical_id = v.id) AS post_count
+      FROM creator_verticals v WHERE v.enabled = 1 ORDER BY v.id
+    `).all().map((row) => ({
+      id: row.id,
+      name: row.name,
+      version: row.version,
+      enabled: bool(row.enabled),
+      keywords: parseJson(row.keywords_json, []),
+      negativeKeywords: parseJson(row.negative_keywords_json, []),
+      creatorCount: row.creator_count,
+      postCount: row.post_count
+    }));
+  }
+
+  listCreators(options = {}) {
+    this.ensureInitialized();
+    const filters = {
+      vertical: options.vertical || null,
+      platform: options.platform || null,
+      status: options.status || null
+    };
+    const hash = stableHash({ kind: 'creators', ...filters });
+    const cursor = decodeCursor(options.cursor, hash);
+    const clauses = [];
+    const params = [];
+    if (filters.vertical) {
+      clauses.push('EXISTS (SELECT 1 FROM creator_vertical_memberships m WHERE m.creator_id = c.id AND m.vertical_id = ?)');
+      params.push(filters.vertical);
+    }
+    if (filters.platform) {
+      clauses.push('EXISTS (SELECT 1 FROM creator_accounts a WHERE a.creator_id = c.id AND a.platform = ?)');
+      params.push(filters.platform);
+    }
+    if (filters.status) {
+      clauses.push('c.review_status = ?');
+      params.push(filters.status);
+    }
+    if (cursor) {
+      clauses.push('c.id > ?');
+      params.push(cursor.sort[0]);
+    }
+    const limit = Math.min(Math.max(Number(options.limit || 20), 1), 100);
+    const rows = this.db.prepare(`
+      SELECT c.*,
+        (SELECT COUNT(*) FROM creator_accounts a WHERE a.creator_id = c.id) AS account_count,
+        (SELECT MAX(p.published_at) FROM creator_posts p JOIN creator_accounts a ON a.id = p.account_id WHERE a.creator_id = c.id) AS latest_post_at
+      FROM creators c
+      ${clauses.length ? `WHERE ${clauses.join(' AND ')}` : ''}
+      ORDER BY c.id ASC LIMIT ?
+    `).all(...params, limit + 1);
+    const hasMore = rows.length > limit;
+    const items = rows.slice(0, limit).map((row) => ({
+      id: row.id,
+      displayName: row.display_name,
+      kind: row.kind,
+      reviewStatus: row.review_status,
+      reviewedAt: row.reviewed_at,
+      verticalIds: this.db.prepare(
+        'SELECT vertical_id FROM creator_vertical_memberships WHERE creator_id = ? ORDER BY vertical_id'
+      ).all(row.id).map((item) => item.vertical_id),
+      accountCount: row.account_count,
+      latestPostAt: row.latest_post_at
+    }));
+    return {
+      items,
+      nextCursor: hasMore ? encodeCursor({ h: hash, sort: [items.at(-1).id] }) : null
+    };
+  }
+
+  getCreator(id) {
+    this.ensureInitialized();
+    const row = this.db.prepare('SELECT * FROM creators WHERE id = ?').get(id);
+    if (!row) return null;
+    const accounts = this.db.prepare(`
+      SELECT a.*, b.state AS persisted_backfill_state, b.oldest_fetched_at AS persisted_oldest,
+        b.newest_fetched_at AS persisted_newest, b.last_reconciled_at AS persisted_reconciled,
+        b.history_limit_reason AS persisted_reason, b.pages_fetched, b.items_fetched, b.updated_at AS backfill_updated_at,
+        (SELECT MAX(p.published_at) FROM creator_posts p WHERE p.account_id = a.id) AS latest_post_at,
+        (SELECT COUNT(*) FROM creator_posts p WHERE p.account_id = a.id) AS post_count
+      FROM creator_accounts a
+      LEFT JOIN creator_backfills b ON b.account_id = a.id
+      WHERE a.creator_id = ? ORDER BY a.platform, a.id
+    `).all(id).map((account) => ({
+      id: account.id,
+      platform: account.platform,
+      handle: account.handle,
+      profileUrl: account.profile_url,
+      region: account.region,
+      sourceTier: account.source_tier,
+      enabled: bool(account.enabled),
+      authState: account.auth_state,
+      lastVerifiedAt: account.last_verified_at,
+      latestPostAt: account.latest_post_at,
+      postCount: account.post_count,
+      backfill: {
+        state: account.persisted_backfill_state || account.backfill_state,
+        oldestFetchedAt: account.persisted_oldest || account.oldest_fetched_at,
+        newestFetchedAt: account.persisted_newest || account.newest_fetched_at,
+        lastReconciledAt: account.persisted_reconciled || account.last_reconciled_at,
+        historyLimitReason: account.persisted_reason || account.history_limit_reason,
+        pagesFetched: Number(account.pages_fetched || 0),
+        itemsFetched: Number(account.items_fetched || 0),
+        updatedAt: account.backfill_updated_at || account.updated_at
+      }
+    }));
+    return {
+      id: row.id,
+      displayName: row.display_name,
+      kind: row.kind,
+      reviewStatus: row.review_status,
+      reviewedAt: row.reviewed_at,
+      verticalIds: this.db.prepare(
+        'SELECT vertical_id FROM creator_vertical_memberships WHERE creator_id = ? ORDER BY vertical_id'
+      ).all(id).map((item) => item.vertical_id),
+      accounts
+    };
+  }
+
+  queryPosts(options = {}) {
+    this.ensureInitialized();
+    const q = normalizeSearch(options.q);
+    const filters = {
+      vertical: options.vertical || null,
+      platform: options.platform || null,
+      creator: options.creator || null,
+      since: options.since || null,
+      hot: options.hot === true
+    };
+    const hash = stableHash({ kind: 'posts', q, ...filters });
+    const cursor = decodeCursor(options.cursor, hash);
+    const clauses = ['p.deleted_at IS NULL'];
+    const params = [];
+    const joinFts = q ? 'JOIN creator_posts_fts ON creator_posts_fts.post_id = p.id' : '';
+    if (q) {
+      clauses.push('creator_posts_fts MATCH ?');
+      params.push(literalFtsQuery(q));
+    }
+    if (filters.vertical) {
+      clauses.push('EXISTS (SELECT 1 FROM creator_post_verticals pv WHERE pv.post_id = p.id AND pv.vertical_id = ?)');
+      params.push(filters.vertical);
+    }
+    if (filters.platform) {
+      clauses.push('p.platform = ?');
+      params.push(filters.platform);
+    }
+    if (filters.creator) {
+      clauses.push('a.creator_id = ?');
+      params.push(filters.creator);
+    }
+    if (filters.since) {
+      clauses.push('p.published_at >= ?');
+      params.push(filters.since);
+    }
+    if (filters.hot) {
+      clauses.push('score.score >= 60');
+    }
+    if (cursor) {
+      if (q) {
+        clauses.push(`(
+          bm25(creator_posts_fts) > ? OR
+          (bm25(creator_posts_fts) = ? AND (p.published_at < ? OR (p.published_at = ? AND p.id < ?)))
+        )`);
+        params.push(cursor.sort[0], cursor.sort[0], cursor.sort[1], cursor.sort[1], cursor.sort[2]);
+      } else {
+        clauses.push('(p.published_at < ? OR (p.published_at = ? AND p.id < ?))');
+        params.push(cursor.sort[0], cursor.sort[0], cursor.sort[1]);
+      }
+    }
+    const limit = Math.min(Math.max(Number(options.limit || 20), 1), 100);
+    const rank = q ? 'bm25(creator_posts_fts)' : 'NULL';
+    const order = q
+      ? 'search_rank ASC, p.published_at DESC, p.id DESC'
+      : 'p.published_at DESC, p.id DESC';
+    const rows = this.db.prepare(`
+      SELECT p.*, a.creator_id, c.display_name AS creator_name,
+        ${rank} AS search_rank,
+        score.formula_version AS score_formula_version, score.score AS hotness_score,
+        score.confidence AS hotness_confidence, score.components_json, score.penalties_json
+      FROM creator_posts p
+      JOIN creator_accounts a ON a.id = p.account_id
+      JOIN creators c ON c.id = a.creator_id
+      ${joinFts}
+      LEFT JOIN creator_post_scores score ON score.id = (
+        SELECT s.id FROM creator_post_scores s WHERE s.post_id = p.id
+        ORDER BY s.captured_at DESC, s.id DESC LIMIT 1
+      )
+      WHERE ${clauses.join(' AND ')}
+      ORDER BY ${order} LIMIT ?
+    `).all(...params, limit + 1);
+    const hasMore = rows.length > limit;
+    const selected = rows.slice(0, limit);
+    const items = selected.map((row) => ({
+      ...this.mapPost(row),
+      creatorId: row.creator_id,
+      creatorName: row.creator_name,
+      searchRank: q ? row.search_rank : null,
+      hotness: row.hotness_score === null ? null : {
+        formulaVersion: row.score_formula_version,
+        score: row.hotness_score,
+        confidence: row.hotness_confidence,
+        components: parseJson(row.components_json, {}),
+        penalties: parseJson(row.penalties_json, {})
+      }
+    }));
+    const last = selected.at(-1);
+    return {
+      items,
+      nextCursor: hasMore && last ? encodeCursor({
+        h: hash,
+        sort: q ? [last.search_rank, last.published_at, last.id] : [last.published_at, last.id]
+      }) : null
+    };
+  }
+
+  deletePosts(ids = []) {
+    this.ensureInitialized();
+    const uniqueIds = [...new Set(ids.map((id) => String(id || '').trim()).filter(Boolean))];
+    const deleteFts = this.db.prepare('DELETE FROM creator_posts_fts WHERE post_id = ?');
+    const deletePost = this.db.prepare('DELETE FROM creator_posts WHERE id = ?');
+    const transaction = this.db.transaction(() => {
+      let deleted = 0;
+      for (const id of uniqueIds) {
+        deleteFts.run(id);
+        deleted += deletePost.run(id).changes;
+      }
+      return deleted;
+    });
+    return transaction();
+  }
+
+  queryTopics(options = {}) {
+    this.ensureInitialized();
+    const q = normalizeSearch(options.q);
+    const filters = { vertical: options.vertical || null, since: options.since || null };
+    const hash = stableHash({ kind: 'topics', q, ...filters });
+    const cursor = decodeCursor(options.cursor, hash);
+    const clauses = [];
+    const params = [];
+    if (filters.vertical) {
+      clauses.push('t.vertical_id = ?');
+      params.push(filters.vertical);
+    }
+    if (filters.since) {
+      clauses.push('t.latest_seen_at >= ?');
+      params.push(filters.since);
+    }
+    let cte = '';
+    let join = '';
+    let rank = 'NULL';
+    if (q) {
+      cte = `WITH matched AS (
+        SELECT tp.topic_id, MIN(creator_posts_fts.rank) AS search_rank
+        FROM creator_posts_fts
+        JOIN creator_topic_posts tp ON tp.post_id = creator_posts_fts.post_id
+        WHERE creator_posts_fts MATCH ? GROUP BY tp.topic_id
+      )`;
+      params.unshift(literalFtsQuery(q));
+      join = 'JOIN matched m ON m.topic_id = t.id';
+      rank = 'm.search_rank';
+    }
+    if (cursor) {
+      if (q) {
+        clauses.push(`(
+          m.search_rank > ? OR
+          (m.search_rank = ? AND (t.latest_seen_at < ? OR (t.latest_seen_at = ? AND t.id < ?)))
+        )`);
+        params.push(cursor.sort[0], cursor.sort[0], cursor.sort[1], cursor.sort[1], cursor.sort[2]);
+      } else {
+        clauses.push('(t.latest_seen_at < ? OR (t.latest_seen_at = ? AND t.id < ?))');
+        params.push(cursor.sort[0], cursor.sort[0], cursor.sort[1]);
+      }
+    }
+    const limit = Math.min(Math.max(Number(options.limit || 20), 1), 100);
+    const rows = this.db.prepare(`
+      ${cte}
+      SELECT t.*, ${rank} AS search_rank
+      FROM creator_topics t ${join}
+      ${clauses.length ? `WHERE ${clauses.join(' AND ')}` : ''}
+      ORDER BY ${q ? 'search_rank ASC,' : ''} t.latest_seen_at DESC, t.id DESC LIMIT ?
+    `).all(...params, limit + 1);
+    const hasMore = rows.length > limit;
+    const selected = rows.slice(0, limit);
+    const items = selected.map((row) => this.mapCreatorTopic(row, q ? row.search_rank : null));
+    const last = selected.at(-1);
+    return {
+      items,
+      nextCursor: hasMore && last ? encodeCursor({
+        h: hash,
+        sort: q ? [last.search_rank, last.latest_seen_at, last.id] : [last.latest_seen_at, last.id]
+      }) : null
+    };
+  }
+
+  mapCreatorTopic(row, searchRank = null) {
+    const payload = parseJson(row.payload_json, {});
+    const evidence = Array.isArray(payload.evidence) ? payload.evidence.map((item) => ({
+      postId: item.postId || null,
+      url: safeHttps(item.url)
+    })).filter((item) => item.url) : [];
+    return {
+      id: row.id,
+      verticalId: row.vertical_id,
+      title: row.title,
+      summary: row.summary,
+      firstSeenAt: row.first_seen_at,
+      latestSeenAt: row.latest_seen_at,
+      hotness: row.hotness,
+      formulaVersion: row.formula_version,
+      creatorCount: row.creator_count,
+      platformCount: row.platform_count,
+      searchRank,
+      signals: payload.signals && typeof payload.signals === 'object' ? payload.signals : {},
+      evidence
+    };
+  }
+
+  getCreatorTopic(id) {
+    this.ensureInitialized();
+    const row = this.db.prepare('SELECT * FROM creator_topics WHERE id = ?').get(id);
+    return row ? this.mapCreatorTopic(row) : null;
+  }
+
+  listHot(options = {}) {
+    this.ensureInitialized();
+    if (options.type === 'post') {
+      return this.queryHotPosts(options);
+    }
+    return this.queryHotTopics(options);
+  }
+
+  queryHotTopics(options = {}) {
+    this.ensureInitialized();
+    const clauses = [];
+    const params = [];
+    if (options.vertical) { clauses.push('vertical_id = ?'); params.push(options.vertical); }
+    if (options.since) { clauses.push('latest_seen_at >= ?'); params.push(options.since); }
+    if (options.type === 'multi_creator') clauses.push('creator_count >= 3');
+    if (options.type === 'cross_platform') {
+      clauses.push('creator_count >= 3');
+      clauses.push('platform_count >= 2');
+    }
+    const limit = Math.min(Math.max(Number(options.limit || 20), 1), 100);
+    const rows = this.db.prepare(`
+      SELECT * FROM creator_topics
+      ${clauses.length ? `WHERE ${clauses.join(' AND ')}` : ''}
+      ORDER BY COALESCE(hotness, 0) DESC, latest_seen_at DESC, id DESC LIMIT ?
+    `).all(...params, limit);
+    return { items: rows.map((row) => this.mapCreatorTopic(row)), nextCursor: null };
+  }
+
+  queryHotPosts(options = {}) {
+    this.ensureInitialized();
+    const clauses = ['p.deleted_at IS NULL', 'score.score >= 60'];
+    const params = [];
+    if (options.vertical) {
+      clauses.push('EXISTS (SELECT 1 FROM creator_post_verticals pv WHERE pv.post_id = p.id AND pv.vertical_id = ?)');
+      params.push(options.vertical);
+    }
+    if (options.platform) { clauses.push('p.platform = ?'); params.push(options.platform); }
+    if (options.creator) { clauses.push('a.creator_id = ?'); params.push(options.creator); }
+    if (options.since) { clauses.push('p.published_at >= ?'); params.push(options.since); }
+    const limit = Math.min(Math.max(Number(options.limit || 20), 1), 100);
+    const rows = this.db.prepare(`
+      SELECT p.*, a.creator_id, c.display_name AS creator_name,
+        score.formula_version AS score_formula_version, score.score AS hotness_score,
+        score.confidence AS hotness_confidence, score.components_json, score.penalties_json
+      FROM creator_posts p
+      JOIN creator_accounts a ON a.id = p.account_id
+      JOIN creators c ON c.id = a.creator_id
+      JOIN creator_post_scores score ON score.id = (
+        SELECT s.id FROM creator_post_scores s WHERE s.post_id = p.id
+        ORDER BY s.captured_at DESC, s.id DESC LIMIT 1
+      )
+      WHERE ${clauses.join(' AND ')}
+      ORDER BY score.score DESC, p.published_at DESC, p.id DESC LIMIT ?
+    `).all(...params, limit);
+    return {
+      items: rows.map((row) => ({
+        ...this.mapPost(row),
+        creatorId: row.creator_id,
+        creatorName: row.creator_name,
+        searchRank: null,
+        hotness: {
+          formulaVersion: row.score_formula_version,
+          score: row.hotness_score,
+          confidence: row.hotness_confidence,
+          components: parseJson(row.components_json, {}),
+          penalties: parseJson(row.penalties_json, {})
+        }
+      })),
+      nextCursor: null
+    };
+  }
+
+  listSourceCoverage(sources = []) {
+    this.ensureInitialized();
+    const byPlatform = this.db.prepare(`
+      SELECT a.platform, COUNT(DISTINCT a.id) AS account_count,
+        COUNT(DISTINCT CASE WHEN a.enabled = 1 THEN a.id END) AS enabled_account_count,
+        MAX(p.published_at) AS latest_post_at,
+        COUNT(DISTINCT p.id) AS post_count
+      FROM creator_accounts a LEFT JOIN creator_posts p ON p.account_id = a.id
+      GROUP BY a.platform
+    `).all();
+    const coverage = new Map(byPlatform.map((row) => [row.platform, row]));
+    return sources.map((source) => {
+      const row = coverage.get(source.platform) || {};
+      return {
+        id: source.id,
+        platform: source.platform,
+        tier: source.tier,
+        configured: source.configured === true,
+        schedulable: source.schedulable === true,
+        status: source.status || 'unconfigured',
+        lastSuccessAt: source.lastSuccessAt || null,
+        lastAttemptAt: source.lastAttemptAt || null,
+        lastFailureCode: source.lastFailureCode || null,
+        setupHint: source.setupHint || null,
+        accountCount: Number(row.account_count || 0),
+        enabledAccountCount: Number(row.enabled_account_count || 0),
+        postCount: Number(row.post_count || 0),
+        latestPostAt: row.latest_post_at || null
+      };
+    });
+  }
+
+  getCoverageSummary() {
+    this.ensureInitialized();
+    const row = this.db.prepare(`
+      SELECT
+        (SELECT COUNT(*) FROM creators WHERE review_status = 'verified') AS verified_creators,
+        (SELECT COUNT(*) FROM creator_accounts WHERE enabled = 1) AS enabled_accounts,
+        (SELECT COUNT(*) FROM creator_posts WHERE deleted_at IS NULL) AS posts,
+        (SELECT COUNT(*) FROM creator_topics) AS topics,
+        (SELECT MAX(collected_at) FROM creator_posts) AS last_collected_at
+    `).get();
+    return {
+      verifiedCreators: row.verified_creators,
+      enabledAccounts: row.enabled_accounts,
+      posts: row.posts,
+      topics: row.topics,
+      lastCollectedAt: row.last_collected_at
+    };
+  }
+
+  appendCreatorEvent(event = {}) {
+    this.ensureInitialized();
+    if (!event.id || !event.eventType || !event.entityType || !event.entityId) {
+      throw new TypeError('event id/type/entity required');
+    }
+    const occurredAt = iso(event.occurredAt || Date.now(), 'occurredAt');
+    const result = this.db.prepare(`
+      INSERT INTO creator_events (
+        id, event_type, entity_type, entity_id, vertical_id, platform, score,
+        formula_version, transition_bucket, payload_json, occurred_at, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      event.id, event.eventType, event.entityType, event.entityId,
+      event.verticalId || null, event.platform || null,
+      Number.isFinite(Number(event.score)) ? Number(event.score) : null,
+      event.formulaVersion || null, event.transitionBucket || event.id,
+      json(event.payload, {}), occurredAt, occurredAt
+    );
+    return Number(result.lastInsertRowid);
+  }
+
+  listCreatorChanges(options = {}) {
+    this.ensureInitialized();
+    const since = Math.max(Number(options.since || 0), 0);
+    const filters = [];
+    const filterParams = [];
+    if (options.vertical) { filters.push('vertical_id = ?'); filterParams.push(options.vertical); }
+    if (options.platform) { filters.push('platform = ?'); filterParams.push(options.platform); }
+    if (options.creator) {
+      filters.push(`(
+        (entity_type = 'creator' AND entity_id = ?) OR
+        (entity_type = 'post' AND entity_id IN (
+          SELECT p.id FROM creator_posts p JOIN creator_accounts a ON a.id = p.account_id WHERE a.creator_id = ?
+        ))
+      )`);
+      filterParams.push(options.creator, options.creator);
+    }
+    const where = filters.length ? `WHERE ${filters.join(' AND ')}` : '';
+    const bounds = this.db.prepare(`
+      SELECT MIN(seq) AS oldest, MAX(seq) AS latest FROM creator_events ${where}
+    `).get(...filterParams);
+    const oldestCursor = Number(bounds.oldest || 0);
+    const latestCursor = Number(bounds.latest || 0);
+    if (oldestCursor > 1 && since < oldestCursor - 1) {
+      return { expired: true, items: [], nextCursor: latestCursor, oldestCursor, latestCursor };
+    }
+    const limit = Math.min(Math.max(Number(options.limit || 100), 1), 500);
+    const itemWhere = ['seq > ?', ...filters];
+    const rows = this.db.prepare(`
+      SELECT * FROM creator_events WHERE ${itemWhere.join(' AND ')} ORDER BY seq ASC LIMIT ?
+    `).all(since, ...filterParams, limit);
+    const items = rows.map((row) => ({
+      seq: row.seq,
+      id: row.id,
+      eventType: row.event_type,
+      entityType: row.entity_type,
+      entityId: row.entity_id,
+      verticalId: row.vertical_id,
+      platform: row.platform,
+      score: row.score,
+      formulaVersion: row.formula_version,
+      occurredAt: row.occurred_at,
+      payload: publicEventPayload(parseJson(row.payload_json, {}))
+    }));
+    return {
+      expired: false,
+      items,
+      nextCursor: items.at(-1)?.seq ?? since,
+      oldestCursor,
+      latestCursor
+    };
+  }
+
+  listBackfills(options = {}) {
+    this.ensureInitialized();
+    const clauses = [];
+    const params = [];
+    if (options.state) { clauses.push('COALESCE(b.state, a.backfill_state) = ?'); params.push(options.state); }
+    if (options.platform) { clauses.push('a.platform = ?'); params.push(options.platform); }
+    const hash = stableHash({ kind: 'backfills', state: options.state || null, platform: options.platform || null });
+    const cursor = decodeCursor(options.cursor, hash);
+    if (cursor) { clauses.push('a.id > ?'); params.push(cursor.sort[0]); }
+    const limit = Math.min(Math.max(Number(options.limit || 20), 1), 100);
+    const rows = this.db.prepare(`
+      SELECT a.id AS account_id, a.creator_id, a.platform,
+        COALESCE(b.state, a.backfill_state) AS state,
+        COALESCE(b.oldest_fetched_at, a.oldest_fetched_at) AS oldest_fetched_at,
+        COALESCE(b.newest_fetched_at, a.newest_fetched_at) AS newest_fetched_at,
+        COALESCE(b.last_reconciled_at, a.last_reconciled_at) AS last_reconciled_at,
+        COALESCE(b.history_limit_reason, a.history_limit_reason) AS history_limit_reason,
+        COALESCE(b.pages_fetched, 0) AS pages_fetched,
+        COALESCE(b.items_fetched, 0) AS items_fetched,
+        COALESCE(b.updated_at, a.updated_at) AS updated_at
+      FROM creator_accounts a LEFT JOIN creator_backfills b ON b.account_id = a.id
+      ${clauses.length ? `WHERE ${clauses.join(' AND ')}` : ''}
+      ORDER BY a.id ASC LIMIT ?
+    `).all(...params, limit + 1);
+    const hasMore = rows.length > limit;
+    const selected = rows.slice(0, limit);
+    const items = selected.map((row) => ({
+      accountId: row.account_id,
+      creatorId: row.creator_id,
+      platform: row.platform,
+      state: row.state,
+      oldestFetchedAt: row.oldest_fetched_at,
+      newestFetchedAt: row.newest_fetched_at,
+      lastReconciledAt: row.last_reconciled_at,
+      historyLimitReason: row.history_limit_reason,
+      pagesFetched: row.pages_fetched,
+      itemsFetched: row.items_fetched,
+      updatedAt: row.updated_at
+    }));
+    return {
+      items,
+      nextCursor: hasMore ? encodeCursor({ h: hash, sort: [selected.at(-1).account_id] }) : null
+    };
   }
 
   getPost(id) {
