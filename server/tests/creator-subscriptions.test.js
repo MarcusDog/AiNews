@@ -49,6 +49,21 @@ test('endpoint ownership and disabled rules fail closed', () => {
   } finally { item.close(); }
 });
 
+test('in-app endpoints can target only their owning authenticated user', () => {
+  const item = fixture();
+  try {
+    assert.throws(() => item.service.createEndpoint('user-a', {
+      id: 'cross-user', type: 'in_app', destination: 'user-b'
+    }), /invalid_endpoint_destination/);
+    item.service.createEndpoint('user-a', {
+      id: 'owned', type: 'in_app', destination: 'user-a'
+    });
+    assert.throws(() => item.service.updateEndpoint('user-a', 'owned', {
+      destination: 'user-b'
+    }), /invalid_endpoint_destination/);
+  } finally { item.close(); }
+});
+
 test('matching applies vertical, platform, creator, event and minimum-score filters', () => {
   const item = fixture();
   try {

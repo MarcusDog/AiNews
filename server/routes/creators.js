@@ -76,6 +76,7 @@ function createCreatorsRouter(options = {}) {
   const configuredAdminKey = options.adminKey === undefined ? process.env.ADMIN_API_KEY : options.adminKey;
   const requireUser = options.requireUser || requireSessionUser;
   const subscriptions = options.subscriptionService || new SubscriptionService({ store, now });
+  const outboxWorker = options.outboxWorker || null;
 
   const meta = (extra = {}) => ({
     generatedAt: now(),
@@ -305,6 +306,29 @@ function createCreatorsRouter(options = {}) {
       const removed = subscriptions.deleteEndpoint(req.authUser.id, req.params.id);
       if (!removed) return res.status(404).json({ success: false, error: 'endpoint_not_found' });
       return ok(res, { removed: true });
+    } catch (error) { return next(error); }
+  });
+
+  router.post('/delivery-endpoints/:id/test', requireUser, async (req, res, next) => {
+    try {
+      if (!outboxWorker?.runOnce) {
+        return res.status(503).json({ success: false, error: 'delivery_worker_unavailable' });
+      }
+      const outboxId = store.enqueueEndpointTest(req.authUser.id, req.params.id, { now: now() });
+      if (!outboxId) return res.status(404).json({ success: false, error: 'endpoint_not_found' });
+      await outboxWorker.runOnce({ id: outboxId, limit: 1 });
+      const delivery = store.listDeliveries(req.authUser.id, { limit: 100 })
+        .find((item) => item.id === outboxId);
+      return ok(res, delivery);
+    } catch (error) { return next(error); }
+  });
+
+  router.get('/deliveries', requireUser, (req, res, next) => {
+    try {
+      const limit = integer(req.query.limit, 50, 1, 100);
+      if (limit === null) return res.status(400).json({ success: false, error: 'invalid_query' });
+      const items = store.listDeliveries(req.authUser.id, { limit });
+      return ok(res, { items }, { count: items.length, limit });
     } catch (error) { return next(error); }
   });
 

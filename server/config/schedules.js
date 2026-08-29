@@ -6,6 +6,7 @@ const newsSchedules = {
   creatorIncremental: '*/10 * * * *',
   creatorReconciliation: '43 3 * * *',
   creatorMetricRefresh: '7,27,47 * * * *',
+  creatorOutbox: '* * * * *',
   diversityAudit: '30 8 * * *',
   cleanup: '0 2 * * *',
   timezone: 'Asia/Shanghai',

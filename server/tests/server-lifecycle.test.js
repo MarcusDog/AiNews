@@ -40,12 +40,13 @@ test('disabled cron registers no jobs; enabled cron registers all explicit sched
     databaseService: { initialize: async () => {}, cleanOldNews: async () => 0 },
     diversityAuditService: { runDailyAudit: async () => ({ status: 'ok' }) }
   });
-  assert.equal(enabled.length, 9);
+  assert.equal(enabled.length, 10);
   assert(expressions.includes('*/30 * * * *'));
   assert(expressions.includes('17 */6 * * *'));
   assert(expressions.includes('*/10 * * * *'));
   assert(expressions.includes('43 3 * * *'));
   assert(expressions.includes('7,27,47 * * * *'));
+  assert(expressions.includes('* * * * *'));
   enabled.forEach((job) => job.stop());
 });
 
@@ -60,7 +61,7 @@ test('creator scheduler flag removes only creator acquisition jobs', () => {
     databaseService: { initialize: async () => {}, cleanOldNews: async () => 0 },
     diversityAuditService: { runDailyAudit: async () => ({ status: 'ok' }) }
   });
-  assert.equal(jobs.length, 6);
+  assert.equal(jobs.length, 7);
   assert(!expressions.includes('*/10 * * * *'));
   jobs.forEach((job) => job.stop());
 });

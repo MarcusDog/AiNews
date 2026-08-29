@@ -131,6 +131,9 @@ class SubscriptionService {
 
   createEndpoint(userId, input = {}) {
     if (!userId || !ENDPOINT_TYPES.has(input.type) || !input.destination) throw new TypeError('invalid_endpoint');
+    if (input.type === 'in_app' && String(input.destination) !== String(userId)) {
+      throw new TypeError('invalid_endpoint_destination');
+    }
     const id = input.id || `endpoint_${crypto.randomUUID()}`;
     const timestamp = this.now();
     this.store.db.prepare(`
@@ -156,6 +159,9 @@ class SubscriptionService {
     const type = patch.type ?? current.type;
     const destination = patch.destination ?? current.destination;
     if (!ENDPOINT_TYPES.has(type) || !destination) throw new TypeError('invalid_endpoint');
+    if (type === 'in_app' && String(destination) !== String(userId)) {
+      throw new TypeError('invalid_endpoint_destination');
+    }
     this.store.db.prepare(`UPDATE creator_delivery_endpoints SET type=?, destination=?, secret_ref=?, enabled=?, updated_at=? WHERE id=? AND user_id=?`)
       .run(type, String(destination), patch.secretRef ?? current.secret_ref, patch.enabled === undefined ? current.enabled : patch.enabled ? 1 : 0, this.now(), id, userId);
     return this.getEndpoint(userId, id);
@@ -195,7 +201,7 @@ class SubscriptionService {
   }
 
   listSubscriptions(userId) {
-    return this.store.db.prepare('SELECT * FROM creator_subscriptions WHERE user_id = ? ORDER BY created_at, id').all(userId)
+    return this.store.db.prepare("SELECT * FROM creator_subscriptions WHERE user_id = ? AND name != '__aya_endpoint_test__' ORDER BY created_at, id").all(userId)
       .map((row) => this.getSubscription(userId, row.id));
   }
 

@@ -7,6 +7,7 @@ const path = require('node:path');
 
 const CreatorStore = require('../services/creators/creator-store');
 const { createCreatorsRouter } = require('../routes/creators');
+const OutboxWorker = require('../services/creators/outbox-worker');
 
 const NOW = '2026-08-29T12:00:00.000Z';
 
@@ -120,6 +121,7 @@ async function withServer(fixture, run, options = {}) {
     sourceRegistry: fixture.sourceRegistry,
     adminKey: options.adminKey === undefined ? 'correct-key' : options.adminKey,
     requireUser: options.requireUser,
+    outboxWorker: options.outboxWorker,
     now: () => NOW
   }));
   const server = await new Promise((resolve) => {
@@ -429,6 +431,43 @@ test('authenticated users manage only their own subscriptions and delivery endpo
       const removed = await json(origin, '/subscriptions/subscription-a', { method: 'DELETE', headers });
       assert.equal(removed.payload.data.removed, true);
     }, { requireUser });
+  } finally { fixture.close(); }
+});
+
+test('endpoint test delivery runs only through the outbox worker and exposes an owned audited attempt', async () => {
+  const fixture = makeFixture();
+  const worker = new OutboxWorker({
+    store: fixture.store,
+    now: () => NOW,
+    transports: { test: async () => ({ status: 204 }) }
+  });
+  const requireUser = (req, res, next) => {
+    const id = req.get('x-test-user');
+    if (!id) return res.status(401).json({ success: false, error: 'auth_required' });
+    req.authUser = { id };
+    return next();
+  };
+  try {
+    await withServer(fixture, async (origin) => {
+      const headers = { 'content-type': 'application/json', 'x-test-user': 'user-a' };
+      await json(origin, '/delivery-endpoints', {
+        method: 'POST', headers,
+        body: JSON.stringify({ id: 'endpoint-test', type: 'test', destination: 'test://user-a' })
+      });
+      const delivered = await json(origin, '/delivery-endpoints/endpoint-test/test', {
+        method: 'POST', headers, body: '{}'
+      });
+      assert.equal(delivered.response.status, 200);
+      assert.equal(delivered.payload.data.status, 'delivered');
+      assert.equal(fixture.store.db.prepare('SELECT COUNT(*) AS count FROM creator_delivery_attempts').get().count, 1);
+      assert.equal(fixture.store.db.prepare("SELECT enabled FROM creator_subscriptions WHERE name = '__aya_endpoint_test__'").get().enabled, 0);
+
+      const owned = await json(origin, '/deliveries', { headers: { 'x-test-user': 'user-a' } });
+      const other = await json(origin, '/deliveries', { headers: { 'x-test-user': 'user-b' } });
+      assert.equal(owned.payload.data.items[0].endpointId, 'endpoint-test');
+      assert.equal(owned.payload.data.items[0].status, 'delivered');
+      assert.deepEqual(other.payload.data.items, []);
+    }, { requireUser, outboxWorker: worker });
   } finally { fixture.close(); }
 });
 

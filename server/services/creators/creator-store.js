@@ -2,6 +2,7 @@ const Database = require('better-sqlite3');
 const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
+const { EventEmitter } = require('node:events');
 
 const METRIC_FIELDS = [
   'views', 'likes', 'comments', 'shares', 'bookmarks', 'platformRank', 'followersAtCapture'
@@ -127,6 +128,8 @@ class CreatorStore {
       || path.join(__dirname, '../../data/ainews.db');
     this.db = options.db || null;
     this.initialized = false;
+    this.creatorEvents = new EventEmitter();
+    this.creatorEvents.setMaxListeners(0);
   }
 
   initialize() {
@@ -1435,7 +1438,14 @@ class CreatorStore {
       event.formulaVersion || null, event.transitionBucket || event.id,
       json(event.payload, {}), occurredAt, occurredAt
     );
-    return Number(result.lastInsertRowid);
+    const seq = Number(result.lastInsertRowid);
+    this.creatorEvents.emit('committed', { seq, id: event.id });
+    return seq;
+  }
+
+  onCreatorEvent(listener) {
+    this.creatorEvents.on('committed', listener);
+    return () => this.creatorEvents.off('committed', listener);
   }
 
   resolveSubscriptionDeliveries(event, occurredAt) {
@@ -1505,7 +1515,12 @@ class CreatorStore {
       }
       return { value: state.value, before: state.before ?? null, after: state.after ?? null, events, outboxCount };
     });
-    return transaction();
+    const result = transaction();
+    for (const event of result.events) {
+      const row = this.db.prepare('SELECT seq FROM creator_events WHERE id = ?').get(event.id);
+      if (row) this.creatorEvents.emit('committed', { seq: Number(row.seq), id: event.id });
+    }
+    return result;
   }
 
   claimDueOutbox(options = {}) {
@@ -1514,7 +1529,11 @@ class CreatorStore {
     const leaseUntil = new Date(Date.parse(now) + Math.max(Number(options.leaseMs || 60_000), 1000)).toISOString();
     const limit = Math.min(Math.max(Number(options.limit || 50), 1), 500);
     const transaction = this.db.transaction(() => {
-      const candidates = this.db.prepare(`
+      const candidates = options.id ? this.db.prepare(`
+        SELECT id FROM creator_delivery_outbox
+        WHERE id = ? AND status IN ('pending', 'retry', 'processing') AND next_attempt_at <= ?
+        LIMIT 1
+      `).all(options.id, now) : this.db.prepare(`
         SELECT id FROM creator_delivery_outbox
         WHERE status IN ('pending', 'retry', 'processing') AND next_attempt_at <= ?
         ORDER BY next_attempt_at, id LIMIT ?
@@ -1589,6 +1608,85 @@ class CreatorStore {
     }
     return this.db.prepare(`UPDATE creator_delivery_outbox SET status='pending', attempt_count=0, next_attempt_at=?, last_error=NULL, delivered_at=NULL WHERE status='dead'`)
       .run(now).changes;
+  }
+
+  enqueueEndpointTest(userId, endpointId, options = {}) {
+    this.ensureInitialized();
+    const endpoint = this.db.prepare(
+      'SELECT id FROM creator_delivery_endpoints WHERE id = ? AND user_id = ? AND enabled = 1'
+    ).get(endpointId, userId);
+    if (!endpoint) return null;
+    const now = iso(options.now || Date.now(), 'now');
+    const nonce = crypto.randomUUID();
+    const subscriptionId = `subscription_endpoint_test_${stableHash([userId, endpointId])}`;
+    const eventId = `creator-event_test_${nonce}`;
+    const outboxId = `creator-outbox_test_${nonce}`;
+    const transaction = this.db.transaction(() => {
+      this.db.prepare(`
+        INSERT INTO creator_subscriptions (
+          id, user_id, name, filters_json, delivery_mode, quiet_hours_json,
+          enabled, created_at, updated_at
+        ) VALUES (?, ?, '__aya_endpoint_test__', '{}', 'immediate', '{}', 0, ?, ?)
+        ON CONFLICT(id) DO UPDATE SET updated_at=excluded.updated_at
+      `).run(subscriptionId, userId, now, now);
+      this.db.prepare(`
+        INSERT OR IGNORE INTO creator_subscription_endpoints (subscription_id, endpoint_id, created_at)
+        VALUES (?, ?, ?)
+      `).run(subscriptionId, endpointId, now);
+      this.db.prepare(`
+        INSERT INTO creator_events (
+          id, event_type, entity_type, entity_id, vertical_id, platform, score,
+          formula_version, transition_bucket, payload_json, occurred_at, created_at
+        ) VALUES (?, 'delivery.test', 'delivery_endpoint', ?, NULL, NULL, NULL,
+          'delivery-test-v1', ?, ?, ?, ?)
+      `).run(eventId, endpointId, nonce, json({ title: 'AyaNews delivery endpoint test' }, {}), now, now);
+      this.db.prepare(`
+        INSERT INTO creator_delivery_outbox (
+          id, event_id, subscription_id, endpoint_id, status, attempt_count,
+          next_attempt_at, last_error, created_at, delivered_at
+        ) VALUES (?, ?, ?, ?, 'pending', 0, ?, NULL, ?, NULL)
+      `).run(outboxId, eventId, subscriptionId, endpointId, now, now);
+    });
+    transaction();
+    const seq = this.db.prepare('SELECT seq FROM creator_events WHERE id = ?').get(eventId)?.seq;
+    if (seq) this.creatorEvents.emit('committed', { seq: Number(seq), id: eventId });
+    return outboxId;
+  }
+
+  listDeliveries(userId, options = {}) {
+    this.ensureInitialized();
+    const limit = Math.min(Math.max(Number(options.limit || 50), 1), 100);
+    return this.db.prepare(`
+      SELECT o.id, o.endpoint_id, o.status, o.attempt_count, o.next_attempt_at,
+             o.last_error, o.created_at, o.delivered_at,
+             e.event_type, e.occurred_at,
+             a.attempted_at, a.status AS attempt_status, a.response_code, a.error AS attempt_error
+      FROM creator_delivery_outbox o
+      JOIN creator_delivery_endpoints d ON d.id = o.endpoint_id
+      JOIN creator_events e ON e.id = o.event_id
+      LEFT JOIN creator_delivery_attempts a ON a.id = (
+        SELECT id FROM creator_delivery_attempts WHERE outbox_id = o.id ORDER BY id DESC LIMIT 1
+      )
+      WHERE d.user_id = ?
+      ORDER BY o.created_at DESC, o.id DESC LIMIT ?
+    `).all(userId, limit).map((row) => ({
+      id: row.id,
+      endpointId: row.endpoint_id,
+      status: row.status,
+      attemptCount: row.attempt_count,
+      nextAttemptAt: row.next_attempt_at,
+      lastError: boundedText(row.last_error, 500),
+      createdAt: row.created_at,
+      deliveredAt: row.delivered_at,
+      eventType: row.event_type,
+      occurredAt: row.occurred_at,
+      latestAttempt: row.attempted_at ? {
+        attemptedAt: row.attempted_at,
+        status: row.attempt_status,
+        responseCode: row.response_code,
+        error: boundedText(row.attempt_error, 500)
+      } : null
+    }));
   }
 
   listCreatorChanges(options = {}) {
@@ -1849,6 +1947,7 @@ class CreatorStore {
   }
 
   close() {
+    this.creatorEvents.removeAllListeners();
     if (this.db) this.db.close();
     this.db = null;
     this.initialized = false;

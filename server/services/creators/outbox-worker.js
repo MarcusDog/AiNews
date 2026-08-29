@@ -18,7 +18,9 @@ class OutboxWorker {
 
   async runOnce(options = {}) {
     const now = this.now();
-    const rows = this.store.claimDueOutbox({ now, leaseMs: this.leaseMs, limit: options.limit || 50 });
+    const rows = this.store.claimDueOutbox({
+      now, leaseMs: this.leaseMs, limit: options.limit || 50, id: options.id
+    });
     const summary = { claimed: rows.length, delivered: 0, retried: 0, dead: 0 };
     for (const row of rows) {
       const transport = this.transports[row.endpoint.type];

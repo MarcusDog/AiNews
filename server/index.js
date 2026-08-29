@@ -20,6 +20,12 @@ const CreatorService = require('./services/creators/creator-service');
 const { createYoutubeWebSubRouter } = require('./routes/youtube-websub');
 const { createCreatorIngestRouter } = require('./routes/creator-ingest');
 const { createCreatorsRouter } = require('./routes/creators');
+const { createCreatorStreamRouter } = require('./routes/creator-stream');
+const OutboxWorker = require('./services/creators/outbox-worker');
+const { createWebhookTransport } = require('./services/creators/transports/webhook-transport');
+const { createSocketTransport } = require('./services/creators/transports/socket-transport');
+const { createEmailTransport } = require('./services/creators/transports/email-transport');
+const { createGenericMessageTransport } = require('./services/creators/transports/generic-message-transport');
 const creatorStore = new CreatorStore();
 creatorStore.initialize();
 const creatorSourceRegistry = new CreatorSourceRegistry({ env: process.env });
@@ -47,6 +53,21 @@ const io = new Server(server, {
   pingTimeout: 120000,  // 2 分钟超时
   pingInterval: 30000,  // 30 秒心跳
   transports: ['websocket', 'polling'] // 允许轮询作为备选
+});
+const genericMessageTransport = createGenericMessageTransport({ env: process.env });
+const creatorOutboxWorker = new OutboxWorker({
+  store: creatorStore,
+  transports: {
+    webhook: createWebhookTransport(),
+    in_app: createSocketTransport({ io }),
+    email: createEmailTransport(),
+    feishu: genericMessageTransport,
+    wecom: genericMessageTransport,
+    dingtalk: genericMessageTransport,
+    telegram: genericMessageTransport,
+    ntfy: genericMessageTransport,
+    bark: genericMessageTransport
+  }
 });
 
 // 信任代理设置
@@ -132,10 +153,12 @@ app.use('/api/content/v1', createContentRouter({ signalService }));
 app.use('/api/agent', agentRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/signals/v1', createSignalsRouter({ service: signalService }));
+app.use('/api/creators/v1/stream', createCreatorStreamRouter({ store: creatorStore }));
 app.use('/api/creators/v1', createCreatorsRouter({
   store: creatorStore,
   service: creatorService,
-  sourceRegistry: creatorSourceRegistry
+  sourceRegistry: creatorSourceRegistry,
+  outboxWorker: creatorOutboxWorker
 }));
 const contactRoutes = require('./routes/contact');
 app.use('/api/contact', contactRoutes);
@@ -293,6 +316,7 @@ async function initializeSystem(options = {}) {
   const newsService = options.newsService || require('./services/NewsService');
   const currentSignalService = options.signalService || signalService;
   const currentCreatorService = options.creatorService || creatorService;
+  const currentCreatorOutboxWorker = options.creatorOutboxWorker || creatorOutboxWorker;
   const diversityAuditService = options.diversityAuditService || require('./services/DiversityAuditService').diversityAuditService;
   const socketServer = options.socketServer || io;
   const result = { skippedRefresh: flags.skipStartupRefresh, errors: [] };
@@ -419,6 +443,13 @@ function registerCronJobs(options = {}) {
       } catch (error) {
         console.error('❌ 数据清理失败:', error.message);
       }
+    }, cronOptions),
+    cronLib.schedule(newsSchedules.creatorOutbox, async () => {
+      try {
+        await currentCreatorOutboxWorker.runOnce();
+      } catch (error) {
+        console.error('❌ Creator 推送队列处理失败:', error.message);
+      }
     }, cronOptions)
   ];
   if (env.AYA_DISABLE_CREATOR_SCHEDULER !== '1') {
@@ -519,6 +550,7 @@ module.exports = {
   creatorSourceRegistry,
   creatorBridgeVerifier,
   creatorService,
+  creatorOutboxWorker,
   youtubeWebSubService,
   getLifecycleFlags,
   initializeSystem,
