@@ -24,11 +24,14 @@ async function probe() {
   );
   const limit = Math.max(1, Math.min(Number(process.env.AINEWS_SIGNAL_SOURCE_LIMIT) || 5, 20));
   const results = [];
+  // Reuse one adapter per type so Reddit's multi-community endpoint is fetched
+  // once and shared exactly like the production SignalService.
+  const adapters = Object.fromEntries(Object.entries(factories).map(([id, factory]) => [id, factory()]));
 
   for (const source of catalog) {
     const started = Date.now();
     try {
-      const adapterResult = await factories[source.adapter]().collect(source, { limit });
+      const adapterResult = await adapters[source.adapter].collect(source, { limit });
       const items = Array.isArray(adapterResult) ? adapterResult : adapterResult.items || [];
       const valid = items.map((item) => normalizeSignal(item, source)).length;
       results.push({

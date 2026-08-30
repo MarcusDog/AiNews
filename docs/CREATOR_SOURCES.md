@@ -28,6 +28,19 @@ TikTok Research API 需要单独证明研究资格，不是通用博主 Connecto
 
 ## 3. 准备观察名单
 
+仓库内 `server/config/creatorBenchmarks.json` 是已通过公开频道稳定 ID 核验的基础对标目录，至少包含 100 位博主/媒体，并在美妆、穿搭、AI 科技、娱乐四个垂类各保留不少于 20 位。它可直接用于首次建库；`kind=person/media` 会阻止把媒体机构误写成个人博主。
+
+重新发现与核验：
+
+```bash
+node server/scripts/discover-creator-benchmarks.js \
+  --output server/config/creatorBenchmarks.json
+node server/scripts/verify-creator-benchmarks.js \
+  server/config/creatorBenchmarks.json
+```
+
+发现脚本只接受 `yt-dlp` 从公开频道返回的稳定 `UC…` ID；解析失败的候选不会写入目录。验证脚本再次检查 schema、重复账号、四垂类数量和公开 Atom 身份。瞬时限流/网络故障只进入报告，不能把失败账号伪报成“本轮在线”。
+
 复制示例到 Git 忽略的运营文件，并逐条核验：
 
 ```bash

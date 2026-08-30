@@ -66,7 +66,7 @@ const GLOBAL_RELEASE_SOURCES = [
   release('Hugging Face Evaluate 发布', 'huggingface/evaluate', { sourceGroup: 'research' }),
   release('LeRobot 官方发布', 'huggingface/lerobot'),
   release('vLLM 官方发布', 'vllm-project/vllm'),
-  release('llama.cpp 官方发布', 'ggml-org/llama.cpp'),
+  release('llama.cpp 官方发布', 'ggml-org/llama.cpp', { enabled: false, disabledReason: 'upstream_release_feed_empty_use_github_signal_adapter' }),
   release('whisper.cpp 官方发布', 'ggml-org/whisper.cpp'),
   release('Ollama 官方发布', 'ollama/ollama', { category: '新工具' }),
   release('PyTorch 官方发布', 'pytorch/pytorch'),

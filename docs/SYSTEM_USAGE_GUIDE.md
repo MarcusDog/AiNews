@@ -319,6 +319,15 @@ node scripts/creator-maintenance.js export
 4. 只使用预览返回的单次 token 清理冻结范围；
 5. 不把数据库、导出文件、生产观察名单或 Secret 提交到 Git。
 
+人工执行完整每日刷新：
+
+```bash
+cd server
+AINEWS_DB_PATH=./data/ainews.db npm run refresh:daily
+```
+
+刷新报告会分别记录 News、Signal 和 Creator 阶段；News 某个来源失败时仍继续构建热点与博主选题。`readiness` 必须至少包含 Signal Opportunity 或 Creator Topic，否则整轮标记为 `degraded`。同一进程内的重叠刷新返回 `refresh_in_progress`，不会并发写同一批数据。
+
 ## 10. 真实来源 Canary
 
 上线或修改 Connector 后，用独立临时数据库运行：
@@ -335,6 +344,27 @@ node server/scripts/canary-creator-sources.js \
 不要把 Canary 指向生产数据库，除非你明确希望它写入生产数据。验收至少检查：首次写入数、重复运行新增数、回填状态、HTTPS 原链可达率、来源失败原因和垂类分类。
 
 ## 11. 生产部署与上线验收
+
+当前标准更新链路不再要求生产服务器连接 GitHub：
+
+```bash
+# 在开发/采集控制机执行
+archive="$(./scripts/build-release.sh | tail -n 1)"
+AYA_DEPLOY_HOST=YOUR_SERVER_IP \
+AYA_DEPLOY_USER=YOUR_SSH_USER \
+AYA_DEPLOY_KEY=/absolute/path/to/key \
+AYA_DEPLOY_ROOT=/srv/ainews \
+./scripts/upload-release.sh "$archive"
+
+# 源码健康检查通过后，再合并本地内容数据
+AYA_DEPLOY_HOST=YOUR_SERVER_IP \
+AYA_DEPLOY_USER=YOUR_SSH_USER \
+AYA_DEPLOY_KEY=/absolute/path/to/key \
+AYA_DEPLOY_ROOT=/srv/ainews \
+./scripts/upload-data-snapshot.sh server/data/local-production-ready.db
+```
+
+源码上传会先校验压缩包 SHA256 和逐文件清单，再解压到版本目录，通过 `current` 符号链接原子切换。`.env`、数据库、日志和缓存位于 `shared/server`，不随源码覆盖；健康检查失败时恢复上一个链接并重启旧版本。数据上传再次校验 SQLite SHA256，在容器内执行在线备份后只 UPSERT 内容表，明确保留用户、会话、订阅、事件与投递队列。服务器若暂时没有可用 SSH 身份，先在本机完成 `package`、假服务器激活和临时数据库合并验收，不能把“生成成功”误报为“已上传”。
 
 ```bash
 cd client && npm ci && npm run build && cd ..

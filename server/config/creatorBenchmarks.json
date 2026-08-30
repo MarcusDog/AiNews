@@ -1,0 +1,3394 @@
+{
+  "version": "creator-seeds-v1",
+  "generatedAt": "2026-08-30T08:25:13.465Z",
+  "creators": [
+    {
+      "id": "beauty-labmuffinbeautyscience",
+      "displayName": "Lab Muffin Beauty Science",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCg6P323bLV4zMSWFqFhvWMg",
+          "platform": "youtube",
+          "externalAccountId": "UCg6P323bLV4zMSWFqFhvWMg",
+          "handle": "@LabMuffinBeautyScience",
+          "profileUrl": "https://www.youtube.com/channel/UCg6P323bLV4zMSWFqFhvWMg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCg6P323bLV4zMSWFqFhvWMg",
+          "verificationEvidence": "https://www.youtube.com/@LabMuffinBeautyScience",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-hyram",
+      "displayName": "Hyram",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC2sYit3cZ2CuD_8FHYH7O_Q",
+          "platform": "youtube",
+          "externalAccountId": "UC2sYit3cZ2CuD_8FHYH7O_Q",
+          "handle": "@Hyram",
+          "profileUrl": "https://www.youtube.com/channel/UC2sYit3cZ2CuD_8FHYH7O_Q",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC2sYit3cZ2CuD_8FHYH7O_Q",
+          "verificationEvidence": "https://www.youtube.com/@Hyram",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-jameswelsh",
+      "displayName": "James Welsh",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCPP291gN79qI1QZY1znOscg",
+          "platform": "youtube",
+          "externalAccountId": "UCPP291gN79qI1QZY1znOscg",
+          "handle": "@JamesWelsh",
+          "profileUrl": "https://www.youtube.com/channel/UCPP291gN79qI1QZY1znOscg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCPP291gN79qI1QZY1znOscg",
+          "verificationEvidence": "https://www.youtube.com/@JamesWelsh",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-doctorly",
+      "displayName": "Doctorly",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCHCZnC9akNA9pBP7aJGNKdg",
+          "platform": "youtube",
+          "externalAccountId": "UCHCZnC9akNA9pBP7aJGNKdg",
+          "handle": "@Doctorly",
+          "profileUrl": "https://www.youtube.com/channel/UCHCZnC9akNA9pBP7aJGNKdg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCHCZnC9akNA9pBP7aJGNKdg",
+          "verificationEvidence": "https://www.youtube.com/@Doctorly",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-drdrayzday",
+      "displayName": "Dr Dray",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCnxmUrGMtpQT844Yd_l7Zyg",
+          "platform": "youtube",
+          "externalAccountId": "UCnxmUrGMtpQT844Yd_l7Zyg",
+          "handle": "@DrDrayzday",
+          "profileUrl": "https://www.youtube.com/channel/UCnxmUrGMtpQT844Yd_l7Zyg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCnxmUrGMtpQT844Yd_l7Zyg",
+          "verificationEvidence": "https://www.youtube.com/@DrDrayzday",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-cassandrabankson",
+      "displayName": "Cassandra Bankson",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCHj2_6e0Y2YdzHZDkkLa53Q",
+          "platform": "youtube",
+          "externalAccountId": "UCHj2_6e0Y2YdzHZDkkLa53Q",
+          "handle": "@CassandraBankson",
+          "profileUrl": "https://www.youtube.com/channel/UCHj2_6e0Y2YdzHZDkkLa53Q",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCHj2_6e0Y2YdzHZDkkLa53Q",
+          "verificationEvidence": "https://www.youtube.com/@CassandraBankson",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-mixedmakeup",
+      "displayName": "Mixed Makeup",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC28FD2v19VZFryIjpvGIFLw",
+          "platform": "youtube",
+          "externalAccountId": "UC28FD2v19VZFryIjpvGIFLw",
+          "handle": "@Mixedmakeup",
+          "profileUrl": "https://www.youtube.com/channel/UC28FD2v19VZFryIjpvGIFLw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC28FD2v19VZFryIjpvGIFLw",
+          "verificationEvidence": "https://www.youtube.com/@Mixedmakeup",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-susanyara",
+      "displayName": "Susan Yara",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCBCmamMhN7Yxh6MzCpcYcTg",
+          "platform": "youtube",
+          "externalAccountId": "UCBCmamMhN7Yxh6MzCpcYcTg",
+          "handle": "@SusanYara",
+          "profileUrl": "https://www.youtube.com/channel/UCBCmamMhN7Yxh6MzCpcYcTg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCBCmamMhN7Yxh6MzCpcYcTg",
+          "verificationEvidence": "https://www.youtube.com/@SusanYara",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-liahyoo",
+      "displayName": "Liah Yoo",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC3y1VNzSbMVIUlKC2ErEVZw",
+          "platform": "youtube",
+          "externalAccountId": "UC3y1VNzSbMVIUlKC2ErEVZw",
+          "handle": "@LiahYoo",
+          "profileUrl": "https://www.youtube.com/channel/UC3y1VNzSbMVIUlKC2ErEVZw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC3y1VNzSbMVIUlKC2ErEVZw",
+          "verificationEvidence": "https://www.youtube.com/@LiahYoo",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-waynegoss",
+      "displayName": "Wayne Goss",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCCvoAe__WFYMNAEN-C-CtYA",
+          "platform": "youtube",
+          "externalAccountId": "UCCvoAe__WFYMNAEN-C-CtYA",
+          "handle": "@WayneGoss",
+          "profileUrl": "https://www.youtube.com/channel/UCCvoAe__WFYMNAEN-C-CtYA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCCvoAe__WFYMNAEN-C-CtYA",
+          "verificationEvidence": "https://www.youtube.com/@WayneGoss",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-lisaeldridge",
+      "displayName": "Lisa Eldridge",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCFghPtzFcmyDiID1ASMA4Dg",
+          "platform": "youtube",
+          "externalAccountId": "UCFghPtzFcmyDiID1ASMA4Dg",
+          "handle": "@LisaEldridge",
+          "profileUrl": "https://www.youtube.com/channel/UCFghPtzFcmyDiID1ASMA4Dg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCFghPtzFcmyDiID1ASMA4Dg",
+          "verificationEvidence": "https://www.youtube.com/@LisaEldridge",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-nikkietutorials",
+      "displayName": "NikkieTutorials",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCzTKskwIc_-a0cGvCXA848Q",
+          "platform": "youtube",
+          "externalAccountId": "UCzTKskwIc_-a0cGvCXA848Q",
+          "handle": "@nikkietutorials",
+          "profileUrl": "https://www.youtube.com/channel/UCzTKskwIc_-a0cGvCXA848Q",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCzTKskwIc_-a0cGvCXA848Q",
+          "verificationEvidence": "https://www.youtube.com/@nikkietutorials",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-jackieaina",
+      "displayName": "Jackie Aina",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCzJIliq68IHSn-Kwgjeg2AQ",
+          "platform": "youtube",
+          "externalAccountId": "UCzJIliq68IHSn-Kwgjeg2AQ",
+          "handle": "@jackieaina",
+          "profileUrl": "https://www.youtube.com/channel/UCzJIliq68IHSn-Kwgjeg2AQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCzJIliq68IHSn-Kwgjeg2AQ",
+          "verificationEvidence": "https://www.youtube.com/@jackieaina",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-hindash",
+      "displayName": "Hindash",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCs7hbbgJFer2AcKtwAV5Bwg",
+          "platform": "youtube",
+          "externalAccountId": "UCs7hbbgJFer2AcKtwAV5Bwg",
+          "handle": "@Hindash",
+          "profileUrl": "https://www.youtube.com/channel/UCs7hbbgJFer2AcKtwAV5Bwg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCs7hbbgJFer2AcKtwAV5Bwg",
+          "verificationEvidence": "https://www.youtube.com/@Hindash",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-hungvanngo",
+      "displayName": "Hung Vanngo",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCgwzJLw4B0D3cjvS5_F_uYw",
+          "platform": "youtube",
+          "externalAccountId": "UCgwzJLw4B0D3cjvS5_F_uYw",
+          "handle": "@hungvanngo",
+          "profileUrl": "https://www.youtube.com/channel/UCgwzJLw4B0D3cjvS5_F_uYw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCgwzJLw4B0D3cjvS5_F_uYw",
+          "verificationEvidence": "https://www.youtube.com/@hungvanngo",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-alexandraanele",
+      "displayName": "Alexandra Anele",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCzlgsdcnqJq8BDWY7bqWUmA",
+          "platform": "youtube",
+          "externalAccountId": "UCzlgsdcnqJq8BDWY7bqWUmA",
+          "handle": "@AlexandraAnele",
+          "profileUrl": "https://www.youtube.com/channel/UCzlgsdcnqJq8BDWY7bqWUmA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCzlgsdcnqJq8BDWY7bqWUmA",
+          "verificationEvidence": "https://www.youtube.com/@AlexandraAnele",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-kellygooch",
+      "displayName": "Kelly G",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCtaVEzJD90lyxwumMzwOQzQ",
+          "platform": "youtube",
+          "externalAccountId": "UCtaVEzJD90lyxwumMzwOQzQ",
+          "handle": "@KellyGooch",
+          "profileUrl": "https://www.youtube.com/channel/UCtaVEzJD90lyxwumMzwOQzQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCtaVEzJD90lyxwumMzwOQzQ",
+          "verificationEvidence": "https://www.youtube.com/@KellyGooch",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-thebudgetdermatologist",
+      "displayName": "The Budget Dermatologist",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCDc2wFMXTSApCa4UwDrdz_Q",
+          "platform": "youtube",
+          "externalAccountId": "UCDc2wFMXTSApCa4UwDrdz_Q",
+          "handle": "@TheBudgetDermatologist",
+          "profileUrl": "https://www.youtube.com/channel/UCDc2wFMXTSApCa4UwDrdz_Q",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCDc2wFMXTSApCa4UwDrdz_Q",
+          "verificationEvidence": "https://www.youtube.com/@TheBudgetDermatologist",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-shereeneidriss",
+      "displayName": "Dr. Shereene Idriss",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCidfBdauHUmKFcMw-4QoaSw",
+          "platform": "youtube",
+          "externalAccountId": "UCidfBdauHUmKFcMw-4QoaSw",
+          "handle": "@shereeneidriss",
+          "profileUrl": "https://www.youtube.com/channel/UCidfBdauHUmKFcMw-4QoaSw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCidfBdauHUmKFcMw-4QoaSw",
+          "verificationEvidence": "https://www.youtube.com/@shereeneidriss",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-abbeyyung",
+      "displayName": "Abbey Yung",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCGCJF-m6ewM0TNJRwwsvi8w",
+          "platform": "youtube",
+          "externalAccountId": "UCGCJF-m6ewM0TNJRwwsvi8w",
+          "handle": "@AbbeyYung",
+          "profileUrl": "https://www.youtube.com/channel/UCGCJF-m6ewM0TNJRwwsvi8w",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCGCJF-m6ewM0TNJRwwsvi8w",
+          "verificationEvidence": "https://www.youtube.com/@AbbeyYung",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-makeupbynikkilarose",
+      "displayName": "Makeup By Nikki La Rose",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCCydBRF6RjrT58FV6KO-wwg",
+          "platform": "youtube",
+          "externalAccountId": "UCCydBRF6RjrT58FV6KO-wwg",
+          "handle": "@Makeupbynikkilarose",
+          "profileUrl": "https://www.youtube.com/channel/UCCydBRF6RjrT58FV6KO-wwg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCCydBRF6RjrT58FV6KO-wwg",
+          "verificationEvidence": "https://www.youtube.com/@Makeupbynikkilarose",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-emilynoel83",
+      "displayName": "Emily Noel",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCtC8m_F7jX2fGOQ3_nomg4g",
+          "platform": "youtube",
+          "externalAccountId": "UCtC8m_F7jX2fGOQ3_nomg4g",
+          "handle": "@emilynoel83",
+          "profileUrl": "https://www.youtube.com/channel/UCtC8m_F7jX2fGOQ3_nomg4g",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCtC8m_F7jX2fGOQ3_nomg4g",
+          "verificationEvidence": "https://www.youtube.com/@emilynoel83",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-angelicanyqvist",
+      "displayName": "Angelica Nyqvist",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCtprmU3fba3sDaxxs-FjqwQ",
+          "platform": "youtube",
+          "externalAccountId": "UCtprmU3fba3sDaxxs-FjqwQ",
+          "handle": "@AngelicaNyqvist",
+          "profileUrl": "https://www.youtube.com/channel/UCtprmU3fba3sDaxxs-FjqwQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCtprmU3fba3sDaxxs-FjqwQ",
+          "verificationEvidence": "https://www.youtube.com/@AngelicaNyqvist",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-beautywithin",
+      "displayName": "Beauty Within",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC8f2CDyLibpGYSN3O2LfDwg",
+          "platform": "youtube",
+          "externalAccountId": "UC8f2CDyLibpGYSN3O2LfDwg",
+          "handle": "@BeautyWithin",
+          "profileUrl": "https://www.youtube.com/channel/UC8f2CDyLibpGYSN3O2LfDwg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC8f2CDyLibpGYSN3O2LfDwg",
+          "verificationEvidence": "https://www.youtube.com/@BeautyWithin",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-thebeautybreakdown",
+      "displayName": "TheBeautyBreakdown",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCOMmsjb-VtlubcqaeyHpQVA",
+          "platform": "youtube",
+          "externalAccountId": "UCOMmsjb-VtlubcqaeyHpQVA",
+          "handle": "@thebeautybreakdown",
+          "profileUrl": "https://www.youtube.com/channel/UCOMmsjb-VtlubcqaeyHpQVA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCOMmsjb-VtlubcqaeyHpQVA",
+          "verificationEvidence": "https://www.youtube.com/@thebeautybreakdown",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-christendominique",
+      "displayName": "Christen Dominique",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCXTAdFsBmxNK3_c8MUvSviQ",
+          "platform": "youtube",
+          "externalAccountId": "UCXTAdFsBmxNK3_c8MUvSviQ",
+          "handle": "@christendominique",
+          "profileUrl": "https://www.youtube.com/channel/UCXTAdFsBmxNK3_c8MUvSviQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCXTAdFsBmxNK3_c8MUvSviQ",
+          "verificationEvidence": "https://www.youtube.com/@christendominique",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-ponymakeup",
+      "displayName": "PONY Syndrome",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCT-_4GqC-yLY1xtTHhwY0hA",
+          "platform": "youtube",
+          "externalAccountId": "UCT-_4GqC-yLY1xtTHhwY0hA",
+          "handle": "@PONYMakeup",
+          "profileUrl": "https://www.youtube.com/channel/UCT-_4GqC-yLY1xtTHhwY0hA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCT-_4GqC-yLY1xtTHhwY0hA",
+          "verificationEvidence": "https://www.youtube.com/@PONYMakeup",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-haleykimaking",
+      "displayName": "Haley Kim",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCOzVEwcVSu_2xDQFyMReDRA",
+          "platform": "youtube",
+          "externalAccountId": "UCOzVEwcVSu_2xDQFyMReDRA",
+          "handle": "@HaleyKimaking",
+          "profileUrl": "https://www.youtube.com/channel/UCOzVEwcVSu_2xDQFyMReDRA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCOzVEwcVSu_2xDQFyMReDRA",
+          "verificationEvidence": "https://www.youtube.com/@HaleyKimaking",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "beauty-dearpeachie",
+      "displayName": "dear peachie",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "beauty"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC_z-ddsQOcGupaINaXOh54g",
+          "platform": "youtube",
+          "externalAccountId": "UC_z-ddsQOcGupaINaXOh54g",
+          "handle": "@dearpeachie",
+          "profileUrl": "https://www.youtube.com/channel/UC_z-ddsQOcGupaINaXOh54g",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC_z-ddsQOcGupaINaXOh54g",
+          "verificationEvidence": "https://www.youtube.com/@dearpeachie",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-audreycoyne",
+      "displayName": "Audrey Coyne",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCdF5QXMUx1tT7odhtBdDyEA",
+          "platform": "youtube",
+          "externalAccountId": "UCdF5QXMUx1tT7odhtBdDyEA",
+          "handle": "@AudreyCoyne",
+          "profileUrl": "https://www.youtube.com/channel/UCdF5QXMUx1tT7odhtBdDyEA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCdF5QXMUx1tT7odhtBdDyEA",
+          "verificationEvidence": "https://www.youtube.com/@AudreyCoyne",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-justineleconte",
+      "displayName": "Justine Leconte officiel",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UChxkFSjTE7nLCHsDk8_pRhg",
+          "platform": "youtube",
+          "externalAccountId": "UChxkFSjTE7nLCHsDk8_pRhg",
+          "handle": "@justineleconte",
+          "profileUrl": "https://www.youtube.com/channel/UChxkFSjTE7nLCHsDk8_pRhg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UChxkFSjTE7nLCHsDk8_pRhg",
+          "verificationEvidence": "https://www.youtube.com/@justineleconte",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-alyssabeltempo",
+      "displayName": "Alyssa Beltempo",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCU8ssMY0rZQtCgWVwQNpmUA",
+          "platform": "youtube",
+          "externalAccountId": "UCU8ssMY0rZQtCgWVwQNpmUA",
+          "handle": "@AlyssaBeltempo",
+          "profileUrl": "https://www.youtube.com/channel/UCU8ssMY0rZQtCgWVwQNpmUA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCU8ssMY0rZQtCgWVwQNpmUA",
+          "verificationEvidence": "https://www.youtube.com/@AlyssaBeltempo",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-dearlybethany",
+      "displayName": "Dearly Bethany",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC4HsumPi975_XPqpsU2tAqQ",
+          "platform": "youtube",
+          "externalAccountId": "UC4HsumPi975_XPqpsU2tAqQ",
+          "handle": "@Dearlybethany",
+          "profileUrl": "https://www.youtube.com/channel/UC4HsumPi975_XPqpsU2tAqQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC4HsumPi975_XPqpsU2tAqQ",
+          "verificationEvidence": "https://www.youtube.com/@Dearlybethany",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-mademoisellejaime",
+      "displayName": "mademoiselle",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCNlMC7CGD2Vr3v771yNRkDQ",
+          "platform": "youtube",
+          "externalAccountId": "UCNlMC7CGD2Vr3v771yNRkDQ",
+          "handle": "@mademoisellejaime",
+          "profileUrl": "https://www.youtube.com/channel/UCNlMC7CGD2Vr3v771yNRkDQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCNlMC7CGD2Vr3v771yNRkDQ",
+          "verificationEvidence": "https://www.youtube.com/@mademoisellejaime",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-useless-dk",
+      "displayName": "Use Less",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCafauFSnOFOfZG0ZMLQvpcw",
+          "platform": "youtube",
+          "externalAccountId": "UCafauFSnOFOfZG0ZMLQvpcw",
+          "handle": "@UseLess_dk",
+          "profileUrl": "https://www.youtube.com/channel/UCafauFSnOFOfZG0ZMLQvpcw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCafauFSnOFOfZG0ZMLQvpcw",
+          "verificationEvidence": "https://www.youtube.com/@UseLess_dk",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-theannaedit",
+      "displayName": "Anna Newton",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCth3krFQiaXe7vV-i79a9zg",
+          "platform": "youtube",
+          "externalAccountId": "UCth3krFQiaXe7vV-i79a9zg",
+          "handle": "@TheAnnaEdit",
+          "profileUrl": "https://www.youtube.com/channel/UCth3krFQiaXe7vV-i79a9zg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCth3krFQiaXe7vV-i79a9zg",
+          "verificationEvidence": "https://www.youtube.com/@TheAnnaEdit",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-emmahill",
+      "displayName": "Emma Hill",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCYUE4U_lp7YPIB0iXxnTjbw",
+          "platform": "youtube",
+          "externalAccountId": "UCYUE4U_lp7YPIB0iXxnTjbw",
+          "handle": "@EmmaHill",
+          "profileUrl": "https://www.youtube.com/channel/UCYUE4U_lp7YPIB0iXxnTjbw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCYUE4U_lp7YPIB0iXxnTjbw",
+          "verificationEvidence": "https://www.youtube.com/@EmmaHill",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-karenbritchick",
+      "displayName": "KarenBritChick",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCFn3gTokwJT_tmJCh9LfnrA",
+          "platform": "youtube",
+          "externalAccountId": "UCFn3gTokwJT_tmJCh9LfnrA",
+          "handle": "@KarenBritChick",
+          "profileUrl": "https://www.youtube.com/channel/UCFn3gTokwJT_tmJCh9LfnrA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCFn3gTokwJT_tmJCh9LfnrA",
+          "verificationEvidence": "https://www.youtube.com/@KarenBritChick",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-hautelemode",
+      "displayName": "HauteLeMode",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCoEj4uRzynPXEEegNqMnJVw",
+          "platform": "youtube",
+          "externalAccountId": "UCoEj4uRzynPXEEegNqMnJVw",
+          "handle": "@hautelemode",
+          "profileUrl": "https://www.youtube.com/channel/UCoEj4uRzynPXEEegNqMnJVw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCoEj4uRzynPXEEegNqMnJVw",
+          "verificationEvidence": "https://www.youtube.com/@hautelemode",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-timdessaint",
+      "displayName": "Tim Dessaint",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCfJrdVVcWZMHLC--a4ovLLQ",
+          "platform": "youtube",
+          "externalAccountId": "UCfJrdVVcWZMHLC--a4ovLLQ",
+          "handle": "@TimDessaint",
+          "profileUrl": "https://www.youtube.com/channel/UCfJrdVVcWZMHLC--a4ovLLQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCfJrdVVcWZMHLC--a4ovLLQ",
+          "verificationEvidence": "https://www.youtube.com/@TimDessaint",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-harryhas",
+      "displayName": "Harry Has",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCOSB1BAWREqnFHWI1A4n6ow",
+          "platform": "youtube",
+          "externalAccountId": "UCOSB1BAWREqnFHWI1A4n6ow",
+          "handle": "@HarryHas",
+          "profileUrl": "https://www.youtube.com/channel/UCOSB1BAWREqnFHWI1A4n6ow",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCOSB1BAWREqnFHWI1A4n6ow",
+          "verificationEvidence": "https://www.youtube.com/@HarryHas",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-imdanielsimmons",
+      "displayName": "Daniel Simmons",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCOgz_YflAsYnGbdvzXuKNCA",
+          "platform": "youtube",
+          "externalAccountId": "UCOgz_YflAsYnGbdvzXuKNCA",
+          "handle": "@imdanielsimmons",
+          "profileUrl": "https://www.youtube.com/channel/UCOgz_YflAsYnGbdvzXuKNCA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCOgz_YflAsYnGbdvzXuKNCA",
+          "verificationEvidence": "https://www.youtube.com/@imdanielsimmons",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-frugalaesthetic",
+      "displayName": "Frugal Aesthetic",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCyL0RJe41itDFjd70KKZIZQ",
+          "platform": "youtube",
+          "externalAccountId": "UCyL0RJe41itDFjd70KKZIZQ",
+          "handle": "@FrugalAesthetic",
+          "profileUrl": "https://www.youtube.com/channel/UCyL0RJe41itDFjd70KKZIZQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCyL0RJe41itDFjd70KKZIZQ",
+          "verificationEvidence": "https://www.youtube.com/@FrugalAesthetic",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-blissfoster",
+      "displayName": "Bliss Foster",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC1OR9yjgsvoFK3xxhCs-19Q",
+          "platform": "youtube",
+          "externalAccountId": "UC1OR9yjgsvoFK3xxhCs-19Q",
+          "handle": "@BlissFoster",
+          "profileUrl": "https://www.youtube.com/channel/UC1OR9yjgsvoFK3xxhCs-19Q",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC1OR9yjgsvoFK3xxhCs-19Q",
+          "verificationEvidence": "https://www.youtube.com/@BlissFoster",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-threaducation",
+      "displayName": "Threaducation",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCkwYBK5LnMVYNNkl0C39IYA",
+          "platform": "youtube",
+          "externalAccountId": "UCkwYBK5LnMVYNNkl0C39IYA",
+          "handle": "@Threaducation",
+          "profileUrl": "https://www.youtube.com/channel/UCkwYBK5LnMVYNNkl0C39IYA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCkwYBK5LnMVYNNkl0C39IYA",
+          "verificationEvidence": "https://www.youtube.com/@Threaducation",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-karolinazebrowskax",
+      "displayName": "Karolina Żebrowska",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCNwZIGnHkzy6KpHPQtserzQ",
+          "platform": "youtube",
+          "externalAccountId": "UCNwZIGnHkzy6KpHPQtserzQ",
+          "handle": "@KarolinaZebrowskax",
+          "profileUrl": "https://www.youtube.com/channel/UCNwZIGnHkzy6KpHPQtserzQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCNwZIGnHkzy6KpHPQtserzQ",
+          "verificationEvidence": "https://www.youtube.com/@KarolinaZebrowskax",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-minale",
+      "displayName": "Minale",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCDWMk4ts_Gct-0ohCtc2fdw",
+          "platform": "youtube",
+          "externalAccountId": "UCDWMk4ts_Gct-0ohCtc2fdw",
+          "handle": "@Minale",
+          "profileUrl": "https://www.youtube.com/channel/UCDWMk4ts_Gct-0ohCtc2fdw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCDWMk4ts_Gct-0ohCtc2fdw",
+          "verificationEvidence": "https://www.youtube.com/@Minale",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-moderngurlz",
+      "displayName": "ModernGurlz",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCW_c5PzkvxMaBxqwjITW6-A",
+          "platform": "youtube",
+          "externalAccountId": "UCW_c5PzkvxMaBxqwjITW6-A",
+          "handle": "@ModernGurlz",
+          "profileUrl": "https://www.youtube.com/channel/UCW_c5PzkvxMaBxqwjITW6-A",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCW_c5PzkvxMaBxqwjITW6-A",
+          "verificationEvidence": "https://www.youtube.com/@ModernGurlz",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-thecasualco",
+      "displayName": "THE CASUAL",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCnnSPut3diQI4BtrraKpsnA",
+          "platform": "youtube",
+          "externalAccountId": "UCnnSPut3diQI4BtrraKpsnA",
+          "handle": "@THECASUALco",
+          "profileUrl": "https://www.youtube.com/channel/UCnnSPut3diQI4BtrraKpsnA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCnnSPut3diQI4BtrraKpsnA",
+          "verificationEvidence": "https://www.youtube.com/@THECASUALco",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-trinnylondon",
+      "displayName": "T R I N N Y",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC0QhU7ee8rr7Bl0DYN8oi7w",
+          "platform": "youtube",
+          "externalAccountId": "UC0QhU7ee8rr7Bl0DYN8oi7w",
+          "handle": "@TrinnyLondon",
+          "profileUrl": "https://www.youtube.com/channel/UC0QhU7ee8rr7Bl0DYN8oi7w",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC0QhU7ee8rr7Bl0DYN8oi7w",
+          "verificationEvidence": "https://www.youtube.com/@TrinnyLondon",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-busbeestyle",
+      "displayName": "Busbee Style",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCH4pIo4yitl7yLTyn2YaBXw",
+          "platform": "youtube",
+          "externalAccountId": "UCH4pIo4yitl7yLTyn2YaBXw",
+          "handle": "@BusbeeStyle",
+          "profileUrl": "https://www.youtube.com/channel/UCH4pIo4yitl7yLTyn2YaBXw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCH4pIo4yitl7yLTyn2YaBXw",
+          "verificationEvidence": "https://www.youtube.com/@BusbeeStyle",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-sheawhitney",
+      "displayName": "Shea Whitney",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCU0k21RR-k7Zxil6KMs5nsw",
+          "platform": "youtube",
+          "externalAccountId": "UCU0k21RR-k7Zxil6KMs5nsw",
+          "handle": "@SheaWhitney",
+          "profileUrl": "https://www.youtube.com/channel/UCU0k21RR-k7Zxil6KMs5nsw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCU0k21RR-k7Zxil6KMs5nsw",
+          "verificationEvidence": "https://www.youtube.com/@SheaWhitney",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-fashionelitist",
+      "displayName": "Jq",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC9EJcp4ppeqKET1f_Z0S8Tw",
+          "platform": "youtube",
+          "externalAccountId": "UC9EJcp4ppeqKET1f_Z0S8Tw",
+          "handle": "@fashionelitist",
+          "profileUrl": "https://www.youtube.com/channel/UC9EJcp4ppeqKET1f_Z0S8Tw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC9EJcp4ppeqKET1f_Z0S8Tw",
+          "verificationEvidence": "https://www.youtube.com/@fashionelitist",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-colourfulnoir",
+      "displayName": "Colourful Noir",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCtbdd75kTp7auUhrO--yd4g",
+          "platform": "youtube",
+          "externalAccountId": "UCtbdd75kTp7auUhrO--yd4g",
+          "handle": "@ColourfulNoir",
+          "profileUrl": "https://www.youtube.com/channel/UCtbdd75kTp7auUhrO--yd4g",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCtbdd75kTp7auUhrO--yd4g",
+          "verificationEvidence": "https://www.youtube.com/@ColourfulNoir",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-gentlemansgazette",
+      "displayName": "Gentleman's Gazette",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCEgoThiTZG6wbTVA6B1Ksaw",
+          "platform": "youtube",
+          "externalAccountId": "UCEgoThiTZG6wbTVA6B1Ksaw",
+          "handle": "@gentlemansgazette",
+          "profileUrl": "https://www.youtube.com/channel/UCEgoThiTZG6wbTVA6B1Ksaw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCEgoThiTZG6wbTVA6B1Ksaw",
+          "verificationEvidence": "https://www.youtube.com/@gentlemansgazette",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-kirbyallison",
+      "displayName": "Kirby Allison",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCygkzPpueoIJQsLUnGEqFdA",
+          "platform": "youtube",
+          "externalAccountId": "UCygkzPpueoIJQsLUnGEqFdA",
+          "handle": "@kirbyallison",
+          "profileUrl": "https://www.youtube.com/channel/UCygkzPpueoIJQsLUnGEqFdA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCygkzPpueoIJQsLUnGEqFdA",
+          "verificationEvidence": "https://www.youtube.com/@kirbyallison",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-permanentstylelondon",
+      "displayName": "Permanent Style",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCNhMR1Igvy1tOfqaijQ8c5A",
+          "platform": "youtube",
+          "externalAccountId": "UCNhMR1Igvy1tOfqaijQ8c5A",
+          "handle": "@PermanentStyleLondon",
+          "profileUrl": "https://www.youtube.com/channel/UCNhMR1Igvy1tOfqaijQ8c5A",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCNhMR1Igvy1tOfqaijQ8c5A",
+          "verificationEvidence": "https://www.youtube.com/@PermanentStyleLondon",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "fashion-vogue",
+      "displayName": "Vogue",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "fashion"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCRXiA3h1no_PFkb1JCP0yMA",
+          "platform": "youtube",
+          "externalAccountId": "UCRXiA3h1no_PFkb1JCP0yMA",
+          "handle": "@Vogue",
+          "profileUrl": "https://www.youtube.com/channel/UCRXiA3h1no_PFkb1JCP0yMA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCRXiA3h1no_PFkb1JCP0yMA",
+          "verificationEvidence": "https://www.youtube.com/@Vogue",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-fireship",
+      "displayName": "Fireship",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCsBjURrPoezykLs9EqgamOA",
+          "platform": "youtube",
+          "externalAccountId": "UCsBjURrPoezykLs9EqgamOA",
+          "handle": "@Fireship",
+          "profileUrl": "https://www.youtube.com/channel/UCsBjURrPoezykLs9EqgamOA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCsBjURrPoezykLs9EqgamOA",
+          "verificationEvidence": "https://www.youtube.com/@Fireship",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-twominutepapers",
+      "displayName": "Two Minute Papers",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCbfYPyITQ-7l4upoX8nvctg",
+          "platform": "youtube",
+          "externalAccountId": "UCbfYPyITQ-7l4upoX8nvctg",
+          "handle": "@TwoMinutePapers",
+          "profileUrl": "https://www.youtube.com/channel/UCbfYPyITQ-7l4upoX8nvctg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCbfYPyITQ-7l4upoX8nvctg",
+          "verificationEvidence": "https://www.youtube.com/@TwoMinutePapers",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-wesroth",
+      "displayName": "Wes Roth",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCqcbQf6yw5KzRoDDcZ_wBSw",
+          "platform": "youtube",
+          "externalAccountId": "UCqcbQf6yw5KzRoDDcZ_wBSw",
+          "handle": "@WesRoth",
+          "profileUrl": "https://www.youtube.com/channel/UCqcbQf6yw5KzRoDDcZ_wBSw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCqcbQf6yw5KzRoDDcZ_wBSw",
+          "verificationEvidence": "https://www.youtube.com/@WesRoth",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-matthewberman",
+      "displayName": "Matthew Berman",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCzi5kcwU8aT4aLR7LcYhfWQ",
+          "platform": "youtube",
+          "externalAccountId": "UCzi5kcwU8aT4aLR7LcYhfWQ",
+          "handle": "@MatthewBerman",
+          "profileUrl": "https://www.youtube.com/channel/UCzi5kcwU8aT4aLR7LcYhfWQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCzi5kcwU8aT4aLR7LcYhfWQ",
+          "verificationEvidence": "https://www.youtube.com/@MatthewBerman",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-allaboutai",
+      "displayName": "All About AI",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCR9j1jqqB5Rse69wjUnbYwA",
+          "platform": "youtube",
+          "externalAccountId": "UCR9j1jqqB5Rse69wjUnbYwA",
+          "handle": "@AllAboutAI",
+          "profileUrl": "https://www.youtube.com/channel/UCR9j1jqqB5Rse69wjUnbYwA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCR9j1jqqB5Rse69wjUnbYwA",
+          "verificationEvidence": "https://www.youtube.com/@AllAboutAI",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-theaigrid",
+      "displayName": "TheAIGRID",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCbY9xX3_jW5c2fjlZVBI4cg",
+          "platform": "youtube",
+          "externalAccountId": "UCbY9xX3_jW5c2fjlZVBI4cg",
+          "handle": "@TheAiGrid",
+          "profileUrl": "https://www.youtube.com/channel/UCbY9xX3_jW5c2fjlZVBI4cg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCbY9xX3_jW5c2fjlZVBI4cg",
+          "verificationEvidence": "https://www.youtube.com/@TheAiGrid",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-yannickilcher",
+      "displayName": "Yannic Kilcher",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCZHmQk67mSJgfCCTn7xBfew",
+          "platform": "youtube",
+          "externalAccountId": "UCZHmQk67mSJgfCCTn7xBfew",
+          "handle": "@YannicKilcher",
+          "profileUrl": "https://www.youtube.com/channel/UCZHmQk67mSJgfCCTn7xBfew",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCZHmQk67mSJgfCCTn7xBfew",
+          "verificationEvidence": "https://www.youtube.com/@YannicKilcher",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-sentdex",
+      "displayName": "sentdex",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCfzlCWGWYyIQ0aLC5w48gBQ",
+          "platform": "youtube",
+          "externalAccountId": "UCfzlCWGWYyIQ0aLC5w48gBQ",
+          "handle": "@sentdex",
+          "profileUrl": "https://www.youtube.com/channel/UCfzlCWGWYyIQ0aLC5w48gBQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCfzlCWGWYyIQ0aLC5w48gBQ",
+          "verificationEvidence": "https://www.youtube.com/@sentdex",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-lexfridman",
+      "displayName": "Lex Fridman",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCSHZKyawb77ixDdsGog4iWA",
+          "platform": "youtube",
+          "externalAccountId": "UCSHZKyawb77ixDdsGog4iWA",
+          "handle": "@lexfridman",
+          "profileUrl": "https://www.youtube.com/channel/UCSHZKyawb77ixDdsGog4iWA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCSHZKyawb77ixDdsGog4iWA",
+          "verificationEvidence": "https://www.youtube.com/@lexfridman",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-computerphile",
+      "displayName": "Computerphile",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC9-y-6csu5WGm29I7JiwpnA",
+          "platform": "youtube",
+          "externalAccountId": "UC9-y-6csu5WGm29I7JiwpnA",
+          "handle": "@Computerphile",
+          "profileUrl": "https://www.youtube.com/channel/UC9-y-6csu5WGm29I7JiwpnA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC9-y-6csu5WGm29I7JiwpnA",
+          "verificationEvidence": "https://www.youtube.com/@Computerphile",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-stanfordonline",
+      "displayName": "Stanford Online",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCBa5G_ESCn8Yd4vw5U-gIcg",
+          "platform": "youtube",
+          "externalAccountId": "UCBa5G_ESCn8Yd4vw5U-gIcg",
+          "handle": "@stanfordonline",
+          "profileUrl": "https://www.youtube.com/channel/UCBa5G_ESCn8Yd4vw5U-gIcg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCBa5G_ESCn8Yd4vw5U-gIcg",
+          "verificationEvidence": "https://www.youtube.com/@stanfordonline",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-deeplearningai",
+      "displayName": "DeepLearningAI",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCcIXc5mJsHVYTZR1maL5l9w",
+          "platform": "youtube",
+          "externalAccountId": "UCcIXc5mJsHVYTZR1maL5l9w",
+          "handle": "@Deeplearningai",
+          "profileUrl": "https://www.youtube.com/channel/UCcIXc5mJsHVYTZR1maL5l9w",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCcIXc5mJsHVYTZR1maL5l9w",
+          "verificationEvidence": "https://www.youtube.com/@Deeplearningai",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-freecodecamp",
+      "displayName": "freeCodeCamp.org",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC8butISFwT-Wl7EV0hUK0BQ",
+          "platform": "youtube",
+          "externalAccountId": "UC8butISFwT-Wl7EV0hUK0BQ",
+          "handle": "@freecodecamp",
+          "profileUrl": "https://www.youtube.com/channel/UC8butISFwT-Wl7EV0hUK0BQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC8butISFwT-Wl7EV0hUK0BQ",
+          "verificationEvidence": "https://www.youtube.com/@freecodecamp",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-openai",
+      "displayName": "OpenAI",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCXZCJLdBC09xxGZ6gcdrc6A",
+          "platform": "youtube",
+          "externalAccountId": "UCXZCJLdBC09xxGZ6gcdrc6A",
+          "handle": "@OpenAI",
+          "profileUrl": "https://www.youtube.com/channel/UCXZCJLdBC09xxGZ6gcdrc6A",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCXZCJLdBC09xxGZ6gcdrc6A",
+          "verificationEvidence": "https://www.youtube.com/@OpenAI",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-googledeepmind",
+      "displayName": "Google DeepMind",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCP7jMXSY2xbc3KCAE0MHQ-A",
+          "platform": "youtube",
+          "externalAccountId": "UCP7jMXSY2xbc3KCAE0MHQ-A",
+          "handle": "@googledeepmind",
+          "profileUrl": "https://www.youtube.com/channel/UCP7jMXSY2xbc3KCAE0MHQ-A",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCP7jMXSY2xbc3KCAE0MHQ-A",
+          "verificationEvidence": "https://www.youtube.com/@googledeepmind",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-anthropic-ai",
+      "displayName": "Anthropic",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCrDwWp7EBBv4NwvScIpBDOA",
+          "platform": "youtube",
+          "externalAccountId": "UCrDwWp7EBBv4NwvScIpBDOA",
+          "handle": "@anthropic-ai",
+          "profileUrl": "https://www.youtube.com/channel/UCrDwWp7EBBv4NwvScIpBDOA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCrDwWp7EBBv4NwvScIpBDOA",
+          "verificationEvidence": "https://www.youtube.com/@anthropic-ai",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-huggingface",
+      "displayName": "Hugging Face",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCHlNU7kIZhRgSbhHvFoy72w",
+          "platform": "youtube",
+          "externalAccountId": "UCHlNU7kIZhRgSbhHvFoy72w",
+          "handle": "@HuggingFace",
+          "profileUrl": "https://www.youtube.com/channel/UCHlNU7kIZhRgSbhHvFoy72w",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCHlNU7kIZhRgSbhHvFoy72w",
+          "verificationEvidence": "https://www.youtube.com/@HuggingFace",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-ibmtechnology",
+      "displayName": "IBM Technology",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCKWaEZ-_VweaEx1j62do_vQ",
+          "platform": "youtube",
+          "externalAccountId": "UCKWaEZ-_VweaEx1j62do_vQ",
+          "handle": "@IBMTechnology",
+          "profileUrl": "https://www.youtube.com/channel/UCKWaEZ-_VweaEx1j62do_vQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCKWaEZ-_VweaEx1j62do_vQ",
+          "verificationEvidence": "https://www.youtube.com/@IBMTechnology",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-microsoftdeveloper",
+      "displayName": "Microsoft Developer",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCsMica-v34Irf9KVTh6xx-g",
+          "platform": "youtube",
+          "externalAccountId": "UCsMica-v34Irf9KVTh6xx-g",
+          "handle": "@MicrosoftDeveloper",
+          "profileUrl": "https://www.youtube.com/channel/UCsMica-v34Irf9KVTh6xx-g",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCsMica-v34Irf9KVTh6xx-g",
+          "verificationEvidence": "https://www.youtube.com/@MicrosoftDeveloper",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-nvidiadeveloper",
+      "displayName": "NVIDIA Developer",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCBHcMCGaiJhv-ESTcWGJPcw",
+          "platform": "youtube",
+          "externalAccountId": "UCBHcMCGaiJhv-ESTcWGJPcw",
+          "handle": "@NVIDIADeveloper",
+          "profileUrl": "https://www.youtube.com/channel/UCBHcMCGaiJhv-ESTcWGJPcw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCBHcMCGaiJhv-ESTcWGJPcw",
+          "verificationEvidence": "https://www.youtube.com/@NVIDIADeveloper",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-assemblyai",
+      "displayName": "AssemblyAI",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCtatfZMf-8EkIwASXM4ts0A",
+          "platform": "youtube",
+          "externalAccountId": "UCtatfZMf-8EkIwASXM4ts0A",
+          "handle": "@AssemblyAI",
+          "profileUrl": "https://www.youtube.com/channel/UCtatfZMf-8EkIwASXM4ts0A",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCtatfZMf-8EkIwASXM4ts0A",
+          "verificationEvidence": "https://www.youtube.com/@AssemblyAI",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-t3dotgg",
+      "displayName": "Theo - t3․gg",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCbRP3c757lWg9M-U7TyEkXA",
+          "platform": "youtube",
+          "externalAccountId": "UCbRP3c757lWg9M-U7TyEkXA",
+          "handle": "@t3dotgg",
+          "profileUrl": "https://www.youtube.com/channel/UCbRP3c757lWg9M-U7TyEkXA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCbRP3c757lWg9M-U7TyEkXA",
+          "verificationEvidence": "https://www.youtube.com/@t3dotgg",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-networkchuck",
+      "displayName": "NetworkChuck",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC9x0AN7BWHpCDHSm9NiJFJQ",
+          "platform": "youtube",
+          "externalAccountId": "UC9x0AN7BWHpCDHSm9NiJFJQ",
+          "handle": "@NetworkChuck",
+          "profileUrl": "https://www.youtube.com/channel/UC9x0AN7BWHpCDHSm9NiJFJQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC9x0AN7BWHpCDHSm9NiJFJQ",
+          "verificationEvidence": "https://www.youtube.com/@NetworkChuck",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-coldfusion",
+      "displayName": "ColdFusion",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC4QZ_LsYcvcq7qOsOhpAX4A",
+          "platform": "youtube",
+          "externalAccountId": "UC4QZ_LsYcvcq7qOsOhpAX4A",
+          "handle": "@ColdFusion",
+          "profileUrl": "https://www.youtube.com/channel/UC4QZ_LsYcvcq7qOsOhpAX4A",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC4QZ_LsYcvcq7qOsOhpAX4A",
+          "verificationEvidence": "https://www.youtube.com/@ColdFusion",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-mkbhd",
+      "displayName": "Marques Brownlee",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCBJycsmduvYEL83R_U4JriQ",
+          "platform": "youtube",
+          "externalAccountId": "UCBJycsmduvYEL83R_U4JriQ",
+          "handle": "@mkbhd",
+          "profileUrl": "https://www.youtube.com/channel/UCBJycsmduvYEL83R_U4JriQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCBJycsmduvYEL83R_U4JriQ",
+          "verificationEvidence": "https://www.youtube.com/@mkbhd",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-linustechtips",
+      "displayName": "Linus Tech Tips",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCXuqSBlHAE6Xw-yeJA0Tunw",
+          "platform": "youtube",
+          "externalAccountId": "UCXuqSBlHAE6Xw-yeJA0Tunw",
+          "handle": "@LinusTechTips",
+          "profileUrl": "https://www.youtube.com/channel/UCXuqSBlHAE6Xw-yeJA0Tunw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCXuqSBlHAE6Xw-yeJA0Tunw",
+          "verificationEvidence": "https://www.youtube.com/@LinusTechTips",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-theprimetimeagen",
+      "displayName": "The PrimeTime",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCUyeluBRhGPCW4rPe_UvBZQ",
+          "platform": "youtube",
+          "externalAccountId": "UCUyeluBRhGPCW4rPe_UvBZQ",
+          "handle": "@ThePrimeTimeagen",
+          "profileUrl": "https://www.youtube.com/channel/UCUyeluBRhGPCW4rPe_UvBZQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCUyeluBRhGPCW4rPe_UvBZQ",
+          "verificationEvidence": "https://www.youtube.com/@ThePrimeTimeagen",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-aijasonz",
+      "displayName": "AI Jason",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCrXSVX9a1mj8l0CMLwKgMVw",
+          "platform": "youtube",
+          "externalAccountId": "UCrXSVX9a1mj8l0CMLwKgMVw",
+          "handle": "@AIJasonZ",
+          "profileUrl": "https://www.youtube.com/channel/UCrXSVX9a1mj8l0CMLwKgMVw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCrXSVX9a1mj8l0CMLwKgMVw",
+          "verificationEvidence": "https://www.youtube.com/@AIJasonZ",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-bycloudai",
+      "displayName": "bycloud",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCgfe2ooZD3VJPB6aJAnuQng",
+          "platform": "youtube",
+          "externalAccountId": "UCgfe2ooZD3VJPB6aJAnuQng",
+          "handle": "@bycloudAI",
+          "profileUrl": "https://www.youtube.com/channel/UCgfe2ooZD3VJPB6aJAnuQng",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCgfe2ooZD3VJPB6aJAnuQng",
+          "verificationEvidence": "https://www.youtube.com/@bycloudAI",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-daveebbelaar",
+      "displayName": "Dave Ebbelaar",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCn8ujwUInbJkBhffxqAPBVQ",
+          "platform": "youtube",
+          "externalAccountId": "UCn8ujwUInbJkBhffxqAPBVQ",
+          "handle": "@daveebbelaar",
+          "profileUrl": "https://www.youtube.com/channel/UCn8ujwUInbJkBhffxqAPBVQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCn8ujwUInbJkBhffxqAPBVQ",
+          "verificationEvidence": "https://www.youtube.com/@daveebbelaar",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-sebastianraschka",
+      "displayName": "Sebastian Raschka",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC_CzsS7UTjcxJ-xXp1ftxtA",
+          "platform": "youtube",
+          "externalAccountId": "UC_CzsS7UTjcxJ-xXp1ftxtA",
+          "handle": "@SebastianRaschka",
+          "profileUrl": "https://www.youtube.com/channel/UC_CzsS7UTjcxJ-xXp1ftxtA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC_CzsS7UTjcxJ-xXp1ftxtA",
+          "verificationEvidence": "https://www.youtube.com/@SebastianRaschka",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "ai-tech-andrejkarpathy",
+      "displayName": "Andrej Karpathy",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "ai-tech"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCXUPKJO5MZQN11PqgIvyuvQ",
+          "platform": "youtube",
+          "externalAccountId": "UCXUPKJO5MZQN11PqgIvyuvQ",
+          "handle": "@AndrejKarpathy",
+          "profileUrl": "https://www.youtube.com/channel/UCXUPKJO5MZQN11PqgIvyuvQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCXUPKJO5MZQN11PqgIvyuvQ",
+          "verificationEvidence": "https://www.youtube.com/@AndrejKarpathy",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-variety",
+      "displayName": "Variety",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCgRQHK8Ttr1j9xCEpCAlgbQ",
+          "platform": "youtube",
+          "externalAccountId": "UCgRQHK8Ttr1j9xCEpCAlgbQ",
+          "handle": "@variety",
+          "profileUrl": "https://www.youtube.com/channel/UCgRQHK8Ttr1j9xCEpCAlgbQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCgRQHK8Ttr1j9xCEpCAlgbQ",
+          "verificationEvidence": "https://www.youtube.com/@variety",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-hollywoodreporter",
+      "displayName": "The Hollywood Reporter",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCZ8Sxmkweh65HetaZfR8YuA",
+          "platform": "youtube",
+          "externalAccountId": "UCZ8Sxmkweh65HetaZfR8YuA",
+          "handle": "@hollywoodreporter",
+          "profileUrl": "https://www.youtube.com/channel/UCZ8Sxmkweh65HetaZfR8YuA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCZ8Sxmkweh65HetaZfR8YuA",
+          "verificationEvidence": "https://www.youtube.com/@hollywoodreporter",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-entertainmenttonight",
+      "displayName": "Entertainment Tonight",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCdtXPiqI2cLorKaPrfpKc4g",
+          "platform": "youtube",
+          "externalAccountId": "UCdtXPiqI2cLorKaPrfpKc4g",
+          "handle": "@EntertainmentTonight",
+          "profileUrl": "https://www.youtube.com/channel/UCdtXPiqI2cLorKaPrfpKc4g",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCdtXPiqI2cLorKaPrfpKc4g",
+          "verificationEvidence": "https://www.youtube.com/@EntertainmentTonight",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-accesshollywood",
+      "displayName": "Access Hollywood",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCiKGMZZmZXK-RpbKJGXgH3Q",
+          "platform": "youtube",
+          "externalAccountId": "UCiKGMZZmZXK-RpbKJGXgH3Q",
+          "handle": "@AccessHollywood",
+          "profileUrl": "https://www.youtube.com/channel/UCiKGMZZmZXK-RpbKJGXgH3Q",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCiKGMZZmZXK-RpbKJGXgH3Q",
+          "verificationEvidence": "https://www.youtube.com/@AccessHollywood",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-enews",
+      "displayName": "E! News",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCjDsbbzHgTrGc4Ff26TJtsA",
+          "platform": "youtube",
+          "externalAccountId": "UCjDsbbzHgTrGc4Ff26TJtsA",
+          "handle": "@enews",
+          "profileUrl": "https://www.youtube.com/channel/UCjDsbbzHgTrGc4Ff26TJtsA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCjDsbbzHgTrGc4Ff26TJtsA",
+          "verificationEvidence": "https://www.youtube.com/@enews",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-people",
+      "displayName": "People",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCGbQJy-531_5vfphay-rChQ",
+          "platform": "youtube",
+          "externalAccountId": "UCGbQJy-531_5vfphay-rChQ",
+          "handle": "@People",
+          "profileUrl": "https://www.youtube.com/channel/UCGbQJy-531_5vfphay-rChQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCGbQJy-531_5vfphay-rChQ",
+          "verificationEvidence": "https://www.youtube.com/@People",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-vanityfair",
+      "displayName": "Vanity Fair",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCIsbLox_y9dCIMLd8tdC6qg",
+          "platform": "youtube",
+          "externalAccountId": "UCIsbLox_y9dCIMLd8tdC6qg",
+          "handle": "@VanityFair",
+          "profileUrl": "https://www.youtube.com/channel/UCIsbLox_y9dCIMLd8tdC6qg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCIsbLox_y9dCIMLd8tdC6qg",
+          "verificationEvidence": "https://www.youtube.com/@VanityFair",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-firstwefeast",
+      "displayName": "First We Feast",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCPD_bxCRGpmmeQcbe2kpPaA",
+          "platform": "youtube",
+          "externalAccountId": "UCPD_bxCRGpmmeQcbe2kpPaA",
+          "handle": "@FirstWeFeast",
+          "profileUrl": "https://www.youtube.com/channel/UCPD_bxCRGpmmeQcbe2kpPaA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCPD_bxCRGpmmeQcbe2kpPaA",
+          "verificationEvidence": "https://www.youtube.com/@FirstWeFeast",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-jimmykimmellive",
+      "displayName": "Jimmy Kimmel Live",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCa6vGFO9ty8v5KZJXQxdhaw",
+          "platform": "youtube",
+          "externalAccountId": "UCa6vGFO9ty8v5KZJXQxdhaw",
+          "handle": "@JimmyKimmelLive",
+          "profileUrl": "https://www.youtube.com/channel/UCa6vGFO9ty8v5KZJXQxdhaw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCa6vGFO9ty8v5KZJXQxdhaw",
+          "verificationEvidence": "https://www.youtube.com/@JimmyKimmelLive",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-fallontonight",
+      "displayName": "The Tonight Show Starring Jimmy Fallon",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC8-Th83bH_thdKZDJCrn88g",
+          "platform": "youtube",
+          "externalAccountId": "UC8-Th83bH_thdKZDJCrn88g",
+          "handle": "@fallontonight",
+          "profileUrl": "https://www.youtube.com/channel/UC8-Th83bH_thdKZDJCrn88g",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC8-Th83bH_thdKZDJCrn88g",
+          "verificationEvidence": "https://www.youtube.com/@fallontonight",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-colbertlateshow",
+      "displayName": "The Late Show with Stephen Colbert",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCMtFAi84ehTSYSE9XoHefig",
+          "platform": "youtube",
+          "externalAccountId": "UCMtFAi84ehTSYSE9XoHefig",
+          "handle": "@ColbertLateShow",
+          "profileUrl": "https://www.youtube.com/channel/UCMtFAi84ehTSYSE9XoHefig",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCMtFAi84ehTSYSE9XoHefig",
+          "verificationEvidence": "https://www.youtube.com/@ColbertLateShow",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-teamcoco",
+      "displayName": "Team Coco",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCi7GJNg51C3jgmYTUwqoUXA",
+          "platform": "youtube",
+          "externalAccountId": "UCi7GJNg51C3jgmYTUwqoUXA",
+          "handle": "@TeamCoco",
+          "profileUrl": "https://www.youtube.com/channel/UCi7GJNg51C3jgmYTUwqoUXA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCi7GJNg51C3jgmYTUwqoUXA",
+          "verificationEvidence": "https://www.youtube.com/@TeamCoco",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-netflix",
+      "displayName": "Netflix",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCWOA1ZGywLbqmigxE4Qlvuw",
+          "platform": "youtube",
+          "externalAccountId": "UCWOA1ZGywLbqmigxE4Qlvuw",
+          "handle": "@Netflix",
+          "profileUrl": "https://www.youtube.com/channel/UCWOA1ZGywLbqmigxE4Qlvuw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCWOA1ZGywLbqmigxE4Qlvuw",
+          "verificationEvidence": "https://www.youtube.com/@Netflix",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-primevideo",
+      "displayName": "Prime Video",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCQJWtTnAHhEG5w4uN0udnUQ",
+          "platform": "youtube",
+          "externalAccountId": "UCQJWtTnAHhEG5w4uN0udnUQ",
+          "handle": "@PrimeVideo",
+          "profileUrl": "https://www.youtube.com/channel/UCQJWtTnAHhEG5w4uN0udnUQ",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCQJWtTnAHhEG5w4uN0udnUQ",
+          "verificationEvidence": "https://www.youtube.com/@PrimeVideo",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-disneyplus",
+      "displayName": "Disney Plus",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCIrgJInjLS2BhlHOMDW7v0g",
+          "platform": "youtube",
+          "externalAccountId": "UCIrgJInjLS2BhlHOMDW7v0g",
+          "handle": "@disneyplus",
+          "profileUrl": "https://www.youtube.com/channel/UCIrgJInjLS2BhlHOMDW7v0g",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCIrgJInjLS2BhlHOMDW7v0g",
+          "verificationEvidence": "https://www.youtube.com/@disneyplus",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-marvel",
+      "displayName": "Marvel Entertainment",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCvC4D8onUfXzvjTOM-dBfEA",
+          "platform": "youtube",
+          "externalAccountId": "UCvC4D8onUfXzvjTOM-dBfEA",
+          "handle": "@marvel",
+          "profileUrl": "https://www.youtube.com/channel/UCvC4D8onUfXzvjTOM-dBfEA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCvC4D8onUfXzvjTOM-dBfEA",
+          "verificationEvidence": "https://www.youtube.com/@marvel",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-rottentomatoestrailers",
+      "displayName": "Rotten Tomatoes Trailers",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCi8e0iOVk1fEOogdfu4YgfA",
+          "platform": "youtube",
+          "externalAccountId": "UCi8e0iOVk1fEOogdfu4YgfA",
+          "handle": "@RottenTomatoesTRAILERS",
+          "profileUrl": "https://www.youtube.com/channel/UCi8e0iOVk1fEOogdfu4YgfA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCi8e0iOVk1fEOogdfu4YgfA",
+          "verificationEvidence": "https://www.youtube.com/@RottenTomatoesTRAILERS",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-movieclips",
+      "displayName": "Movieclips",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC3gNmTGu-TTbFPpfSs5kNkg",
+          "platform": "youtube",
+          "externalAccountId": "UC3gNmTGu-TTbFPpfSs5kNkg",
+          "handle": "@MOVIECLIPS",
+          "profileUrl": "https://www.youtube.com/channel/UC3gNmTGu-TTbFPpfSs5kNkg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC3gNmTGu-TTbFPpfSs5kNkg",
+          "verificationEvidence": "https://www.youtube.com/@MOVIECLIPS",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-screenrant",
+      "displayName": "ScreenRant",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC2iUwfYi_1FCGGqhOUNx-iA",
+          "platform": "youtube",
+          "externalAccountId": "UC2iUwfYi_1FCGGqhOUNx-iA",
+          "handle": "@ScreenRant",
+          "profileUrl": "https://www.youtube.com/channel/UC2iUwfYi_1FCGGqhOUNx-iA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC2iUwfYi_1FCGGqhOUNx-iA",
+          "verificationEvidence": "https://www.youtube.com/@ScreenRant",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-watchmojo",
+      "displayName": "WatchMojo.com",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCaWd5_7JhbQBe4dknZhsHJg",
+          "platform": "youtube",
+          "externalAccountId": "UCaWd5_7JhbQBe4dknZhsHJg",
+          "handle": "@WatchMojo",
+          "profileUrl": "https://www.youtube.com/channel/UCaWd5_7JhbQBe4dknZhsHJg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCaWd5_7JhbQBe4dknZhsHJg",
+          "verificationEvidence": "https://www.youtube.com/@WatchMojo",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-ign",
+      "displayName": "IGN",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCKy1dAqELo0zrOtPkf0eTMw",
+          "platform": "youtube",
+          "externalAccountId": "UCKy1dAqELo0zrOtPkf0eTMw",
+          "handle": "@IGN",
+          "profileUrl": "https://www.youtube.com/channel/UCKy1dAqELo0zrOtPkf0eTMw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCKy1dAqELo0zrOtPkf0eTMw",
+          "verificationEvidence": "https://www.youtube.com/@IGN",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-officialgrahamnorton",
+      "displayName": "The Graham Norton Show",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC4PziMH5MvvsmqM0VCZTy-g",
+          "platform": "youtube",
+          "externalAccountId": "UC4PziMH5MvvsmqM0VCZTy-g",
+          "handle": "@OfficialGrahamNorton",
+          "profileUrl": "https://www.youtube.com/channel/UC4PziMH5MvvsmqM0VCZTy-g",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC4PziMH5MvvsmqM0VCZTy-g",
+          "verificationEvidence": "https://www.youtube.com/@OfficialGrahamNorton",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-ladbible",
+      "displayName": "LADbible Entertainment",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCYRE3PMYatMVXmqmulF0sgA",
+          "platform": "youtube",
+          "externalAccountId": "UCYRE3PMYatMVXmqmulF0sgA",
+          "handle": "@ladbible",
+          "profileUrl": "https://www.youtube.com/channel/UCYRE3PMYatMVXmqmulF0sgA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCYRE3PMYatMVXmqmulF0sgA",
+          "verificationEvidence": "https://www.youtube.com/@ladbible",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-complex",
+      "displayName": "Complex",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCE_--R1P5-kfBzHTca0dsnw",
+          "platform": "youtube",
+          "externalAccountId": "UCE_--R1P5-kfBzHTca0dsnw",
+          "handle": "@Complex",
+          "profileUrl": "https://www.youtube.com/channel/UCE_--R1P5-kfBzHTca0dsnw",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCE_--R1P5-kfBzHTca0dsnw",
+          "verificationEvidence": "https://www.youtube.com/@Complex",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-thedailyshow",
+      "displayName": "The Daily Show",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCwWhs_6x42TyRM4Wstoq8HA",
+          "platform": "youtube",
+          "externalAccountId": "UCwWhs_6x42TyRM4Wstoq8HA",
+          "handle": "@TheDailyShow",
+          "profileUrl": "https://www.youtube.com/channel/UCwWhs_6x42TyRM4Wstoq8HA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCwWhs_6x42TyRM4Wstoq8HA",
+          "verificationEvidence": "https://www.youtube.com/@TheDailyShow",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-tmz",
+      "displayName": "TMZ",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCK7IIV6Q2junGSdYK3BmZMg",
+          "platform": "youtube",
+          "externalAccountId": "UCK7IIV6Q2junGSdYK3BmZMg",
+          "handle": "@TMZ",
+          "profileUrl": "https://www.youtube.com/channel/UCK7IIV6Q2junGSdYK3BmZMg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCK7IIV6Q2junGSdYK3BmZMg",
+          "verificationEvidence": "https://www.youtube.com/@TMZ",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-beyondthetrailer",
+      "displayName": "Beyond The Trailer",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCAXR2zenCwvRIyQd9ydtfaA",
+          "platform": "youtube",
+          "externalAccountId": "UCAXR2zenCwvRIyQd9ydtfaA",
+          "handle": "@BeyondTheTrailer",
+          "profileUrl": "https://www.youtube.com/channel/UCAXR2zenCwvRIyQd9ydtfaA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCAXR2zenCwvRIyQd9ydtfaA",
+          "verificationEvidence": "https://www.youtube.com/@BeyondTheTrailer",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-newrockstars",
+      "displayName": "New Rockstars",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC7yRILFFJ2QZCykymr8LPwA",
+          "platform": "youtube",
+          "externalAccountId": "UC7yRILFFJ2QZCykymr8LPwA",
+          "handle": "@NewRockstars",
+          "profileUrl": "https://www.youtube.com/channel/UC7yRILFFJ2QZCykymr8LPwA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC7yRILFFJ2QZCykymr8LPwA",
+          "verificationEvidence": "https://www.youtube.com/@NewRockstars",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-cinemasins",
+      "displayName": "CinemaSins",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCYUQQgogVeQY8cMQamhHJcg",
+          "platform": "youtube",
+          "externalAccountId": "UCYUQQgogVeQY8cMQamhHJcg",
+          "handle": "@CinemaSins",
+          "profileUrl": "https://www.youtube.com/channel/UCYUQQgogVeQY8cMQamhHJcg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCYUQQgogVeQY8cMQamhHJcg",
+          "verificationEvidence": "https://www.youtube.com/@CinemaSins",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-chrisstuckmann",
+      "displayName": "Chris Stuckmann",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UCCqEeDAUf4Mg0GgEN658tkA",
+          "platform": "youtube",
+          "externalAccountId": "UCCqEeDAUf4Mg0GgEN658tkA",
+          "handle": "@ChrisStuckmann",
+          "profileUrl": "https://www.youtube.com/channel/UCCqEeDAUf4Mg0GgEN658tkA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCCqEeDAUf4Mg0GgEN658tkA",
+          "verificationEvidence": "https://www.youtube.com/@ChrisStuckmann",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "entertainment-jeremyjahns",
+      "displayName": "Jeremy Jahns",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-30T08:25:13.465Z",
+      "verticalIds": [
+        "entertainment"
+      ],
+      "accounts": [
+        {
+          "id": "youtube:UC7v3-2K1N84V67IF-WTRG-Q",
+          "platform": "youtube",
+          "externalAccountId": "UC7v3-2K1N84V67IF-WTRG-Q",
+          "handle": "@JeremyJahns",
+          "profileUrl": "https://www.youtube.com/channel/UC7v3-2K1N84V67IF-WTRG-Q",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC7v3-2K1N84V67IF-WTRG-Q",
+          "verificationEvidence": "https://www.youtube.com/@JeremyJahns",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-30T08:25:13.465Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    }
+  ]
+}

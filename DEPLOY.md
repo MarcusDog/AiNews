@@ -53,6 +53,34 @@ docker run --rm -p 3003:3003 aya-signals-client
 ./docker-deploy.sh start     # 启动服务
 ```
 
+### 选项 4：不依赖 GitHub 的直接上传（生产推荐）
+
+本机完成构建和校验，再通过 SSH/rsync 直接上传。源码包不会包含 `.env`、SQLite、日志、缓存、Cookie、Token 或 `node_modules`；服务器将这些内容保存在共享目录。每个版本均有 SHA256 清单，健康检查失败会自动回滚。
+
+```bash
+# 1. 本机构建不可变发布包；最后一行输出包路径
+./docker-deploy.sh package
+
+# 2. 配置服务器目标（不要把密钥写进仓库）
+export AYA_DEPLOY_HOST=YOUR_SERVER_IP
+export AYA_DEPLOY_USER=YOUR_SSH_USER
+export AYA_DEPLOY_KEY=/absolute/path/to/private_key   # ssh-agent 可用时可省略
+export AYA_DEPLOY_ROOT=/srv/ainews
+
+# 3. 直接上传并激活
+./docker-deploy.sh upload /absolute/path/to/aya-*.tar.gz
+
+# 4. 源码激活后，将本地内容快照合并进共享生产库
+#    仅合并 News/Signal/Creator 内容；用户、会话、订阅和推送队列保留
+./docker-deploy.sh upload-data /absolute/path/to/local-production-ready.db
+
+# 5. 必要时回滚源码版本
+ssh "$AYA_DEPLOY_USER@$AYA_DEPLOY_HOST" \
+  "bash '$AYA_DEPLOY_ROOT/incoming/activate-release.sh' --rollback '$AYA_DEPLOY_ROOT'"
+```
+
+首次从旧目录迁移时，在服务器执行激活前设置 `AYA_LEGACY_ROOT=/root/website/Ainews`，脚本只会在共享配置/数据为空时迁移 `server/.env` 与 `server/data`。`current` 必须是脚本管理的符号链接；脚本会拒绝覆盖普通目录。
+
 ## 常用命令
 
 ```bash
@@ -119,7 +147,7 @@ RSSHUB_BASE_URL=
 NEWSNOW_BASE_URL=
 SIGNAL_BRIDGES_JSON=[]
 AINEWS_SIGNAL_CONCURRENCY=4
-AYA_CREATOR_SEEDS_PATH=./config/creatorSeeds.local.json
+AYA_CREATOR_SEEDS_PATH=./config/creatorBenchmarks.json
 AYA_DISABLE_CREATOR_SCHEDULER=0
 AYA_CREATOR_CONCURRENCY=4
 AYA_CREATOR_REQUEST_BUDGET=100
@@ -158,6 +186,13 @@ curl 'http://localhost:8080/api/creators/v1/posts?vertical=ai-tech&limit=20'
 curl -I http://localhost:8080/creators
 curl -I http://localhost:8080/sources
 curl -I http://localhost:8080/alerts
+```
+
+也可在容器内人工执行完整刷新。它会按“新闻 → Signal/Topic → Creator → 推荐可用性”运行，单一阶段失败不会阻断后续阶段，报告写入持久日志目录：
+
+```bash
+docker compose exec -T ainews-server npm run refresh:daily
+docker compose exec -T ainews-server npm run dataset:report -- /app/data/ainews.db
 ```
 
 Topic Feed 在 Nginx 中使用精确匹配代理，位于 SPA fallback 之前。JSON 应返回 `application/feed+json`，RSS 应返回 XML 内容类型；若返回 HTML，说明仍在使用旧 Nginx 配置。
@@ -229,17 +264,18 @@ ports:
 ## 更新部署
 
 ```bash
-# 拉取最新代码
-git pull origin main
+# 服务器能直接使用当前目录时：不访问 GitHub，重新构建并启动
+./docker-deploy.sh update-local
 
-# 重新构建并启动
-./docker-deploy.sh update
+# 生产服务器不能拉取 GitHub 时：在本机打包并直接上传
+archive="$(./scripts/build-release.sh | tail -n 1)"
+./scripts/upload-release.sh "$archive"
 
-# 或手动执行
-cd client && npm ci && npm run build && cd ..
-docker-compose build --no-cache
-docker-compose up -d
+# 源码更新验证成功后再同步数据；合并前自动在线备份生产库
+./scripts/upload-data-snapshot.sh server/data/local-production-ready.db
 ```
+
+上传脚本需要 `AYA_DEPLOY_HOST` 和 `AYA_DEPLOY_USER`，可选 `AYA_DEPLOY_PORT`、`AYA_DEPLOY_KEY`、`AYA_DEPLOY_ROOT`。服务器必须预装 Bash、Node.js 20+、tar、Docker Compose 和 curl；推荐配置只允许发布目录操作的专用 SSH 用户。
 
 ## 安全建议
 

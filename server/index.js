@@ -140,10 +140,17 @@ const agentRoutes = require('./routes/agent');
 const adminRoutes = require('./routes/admin');
 const publicRoutes = require('./routes/public');
 const SignalService = require('./services/signals/signal-service');
+const DailyRefreshService = require('./services/daily-refresh-service');
 const { createSignalsRouter } = require('./routes/signals');
 const { newsSchedules } = require('./config/schedules');
 const cronOptions = { timezone: newsSchedules.timezone };
 const signalService = new SignalService();
+const dailyRefreshService = new DailyRefreshService({
+  newsService: require('./services/NewsService'),
+  signalService,
+  creatorService,
+  creatorStore
+});
 
 // API路由
 app.use('/api/news', createNewsRouter({ signalService }));
@@ -319,6 +326,12 @@ async function initializeSystem(options = {}) {
   const newsService = options.newsService || require('./services/NewsService');
   const currentSignalService = options.signalService || signalService;
   const currentCreatorService = options.creatorService || creatorService;
+  const currentDailyRefreshService = options.dailyRefreshService || new DailyRefreshService({
+    newsService,
+    signalService: currentSignalService,
+    creatorService: currentCreatorService,
+    creatorStore: options.creatorStore || creatorStore
+  });
   const currentCreatorOutboxWorker = options.creatorOutboxWorker || creatorOutboxWorker;
   const diversityAuditService = options.diversityAuditService || require('./services/DiversityAuditService').diversityAuditService;
   const socketServer = options.socketServer || io;
@@ -395,23 +408,23 @@ function registerCronJobs(options = {}) {
   const currentCreatorService = options.creatorService || creatorService;
   const sourceLimit = getLifecycleFlags(env).signalSourceLimit;
 
-  const refreshNewsAndSignals = async (label) => {
+  const refreshNewsAndSignals = async (label, includeCreators = false) => {
     try {
       console.log(`⏰ 执行${label}...`);
-      await newsService.updateAllNews();
-      await currentSignalService.refreshAll({
-        refreshLegacy: false,
-        sourceLimit,
+      const report = await currentDailyRefreshService.run({
+        reason: label,
+        includeCreators,
+        signalSourceLimit: sourceLimit,
         windowHours: newsSchedules.signalWindowHours
       });
-      console.log(`✅ ${label}完成`);
+      console.log(`${report.status === 'success' ? '✅' : '⚠️'} ${label}完成：${report.status}`);
     } catch (error) {
       console.error(`❌ ${label}失败:`, error.message);
     }
   };
 
   const jobs = [
-    cronLib.schedule(newsSchedules.dailyMorning, () => refreshNewsAndSignals('每日新闻与热点更新'), cronOptions),
+    cronLib.schedule(newsSchedules.dailyMorning, () => refreshNewsAndSignals('每日新闻与热点更新', true), cronOptions),
     cronLib.schedule(newsSchedules.recurring, () => refreshNewsAndSignals('定期新闻与热点更新'), cronOptions),
     cronLib.schedule(newsSchedules.signalRecurring, async () => {
       try {
@@ -553,6 +566,7 @@ module.exports = {
   creatorSourceRegistry,
   creatorBridgeVerifier,
   creatorService,
+  dailyRefreshService,
   creatorOutboxWorker,
   creatorMaintenance,
   youtubeWebSubService,

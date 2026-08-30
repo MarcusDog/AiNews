@@ -4,11 +4,12 @@ const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
 const { HttpsProxyAgent } = require('https-proxy-agent');
+const { resolveProxyUrl } = require('./network/source-transport');
 const DatabaseService = require('./DatabaseService');
 const { AI_FILTER_KEYWORDS, NEWS_SOURCES, normalizeCategory } = require('../config/newsSources');
 
 // 代理配置 - 从环境变量读取
-const PROXY_URL = process.env.https_proxy || process.env.HTTPS_PROXY || process.env.http_proxy || process.env.HTTP_PROXY;
+const PROXY_URL = resolveProxyUrl(process.env);
 const proxyAgent = PROXY_URL ? new HttpsProxyAgent(PROXY_URL) : null;
 if (proxyAgent) {
   console.log(`[Proxy] 使用代理: ${PROXY_URL}`);

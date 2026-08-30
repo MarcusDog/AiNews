@@ -1,9 +1,10 @@
 const axios = require('axios');
+const { createSourceTransport } = require('../../network/source-transport');
 
 const USER_AGENT = 'AyaNews/2.0 (+https://ainews.xiaotianaya.com)';
 
 function defaultHttp() {
-  return axios;
+  return createSourceTransport({ axiosImpl: axios });
 }
 
 function requestHeaders(extra = {}) {

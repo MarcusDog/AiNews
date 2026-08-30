@@ -190,6 +190,39 @@ test('store persists reproducible scores and compacts snapshots to 72-hour fine 
   }
 });
 
+test('unchanged hotness is stored at most daily while score changes persist immediately', () => {
+  const current = storeFixture();
+  try {
+    current.store.commitPage({ accountId: 'account-1', posts: [storedPost()], exhausted: true, collectedAt: NOW });
+    const base = {
+      formulaVersion: FORMULA_VERSION,
+      score: 50,
+      unroundedScore: 50,
+      confidence: 'medium',
+      inputs: { ageHours: 1 },
+      components: { velocity: { weighted: 10 } },
+      penalties: {}
+    };
+    current.store.recordHotnessScore('post-1', base, '2026-08-29T10:00:00.000Z');
+    const skipped = current.store.recordHotnessScore('post-1', {
+      ...base,
+      inputs: { ageHours: 2 }
+    }, '2026-08-29T11:00:00.000Z');
+    current.store.recordHotnessScore('post-1', {
+      ...base,
+      score: 51,
+      unroundedScore: 51
+    }, '2026-08-29T11:01:00.000Z');
+    current.store.recordHotnessScore('post-1', {
+      ...base,
+      inputs: { ageHours: 26 }
+    }, '2026-08-30T11:02:00.000Z');
+
+    assert.equal(skipped.skipped, true);
+    assert.equal(current.store.db.prepare('SELECT COUNT(*) count FROM creator_post_scores').get().count, 2);
+  } finally { current.close(); }
+});
+
 test('persisted score threshold crossing creates one durable event and outbox delivery', () => {
   const current = storeFixture();
   try {

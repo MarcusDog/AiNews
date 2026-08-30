@@ -267,6 +267,37 @@
 - 2026-08-29：完成 Task 17 真实来源与交付收口。修复定时采集后未运行评分/Topic、内容垂类错分、GitHub 额度状态误判、重启后来源成功状态丢失、匿名登录探测 401 噪声和订阅列表不可见。全新库 Canary 实收 358 条、回填后 526 条，自动化、浏览器、性能和密钥扫描全部通过；两个 GitHub PR 分支均已推送并核对远端 SHA。
 - 2026-08-29：完成整个系统使用方案与文档发布收口。新增从普通用户、自媒体创作者、运营者到 Agent/开发者的统一手册，串联页面、抓取、推荐、研究、推送、开放接口、维护和上线验收；清理历史文档中的旧测试凭据并纠正过期操作说明。
 
+---
+
+## 第五阶段：直接上传、数据恢复与持续采集
+
+### 生产与本地基线（2026-08-30）
+
+- 生产 `/api/news/latest` 仅报告 2,223 条，Creator 来源、博主、帖子和热点接口均为空。
+- 生产 Signal 目录有 20 项；Hugging Face、Mastodon、三个 Reddit 来源被错误 DNS/出口网络导向异常地址后超时。多个 L3 来源由开发 mock 标记为在线并只写入 3 条，不可作为真实采集证据。
+- 本地运行库有 10,632 条 News、288 条 Signal，但 Creator / Account / Post 均为 0；示例观察名单仅 10 位。
+- 同版本本地 L1 真实探测为 7/8 成功、42 条有效 Signal；说明主要故障位于生产网络边界而不是通用解析器。
+- 现有更新仍执行 `git pull`，且服务端 lockfile 固定失效腾讯 npm 镜像。服务器当前拒绝本机 SSH 身份，最终上传需要补充可用 SSH 用户/密钥。
+
+### 第五阶段里程碑
+
+| 里程碑 | 状态 | 证据 |
+|---|---|---|
+| W. 根因审计与隔离工作区 | 已完成 | 在远端最新 `main` 建立 `codex/data-recovery-direct-deploy` 独立 worktree，保留原工作区数据库/日志/前端改动；完成生产 API、本地数据库、来源、部署脚本、npm 镜像与 SSH 基线审计。 |
+| X. 直接上传与采集修复 | 已完成 | 依赖发布、直接上传、统一代理/重试/错误分类和脱敏 DNS/HTTP 诊断均落地。30 个本地配置主机 `30/30` 可达；共享 Reddit 适配器修复后 L1 实采 `8/8` 成功、52 条有效 Signal。连续两轮完整刷新均为 52 条、37 个 Topic、数据库行数 `52→52`，零错误、零重复新增。 |
+| Y. 100+ 博主与 10,000+ 新闻数据集 | 已完成 | 最终独立 SQLite 快照：News 10,641、Signal 336、Creator 121、Account 121、Post 1,806、Score 1,081、Creator Topic 226；四垂类均有内容，最新 100 条 News/Creator URL 全部为安全可验证原链。121/121 Atom Feed 可达且身份匹配。 |
+| Z. 推荐连续性、全页面 QA 与发布 | 进行中 | 每日完整刷新第二轮已全成功：154 News 源零错误、176 Signal、21 到期 Creator 全成功，9 个 Signal Opportunity/229 个 Creator Topic 保持可用。继续执行全 API/浏览器 QA、构建和发布。 |
+
+### 第五阶段更新日志
+
+- 2026-08-30：完成 Phase 1 根因审计。生产 Creator 数据为 0，新闻数低于本地历史库；来源离线的主要原因是生产 DNS/出口异常，另发现开发 mock 污染在线状态、示例观察名单过小、GitHub 拉取依赖和 lockfile 固定失效镜像。冻结“本地采集与构建 → 直接上传原子发布 → 服务端验证/回滚”的新部署方向。
+- 2026-08-30：完成 Task 1 可复现发布输入。新增回归测试同时捕获腾讯镜像 tarball 与 Compose 启动时 `npm install`，观察 `2/2` RED 后修复为官方 npm registry 和镜像构建期安装；`npm ci` 成功，服务端全量 `329/329` GREEN。现有依赖审计仍有 7 个 moderate、6 个 high，留待最终逐项评估，不执行破坏性强制升级。
+- 2026-08-30：完成 Task 2 直接上传与回滚。新增发布清单、构建、上传和服务端激活脚本，`docker-deploy.sh` 不再含 GitHub 拉取，支持 `package/upload/activate/rollback/update-local`。定向 `5/5` 覆盖运行时排除、双重哈希、共享 `.env`/数据库保留、不可变版本、原子切换和健康失败回滚；真实前端构建发布包 937,395 bytes、323 个文件，SHA256 `0ae39fa288dfc806a6d206f63aa3645da3ce775b0025d196fcef73c64a8257ba`。生产上传仍受服务器拒绝现有 SSH 身份阻挡，不冒充已上线。
+- 2026-08-30：完成 Task 3 采集网络修复。News/Signal/Creator 公共连接器统一支持 `AYA_SOURCE_PROXY_URL` 与标准代理环境，增加 direct/proxy 模式、有界重试、DNS/超时/限流/4xx/5xx 类型和凭据脱敏诊断。发现真实探针为每个 Reddit 社区新建适配器，绕过了生产共享缓存并制造 429；改为按适配器复用后 L1 `8/8` 成功（HN 2、GitHub 10、Mastodon 2、Reddit 28、HF 10、Bilibili 0 相关结果），共 52 条。30 个配置主机本地 HTTP `30/30` 可达；两轮数据库 canary 均 52 Signal/37 Topic，行数不增长。Bilibili 仍是“接口在线但当前 AI 过滤结果为 0”，不伪造内容。
+- 2026-08-30：完成 Task 4 博主对标目录。用 `yt-dlp` 对 140 个候选公开频道逐一解析，19 个失败候选自动剔除，得到 121 个稳定 `UC…` 账号，按 `person/media` 明确区分；垂类为美妆 29、穿搭 29、AI 科技 32、娱乐 31。随后对全部 121 个 YouTube Atom Feed 进行实时复核，`121/121` HTTP 可达且 Feed 内频道 ID 与目录一致；目录和旧核验规则联动 `8/8` 通过。
+- 2026-08-30：完成 Task 5 本地生产数据快照。在线只读备份原库后在独立 `.building-*` 数据库内采集、评分、聚类并通过门禁，再原子替换目标快照；未覆盖源库。最终为 News 10,640（有效标题+HTTPS 10,616）、Signal 332/Topic 264、Creator 121/Account 121/Post 1,806/Score 1,080/Creator Topic 229；美妆 234、穿搭 325、AI 科技 413、娱乐 435 条已分类帖子，最新各 100 条 URL 验证 `100/100`。L1 本轮真实写入/更新 177 条且零错误。质量抽查发现 `@DanielSimmons` 同名短柄误指无关音乐频道，已改为官方 `@imdanielsimmons`（稳定 ID `UCOgz_YflAsYnGbdvzXuKNCA`），重建后错误账号 0 条、官方近期穿搭视频正常；121/121 Feed 再次通过。运行报告从 2.5 MB 原帖明细收敛为 14 KB 聚合证据，不保存帖子正文。
+- 2026-08-30：完成 Task 6 持续刷新与安全数据同步。新增隔离式 Daily Refresh：News 失败不阻断 Signal/Creator、同进程拒绝重入、结尾强制检查推荐是否有 Signal Opportunity 或 Creator Topic，并输出 1.3 KB 聚合报告。第一轮真实运行 154 News 源成功、2 个上游空 Release Feed 失败，后续 Signal 175/Creator 100 均成功；确认 Qwen3 与 llama.cpp 仓库没有可用 Release 条目后，将两项从新闻调度禁用，分别由 Qwen 官方博客与 GitHub Signal 雷达覆盖。第二轮用时 2m54s，154 News 源 `0` 错误、Signal 176/`0` 错误、21 个到期 Creator `21/21` 成功，推荐门禁为 9 个 Signal Opportunity、229 个 Creator Topic。另修复 Creator 每轮重复追加 1,080 个评分快照：同一自然日现在更新最新状态、只在跨日新建历史点；重建后立即再跑一次 Intelligence，Score 行数稳定 `1081→1081`。新增 SHA 校验的数据上传与内容 UPSERT；真实副本合并后 News 10,640、Signal 332、Creator 121/Post 1,806，原有用户 `2→2`、订阅 `0→0`、`integrity_check=ok`，合并前备份保留。
+
 - 2026-08-28：完成跨垂类博主来源与开源项目审计；确认“新闻热榜”和“指定博主逐帖监听”是两个不同数据链，第四阶段新增独立 Creator Intelligence bounded context。
 - 2026-08-28：完成产品规格与实施计划草案；补齐观察名单范围内全公开历史的定义、每账号回填状态机、二次 reconciliation、四垂类、稳定身份、互动快照、博主相对基线、多博主/跨平台扩散、FTS5、本地 SQLite、持久 outbox 和签名 Sidecar。
 - 2026-08-28：实施计划第一轮独立审查未通过；已修订脏工作树分片暂存、YouTube WebSub、Bridge 原始字节签名与账号白名单、单调 changes/SSE 恢复、FTS `q`/游标契约、预览式清理/在线备份/JSONL 导出，以及 Nginx SSE 无缓冲部署验证，进入第二轮复审。
