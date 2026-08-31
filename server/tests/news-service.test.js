@@ -14,6 +14,8 @@ test('getActiveRssSources excludes disabled feeds from update scheduling', () =>
   assert(activeSources.every((source) => source.enabled !== false));
   assert(activeSources.some((source) => source.name === 'OpenAI News'));
   assert(activeSources.some((source) => source.name === 'Google DeepMind'));
+  assert(!activeSources.some((source) => source.name === 'Qwen 官方发布'));
+  assert(!activeSources.some((source) => source.name === 'llama.cpp 官方发布'));
 });
 
 test('validateFeedHttpResponse rejects upstream 404 responses', () => {

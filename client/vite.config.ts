@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url))
+const apiProxy = process.env.AINEWS_DEV_API_ORIGIN || 'http://localhost:3002'
 
 export default defineConfig({
   plugins: [react()],
@@ -17,9 +18,9 @@ export default defineConfig({
     port: 3000,
     strictPort: true,
     proxy: {
-      '/api': 'http://localhost:3002',
+      '/api': apiProxy,
       '/socket.io': {
-        target: 'http://localhost:3002',
+        target: apiProxy,
         ws: true,
       },
     },

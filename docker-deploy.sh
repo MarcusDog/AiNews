@@ -160,14 +160,43 @@ status() {
     fi
 }
 
-# 更新（拉取最新代码并重启）
-update() {
-    print_info "更新服务..."
-    git pull origin main
+# 使用当前本地源码重新构建并重启，不访问 GitHub。
+update-local() {
+    print_info "使用本地源码更新服务..."
     (cd client && npm ci && npm run build)
     docker-compose build --no-cache
     docker-compose up -d
-    print_success "更新完成"
+    print_success "本地源码更新完成"
+}
+
+package-release() {
+    print_info "构建可校验的源码发布包..."
+    scripts/build-release.sh
+}
+
+upload-release() {
+    archive="${2:-}"
+    if [ -z "$archive" ]; then
+        archive="$(scripts/build-release.sh | tail -n 1)"
+    fi
+    scripts/upload-release.sh "$archive"
+}
+
+upload-data-snapshot() {
+    snapshot="${2:-server/data/local-production-ready.db}"
+    scripts/upload-data-snapshot.sh "$snapshot"
+}
+
+activate-release() {
+    archive="${2:-}"
+    deploy_root="${3:-${AYA_DEPLOY_ROOT:-/srv/ainews}}"
+    [ -n "$archive" ] || { print_error "activate 需要发布包路径"; exit 2; }
+    scripts/activate-release.sh "$archive" "$deploy_root"
+}
+
+rollback-release() {
+    deploy_root="${2:-${AYA_DEPLOY_ROOT:-/srv/ainews}}"
+    scripts/activate-release.sh --rollback "$deploy_root"
 }
 
 # 备份数据
@@ -227,14 +256,29 @@ case "${1:-start}" in
     clean)
         clean
         ;;
-    update)
-        update
+    update|update-local)
+        update-local
+        ;;
+    package)
+        package-release
+        ;;
+    upload)
+        upload-release "$@"
+        ;;
+    upload-data)
+        upload-data-snapshot "$@"
+        ;;
+    activate)
+        activate-release "$@"
+        ;;
+    rollback)
+        rollback-release "$@"
         ;;
     backup)
         backup
         ;;
     *)
-        echo "用法: $0 {build|start|stop|restart|logs|logs-server|logs-client|shell-server|shell-client|status|clean|update|backup}"
+        echo "用法: $0 {build|start|stop|restart|logs|logs-server|logs-client|shell-server|shell-client|status|clean|update-local|package|upload|upload-data|activate|rollback|backup}"
         echo ""
         echo "命令说明:"
         echo "  build         - 构建 Docker 镜像"
@@ -248,7 +292,12 @@ case "${1:-start}" in
         echo "  shell-client  - 进入前端 Nginx 容器 shell"
         echo "  status        - 查看服务状态"
         echo "  clean         - 清理所有容器、镜像和数据"
-        echo "  update        - 更新代码并重启"
+        echo "  update-local  - 使用当前本地源码构建并重启（不访问 GitHub）"
+        echo "  package       - 构建带 SHA256 清单的源码发布包"
+        echo "  upload [包]   - 直接上传源码包并在服务器激活"
+        echo "  upload-data [快照] - 校验并合并内容快照，保留用户/订阅/推送数据"
+        echo "  activate 包 [根目录] - 在本机/服务器激活指定包"
+        echo "  rollback [根目录] - 回滚到上一个已验证版本"
         echo "  backup        - 备份数据库"
         exit 1
         ;;

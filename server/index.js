@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
+const { createApiRateLimiter } = require('./middleware/apiRateLimit');
 const cron = require('node-cron');
 const http = require('http');
 const { Server } = require('socket.io');
@@ -111,22 +111,8 @@ app.use(
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// API限率配置（更宽松，避免429）
-const apiLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1分钟
-  max: 60, // 每分钟60次请求
-  message: {
-    success: false,
-    error: '请求过于频繁，请稍后再试',
-    retryAfter: 60
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
-  skip: (req) => {
-    // 跳过健康检查和WebSocket
-    return req.path === '/health' || req.path.startsWith('/socket.io');
-  }
-});
+// 仪表盘一次会并发读取多类真实数据；写入和内容生成仍有独立、更严格的限流。
+const apiLimiter = createApiRateLimiter(process.env);
 app.use('/api/', apiLimiter);
 
 // 导入路由
@@ -140,10 +126,17 @@ const agentRoutes = require('./routes/agent');
 const adminRoutes = require('./routes/admin');
 const publicRoutes = require('./routes/public');
 const SignalService = require('./services/signals/signal-service');
+const DailyRefreshService = require('./services/daily-refresh-service');
 const { createSignalsRouter } = require('./routes/signals');
 const { newsSchedules } = require('./config/schedules');
 const cronOptions = { timezone: newsSchedules.timezone };
 const signalService = new SignalService();
+const dailyRefreshService = new DailyRefreshService({
+  newsService: require('./services/NewsService'),
+  signalService,
+  creatorService,
+  creatorStore
+});
 
 // API路由
 app.use('/api/news', createNewsRouter({ signalService }));
@@ -319,6 +312,12 @@ async function initializeSystem(options = {}) {
   const newsService = options.newsService || require('./services/NewsService');
   const currentSignalService = options.signalService || signalService;
   const currentCreatorService = options.creatorService || creatorService;
+  const currentDailyRefreshService = options.dailyRefreshService || new DailyRefreshService({
+    newsService,
+    signalService: currentSignalService,
+    creatorService: currentCreatorService,
+    creatorStore: options.creatorStore || creatorStore
+  });
   const currentCreatorOutboxWorker = options.creatorOutboxWorker || creatorOutboxWorker;
   const diversityAuditService = options.diversityAuditService || require('./services/DiversityAuditService').diversityAuditService;
   const socketServer = options.socketServer || io;
@@ -395,23 +394,23 @@ function registerCronJobs(options = {}) {
   const currentCreatorService = options.creatorService || creatorService;
   const sourceLimit = getLifecycleFlags(env).signalSourceLimit;
 
-  const refreshNewsAndSignals = async (label) => {
+  const refreshNewsAndSignals = async (label, includeCreators = false) => {
     try {
       console.log(`⏰ 执行${label}...`);
-      await newsService.updateAllNews();
-      await currentSignalService.refreshAll({
-        refreshLegacy: false,
-        sourceLimit,
+      const report = await currentDailyRefreshService.run({
+        reason: label,
+        includeCreators,
+        signalSourceLimit: sourceLimit,
         windowHours: newsSchedules.signalWindowHours
       });
-      console.log(`✅ ${label}完成`);
+      console.log(`${report.status === 'success' ? '✅' : '⚠️'} ${label}完成：${report.status}`);
     } catch (error) {
       console.error(`❌ ${label}失败:`, error.message);
     }
   };
 
   const jobs = [
-    cronLib.schedule(newsSchedules.dailyMorning, () => refreshNewsAndSignals('每日新闻与热点更新'), cronOptions),
+    cronLib.schedule(newsSchedules.dailyMorning, () => refreshNewsAndSignals('每日新闻与热点更新', true), cronOptions),
     cronLib.schedule(newsSchedules.recurring, () => refreshNewsAndSignals('定期新闻与热点更新'), cronOptions),
     cronLib.schedule(newsSchedules.signalRecurring, async () => {
       try {
@@ -553,6 +552,7 @@ module.exports = {
   creatorSourceRegistry,
   creatorBridgeVerifier,
   creatorService,
+  dailyRefreshService,
   creatorOutboxWorker,
   creatorMaintenance,
   youtubeWebSubService,

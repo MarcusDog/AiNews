@@ -246,6 +246,7 @@ class SignalStore {
         summary = excluded.summary,
         author = excluded.author,
         language = excluded.language,
+        region = excluded.region,
         collected_at = excluded.collected_at,
         last_seen_at = excluded.last_seen_at,
         metrics_json = excluded.metrics_json,

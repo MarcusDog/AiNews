@@ -256,6 +256,8 @@ test('legacy News adapter imports real database rows as compatibility signals', 
     url: 'https://official.example/news/model',
     source: 'Official Lab',
     category: 'AI新闻',
+    region: 'cn',
+    language: 'zh',
     publishedAt: '2026-08-27T00:00:00Z',
     author: 'Lab'
   }] }) });
@@ -263,6 +265,8 @@ test('legacy News adapter imports real database rows as compatibility signals', 
 
   assert.equal(items[0].externalId, 'news-1');
   assert.equal(items[0].kind, 'news');
+  assert.equal(items[0].region, 'cn');
+  assert.equal(items[0].language, 'zh');
   assert.deepEqual(items[0].metrics, {});
   assert.deepEqual(items[0].tags, ['AI新闻', 'Official Lab']);
 });

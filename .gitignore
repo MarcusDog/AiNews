@@ -14,7 +14,10 @@ client/build/
 client/node_modules/.cache/
 server/cache/
 server/data/backups/
+server/data/reports/
 server/data/*.db
+server/data/*.db.previous-*
+server/data/*.db.building-*
 server/data/*.db-shm
 server/data/*.db-wal
 server/config/creatorSeeds.json

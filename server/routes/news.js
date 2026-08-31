@@ -70,7 +70,8 @@ router.get('/domestic', (req, res) => {
     if (!requireSignals(signalService, res)) return;
     const query = topicQuery(req);
     if (!query) return res.status(400).json({ success: false, error: 'invalid_query' });
-    const items = topicDetails(signalService, { ...query, limit: 100 })
+    // 先扫描完整的可用 Topic 集，再按国内证据筛选；否则全球高分 Topic 会挤掉国内结果。
+    const items = topicDetails(signalService, { ...query, limit: 500 })
       .filter((topic) => (topic.signals || []).some((signal) => signal.region === 'cn'))
       .slice(0, query.limit)
       .map((topic) => publicTopic(topic, true));

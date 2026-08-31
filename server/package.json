@@ -6,6 +6,12 @@
     "dev": "nodemon index.js",
     "start": "node index.js",
     "init-db": "node scripts/init-db.js",
+    "refresh:daily": "node scripts/run-daily-refresh.js",
+    "dataset:build": "node scripts/build-local-dataset.js",
+    "dataset:report": "node scripts/report-dataset.js",
+    "dataset:merge": "node scripts/merge-content-snapshot.js",
+    "sources:diagnose": "node scripts/diagnose-source-network.js",
+    "creators:verify": "node scripts/verify-creator-benchmarks.js",
     "test": "node --test tests/*.test.js"
   },
   "dependencies": {

@@ -101,6 +101,9 @@ function normalizeSignal(input = {}, source = {}, options = {}) {
   const bridgeRegion = source.trustClass === 'bridge' && ['cn', 'global'].includes(input.region)
     ? input.region
     : '';
+  const legacyRegion = (source.id === 'legacy-news' || source.adapter === 'legacy-news') && ['cn', 'global'].includes(input.region)
+    ? input.region
+    : '';
 
   return {
     id: fingerprint,
@@ -110,7 +113,7 @@ function normalizeSignal(input = {}, source = {}, options = {}) {
     sourceName: source.name || source.id,
     sourceTrustClass: source.trustClass,
     platform: bridgePlatform || source.platform,
-    region: bridgeRegion || source.region,
+    region: bridgeRegion || legacyRegion || source.region,
     kind: normalizeText(input.kind) || 'post',
     title,
     summary: normalizeText(input.summary || input.description) || null,

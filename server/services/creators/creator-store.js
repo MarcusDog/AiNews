@@ -1835,11 +1835,51 @@ class CreatorStore {
       throw new TypeError('postId/formulaVersion/score required');
     }
     const timestamp = iso(capturedAt, 'capturedAt');
+    const latestRow = this.db.prepare(`
+      SELECT * FROM creator_post_scores
+      WHERE post_id = ? ORDER BY captured_at DESC, id DESC LIMIT 1
+    `).get(postId);
+    const latest = latestRow ? {
+      postId: latestRow.post_id,
+      capturedAt: latestRow.captured_at,
+      formulaVersion: latestRow.formula_version,
+      score: latestRow.score,
+      unroundedScore: latestRow.unrounded_score,
+      confidence: latestRow.confidence,
+      inputs: parseJson(latestRow.inputs_json, {}),
+      components: parseJson(latestRow.components_json, {}),
+      penalties: parseJson(latestRow.penalties_json, {})
+    } : null;
+    const withinDailyWindow = latest
+      && Date.parse(timestamp) >= Date.parse(latest.capturedAt)
+      && Date.parse(timestamp) - Date.parse(latest.capturedAt) < 86_400_000;
+    const unchangedPublicState = latest
+      && latest.formulaVersion === score.formulaVersion
+      && Number(latest.score) === Number(score.score)
+      && Number(latest.unroundedScore) === Number(score.unroundedScore)
+      && latest.confidence === (score.confidence || 'low')
+      && json(latest.components, {}) === json(score.components, {})
+      && json(latest.penalties, {}) === json(score.penalties, {});
+    if (withinDailyWindow && unchangedPublicState) {
+      return {
+        skipped: true,
+        reason: 'unchanged_within_daily_window',
+        before: latest,
+        after: latest,
+        events: []
+      };
+    }
     const insert = this.db.prepare(`
       INSERT INTO creator_post_scores (
         post_id, captured_at, formula_version, score, unrounded_score, confidence,
         inputs_json, components_json, penalties_json, created_at
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+    const update = this.db.prepare(`
+      UPDATE creator_post_scores SET
+        captured_at = ?, formula_version = ?, score = ?, unrounded_score = ?, confidence = ?,
+        inputs_json = ?, components_json = ?, penalties_json = ?
+      WHERE id = ?
     `);
     const { detectCreatorEvents } = require('./creator-event-detector');
     const stateChange = this.applyCreatorStateChange({
@@ -1847,11 +1887,16 @@ class CreatorStore {
       occurredAt: timestamp,
       applyState: () => {
         const before = this.getLatestHotnessScore(postId);
-        insert.run(
-          postId, timestamp, score.formulaVersion, Number(score.score), Number(score.unroundedScore),
+        const values = [
+          timestamp, score.formulaVersion, Number(score.score), Number(score.unroundedScore),
           score.confidence || 'low', json(score.inputs, {}), json(score.components, {}),
-          json(score.penalties, {}), timestamp
-        );
+          json(score.penalties, {})
+        ];
+        if (withinDailyWindow && latestRow) {
+          update.run(...values, latestRow.id);
+        } else {
+          insert.run(postId, ...values, timestamp);
+        }
         const post = this.db.prepare(`
           SELECT p.platform, a.creator_id, pv.vertical_id
           FROM creator_posts p JOIN creator_accounts a ON a.id = p.account_id

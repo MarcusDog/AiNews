@@ -1,4 +1,5 @@
 const crypto = require('node:crypto');
+const { resolveProxyUrl } = require('../../network/source-transport');
 
 const TRACKING_PARAMS = /^(utm_.+|fbclid|gclid|dclid|mc_cid|mc_eid|ref_src)$/i;
 
@@ -6,7 +7,7 @@ function createConnectorFetch(options = {}) {
   const fetchImpl = options.fetchImpl || global.fetch;
   if (typeof fetchImpl !== 'function') throw new TypeError('fetch implementation is required');
   const env = options.env || (options.fetchImpl ? {} : process.env);
-  const proxyUrl = env.HTTPS_PROXY || env.https_proxy || env.HTTP_PROXY || env.http_proxy;
+  const proxyUrl = resolveProxyUrl(env);
   if (!proxyUrl) return fetchImpl;
   const ProxyAgentClass = options.ProxyAgentClass || require('undici').ProxyAgent;
   const dispatcher = new ProxyAgentClass(proxyUrl);

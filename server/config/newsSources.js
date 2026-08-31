@@ -73,7 +73,7 @@ const CORE_NEWS_SOURCES = [
 
   // 国内模型、框架与开源项目官方更新
   source({ name: 'Qwen 官方博客', url: 'https://qwenlm.github.io/blog/index.xml', category: 'AI新闻', language: 'multi', region: 'cn', sourceGroup: 'product', priority: 1 }),
-  source({ name: 'Qwen 官方发布', url: 'https://github.com/QwenLM/Qwen3/releases.atom', category: '新工具', language: 'multi', region: 'cn', sourceGroup: 'engineering', priority: 1 }),
+  source({ name: 'Qwen 官方发布', url: 'https://github.com/QwenLM/Qwen3/releases.atom', category: '新工具', language: 'multi', region: 'cn', sourceGroup: 'engineering', priority: 1, enabled: false, disabledReason: 'upstream_repository_has_no_release_entries_use_qwen_blog' }),
   source({ name: 'DeepSeek 官方发布', url: 'https://github.com/deepseek-ai/DeepSeek-V3/releases.atom', category: '新工具', language: 'multi', region: 'cn', sourceGroup: 'engineering', priority: 1 }),
   source({ name: 'InternLM 官方发布', url: 'https://github.com/InternLM/InternLM/releases.atom', category: '新工具', language: 'multi', region: 'cn', sourceGroup: 'engineering' }),
   source({ name: '智谱 GLM 官方动态', url: 'https://github.com/zai-org/GLM-4.5/commits/main.atom', category: '新工具', language: 'multi', region: 'cn', sourceGroup: 'engineering', enabled: false }),
