@@ -42,7 +42,7 @@ function services() {
       getStatistics: async () => ({ total: 12474, today: 18, categories: { AI新闻: 100 }, sources: { 官方来源: 12474 } }),
       getCategories: async () => [], getNewsCount: async () => 12474,
       getLastUpdateTime: () => '2026-08-27T10:00:00.000Z',
-      getRecommendations: async () => [], getNewsById: async () => null,
+      getRecommendations: async (userId, limit) => [{ id: 'recommended-1', userId, limit }], getNewsById: async () => null,
       advancedSearch: async () => ({ data: [], total: 0 })
     },
     signalService: {
@@ -134,5 +134,18 @@ test('dashboard and by-source aggregate News and Signal health without demo rows
     assert.equal(bySourceResponse.status, 200);
     assert.equal(bySource.data.news[0].count, 12474);
     assert.equal(bySource.data.signals[0].lastSaved, 40);
+  });
+});
+
+test('recommendations keeps the legacy array response and rejects invalid limits', async () => {
+  await withServer(async (origin) => {
+    const response = await fetch(`${origin}/api/news/recommendations?userId=creator-1&limit=7`);
+    const payload = await response.json();
+    const invalid = await fetch(`${origin}/api/news/recommendations?limit=not-a-number`);
+
+    assert.equal(response.status, 200);
+    assert.deepEqual(payload.data, [{ id: 'recommended-1', userId: 'creator-1', limit: 7 }]);
+    assert.equal(invalid.status, 400);
+    assert.deepEqual(await invalid.json(), { success: false, error: 'invalid_query' });
   });
 });

@@ -519,6 +519,24 @@ test('empty feeds return a transparent syncing state instead of fabricated news'
   });
 });
 
+test('getRecommendations preserves the legacy array contract using real diversified recommendations', async () => {
+  const service = new NewsService();
+  const calls = [];
+  service.getDiversifiedRecommendations = async (userId, limit) => {
+    calls.push({ userId, limit });
+    return {
+      recommendations: [{ id: 'news-1', title: '真实推荐' }],
+      diversityScore: 82,
+      tip: '按来源轮换'
+    };
+  };
+
+  const result = await service.getRecommendations('creator-1', 7);
+
+  assert.deepEqual(calls, [{ userId: 'creator-1', limit: 7 }]);
+  assert.deepEqual(result, [{ id: 'news-1', title: '真实推荐' }]);
+});
+
 test('findIrrelevantArticleIds identifies stale false positives from broad feeds', () => {
   const service = new NewsService();
   const source = { filterKeywords: ['AI', '人工智能', '大模型'] };

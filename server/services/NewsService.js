@@ -3462,6 +3462,12 @@ class NewsService {
     };
   }
 
+  // 兼容旧 News API 的数组响应；推荐依据仍由真实数据库驱动的多样化算法生成。
+  async getRecommendations(userId = 'default', limit = 10) {
+    const result = await this.getDiversifiedRecommendations(userId, limit);
+    return Array.isArray(result?.recommendations) ? result.recommendations : [];
+  }
+
   // 获取多样化推荐
   async getDiversifiedRecommendations(userId = 'default', limit = 10) {
     const diversity = await this.getDiversityAnalysis(userId);
