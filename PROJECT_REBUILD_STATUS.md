@@ -285,8 +285,8 @@
 |---|---|---|
 | W. 根因审计与隔离工作区 | 已完成 | 在远端最新 `main` 建立 `codex/data-recovery-direct-deploy` 独立 worktree，保留原工作区数据库/日志/前端改动；完成生产 API、本地数据库、来源、部署脚本、npm 镜像与 SSH 基线审计。 |
 | X. 直接上传与采集修复 | 已完成 | 依赖发布、直接上传、统一代理/重试/错误分类和脱敏 DNS/HTTP 诊断均落地。30 个本地配置主机 `30/30` 可达；共享 Reddit 适配器修复后 L1 实采 `8/8` 成功、52 条有效 Signal。连续两轮完整刷新均为 52 条、37 个 Topic、数据库行数 `52→52`，零错误、零重复新增。 |
-| Y. 100+ 博主与 10,000+ 新闻数据集 | 已完成 | 最终独立 SQLite 快照：News 10,641、Signal 336、Creator 121、Account 121、Post 1,806、Score 1,081、Creator Topic 226；四垂类均有内容，最新 100 条 News/Creator URL 全部为安全可验证原链。121/121 Atom Feed 可达且身份匹配。 |
-| Z. 推荐连续性、全页面 QA 与发布 | 进行中 | 数据、刷新、API、十个页面、随机换题、研究反馈和自动化均已验收。当前快照 News 10,620、Signal 341/Topic 273、Creator 121/Post 1,809/Topic 229；Server `346/346`、Client `48/48`、Vite 构建、Compose/Shell/whitespace 均通过。继续生成最终发布包、上传 GitHub；服务器直接上传仍等待有效 SSH 身份。 |
+| Y. 100+ 博主与 10,000+ 新闻数据集 | 已完成 | 最新独立 SQLite 快照：News 10,620、Signal 341、Creator 121、Account 121、Post 1,809、Score 1,084、Creator Topic 229；四垂类均有内容，最新 100 条 News/Creator URL 全部为安全可验证原链。121/121 Atom Feed 可达且身份匹配。 |
+| Z. 推荐连续性、全页面 QA 与发布 | 代码与 GitHub 已完成；服务器待凭据 | 数据、刷新、API、十个页面、随机换题、研究反馈和自动化均已验收；Server `346/346`、Client `48/48`。源码包 SHA256 通过，AiNews PR #2 已合并到远端 `main`。服务器 `root/ubuntu/lighthouse@124.223.85.195` 均拒绝本机 SSH 身份，无法在没有新凭据的情况下执行直接上传。 |
 
 ### 第五阶段更新日志
 
@@ -299,6 +299,7 @@
 - 2026-08-30：完成 Task 6 持续刷新与安全数据同步。新增隔离式 Daily Refresh：News 失败不阻断 Signal/Creator、同进程拒绝重入、结尾强制检查推荐是否有 Signal Opportunity 或 Creator Topic，并输出 1.3 KB 聚合报告。第一轮真实运行 154 News 源成功、2 个上游空 Release Feed 失败，后续 Signal 175/Creator 100 均成功；确认 Qwen3 与 llama.cpp 仓库没有可用 Release 条目后，将两项从新闻调度禁用，分别由 Qwen 官方博客与 GitHub Signal 雷达覆盖。第二轮用时 2m54s，154 News 源 `0` 错误、Signal 176/`0` 错误、21 个到期 Creator `21/21` 成功，推荐门禁为 9 个 Signal Opportunity、229 个 Creator Topic。另修复 Creator 每轮重复追加 1,080 个评分快照：同一自然日现在更新最新状态、只在跨日新建历史点；重建后立即再跑一次 Intelligence，Score 行数稳定 `1081→1081`。新增 SHA 校验的数据上传与内容 UPSERT；真实副本合并后 News 10,640、Signal 332、Creator 121/Post 1,806，原有用户 `2→2`、订阅 `0→0`、`integrity_check=ok`，合并前备份保留。
 - 2026-08-31：完成 Task 7 浏览器/API QA 与缺陷修复。真实打开 `/topics`、`/research`、`/creators`、四垂类、`/sources`、`/alerts`、`/skills`，随机换题返回不同 Topic，研究页返回带原链的证据包且单来源明确标记不足。连续页面请求复现全局 `60/min` 限流误伤研究请求，已改为可配置的 `AINEWS_API_RATE_LIMIT_PER_MINUTE`（默认 300、上限 2,000），内容生成仍保留独立 `8/10min` 限流。另以 RED→GREEN 修复 legacy News 导入丢失 `cn/zh` 及国内接口先 limit 后筛选；重新完整刷新后 154 News 源 `0` 错误、Signal 176/`0` 错误、100 个到期 Creator `100/100` 成功，国内 Signal 从 `0` 恢复到 `13`，`/api/news/domestic` 为 24h 3 条、48h/72h 至少 10 条。定向回归 `26/26` 通过；全量回归与发布仍在继续。
 - 2026-08-31：完成 Task 8 全量验证。当前生产候选为 News 10,620、有效 News 10,596、Signal 341/Topic 273、Creator 121/Account 121/Post 1,809/Score 1,084/Creator Topic 229；四垂类均超过 29 位博主。Server `346/346`、Client `48/48`、TypeScript/Vite 构建、`docker-compose config --quiet`、Shell 语法与 `git diff --check` 全部通过。服务端执行非破坏性 `npm audit fix` 后由 5 high + 7 moderate 降为 0 high + 2 moderate；剩余 `node-cron@3→uuid` 只有强制主版本升级路径，暂不破坏调度兼容。详细报告见 `docs/verification/2026-08-31-data-recovery-direct-deploy-verification.md`。
+- 2026-08-31：完成 Task 9 发布收口。生成与提交 `08c84a8c83e6` 对应的 954 KB 源码包 `aya-20260831T120929Z-08c84a8c83e6-20862.tar.gz`，SHA256 `ab2270e08cfa75a1ef7b78332c8283b1c44e0770bc19a3276927021e08b0aa47` 校验通过；GitHub [AiNews PR #2](https://github.com/MarcusDog/AiNews/pull/2) 已合并，远端 `main` 为 `95b5d63ae78a06be70822c4426c5d6b19eef64f7`。随后再次执行直接上传并只读排查本机 SSH Agent/配置；Agent 无身份，已有 `id_ed25519` 对 `root/ubuntu/lighthouse@124.223.85.195` 均返回 `Permission denied`。代码与 GitHub 已交付，服务器同步明确等待运营方提供有效 SSH 用户/私钥。
 
 - 2026-08-28：完成跨垂类博主来源与开源项目审计；确认“新闻热榜”和“指定博主逐帖监听”是两个不同数据链，第四阶段新增独立 Creator Intelligence bounded context。
 - 2026-08-28：完成产品规格与实施计划草案；补齐观察名单范围内全公开历史的定义、每账号回填状态机、二次 reconciliation、四垂类、稳定身份、互动快照、博主相对基线、多博主/跨平台扩散、FTS5、本地 SQLite、持久 outbox 和签名 Sidecar。
