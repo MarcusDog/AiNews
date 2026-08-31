@@ -76,3 +76,22 @@ test('normalizer rejects incomplete signals and negative metrics', () => {
     metrics: { likes: -1 }
   }, SOURCE), /likes/);
 });
+
+test('legacy News signals preserve trusted per-article domestic metadata', () => {
+  const signal = normalizeSignal({
+    title: '国产模型官方发布',
+    url: 'https://example.cn/model',
+    publishedAt: '2026-08-29T00:00:00Z',
+    region: 'cn',
+    language: 'zh'
+  }, {
+    id: 'legacy-news',
+    adapter: 'legacy-news',
+    platform: 'news',
+    region: 'global',
+    trustClass: 'media'
+  });
+
+  assert.equal(signal.region, 'cn');
+  assert.equal(signal.language, 'zh');
+});

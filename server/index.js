@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
+const { createApiRateLimiter } = require('./middleware/apiRateLimit');
 const cron = require('node-cron');
 const http = require('http');
 const { Server } = require('socket.io');
@@ -111,22 +111,8 @@ app.use(
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// API限率配置（更宽松，避免429）
-const apiLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1分钟
-  max: 60, // 每分钟60次请求
-  message: {
-    success: false,
-    error: '请求过于频繁，请稍后再试',
-    retryAfter: 60
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
-  skip: (req) => {
-    // 跳过健康检查和WebSocket
-    return req.path === '/health' || req.path.startsWith('/socket.io');
-  }
-});
+// 仪表盘一次会并发读取多类真实数据；写入和内容生成仍有独立、更严格的限流。
+const apiLimiter = createApiRateLimiter(process.env);
 app.use('/api/', apiLimiter);
 
 // 导入路由

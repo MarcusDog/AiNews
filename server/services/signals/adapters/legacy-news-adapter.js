@@ -17,6 +17,8 @@ class LegacyNewsAdapter {
       summary: item.description || null,
       url: item.url,
       author: item.author || item.source || null,
+      region: item.region === 'cn' ? 'cn' : 'global',
+      language: item.language || null,
       publishedAt: item.publishedAt || item.published_at,
       metrics: {},
       tags: [item.category, item.source].filter(Boolean),

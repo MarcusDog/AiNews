@@ -29,8 +29,10 @@ function topic(id, region = 'global', creatorScore = 70) {
 function services() {
   const topics = [topic('global'), topic('cn', 'cn', 76)];
   const detailRequests = [];
+  const listRequests = [];
   return {
     detailRequests,
+    listRequests,
     newsService: {
       getLatestNews: async () => ({
         data: [{ id: 'news-1', title: '真实新闻', url: 'https://news.example/1', source: '官方来源', region: 'cn' }],
@@ -44,7 +46,10 @@ function services() {
       advancedSearch: async () => ({ data: [], total: 0 })
     },
     signalService: {
-      listTopics: () => topics.map(({ signals, ...item }) => item),
+      listTopics: (options) => {
+        listRequests.push(options);
+        return topics.map(({ signals, ...item }) => item);
+      },
       listCreatorOpportunities: ({ profile }) => profile === 'general' ? [topics[1]] : [],
       getTopic: (id, options) => {
         detailRequests.push({ id, options });
@@ -63,14 +68,14 @@ async function withServer(run) {
     const instance = app.listen(0, '127.0.0.1', () => resolve(instance));
   });
   try {
-    await run(`http://127.0.0.1:${server.address().port}`);
+    await run(`http://127.0.0.1:${server.address().port}`, deps);
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }
 }
 
 test('feed and domestic routes expose real persisted news and domestic signal evidence', async () => {
-  await withServer(async (origin) => {
+  await withServer(async (origin, deps) => {
     const feedResponse = await fetch(`${origin}/api/news/feed?page=1&limit=20`);
     const feed = await feedResponse.json();
     const domesticResponse = await fetch(`${origin}/api/news/domestic?window=48h`);
@@ -82,6 +87,7 @@ test('feed and domestic routes expose real persisted news and domestic signal ev
     assert.equal(domesticResponse.status, 200);
     assert.deepEqual(domestic.data.items.map((item) => item.id), ['cn']);
     assert.equal(domestic.data.items[0].signals[0].region, 'cn');
+    assert.equal(deps.listRequests.at(-1).limit, 500);
   });
 });
 

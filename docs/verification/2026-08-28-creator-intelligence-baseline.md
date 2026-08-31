@@ -25,6 +25,14 @@ These files are outside the Creator Intelligence implementation boundary unless 
 | `server/routes/userData.js` | `0ceee502ff8a592d2e8c536b257c220e40bdf0dc3b66ca4ac4225a18813a427a` |
 | `server/services/DatabaseService.js` | `de835bf3faa29f0ab59c663bb363b2ab11ede9550f0dbda2b6d58bd5c924fd9c` |
 
+## 后续阶段已审计例外
+
+原始基线不改写。第五阶段只批准下列兼容路由的当前哈希：
+
+| 文件 | 当前批准 SHA-256 | 原因 |
+|---|---|---|
+| `server/routes/news.js` | `d56c9768918d9126f712e6e09bf3ef33a294be7ab3a38de96ef2a093c7e268f9` | 国内公开信号接口补齐完整 Topic 扫描，避免先截断全球榜后遗漏国内结果；既有 News 路由保持兼容。 |
+
 ## Public compatibility markers
 
 `server/index.js` may receive additive Creator routes, raw-body ingest ordering, service lifecycle and scheduler integration. It must retain:

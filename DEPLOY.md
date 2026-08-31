@@ -133,6 +133,7 @@ ssh "$AYA_DEPLOY_USER@$AYA_DEPLOY_HOST" \
 NODE_ENV=production
 PORT=3002
 AINEWS_DB_PATH=./data/ainews.db
+AINEWS_API_RATE_LIMIT_PER_MINUTE=300
 MINIMAX_API_KEY=replace_with_a_new_server_side_key
 MINIMAX_BASE_URL=https://api.minimaxi.com/anthropic
 MINIMAX_MODEL=MiniMax-M2.5
@@ -191,8 +192,8 @@ curl -I http://localhost:8080/alerts
 也可在容器内人工执行完整刷新。它会按“新闻 → Signal/Topic → Creator → 推荐可用性”运行，单一阶段失败不会阻断后续阶段，报告写入持久日志目录：
 
 ```bash
-docker compose exec -T ainews-server npm run refresh:daily
-docker compose exec -T ainews-server npm run dataset:report -- /app/data/ainews.db
+docker-compose exec -T ainews-server npm run refresh:daily
+docker-compose exec -T ainews-server npm run dataset:report -- /app/data/ainews.db
 ```
 
 Topic Feed 在 Nginx 中使用精确匹配代理，位于 SPA fallback 之前。JSON 应返回 `application/feed+json`，RSS 应返回 XML 内容类型；若返回 HTML，说明仍在使用旧 Nginx 配置。

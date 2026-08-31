@@ -76,6 +76,7 @@ test('signal upserts are idempotent and refresh metrics without replacing origin
       ...original,
       url: 'https://github.com/attacker/replacement',
       publishedAt: '2026-08-28T00:00:00.000Z',
+      region: 'cn',
       lastSeenAt: '2026-08-27T03:00:00.000Z',
       metrics: { ...original.metrics, stars: 240 }
     };
@@ -86,6 +87,7 @@ test('signal upserts are idempotent and refresh metrics without replacing origin
     assert.deepEqual(second, { inserted: 0, updated: 1 });
     assert.equal(row.url, original.url);
     assert.equal(row.published_at, original.publishedAt);
+    assert.equal(row.region, 'cn');
     assert.equal(row.last_seen_at, '2026-08-27T03:00:00.000Z');
     assert.equal(JSON.parse(row.metrics_json).stars, 240);
   } finally {
