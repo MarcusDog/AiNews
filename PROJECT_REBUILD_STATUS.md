@@ -286,7 +286,7 @@
 | W. 根因审计与隔离工作区 | 已完成 | 在远端最新 `main` 建立 `codex/data-recovery-direct-deploy` 独立 worktree，保留原工作区数据库/日志/前端改动；完成生产 API、本地数据库、来源、部署脚本、npm 镜像与 SSH 基线审计。 |
 | X. 直接上传与采集修复 | 已完成 | 依赖发布、直接上传、统一代理/重试/错误分类和脱敏 DNS/HTTP 诊断均落地。30 个本地配置主机 `30/30` 可达；共享 Reddit 适配器修复后 L1 实采 `8/8` 成功、52 条有效 Signal。连续两轮完整刷新均为 52 条、37 个 Topic、数据库行数 `52→52`，零错误、零重复新增。 |
 | Y. 100+ 博主与 10,000+ 新闻数据集 | 已完成 | 最新独立 SQLite 快照：News 10,620、Signal 341、Creator 121、Account 121、Post 1,809、Score 1,084、Creator Topic 229；四垂类均有内容，最新 100 条 News/Creator URL 全部为安全可验证原链。121/121 Atom Feed 可达且身份匹配。 |
-| Z. 推荐连续性、全页面 QA 与发布 | 代码与 GitHub 已完成；服务器待凭据 | 数据、刷新、API、十个页面、随机换题、研究反馈和自动化均已验收；Server `346/346`、Client `48/48`。源码包 SHA256 通过，AiNews PR #2 已合并到远端 `main`。服务器 `root/ubuntu/lighthouse@124.223.85.195` 均拒绝本机 SSH 身份，无法在没有新凭据的情况下执行直接上传。 |
+| Z. 推荐连续性、全页面 QA 与发布 | 代码与 GitHub 已完成；服务器待凭据 | 数据、刷新、API、十个页面、随机换题、研究反馈和自动化均已验收；Server `348/348`、Client `48/48`。旧 `/api/news/recommendations` 已恢复为真实数据库驱动的兼容数组接口。源码包 SHA256 通过，AiNews PR #2 已合并到远端 `main`；推荐修复将通过后续 PR 合并。服务器 `root/ubuntu/lighthouse@124.223.85.195` 均拒绝本机 SSH 身份，无法在没有新凭据的情况下执行直接上传。 |
 
 ### 第五阶段更新日志
 
@@ -301,6 +301,7 @@
 - 2026-08-31：完成 Task 8 全量验证。当前生产候选为 News 10,620、有效 News 10,596、Signal 341/Topic 273、Creator 121/Account 121/Post 1,809/Score 1,084/Creator Topic 229；四垂类均超过 29 位博主。Server `346/346`、Client `48/48`、TypeScript/Vite 构建、`docker-compose config --quiet`、Shell 语法与 `git diff --check` 全部通过。服务端执行非破坏性 `npm audit fix` 后由 5 high + 7 moderate 降为 0 high + 2 moderate；剩余 `node-cron@3→uuid` 只有强制主版本升级路径，暂不破坏调度兼容。详细报告见 `docs/verification/2026-08-31-data-recovery-direct-deploy-verification.md`。
 - 2026-08-31：完成 Task 9 发布收口。生成与提交 `08c84a8c83e6` 对应的 954 KB 源码包 `aya-20260831T120929Z-08c84a8c83e6-20862.tar.gz`，SHA256 `ab2270e08cfa75a1ef7b78332c8283b1c44e0770bc19a3276927021e08b0aa47` 校验通过；GitHub [AiNews PR #2](https://github.com/MarcusDog/AiNews/pull/2) 已合并，代码合并提交为 `95b5d63ae78a06be70822c4426c5d6b19eef64f7`。随后再次执行直接上传并只读排查本机 SSH Agent/配置；Agent 无身份，已有 `id_ed25519` 对 `root/ubuntu/lighthouse@124.223.85.195` 均返回 `Permission denied`。代码与 GitHub 已交付，服务器同步明确等待运营方提供有效 SSH 用户/私钥。
 - 2026-08-31：按用户要求完成 Task 10 全量离线归档。此前 954 KB 包是主动排除数据库、依赖、环境与运行状态的安全源码包；新的 `AyaNews-full-offline-20260831.tar.gz` 只排除 `.git` 元数据，包含前后端/API 源码、`client/dist`、前后端 `node_modules`、`server/.env`、全部 SQLite/WAL/历史快照/报告、日志/缓存、Docker/Nginx/部署文档、静态 `openapi.json`/`skill.md` 和 AyaNewsSkill 最新 main。归档 82 MB、29,449 个条目，Git 元数据 0、11 个关键路径全部存在、gzip 与 SHA256 `9266c88bcc3f22e985a01e55e30837e6ea779ffe74c8f1129a7dfd70615b746b` 验证通过。归档权限为 `0600`，因含密钥与用户数据不上传公开 GitHub；临时明文 staging 已移入本机废纸篓，可恢复。
+- 2026-08-31：完成 Task 11 HTTPS 冒烟遗留修复。确认 `/api/user-data/me` 匿名 `401` 与 `/api/admin/*` 无管理密钥拒绝均是预期安全边界；真实故障仅为 `/api/news/recommendations` 调用不存在的 `NewsService.getRecommendations`。按 RED→GREEN 新增旧数组契约兼容方法、1–30 `limit` 校验和 OpenAPI 路由。以 10,620 条 News 的本地生产候选库实测 HTTP 200 返回 10/10 条真实原链，来自 10 个不同来源并覆盖 `global/cn`，全部带推荐理由；非法 limit 为 400。最终 Server `348/348`、Client `48/48`、Vite 构建和 `git diff --check` 通过。生产 HTTPS 仍需服务器凭据完成直接上传后复验。
 
 - 2026-08-28：完成跨垂类博主来源与开源项目审计；确认“新闻热榜”和“指定博主逐帖监听”是两个不同数据链，第四阶段新增独立 Creator Intelligence bounded context。
 - 2026-08-28：完成产品规格与实施计划草案；补齐观察名单范围内全公开历史的定义、每账号回填状态机、二次 reconciliation、四垂类、稳定身份、互动快照、博主相对基线、多博主/跨平台扩散、FTS5、本地 SQLite、持久 outbox 和签名 Sidecar。

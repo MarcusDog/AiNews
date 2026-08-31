@@ -31,7 +31,7 @@ These files are outside the Creator Intelligence implementation boundary unless 
 
 | 文件 | 当前批准 SHA-256 | 原因 |
 |---|---|---|
-| `server/routes/news.js` | `d56c9768918d9126f712e6e09bf3ef33a294be7ab3a38de96ef2a093c7e268f9` | 国内公开信号接口补齐完整 Topic 扫描，避免先截断全球榜后遗漏国内结果；既有 News 路由保持兼容。 |
+| `server/routes/news.js` | `a41a795ed06c384f1fdff00330d6e6c23fb8024e62aaff94b796200b8605a53a` | 国内公开信号接口补齐完整 Topic 扫描；随后修复旧 `/api/news/recommendations` 对缺失服务方法的调用，并为 `limit` 增加 1–30 的显式边界。旧 News 数组响应保持兼容。 |
 
 ## Public compatibility markers
 

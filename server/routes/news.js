@@ -293,8 +293,10 @@ router.get('/sources', async (req, res) => {
 // 获取推荐新闻 - 必须放在 /:id 之前
 router.get('/recommendations', async (req, res) => {
   try {
-    const { userId = 'default', limit = 10 } = req.query;
-    const recommendations = await NewsService.getRecommendations(userId, parseInt(limit));
+    const { userId = 'default' } = req.query;
+    const limit = boundedInteger(req.query.limit, 10, 1, 30);
+    if (limit === null) return res.status(400).json({ success: false, error: 'invalid_query' });
+    const recommendations = await NewsService.getRecommendations(userId, limit);
     res.json({
       success: true,
       data: recommendations
