@@ -78,5 +78,5 @@ Creator 来源目录为 10 类：YouTube Atom 为 online（121 账号、1,809 �
 - 源提交：`08c84a8c83e674768ad2d5a519bc9cfe31d2ce5d`；
 - 源码包：`aya-20260831T120929Z-08c84a8c83e6-20862.tar.gz`，954 KB；
 - 源码包 SHA256：`ab2270e08cfa75a1ef7b78332c8283b1c44e0770bc19a3276927021e08b0aa47`，本地复核通过；
-- GitHub：[AiNews PR #2](https://github.com/MarcusDog/AiNews/pull/2) 已合并；远端 `main` 为 `95b5d63ae78a06be70822c4426c5d6b19eef64f7`；
+- GitHub：[AiNews PR #2](https://github.com/MarcusDog/AiNews/pull/2) 已合并；代码合并提交为 `95b5d63ae78a06be70822c4426c5d6b19eef64f7`；
 - 服务器：`root`、`ubuntu`、`lighthouse` 三个候选用户均被 `124.223.85.195` 拒绝现有 SSH 身份，源码包和数据快照尚未上传。
