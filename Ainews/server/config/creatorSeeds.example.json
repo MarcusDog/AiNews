@@ -1,0 +1,280 @@
+{
+  "version": "creator-seeds-v1",
+  "generatedAt": "2026-08-28T12:00:00.000Z",
+  "creators": [
+    {
+      "id": "lab-muffin-beauty-science",
+      "displayName": "Lab Muffin Beauty Science",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-28T12:00:00.000Z",
+      "verticalIds": ["beauty"],
+      "accounts": [
+        {
+          "id": "youtube:UCg6P323bLV4zMSWFqFhvWMg",
+          "platform": "youtube",
+          "externalAccountId": "UCg6P323bLV4zMSWFqFhvWMg",
+          "handle": "@LabMuffinBeautyScience",
+          "profileUrl": "https://www.youtube.com/channel/UCg6P323bLV4zMSWFqFhvWMg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCg6P323bLV4zMSWFqFhvWMg",
+          "verificationEvidence": "https://www.youtube.com/@LabMuffinBeautyScience",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-28T12:00:00.000Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        },
+        {
+          "id": "rss:labmuffin.com/feed",
+          "platform": "rss",
+          "externalAccountId": "https://labmuffin.com/feed/",
+          "handle": "labmuffin.com",
+          "profileUrl": "https://labmuffin.com",
+          "feedUrl": "https://labmuffin.com/feed/",
+          "verificationEvidence": "https://labmuffin.com/feed/",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-28T12:00:00.000Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "hyram",
+      "displayName": "Hyram",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-28T12:00:00.000Z",
+      "verticalIds": ["beauty"],
+      "accounts": [
+        {
+          "id": "youtube:UC2sYit3cZ2CuD_8FHYH7O_Q",
+          "platform": "youtube",
+          "externalAccountId": "UC2sYit3cZ2CuD_8FHYH7O_Q",
+          "handle": "@Hyram",
+          "profileUrl": "https://www.youtube.com/channel/UC2sYit3cZ2CuD_8FHYH7O_Q",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC2sYit3cZ2CuD_8FHYH7O_Q",
+          "verificationEvidence": "https://www.youtube.com/@Hyram",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-28T12:00:00.000Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "audrey-coyne",
+      "displayName": "Audrey Coyne",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-28T12:00:00.000Z",
+      "verticalIds": ["fashion"],
+      "accounts": [
+        {
+          "id": "youtube:UCdF5QXMUx1tT7odhtBdDyEA",
+          "platform": "youtube",
+          "externalAccountId": "UCdF5QXMUx1tT7odhtBdDyEA",
+          "handle": "@AudreyCoyne",
+          "profileUrl": "https://www.youtube.com/channel/UCdF5QXMUx1tT7odhtBdDyEA",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCdF5QXMUx1tT7odhtBdDyEA",
+          "verificationEvidence": "https://www.youtube.com/@AudreyCoyne",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-28T12:00:00.000Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "justine-leconte",
+      "displayName": "Justine Leconte",
+      "kind": "person",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-28T12:00:00.000Z",
+      "verticalIds": ["fashion"],
+      "accounts": [
+        {
+          "id": "youtube:UChxkFSjTE7nLCHsDk8_pRhg",
+          "platform": "youtube",
+          "externalAccountId": "UChxkFSjTE7nLCHsDk8_pRhg",
+          "handle": "@Justineleconte",
+          "profileUrl": "https://www.youtube.com/channel/UChxkFSjTE7nLCHsDk8_pRhg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UChxkFSjTE7nLCHsDk8_pRhg",
+          "verificationEvidence": "https://www.youtube.com/@Justineleconte",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-28T12:00:00.000Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "vogue",
+      "displayName": "Vogue",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-28T12:00:00.000Z",
+      "verticalIds": ["fashion"],
+      "accounts": [
+        {
+          "id": "rss:vogue.com/feed/rss",
+          "platform": "rss",
+          "externalAccountId": "https://www.vogue.com/feed/rss",
+          "handle": "vogue.com",
+          "profileUrl": "https://www.vogue.com",
+          "feedUrl": "https://www.vogue.com/feed/rss",
+          "verificationEvidence": "https://www.vogue.com/feed/rss",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-28T12:00:00.000Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "openai-github",
+      "displayName": "OpenAI",
+      "kind": "brand",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-28T12:00:00.000Z",
+      "verticalIds": ["ai-tech"],
+      "accounts": [
+        {
+          "id": "github:14957082",
+          "platform": "github",
+          "externalAccountId": "14957082",
+          "handle": "openai",
+          "profileUrl": "https://github.com/openai",
+          "verificationEvidence": "https://api.github.com/orgs/openai",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-28T12:00:00.000Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "hugging-face-github",
+      "displayName": "Hugging Face",
+      "kind": "brand",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-28T12:00:00.000Z",
+      "verticalIds": ["ai-tech"],
+      "accounts": [
+        {
+          "id": "github:25720743",
+          "platform": "github",
+          "externalAccountId": "25720743",
+          "handle": "huggingface",
+          "profileUrl": "https://github.com/huggingface",
+          "verificationEvidence": "https://api.github.com/orgs/huggingface",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-28T12:00:00.000Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "screen-junkies",
+      "displayName": "Screen Junkies",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-28T12:00:00.000Z",
+      "verticalIds": ["entertainment"],
+      "accounts": [
+        {
+          "id": "youtube:UCOpcACMWblDls9Z6GERVi1A",
+          "platform": "youtube",
+          "externalAccountId": "UCOpcACMWblDls9Z6GERVi1A",
+          "handle": "@ScreenJunkies",
+          "profileUrl": "https://www.youtube.com/channel/UCOpcACMWblDls9Z6GERVi1A",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCOpcACMWblDls9Z6GERVi1A",
+          "verificationEvidence": "https://www.youtube.com/@ScreenJunkies",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-28T12:00:00.000Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "watchmojo",
+      "displayName": "WatchMojo",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-28T12:00:00.000Z",
+      "verticalIds": ["entertainment"],
+      "accounts": [
+        {
+          "id": "youtube:UCaWd5_7JhbQBe4dknZhsHJg",
+          "platform": "youtube",
+          "externalAccountId": "UCaWd5_7JhbQBe4dknZhsHJg",
+          "handle": "@WatchMojo",
+          "profileUrl": "https://www.youtube.com/channel/UCaWd5_7JhbQBe4dknZhsHJg",
+          "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCaWd5_7JhbQBe4dknZhsHJg",
+          "verificationEvidence": "https://www.youtube.com/@WatchMojo",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-28T12:00:00.000Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    },
+    {
+      "id": "variety",
+      "displayName": "Variety",
+      "kind": "media",
+      "reviewStatus": "verified",
+      "reviewedAt": "2026-08-28T12:00:00.000Z",
+      "verticalIds": ["entertainment"],
+      "accounts": [
+        {
+          "id": "rss:variety.com/feed",
+          "platform": "rss",
+          "externalAccountId": "https://variety.com/feed/",
+          "handle": "variety.com",
+          "profileUrl": "https://variety.com",
+          "feedUrl": "https://variety.com/feed/",
+          "verificationEvidence": "https://variety.com/feed/",
+          "region": "global",
+          "sourceTier": "L1",
+          "enabled": true,
+          "visibility": "public",
+          "lastVerifiedAt": "2026-08-28T12:00:00.000Z",
+          "authState": "not_required",
+          "backfillState": "pending"
+        }
+      ]
+    }
+  ]
+}

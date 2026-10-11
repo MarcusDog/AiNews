@@ -1,0 +1,4100 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AyaNews Public Content API",
+    "version": "2.4.0",
+    "description": "面向开发者与 Agent 的新闻、Signal、跨垂类 Creator、事件 Topic、持久推送、历史覆盖与来源健康接口。所有证据保留原始 URL。"
+  },
+  "servers": [
+    {
+      "url": "https://ainews.xiaotianaya.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Research",
+      "description": "新闻检索与证据研究"
+    },
+    {
+      "name": "Topics",
+      "description": "24/48/72 小时热点、趋势与创作者机会"
+    },
+    {
+      "name": "Sources",
+      "description": "公开来源注册表与采集健康状态"
+    },
+    {
+      "name": "Feeds",
+      "description": "轻量订阅格式"
+    },
+    {
+      "name": "Creators",
+      "description": "四垂类 Creator、公开帖子、爆款和跨平台共题"
+    },
+    {
+      "name": "Creator Sources",
+      "description": "Creator 来源、配置、运行与历史覆盖状态"
+    },
+    {
+      "name": "Creator Alerts",
+      "description": "登录态订阅、投递端点、SSE 和投递审计"
+    },
+    {
+      "name": "Creator Ingest",
+      "description": "YouTube WebSub 与签名 Sidecar 摄取"
+    },
+    {
+      "name": "Creator Operations",
+      "description": "受管理密钥保护的导入、回填、维护、备份与导出"
+    }
+  ],
+  "paths": {
+    "/api/content/v1/capabilities": {
+      "get": {
+        "summary": "读取当前已实现能力",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Research"
+        ]
+      }
+    },
+    "/api/content/v1/latest": {
+      "get": {
+        "summary": "读取最新资讯",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Research"
+        ]
+      }
+    },
+    "/api/content/v1/search": {
+      "get": {
+        "summary": "搜索资讯",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Research"
+        ]
+      }
+    },
+    "/api/content/v1/trends": {
+      "get": {
+        "summary": "读取站内等长窗口趋势",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Research"
+        ]
+      }
+    },
+    "/api/content/v1/brief": {
+      "get": {
+        "summary": "生成带引用的内容证据包",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "topic",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "topicId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "可选的稳定 Topic ID；提供时优先读取该 Topic 当前窗口内的原始 Signal 证据"
+          },
+          {
+            "in": "query",
+            "name": "audience",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "goal",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "format",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "days",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30,
+              "default": 14
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 3,
+              "maximum": 8,
+              "default": 6
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Research"
+        ]
+      }
+    },
+    "/api/content/v1/generate": {
+      "post": {
+        "summary": "基于证据包生成引用成稿",
+        "tags": [
+          "Research"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "topic"
+                ],
+                "properties": {
+                  "topic": {
+                    "type": "string"
+                  },
+                  "audience": {
+                    "type": "string"
+                  },
+                  "goal": {
+                    "type": "string"
+                  },
+                  "format": {
+                    "type": "string"
+                  },
+                  "days": {
+                    "type": "integer"
+                  },
+                  "limit": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "引用审计通过的成稿",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "证据不足",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "内容模型未配置",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/content/v1/sources": {
+      "get": {
+        "summary": "读取公开来源注册表",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Sources"
+        ]
+      }
+    },
+    "/api/content/v1/source-health": {
+      "get": {
+        "summary": "读取来源采集健康摘要",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Sources"
+        ]
+      }
+    },
+    "/api/news/feed": {
+      "get": {
+        "summary": "读取真实历史新闻流",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Research"
+        ]
+      }
+    },
+    "/api/news/domestic": {
+      "get": {
+        "summary": "读取包含国内公开信号证据的热点",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "window",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "24h",
+                "48h",
+                "72h"
+              ],
+              "default": "72h"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Topics"
+        ]
+      }
+    },
+    "/api/news/hot-rank": {
+      "get": {
+        "summary": "读取按真实趋势分排序的热点",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "window",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "24h",
+                "48h",
+                "72h"
+              ],
+              "default": "72h"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Topics"
+        ]
+      }
+    },
+    "/api/news/discover": {
+      "get": {
+        "summary": "发现面向创作者的选题机会",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "window",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "24h",
+                "48h",
+                "72h"
+              ],
+              "default": "72h"
+            }
+          },
+          {
+            "in": "query",
+            "name": "profile",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "general",
+                "short-video",
+                "tool-review",
+                "news-commentary",
+                "deep-dive"
+              ],
+              "default": "general"
+            },
+            "description": "AI 博主画像：综合、短视频、工具实测、热点快评或深度拆解"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Topics"
+        ]
+      }
+    },
+    "/api/news/dashboard": {
+      "get": {
+        "summary": "读取 News、Topic 与来源健康聚合面板",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "window",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "24h",
+                "48h",
+                "72h"
+              ],
+              "default": "72h"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Topics",
+          "Sources"
+        ]
+      }
+    },
+    "/api/news/by-source": {
+      "get": {
+        "summary": "按旧 News 与 Signal 来源读取真实统计",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Sources"
+        ]
+      }
+    },
+    "/api/news/recommendations": {
+      "get": {
+        "summary": "读取按来源、地区和证据类型轮换的真实新闻推荐",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "兼容旧客户端的推荐上下文标识，不读取私有用户数据"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30,
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Research"
+        ]
+      }
+    },
+    "/api/signals/v1/topics": {
+      "get": {
+        "summary": "读取持久化热点 Topic",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "window",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "24h",
+                "48h",
+                "72h"
+              ],
+              "default": "72h"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Topics"
+        ]
+      }
+    },
+    "/api/signals/v1/topics/{id}": {
+      "get": {
+        "summary": "读取 Topic 详情与原始证据",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "window",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "24h",
+                "48h",
+                "72h"
+              ]
+            },
+            "description": "可选；按同一时间窗裁剪证据并重算分数"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Topic 详情",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TopicResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Topic 不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Topics"
+        ]
+      }
+    },
+    "/api/signals/v1/opportunities": {
+      "get": {
+        "summary": "读取创作者机会",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "window",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "24h",
+                "48h",
+                "72h"
+              ],
+              "default": "72h"
+            }
+          },
+          {
+            "in": "query",
+            "name": "profile",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "general",
+                "short-video",
+                "tool-review",
+                "news-commentary",
+                "deep-dive"
+              ],
+              "default": "general"
+            },
+            "description": "AI 博主画像：综合、短视频、工具实测、热点快评或深度拆解"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Topics"
+        ]
+      }
+    },
+    "/api/signals/v1/opportunities/random": {
+      "get": {
+        "summary": "从真实持久化 Topic 随机选择创作者机会",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "window",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "24h",
+                "48h",
+                "72h"
+              ],
+              "default": "72h"
+            }
+          },
+          {
+            "in": "query",
+            "name": "profile",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "general",
+                "short-video",
+                "tool-review",
+                "news-commentary",
+                "deep-dive"
+              ],
+              "default": "general"
+            },
+            "description": "AI 博主画像：综合、短视频、工具实测、热点快评或深度拆解"
+          },
+          {
+            "in": "query",
+            "name": "exclude",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "排除上一条 Topic ID，避免连续重复选题"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Topics"
+        ]
+      }
+    },
+    "/api/signals/v1/sources": {
+      "get": {
+        "summary": "读取 Signal 来源配置与实际健康状态",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Sources"
+        ]
+      }
+    },
+    "/api/signals/v1/health": {
+      "get": {
+        "summary": "读取 Signal 系统健康摘要",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Sources"
+        ]
+      }
+    },
+    "/api/signals/v1/changes": {
+      "get": {
+        "summary": "读取 seq 游标之后的 Topic 变化",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "since",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500,
+              "default": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "增量变化",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "游标已过期，需要全量同步",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Topics"
+        ]
+      }
+    },
+    "/api/signals/v1/admin/refresh": {
+      "post": {
+        "summary": "受保护地刷新 Signal 并重建 Topic",
+        "tags": [
+          "Topics"
+        ],
+        "security": [
+          {
+            "AdminApiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "刷新完成",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "缺少密钥",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "密钥无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "管理能力未配置",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/feed.json": {
+      "get": {
+        "summary": "JSON Feed 1.1",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Feeds"
+        ]
+      }
+    },
+    "/rss.xml": {
+      "get": {
+        "summary": "RSS 2.0 Feed",
+        "tags": [
+          "Feeds"
+        ],
+        "responses": {
+          "200": {
+            "description": "RSS XML",
+            "content": {
+              "application/rss+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/topics/feed.json": {
+      "get": {
+        "summary": "Topic JSON Feed 1.1",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Feeds"
+        ]
+      }
+    },
+    "/topics/rss.xml": {
+      "get": {
+        "summary": "Topic RSS 2.0 Feed",
+        "tags": [
+          "Feeds"
+        ],
+        "responses": {
+          "200": {
+            "description": "Topic RSS XML",
+            "content": {
+              "application/rss+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "summary": "注册推送管理账号并创建同站 Session",
+        "tags": [
+          "Creator Alerts"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password",
+                  "displayName"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "displayName": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "注册成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "登录推送管理账号",
+        "tags": [
+          "Creator Alerts"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "登录成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/session": {
+      "get": {
+        "summary": "无噪声检查当前会话状态",
+        "tags": [
+          "Creator Alerts"
+        ],
+        "responses": {
+          "200": {
+            "description": "会话状态；anonymous 时 authenticated=false",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "summary": "读取当前登录账号",
+        "tags": [
+          "Creator Alerts"
+        ],
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "需要登录",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/creators/v1/verticals": {
+      "get": {
+        "summary": "读取已配置垂类和真实覆盖统计",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Creators"
+        ]
+      }
+    },
+    "/api/creators/v1/creators": {
+      "get": {
+        "summary": "搜索核验观察名单中的 Creator",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "FTS5 全文搜索；按字面量绑定查询，不执行搜索运算符"
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "与规范化查询和筛选绑定的不透明 keyset cursor；不得解析或跨查询复用"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "verified",
+                "candidate",
+                "rejected"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "vertical",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "platform",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Creators"
+        ]
+      }
+    },
+    "/api/creators/v1/creators/{id}": {
+      "get": {
+        "summary": "读取 Creator、公开账号与回填覆盖",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "稳定 Creator、Topic、订阅或端点 ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Creator 详情",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Creator"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Creator 不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Creators"
+        ]
+      }
+    },
+    "/api/creators/v1/creators/{id}/posts": {
+      "get": {
+        "summary": "分页读取单个 Creator 的已采集公开帖子",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "稳定 Creator、Topic、订阅或端点 ID"
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "FTS5 全文搜索；按字面量绑定查询，不执行搜索运算符"
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "与规范化查询和筛选绑定的不透明 keyset cursor；不得解析或跨查询复用"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Creators"
+        ]
+      }
+    },
+    "/api/creators/v1/posts": {
+      "get": {
+        "summary": "全文搜索或分页读取公开帖子",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "FTS5 全文搜索；按字面量绑定查询，不执行搜索运算符"
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "与规范化查询和筛选绑定的不透明 keyset cursor；不得解析或跨查询复用"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "in": "query",
+            "name": "vertical",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "platform",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "creator",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "since",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ISO 8601 起始时间"
+          },
+          {
+            "in": "query",
+            "name": "hot",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false",
+                "1",
+                "0"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Creators"
+        ]
+      }
+    },
+    "/api/creators/v1/hot": {
+      "get": {
+        "summary": "读取单博主爆款、多博主共题或跨平台扩散",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "window",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "24h",
+                "48h",
+                "72h"
+              ],
+              "default": "24h"
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "post",
+                "multi_creator",
+                "cross_platform"
+              ],
+              "default": "post"
+            }
+          },
+          {
+            "in": "query",
+            "name": "vertical",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Creators"
+        ]
+      }
+    },
+    "/api/creators/v1/topics": {
+      "get": {
+        "summary": "搜索跨博主 Creator Topic",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "FTS5 全文搜索；按字面量绑定查询，不执行搜索运算符"
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "与规范化查询和筛选绑定的不透明 keyset cursor；不得解析或跨查询复用"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "in": "query",
+            "name": "window",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "24h",
+                "48h",
+                "72h"
+              ],
+              "default": "72h"
+            }
+          },
+          {
+            "in": "query",
+            "name": "vertical",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "since",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ISO 8601 起始时间"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Creators"
+        ]
+      }
+    },
+    "/api/creators/v1/topics/{id}": {
+      "get": {
+        "summary": "读取 Creator Topic 及全部原帖证据",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "稳定 Creator、Topic、订阅或端点 ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Creator Topic",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatorTopic"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Topic 不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Creators"
+        ]
+      }
+    },
+    "/api/creators/v1/sources": {
+      "get": {
+        "summary": "区分支持、已配置、在线、partial、blocked 与 unconfigured 的来源覆盖",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Creator Sources"
+        ]
+      }
+    },
+    "/api/creators/v1/changes": {
+      "get": {
+        "summary": "按单调 seq 游标读取已提交 Creator 事件",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "since",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500,
+              "default": 100
+            }
+          },
+          {
+            "in": "query",
+            "name": "vertical",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "platform",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "creator",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "增量变化",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "游标已过期，需要重新同步",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Creators"
+        ]
+      }
+    },
+    "/api/creators/v1/stream": {
+      "get": {
+        "summary": "登录态 SSE；首次连接从当前末尾追新，Last-Event-ID 或 since 显式续传",
+        "tags": [
+          "Creator Alerts"
+        ],
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Last-Event-ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "description": "最后已持久处理的事件 seq；重连时从下一条继续"
+          },
+          {
+            "in": "query",
+            "name": "since",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "vertical",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "platform",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "creator",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "text/event-stream；每 15 秒 heartbeat，事件在数据库提交后发送",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "需要登录",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "游标已过期；响应含 resync、oldest_cursor、latest_cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/creators/v1/subscriptions": {
+      "get": {
+        "summary": "列出当前用户订阅",
+        "tags": [
+          "Creator Alerts"
+        ],
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "需要登录",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "创建持久订阅",
+        "tags": [
+          "Creator Alerts"
+        ],
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "需要登录",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "deliveryMode",
+                  "endpointIds"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "deliveryMode": {
+                    "enum": [
+                      "immediate",
+                      "digest"
+                    ]
+                  },
+                  "endpointIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "filters": {
+                    "type": "object",
+                    "properties": {
+                      "verticals": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "platforms": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "creators": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "eventTypes": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "minimumScore": {
+                        "type": [
+                          "number",
+                          "null"
+                        ],
+                        "minimum": 0,
+                        "maximum": 100
+                      }
+                    }
+                  },
+                  "quietHours": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/creators/v1/subscriptions/{id}": {
+      "patch": {
+        "summary": "更新所属订阅",
+        "tags": [
+          "Creator Alerts"
+        ],
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "需要登录",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "稳定 Creator、Topic、订阅或端点 ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "deliveryMode",
+                  "endpointIds"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "deliveryMode": {
+                    "enum": [
+                      "immediate",
+                      "digest"
+                    ]
+                  },
+                  "endpointIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "filters": {
+                    "type": "object",
+                    "properties": {
+                      "verticals": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "platforms": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "creators": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "eventTypes": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "minimumScore": {
+                        "type": [
+                          "number",
+                          "null"
+                        ],
+                        "minimum": 0,
+                        "maximum": 100
+                      }
+                    }
+                  },
+                  "quietHours": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "删除所属订阅",
+        "tags": [
+          "Creator Alerts"
+        ],
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "需要登录",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "稳定 Creator、Topic、订阅或端点 ID"
+          }
+        ]
+      }
+    },
+    "/api/creators/v1/delivery-endpoints": {
+      "get": {
+        "summary": "列出当前用户投递端点",
+        "tags": [
+          "Creator Alerts"
+        ],
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "需要登录",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "创建投递端点",
+        "tags": [
+          "Creator Alerts"
+        ],
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "需要登录",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "type",
+                  "destination"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "in_app",
+                      "webhook",
+                      "email",
+                      "feishu",
+                      "wecom",
+                      "dingtalk",
+                      "telegram",
+                      "ntfy",
+                      "bark"
+                    ]
+                  },
+                  "destination": {
+                    "type": "string"
+                  },
+                  "secretRef": {
+                    "type": "string",
+                    "description": "服务端环境变量引用；API 永不回显密钥值"
+                  },
+                  "enabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/creators/v1/delivery-endpoints/{id}": {
+      "patch": {
+        "summary": "更新所属投递端点",
+        "tags": [
+          "Creator Alerts"
+        ],
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "需要登录",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "稳定 Creator、Topic、订阅或端点 ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "type",
+                  "destination"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "in_app",
+                      "webhook",
+                      "email",
+                      "feishu",
+                      "wecom",
+                      "dingtalk",
+                      "telegram",
+                      "ntfy",
+                      "bark"
+                    ]
+                  },
+                  "destination": {
+                    "type": "string"
+                  },
+                  "secretRef": {
+                    "type": "string",
+                    "description": "服务端环境变量引用；API 永不回显密钥值"
+                  },
+                  "enabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "删除所属投递端点",
+        "tags": [
+          "Creator Alerts"
+        ],
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "需要登录",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "稳定 Creator、Topic、订阅或端点 ID"
+          }
+        ]
+      }
+    },
+    "/api/creators/v1/delivery-endpoints/{id}/test": {
+      "post": {
+        "summary": "经持久 outbox 发送一次可审计测试投递",
+        "tags": [
+          "Creator Alerts"
+        ],
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "需要登录",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "稳定 Creator、Topic、订阅或端点 ID"
+          }
+        ]
+      }
+    },
+    "/api/creators/v1/deliveries": {
+      "get": {
+        "summary": "列出当前用户的等待、成功、重试和死信投递",
+        "tags": [
+          "Creator Alerts"
+        ],
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "需要登录",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          }
+        ]
+      }
+    },
+    "/api/creators/v1/admin/creators/import": {
+      "post": {
+        "summary": "导入经过人工核验的 Creator 观察名单",
+        "tags": [
+          "Creator Operations"
+        ],
+        "security": [
+          {
+            "AdminApiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "操作成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "缺少管理密钥",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "管理密钥无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "能力未配置",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/creators/v1/admin/refresh": {
+      "post": {
+        "summary": "立即运行增量采集调度",
+        "tags": [
+          "Creator Operations"
+        ],
+        "security": [
+          {
+            "AdminApiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "操作成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "缺少管理密钥",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "管理密钥无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "能力未配置",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/creators/v1/admin/backfill": {
+      "post": {
+        "summary": "恢复或强制运行一个账号的历史回填",
+        "tags": [
+          "Creator Operations"
+        ],
+        "security": [
+          {
+            "AdminApiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "操作成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "缺少管理密钥",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "管理密钥无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "能力未配置",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "accountId"
+                ],
+                "properties": {
+                  "accountId": {
+                    "type": "string"
+                  },
+                  "force": {
+                    "type": "boolean",
+                    "default": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/creators/v1/admin/backfills": {
+      "get": {
+        "summary": "分页查看回填状态与历史限制原因",
+        "tags": [
+          "Creator Operations"
+        ],
+        "security": [
+          {
+            "AdminApiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "FTS5 全文搜索；按字面量绑定查询，不执行搜索运算符"
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "与规范化查询和筛选绑定的不透明 keyset cursor；不得解析或跨查询复用"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "in": "query",
+            "name": "state",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "$ref": "#/components/schemas/CreatorBackfillState"
+            }
+          },
+          {
+            "in": "query",
+            "name": "platform",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "回填列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "缺少管理密钥",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "管理密钥无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/creators/v1/admin/maintenance/preview": {
+      "post": {
+        "summary": "冻结时间边界与最大 rowid，预览所有保留期清理候选",
+        "tags": [
+          "Creator Operations"
+        ],
+        "security": [
+          {
+            "AdminApiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "操作成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "缺少管理密钥",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "管理密钥无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "能力未配置",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/creators/v1/admin/maintenance/execute": {
+      "post": {
+        "summary": "使用单次、限时、绑定操作者的 preview token 执行清理",
+        "tags": [
+          "Creator Operations"
+        ],
+        "security": [
+          {
+            "AdminApiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "操作成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "缺少管理密钥",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "管理密钥无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "能力未配置",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "token"
+                ],
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/creators/v1/admin/backup": {
+      "post": {
+        "summary": "创建路径受限、拒绝覆盖并经 integrity_check 的 SQLite online backup",
+        "tags": [
+          "Creator Operations"
+        ],
+        "security": [
+          {
+            "AdminApiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "操作成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "缺少管理密钥",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "管理密钥无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "能力未配置",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fileName": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/creators/v1/admin/export": {
+      "post": {
+        "summary": "创建一致性 JSONL 导出与 SHA256；排除 secret、cursor 和请求凭据",
+        "tags": [
+          "Creator Operations"
+        ],
+        "security": [
+          {
+            "AdminApiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "操作成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "缺少管理密钥",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "管理密钥无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "能力未配置",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fileName": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ingest/v1/youtube/websub": {
+      "get": {
+        "summary": "验证 YouTube WebSub challenge 和已持久 Topic lease",
+        "tags": [
+          "Creator Ingest"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "hub.mode",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "hub.topic",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "hub.challenge",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "hub.lease_seconds",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "hub.verify_token",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "原样 challenge",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "验证失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "接收 YouTube Atom 增量通知",
+        "description": "对原始 XML 字节验证 X-Hub-Signature-256（SHA-256 HMAC）；SHA-1 仅在显式兼容开关下允许。重复回调幂等。",
+        "tags": [
+          "Creator Ingest"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Hub-Signature-256",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^sha256=[a-fA-F0-9]{64}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/atom+xml": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "通知已提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ingest/v1/creator-bridge": {
+      "post": {
+        "summary": "接收独立 Sidecar 的已签名公开帖子批次",
+        "description": "签名消息为 timestamp.nonce.sha256(raw body)；必须对原始请求字节计算 SHA256 后再用服务端 HMAC secret 校验，且账号需在核验绑定名单中。",
+        "tags": [
+          "Creator Ingest"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-aya-source-id",
+            "required": true,
+            "description": "配置中的 Sidecar 来源 ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-aya-timestamp",
+            "required": true,
+            "description": "10 或 13 位 Unix 时间",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{10}(?:\\d{3})?$"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-aya-nonce",
+            "required": true,
+            "description": "8–160 字符单次 nonce",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-aya-signature",
+            "required": true,
+            "description": "sha256=<64 hex> HMAC",
+            "schema": {
+              "type": "string",
+              "pattern": "^sha256=[a-fA-F0-9]{64}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "version",
+                  "platform",
+                  "externalAccountId",
+                  "items"
+                ],
+                "properties": {
+                  "version": {
+                    "const": 1
+                  },
+                  "platform": {
+                    "type": "string"
+                  },
+                  "externalAccountId": {
+                    "type": "string"
+                  },
+                  "nextCursor": {},
+                  "exhausted": {
+                    "type": "boolean"
+                  },
+                  "items": {
+                    "type": "array",
+                    "maxItems": 500,
+                    "items": {
+                      "$ref": "#/components/schemas/CreatorPostIngest"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "批次已原子提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "来源与账号未绑定",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "nonce 已使用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "超过 2 MiB",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema 或公开性不合格",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "AdminApiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-admin-api-key"
+      },
+      "SessionCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "session_token",
+        "description": "由同站注册/登录接口设置的 HttpOnly Session Cookie"
+      }
+    },
+    "schemas": {
+      "SignalMetrics": {
+        "type": "object",
+        "properties": {
+          "views": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "likes": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "comments": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "replies": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "shares": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "reposts": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "stars": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "forks": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "openIssues": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "points": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "rank": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "downloads": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          }
+        }
+      },
+      "Signal": {
+        "type": "object",
+        "required": [
+          "id",
+          "sourceId",
+          "platform",
+          "title",
+          "url",
+          "publishedAt",
+          "metrics"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "sourceId": {
+            "type": "string"
+          },
+          "platform": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/SignalMetrics"
+          }
+        }
+      },
+      "Topic": {
+        "type": "object",
+        "required": [
+          "id",
+          "canonical_topic_id",
+          "title",
+          "trendScore",
+          "creatorScore",
+          "evidenceStrength"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "canonical_topic_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "trendScore": {
+            "type": "number"
+          },
+          "creatorScore": {
+            "type": "number"
+          },
+          "evidenceStrength": {
+            "type": "string"
+          },
+          "signals": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Signal"
+            }
+          }
+        }
+      },
+      "TopicResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "const": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Topic"
+          }
+        }
+      },
+      "CreatorBackfillState": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "running",
+          "complete",
+          "partial",
+          "blocked"
+        ],
+        "description": "complete 仅表示 cursor 耗尽且完成 reconciliation；权限或历史窗口限制必须是 partial/blocked"
+      },
+      "CreatorMetrics": {
+        "type": "object",
+        "additionalProperties": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "description": "来源未提供的指标保持 null，绝不补零"
+      },
+      "CreatorHotness": {
+        "type": "object",
+        "required": [
+          "formulaVersion",
+          "score",
+          "confidence",
+          "components",
+          "penalties"
+        ],
+        "properties": {
+          "formulaVersion": {
+            "const": "creator-hotness-v1"
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "confidence": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "components": {
+            "type": "object",
+            "additionalProperties": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "penalties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          }
+        }
+      },
+      "CreatorPost": {
+        "type": "object",
+        "required": [
+          "id",
+          "creatorId",
+          "platform",
+          "url",
+          "title",
+          "publishedAt",
+          "metrics"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "creatorId": {
+            "type": "string"
+          },
+          "platform": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://"
+          },
+          "title": {
+            "type": "string"
+          },
+          "text": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/CreatorMetrics"
+          },
+          "hotness": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CreatorHotness"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "CreatorPostIngest": {
+        "type": "object",
+        "required": [
+          "externalPostId",
+          "url",
+          "publishedAt"
+        ],
+        "properties": {
+          "externalPostId": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://"
+          },
+          "title": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "visibility": {
+            "const": "public"
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "editedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/CreatorMetrics"
+          }
+        }
+      },
+      "CreatorAccount": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "platform": {
+            "type": "string"
+          },
+          "profileUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "authState": {
+            "type": "string"
+          },
+          "backfill": {
+            "type": "object",
+            "required": [
+              "state"
+            ],
+            "properties": {
+              "state": {
+                "$ref": "#/components/schemas/CreatorBackfillState"
+              },
+              "oldestFetchedAt": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "newestFetchedAt": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "historyLimitReason": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "Creator": {
+        "type": "object",
+        "required": [
+          "id",
+          "displayName",
+          "reviewStatus",
+          "accounts"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "reviewStatus": {
+            "enum": [
+              "verified",
+              "candidate",
+              "rejected"
+            ]
+          },
+          "verticalIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "accounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreatorAccount"
+            }
+          }
+        }
+      },
+      "CreatorTopic": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "formulaVersion",
+          "creatorCount",
+          "platformCount",
+          "evidence"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "formulaVersion": {
+            "const": "creator-topic-v1"
+          },
+          "creatorCount": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "platformCount": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "url"
+              ],
+              "properties": {
+                "postId": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string",
+                  "format": "uri",
+                  "pattern": "^https://"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CreatorEvent": {
+        "type": "object",
+        "required": [
+          "seq",
+          "eventType",
+          "entityType",
+          "entityId",
+          "occurredAt"
+        ],
+        "properties": {
+          "seq": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "eventType": {
+            "enum": [
+              "post.published",
+              "post.hot",
+              "topic.multi_creator",
+              "topic.cross_platform"
+            ]
+          },
+          "entityType": {
+            "enum": [
+              "post",
+              "topic"
+            ]
+          },
+          "entityId": {
+            "type": "string"
+          },
+          "verticalId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "platform": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "score": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "DeliveryEndpoint": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "destination",
+          "enabled"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "destination": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "description": "secretRef 和 secret 值不会出现在响应中"
+      },
+      "CreatorSubscription": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "deliveryMode": {
+            "enum": [
+              "immediate",
+              "digest"
+            ]
+          },
+          "endpointIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreatorDelivery": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "leased",
+              "retry",
+              "delivered",
+              "dead"
+            ]
+          },
+          "attemptCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "nextAttemptAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      },
+      "MaintenancePreview": {
+        "type": "object",
+        "required": [
+          "token",
+          "expiresAt",
+          "candidates"
+        ],
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "candidates": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    }
+  }
+}
