@@ -15,7 +15,7 @@
 | Module | Status | Targeted evidence | Review |
 |---|---|---|---|
 | 0. Baseline and plan | Complete | 348 server, 48 client, build passed | Approved |
-| 1. Repository hygiene and dependency security | Pending | repository/audit tests | Pending |
+| 1. Repository hygiene and dependency security | Complete | 22/22 targeted; 0 high/critical audit | Spec + quality approved |
 | 2. Request security configuration | Pending | CORS/proxy/auth tests | Pending |
 | 3. Typed read-tool registry | Pending | registry/read-tool tests | Pending |
 | 4. Model provider abstraction | Pending | provider/legacy Agent tests | Pending |
@@ -105,7 +105,7 @@ git commit -m "docs: plan AyaNews agent platform completion"
 - Modify: `README.md`
 - Stop tracking: `server/.env`, `server/data/ainews.db`, `server/server.log`, `client/client.log`
 
-- [ ] **Step 1: Write failing repository-hygiene tests**
+- [x] **Step 1: Write failing repository-hygiene tests**
 
 Test that tracked files reject `.env`, runtime databases, WAL/SHM, logs, backups, reports, and caches while allowing `.env.example`; test that Docker and release exclusion patterns cover the same classes.
 
@@ -117,15 +117,15 @@ Run:
 
 Expected: FAIL because tracked runtime files and incomplete Docker exclusions are present.
 
-- [ ] **Step 2: Implement the repository hygiene checker and exclusions**
+- [x] **Step 2: Implement the repository hygiene checker and exclusions**
 
 The checker returns nonzero and prints only paths/categories, never file contents. Remove tracked runtime files from the feature branch without reading values into logs.
 
-- [ ] **Step 3: Add a dependency-security regression gate**
+- [x] **Step 3: Add a dependency-security regression gate**
 
 Add assertions for minimum patched transitive/direct versions and preserve Express 4/node-cron 3 compatibility. Update compatible packages and lockfile; do not run `npm audit fix --force`.
 
-- [ ] **Step 4: Run targeted and security verification**
+- [x] **Step 4: Run targeted and security verification**
 
 ```bash
 /usr/local/bin/node --test server/tests/repository-hygiene.test.js server/tests/release-inputs.test.js server/tests/direct-upload-release.test.js server/tests/server-lifecycle.test.js
@@ -135,7 +135,9 @@ git ls-files server/.env server/data/ainews.db server/server.log client/client.l
 
 Expected: tests pass, audit has no critical/high findings, and `git ls-files` prints nothing.
 
-- [ ] **Step 5: Commit and update the delivery ledger**
+- [x] **Step 5: Commit and update the delivery ledger**
+
+Verified 2026-10-12 on Node 22: initial RED was 0/6; reviewer-driven regression RED runs reproduced export, Docker matcher, and SemVer gaps. Final targeted run passed 22/22. `npm audit --omit=dev --audit-level=high` exited 0 with zero high/critical and two accepted moderate `node-cron`/`uuid` findings. The checker and `git diff --check` passed; sensitive/runtime paths are untracked while local ignored copies remain present. Specification and code-quality reviews both approved commits through `60d183ab`.
 
 ### Task 2: Unify CORS, trusted proxy, public origin, and request identity
 
