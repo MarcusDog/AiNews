@@ -27,12 +27,24 @@ fi
 rsync -a \
   --exclude='.git' \
   --exclude='.git/' \
+  --include='.env.example' \
   --exclude='.env' \
   --exclude='.env.*' \
+  --exclude='*.local.env' \
   --exclude='node_modules/' \
   --exclude='.gstack/' \
   --exclude='release/' \
   --exclude='backups/' \
+  --exclude='backup/' \
+  --exclude='*.bak' \
+  --exclude='*.backup' \
+  --exclude='*.dump' \
+  --exclude='report/' \
+  --exclude='reports/' \
+  --exclude='.cache/' \
+  --exclude='cache/' \
+  --exclude='caches/' \
+  --exclude='logs/' \
   --exclude='server/data/' \
   --exclude='server/logs/' \
   --exclude='server/cache/' \
@@ -40,7 +52,16 @@ rsync -a \
   --exclude='*.db' \
   --exclude='*.db-shm' \
   --exclude='*.db-wal' \
+  --exclude='*.db-*' \
+  --exclude='*.db.*' \
+  --exclude='*.sqlite' \
+  --exclude='*.sqlite-*' \
+  --exclude='*.sqlite.*' \
+  --exclude='*.sqlite3' \
+  --exclude='*.sqlite3-*' \
+  --exclude='*.sqlite3.*' \
   --exclude='*.log' \
+  --exclude='*.log.*' \
   --exclude='*.pid' \
   "$repo_root/" "$release_root/"
 

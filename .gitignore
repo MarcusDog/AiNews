@@ -11,6 +11,25 @@ client/build/
 *.tsbuildinfo
 
 # Runtime / Cache
+cache/
+.cache/
+caches/
+backup/
+backups/
+report/
+reports/
+*.db
+*.db-*
+*.db.*
+*.sqlite
+*.sqlite-*
+*.sqlite.*
+*.sqlite3
+*.sqlite3-*
+*.sqlite3.*
+*.bak
+*.backup
+*.dump
 client/node_modules/.cache/
 server/cache/
 server/data/backups/
@@ -25,6 +44,7 @@ server/data/creator-seeds*.json
 
 # Logs
 *.log
+*.log.*
 *.pid
 client/logs/
 server/logs/
@@ -43,6 +63,8 @@ logs/
 
 # Secrets
 .env
+.env.*
+!.env.example
 .env.local
 server/.env
 server/.env.local
