@@ -50,6 +50,9 @@ function dockerMatches(pattern, file) {
   // This policy uses literals, *, ** and ?. Reject unsupported syntax rather than
   // certifying exclusions whose behavior we cannot validate without the daemon.
   if (/[\[\]\\]/.test(pattern)) throw new Error('unsupported Docker glob syntax');
+  if (pattern.trim().split('/').some((segment) => segment.includes('**') && segment !== '**')) {
+    throw new Error('unsupported Docker glob syntax');
+  }
   pattern = path.posix.normalize(pattern.trim()).replace(/^\/+|\/+$/g, '');
   if (!pattern || pattern === '.') return false;
   let expression = '';

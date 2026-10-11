@@ -78,6 +78,7 @@ test('Docker matching anchors root patterns and preserves recursive, parent, and
     [['.env'], '.env', true], [['.env'], 'nested/.env', false],
     [['*.log'], 'nested/output.log', false], [['**/*.log'], 'nested/deep/output.log', true],
     [['**/.env'], '.env', true], [['**/.env'], 'nested/deep/.env', true],
+    [['**'], 'nested/deep/file.js', true], [['/**'], 'nested/deep/file.js', true],
     [['/data/'], 'data/nested/value.json', true], [['data'], 'nested/data/value.json', false],
     [['*/temp*'], 'somedir/temporary.txt', true], [['*/temp*'], 'somedir/subdir/temporary.txt', false],
     [['temp?'], 'tempa', true], [['temp?'], 'nested/tempa', false],
@@ -86,6 +87,27 @@ test('Docker matching anchors root patterns and preserves recursive, parent, and
     [['.'], 'nested/file.js', false]
   ];
   for (const [rules, file, expected] of cases) assert.equal(dockerExcludes(rules, file), expected, `${rules.join(',')} → ${file}`);
+});
+
+test('checker fails closed when Docker uses embedded double-star syntax', async (t) => {
+  const { checkRepository, dockerExcludes } = await loadChecker();
+  for (const pattern of ['**/data**db', 'data**', '**data', 'nested/**foo/file', '***']) {
+    assert.throws(() => dockerExcludes([pattern], 'data.db'), /unsupported Docker glob syntax/, pattern);
+  }
+  const sandbox = fs.mkdtempSync(path.join(os.tmpdir(), 'aya-docker-double-star-'));
+  t.after(() => fs.rmSync(sandbox, { recursive: true, force: true }));
+  execFileSync('git', ['init', '-q', sandbox]);
+  fs.mkdirSync(path.join(sandbox, 'server'));
+  fs.mkdirSync(path.join(sandbox, 'scripts'));
+  for (const file of ['.gitignore', 'scripts/build-release.sh']) {
+    fs.copyFileSync(path.join(root, file), path.join(sandbox, file));
+  }
+  const weakened = fs.readFileSync(path.join(root, 'server/.dockerignore'), 'utf8').replace('**/*.db\n', '**/data**db\n');
+  fs.writeFileSync(path.join(sandbox, 'server/.dockerignore'), weakened);
+  assert.throws(() => checkRepository(sandbox), /unsupported Docker glob syntax/);
+  const result = spawnSync(process.execPath, [checker], { cwd: sandbox, encoding: 'utf8' });
+  assert.equal(result.status, 1);
+  assert.deepEqual(JSON.parse(result.stdout), { category: 'checker:unavailable', path: '.' });
 });
 
 test('security floors apply SemVer ordering to prereleases, build metadata, and invalid input', () => {
