@@ -13,6 +13,7 @@ export function classifyPath(file) {
   if (/\.log(?:$|\.)/.test(name) || parts.slice(0, -1).includes('logs')) return 'log';
   if (parts.slice(0, -1).some((part) => /^(?:backup|backups)$/.test(part)) || /\.(?:bak|backup|dump)$/.test(name)) return 'backup';
   if (parts.slice(0, -1).some((part) => /^(?:report|reports)$/.test(part))) return 'report';
+  if (parts.slice(0, -1).includes('exports') || /^aya-creator-.+\.jsonl(?:\.tmp-.+)?$/.test(name)) return 'export';
   if (parts.slice(0, -1).some((part) => /^(?:\.cache|cache|caches)$/.test(part))) return 'cache';
   return null;
 }
@@ -22,12 +23,16 @@ const policySamples = [
   'data.db.previous-1', 'data.sqlite', 'data.sqlite-shm', 'data.sqlite3', 'data.sqlite3-wal',
   'output.log', 'output.log.1', 'logs/output.txt', 'backup/state.json', 'backups/state.json',
   'state.bak', 'state.backup', 'state.dump', 'report/result.json', 'reports/result.json',
-  '.cache/value.json', 'cache/value.json', 'caches/value.json'
+  '.cache/value.json', 'cache/value.json', 'caches/value.json', 'exports/custom.jsonl',
+  'exports/aya-creator-2026-10-12T00-00-00-000Z.jsonl',
+  'exports/aya-creator-2026-10-12T00-00-00-000Z.jsonl.tmp-1234',
+  'aya-creator-2026-10-12T00-00-00-000Z.jsonl',
+  'aya-creator-2026-10-12T00-00-00-000Z.jsonl.tmp-1234'
 ].flatMap((file) => [file, `nested/${file}`]);
 
-// The policies deliberately use a small shared subset of glob syntax: *, **/,
-// directory suffixes and negation. Evaluate rules in order (last Docker rule wins).
-function globMatches(pattern, file) {
+// rsync slashless patterns match basenames at every depth; Docker patterns are
+// relative to the context root. Keep their anchoring and parent matching separate.
+function rsyncMatches(pattern, file) {
   const directory = pattern.endsWith('/');
   pattern = pattern.replace(/^\//, '').replace(/\/$/, '');
   const hasSlash = pattern.includes('/');
@@ -40,11 +45,30 @@ function globMatches(pattern, file) {
   return new RegExp(`${hasSlash ? '^' : '(?:^|/)'}${expression}${directory ? '(?:/|$)' : '$'}`).test(file);
 }
 
-function dockerExcludes(rules, file) {
+function dockerMatches(pattern, file) {
+  // https://docs.docker.com/build/concepts/context/#dockerignore-files
+  // This policy uses literals, *, ** and ?. Reject unsupported syntax rather than
+  // certifying exclusions whose behavior we cannot validate without the daemon.
+  if (/[\[\]\\]/.test(pattern)) throw new Error('unsupported Docker glob syntax');
+  pattern = path.posix.normalize(pattern.trim()).replace(/^\/+|\/+$/g, '');
+  if (!pattern || pattern === '.') return false;
+  let expression = '';
+  for (let i = 0; i < pattern.length; i += 1) {
+    if (pattern.slice(i, i + 3) === '**/') { expression += '(?:.*/)?'; i += 2; }
+    else if (pattern.slice(i, i + 2) === '**') { expression += '.*'; i += 1; }
+    else if (pattern[i] === '*') expression += '[^/]*';
+    else if (pattern[i] === '?') expression += '[^/]';
+    else expression += pattern[i].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+  // An excluded directory also excludes descendants, even without a trailing /.
+  return new RegExp(`^${expression}(?:/|$)`).test(file);
+}
+
+export function dockerExcludes(rules, file) {
   let excluded = false;
   for (const rule of rules) {
     const include = rule.startsWith('!');
-    if (globMatches(include ? rule.slice(1) : rule, file)) excluded = !include;
+    if (dockerMatches(include ? rule.slice(1) : rule, file)) excluded = !include;
   }
   return excluded;
 }
@@ -75,7 +99,7 @@ export function checkRepository(root = execFileSync('git', ['rev-parse', '--show
   const releaseRules = [...releaseScript.matchAll(/--(exclude|include)='([^']+)'/g)];
   function releaseExcludes(file) {
     // rsync uses the first matching include/exclude rule.
-    for (const [, action, pattern] of releaseRules) if (globMatches(pattern, file)) return action === 'exclude';
+    for (const [, action, pattern] of releaseRules) if (rsyncMatches(pattern, file)) return action === 'exclude';
     return false;
   }
   for (const [policy, excludes] of [['docker-ignore', (file) => dockerExcludes(dockerRules, file)], ['release-exclude', releaseExcludes]]) {

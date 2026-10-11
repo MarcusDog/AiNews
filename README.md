@@ -31,9 +31,11 @@ cd client && npm run build
 
 ### 本地配置与仓库安全
 
-使用 `cp server/.env.example server/.env` 创建本地配置，并以 `chmod 600 server/.env` 限制读取权限。只提交不含真实凭据的 `.env.example`；环境配置、SQLite 数据库及 WAL/SHM、日志、备份、报告和缓存必须留在 Git、Docker 构建上下文和发布包之外。发布包保留配置模板，运行时配置与数据由服务器独立维护。
+使用 `cp server/.env.example server/.env` 创建本地配置，并以 `chmod 600 server/.env` 限制读取权限。只提交不含真实凭据的 `.env.example`；环境配置、SQLite 数据库及 WAL/SHM、日志、备份、报告、Creator JSONL 导出（含临时文件）和缓存必须留在 Git、Docker 构建上下文和发布包之外。发布包保留配置模板，运行时配置与数据由服务器独立维护。
 
 提交和发布前在仓库根目录运行 `node scripts/check-repository-hygiene.mjs`（或 `npm --prefix server run check:hygiene`）。检查器只报告违规路径与类别，不读取秘密或运行时文件内容。生产依赖检查使用 `npm --prefix server audit --omit=dev --audit-level=high`。
+
+Docker 规则按构建上下文根目录匹配，嵌套路径用 `**/`；检查器支持当前策略中的字面路径、`*`、`**`、`?` 和 `!` 例外，遇到字符类或反斜杠等不支持的模式会拒绝通过，避免误报排除成功。
 
 如果真实凭据曾进入提交、构建上下文或已分享的发布包，应由凭据所有者轮换或撤销相关凭据、检查访问记录，并按需另行安排历史清理。停止跟踪文件不能删除旧提交中的内容，也不能使已泄露的凭据失效；不要把真实值贴入问题单或日志。当前保留 Express 4 与 node-cron 3 的兼容性；node-cron 3 的 uuid 依赖仍可能报告中等风险，升级其不兼容主版本需另行验证。
 

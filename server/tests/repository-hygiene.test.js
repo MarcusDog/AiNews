@@ -4,6 +4,7 @@ const os = require('node:os');
 const path = require('node:path');
 const { execFileSync, spawnSync } = require('node:child_process');
 const test = require('node:test');
+const semver = require('semver');
 
 const root = path.resolve(__dirname, '../..');
 const checker = path.join(root, 'scripts/check-repository-hygiene.mjs');
@@ -16,8 +17,16 @@ const forbidden = [
   'nested/backups/state.json', 'nested/backup/state.json', 'nested/state.bak',
   'nested/state.backup', 'nested/state.dump', 'nested/reports/result.json',
   'nested/report/result.json', 'nested/.cache/value.json', 'nested/cache/value.json',
-  'nested/caches/value.json'
+  'nested/caches/value.json',
+  'server/data/exports/aya-creator-2026-10-12T00-00-00-000Z.jsonl',
+  'server/data/exports/aya-creator-2026-10-12T00-00-00-000Z.jsonl.tmp-1234',
+  'nested/exports/custom.jsonl', 'nested/aya-creator-2026-10-12T00-00-00-000Z.jsonl',
+  'nested/aya-creator-2026-10-12T00-00-00-000Z.jsonl.tmp-1234'
 ];
+
+function meetsSecurityFloor(version, minimum) {
+  return Boolean(semver.valid(version) && semver.valid(minimum) && semver.gte(version, minimum));
+}
 
 async function loadChecker() {
   assert.ok(fs.existsSync(checker), 'reusable repository hygiene checker must exist');
@@ -43,6 +52,51 @@ test('checker resolves the repository root when invoked from the server director
   await loadChecker();
   const result = spawnSync(process.execPath, [checker], { cwd: path.join(root, 'server'), encoding: 'utf8' });
   assert.equal(result.status, 0, result.stdout + result.stderr);
+});
+
+test('checker rejects a Docker policy weakened to a root-only .env pattern', async (t) => {
+  const { checkRepository } = await loadChecker();
+  const sandbox = fs.mkdtempSync(path.join(os.tmpdir(), 'aya-docker-policy-'));
+  t.after(() => fs.rmSync(sandbox, { recursive: true, force: true }));
+  execFileSync('git', ['init', '-q', sandbox]);
+  fs.mkdirSync(path.join(sandbox, 'server'));
+  fs.mkdirSync(path.join(sandbox, 'scripts'));
+  for (const file of ['.gitignore', 'scripts/build-release.sh']) {
+    fs.copyFileSync(path.join(root, file), path.join(sandbox, file));
+  }
+  const weakened = fs.readFileSync(path.join(root, 'server/.dockerignore'), 'utf8').replace('**/.env\n', '.env\n');
+  fs.writeFileSync(path.join(sandbox, 'server/.dockerignore'), weakened);
+  const findings = checkRepository(sandbox);
+  assert.ok(findings.some((entry) => entry.category === 'docker-ignore:secret' && entry.path === 'nested/.env'));
+  assert.ok(!findings.some((entry) => entry.category === 'docker-ignore:secret' && entry.path === '.env'));
+});
+
+test('Docker matching anchors root patterns and preserves recursive, parent, and last-rule behavior', async () => {
+  const { dockerExcludes } = await loadChecker();
+  assert.equal(typeof dockerExcludes, 'function', 'Docker matcher must be independently testable');
+  const cases = [
+    [['.env'], '.env', true], [['.env'], 'nested/.env', false],
+    [['*.log'], 'nested/output.log', false], [['**/*.log'], 'nested/deep/output.log', true],
+    [['**/.env'], '.env', true], [['**/.env'], 'nested/deep/.env', true],
+    [['/data/'], 'data/nested/value.json', true], [['data'], 'nested/data/value.json', false],
+    [['*/temp*'], 'somedir/temporary.txt', true], [['*/temp*'], 'somedir/subdir/temporary.txt', false],
+    [['temp?'], 'tempa', true], [['temp?'], 'nested/tempa', false],
+    [['**/.env.*', '!**/.env.example'], 'nested/.env.example', false],
+    [['**/.env.*', '!**/.env.example', '**/.env.example'], 'nested/.env.example', true],
+    [['.'], 'nested/file.js', false]
+  ];
+  for (const [rules, file, expected] of cases) assert.equal(dockerExcludes(rules, file), expected, `${rules.join(',')} → ${file}`);
+});
+
+test('security floors apply SemVer ordering to prereleases, build metadata, and invalid input', () => {
+  const cases = [
+    ['4.22.2', false], ['4.22.2+build.1', false], ['4.22.3-beta.1', false],
+    ['4.22.3-beta.1+build.1', false], ['4.22.3', true], ['4.22.3+build.1', true],
+    ['4.22.4-beta.1', true], ['4.22.4', true], ['4.23.0', true], ['5.0.0', true],
+    ['4.22.3garbage', false], ['4.22.3+', false], ['4.22', false], ['4.22.03', false],
+    ['4.22.3-01', false], ['4.22.3+bad?metadata', false]
+  ];
+  for (const [version, expected] of cases) assert.equal(meetsSecurityFloor(version, '4.22.3'), expected, version);
 });
 
 test('checker rejects tracked violations with paths and categories only', async (t) => {
@@ -111,10 +165,7 @@ test('production dependencies retain compatible majors and minimum security fixe
     const entries = Object.entries(lock.packages).filter(([file]) => file.endsWith(`node_modules/${name}`));
     assert.ok(entries.length, `lockfile must contain ${name}`);
     for (const [file, entry] of entries) {
-      const actual = entry.version.split('.').map(Number);
-      const floor = minimum.split('.').map(Number);
-      const comparison = actual.map((value, i) => Math.sign(value - floor[i])).find((value) => value !== 0) || 0;
-      assert.ok(comparison >= 0, `${file} ${entry.version} must be at least ${minimum}`);
+      assert.ok(meetsSecurityFloor(entry.version, minimum), `${file} ${entry.version} must be at least ${minimum}`);
     }
   }
   assert.match(manifest.dependencies.express, /^\^4\.22\.3$/);

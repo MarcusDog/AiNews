@@ -41,6 +41,9 @@ rsync -a \
   --exclude='*.dump' \
   --exclude='report/' \
   --exclude='reports/' \
+  --exclude='exports/' \
+  --exclude='aya-creator-*.jsonl' \
+  --exclude='aya-creator-*.jsonl.tmp-*' \
   --exclude='.cache/' \
   --exclude='cache/' \
   --exclude='caches/' \

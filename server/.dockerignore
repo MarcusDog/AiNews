@@ -24,6 +24,9 @@ data/
 **/*.dump
 **/report/
 **/reports/
+**/exports/
+**/aya-creator-*.jsonl
+**/aya-creator-*.jsonl.tmp-*
 **/.cache/
 **/cache/
 **/caches/

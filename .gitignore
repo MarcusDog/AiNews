@@ -18,6 +18,9 @@ backup/
 backups/
 report/
 reports/
+exports/
+aya-creator-*.jsonl
+aya-creator-*.jsonl.tmp-*
 *.db
 *.db-*
 *.db.*
