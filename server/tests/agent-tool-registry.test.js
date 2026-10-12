@@ -116,3 +116,32 @@ test('null and malformed execution contexts fail closed without leaking exceptio
     assert.equal((await r.execute('test_read', {}, options)).error.code, 'invalid_input');
   }
 });
+
+test('Symbol input values fail closed before invoking the executor', async () => {
+  let executions = 0;
+  const r = registry({
+    inputSchema: object({ q: { type: 'string', maxLength: 100 } }),
+    execute: () => { executions++; return { value: 'ok' }; }
+  });
+  const result = await call(r, { q: Symbol('private-input') });
+  assert.equal(executions, 0);
+  assert.deepEqual(result, { ok: false, error: { code: 'invalid_input', message: 'Invalid tool input.' } });
+});
+
+test('Symbol-keyed input properties fail closed before invoking the executor', async () => {
+  let executions = 0;
+  const r = registry({ execute: () => { executions++; return { value: 'ok' }; } });
+  const result = await call(r, { [Symbol('private-input-key')]: 'hidden payload' });
+  assert.equal(executions, 0);
+  assert.deepEqual(result, { ok: false, error: { code: 'invalid_input', message: 'Invalid tool input.' } });
+});
+
+test('Symbol output values fail closed without returning partial data', async () => {
+  const result = await call(registry({ execute: () => ({ value: Symbol('private-output') }) }));
+  assert.deepEqual(result, { ok: false, error: { code: 'invalid_output', message: 'Invalid tool output.' } });
+});
+
+test('Symbol-keyed output properties fail closed without returning partial data', async () => {
+  const result = await call(registry({ execute: () => ({ value: 'ok', [Symbol('private-output-key')]: 'hidden payload' }) }));
+  assert.deepEqual(result, { ok: false, error: { code: 'invalid_output', message: 'Invalid tool output.' } });
+});
