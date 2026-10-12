@@ -1,5 +1,6 @@
 const ContentService = require('./ContentService');
-const { buildDiversitySnapshot, classifyEvidenceType } = require('../utils/analytics');
+const { buildDiversitySnapshot } = require('../utils/analytics');
+const { toEvidence, publicUrl } = require('./agent/public-projections');
 
 const QUERY_STOP_WORDS = [
   '请你', '请问', '帮我', '给我', '分析', '总结', '介绍', '一下', '最近', '最新', '今天',
@@ -30,7 +31,8 @@ class AgentContextService {
   selectEvidence(message, articles = [], limit = 8) {
     const terms = this.extractQueryTerms(message);
     const scored = articles
-      .filter((article) => article?.url)
+      .filter((article) => publicUrl(article?.url))
+      .map((article) => ({ ...article, url: publicUrl(article.url) }))
       .map((article) => ({ article, score: this.relevanceScore(article, terms) }))
       .sort((a, b) => b.score - a.score || new Date(b.article.publishedAt || 0) - new Date(a.article.publishedAt || 0));
     const relevant = scored.some((item) => item.score > 0)
@@ -40,20 +42,7 @@ class AgentContextService {
   }
 
   toSource(article, index) {
-    const evidenceType = classifyEvidenceType(article);
-    return {
-      citationId: `S${index + 1}`,
-      id: article.id,
-      title: article.title || '未命名资讯',
-      summary: String(article.description || '').slice(0, 600),
-      source: article.source || '未知来源',
-      url: article.url,
-      publishedAt: article.publishedAt || null,
-      category: article.category || null,
-      evidenceType,
-      region: article.region === 'cn' ? 'cn' : 'global',
-      claimBoundary: ContentService.evidenceBoundary(evidenceType)
-    };
+    return toEvidence(article, index);
   }
 
   async build(message) {
