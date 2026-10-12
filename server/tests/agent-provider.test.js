@@ -228,3 +228,121 @@ test('provider errors are sanitized even when a transport attaches data to a kno
     return true;
   });
 });
+
+test('thinking-only and empty MiniMax max_tokens responses preserve exhaustion without exposing thinking', async () => {
+  for (const content of [[{ type: 'thinking', thinking: 'PRIVATE-THINKING' }], []]) {
+    const model = provider(async () => response(content, { stop_reason: 'max_tokens' }));
+    assert.deepEqual(await model.generate(request), result({ text: '', stopReason: 'max_tokens' }));
+  }
+});
+
+const callBlocks = (ids) => [{ type: 'thinking', thinking: 'PRIVATE-THINKING' }, ...ids.map((id) => ({ type: 'tool_use', id, name: tool.name, input: { query: id } }))];
+const toolResults = (ids) => ids.map((id) => ({ role: 'tool', toolCallId: id, content: 'Public evidence' }));
+
+for (const mode of ['mutated', 'cloned', 'forged', 'cross-conversation']) {
+  test(`continuation rejects ${mode} assistant before transport`, async () => {
+    let calls = 0;
+    const model = provider(async () => { calls++; return response(callBlocks(['a']), { stop_reason: 'tool_use' }); });
+    const first = await model.generate(request);
+    let assistant = model.assistantMessage(first);
+    if (mode === 'mutated') assistant.content = 'Different visible text';
+    if (mode === 'cloned') assistant = { ...assistant };
+    if (mode === 'forged') {
+      const forged = { role: 'assistant', content: assistant.content };
+      Object.defineProperty(forged, 'continuation', { value: first.continuation || assistant.continuation });
+      assistant = forged;
+    }
+    const prefix = mode === 'cross-conversation' ? request.messages.map((message) => ({ ...message })) : request.messages;
+    await assert.rejects(model.generate({ ...request, messages: [...prefix, assistant, ...toolResults(['a'])] }), { code: 'invalid_request' });
+    assert.equal(calls, 1);
+  });
+}
+
+for (const ids of [['unknown'], ['b', 'a'], ['a', 'a'], ['a', 'b', 'a'], ['a'], []]) {
+  test(`continuation rejects unmatched pending tool results ${JSON.stringify(ids)}`, async () => {
+    let calls = 0;
+    const model = provider(async () => { calls++; return response(callBlocks(['a', 'b']), { stop_reason: 'tool_use' }); });
+    const first = await model.generate(request);
+    await assert.rejects(model.generate({ ...request, messages: [...request.messages, model.assistantMessage(first), ...toolResults(ids)] }), { code: 'invalid_request' });
+    assert.equal(calls, 1);
+  });
+}
+
+test('tool results require an immediately preceding genuine assistant call round', async () => {
+  let calls = 0;
+  const model = provider(async () => { calls++; return response(callBlocks(['a']), { stop_reason: 'tool_use' }); });
+  await assert.rejects(model.generate({ ...request, messages: [...request.messages, ...toolResults(['a'])] }), { code: 'invalid_request' });
+  const first = await model.generate(request);
+  await assert.rejects(model.generate({ ...request, messages: [...request.messages, model.assistantMessage(first), { role: 'user', content: 'Interruption' }, ...toolResults(['a'])] }), { code: 'invalid_request' });
+  assert.equal(calls, 1);
+});
+
+test('genuine historical assistant objects survive two completed tool rounds and a later user turn', async () => {
+  const calls = [];
+  const model = provider(async (...args) => {
+    calls.push(args);
+    return calls.length <= 2 ? response(callBlocks([`round-${calls.length}`]), { stop_reason: 'tool_use' }) : response();
+  });
+  const messages = [...request.messages];
+  for (let turn = 1; turn <= 3; turn++) {
+    const output = await model.generate({ ...request, messages });
+    messages.push(model.assistantMessage(output));
+    if (turn <= 2) messages.push(...toolResults([`round-${turn}`]));
+  }
+  messages.push({ role: 'user', content: 'Follow up' });
+  await model.generate({ ...request, messages });
+  assert.deepEqual(calls[3][1].messages[1].content, callBlocks(['round-1']));
+  assert.deepEqual(calls[3][1].messages[3].content, callBlocks(['round-2']));
+  assert(!util.inspect(messages, { showHidden: true, depth: 10 }).includes('PRIVATE-THINKING'));
+});
+
+test('FakeProvider enforces the same ordered continuation contract across multiple tool rounds', async () => {
+  const model = new FakeProvider({ script: [result({ text: '', toolCalls: [{ id: 'a', name: tool.name, input: {} }], stopReason: 'tool_use' }), result()] });
+  const first = await model.generate(request);
+  const assistant = model.assistantMessage(first);
+  await assert.rejects(model.generate({ ...request, messages: [...request.messages, assistant, ...toolResults(['bad'])] }), { code: 'invalid_request' });
+  assert.deepEqual(await model.generate({ ...request, messages: [...request.messages, assistant, ...toolResults(['a'])] }), result());
+});
+
+test('MiniMax rejects the combined serialized UTF-8 body above 2 MiB before transport', async () => {
+  let calls = 0;
+  const model = provider(async () => { calls++; return response(); });
+  const tools = Array.from({ length: 100 }, (_, i) => ({ ...tool, name: `tool_${i}`, description: 'd'.repeat(1000) }));
+  // Each message is under the per-message 256 KiB bound; the combination is
+  // below 2 MiB until the tool declarations and provider envelope are included.
+  const messages = Array.from({ length: 8 }, () => ({ role: 'user', content: '中'.repeat(83000) }));
+  await assert.rejects(model.generate({ messages, tools }), { code: 'invalid_request' });
+  assert.equal(calls, 0);
+});
+
+test('MiniMax accepts an exact 2 MiB serialized body and rejects one extra UTF-8 byte', async () => {
+  let calls = 0; let sentBytes;
+  const model = provider(async (url, body) => { calls++; sentBytes = Buffer.byteLength(JSON.stringify(body)); return response(); });
+  const tools = Array.from({ length: 100 }, (_, i) => ({ ...tool, name: `tool_${i}`, description: 'd'.repeat(1000) }));
+  const messages = Array.from({ length: 8 }, () => ({ role: 'user', content: '' }));
+  const emptyBody = { model: 'MiniMax-M2.5', max_tokens: 1800, temperature: 0.2, messages,
+    tools: tools.map(({ name, description, inputSchema }) => ({ name, description, input_schema: inputSchema })) };
+  let remaining = 2 * 1024 * 1024 - Buffer.byteLength(JSON.stringify(emptyBody));
+  for (const message of messages) {
+    const bytes = Math.min(250000, remaining);
+    message.content = '中'.repeat(Math.floor(bytes / 3)) + 'a'.repeat(bytes % 3);
+    remaining -= bytes;
+  }
+  assert.equal(remaining, 0);
+  await model.generate({ messages, tools });
+  assert.equal(sentBytes, 2 * 1024 * 1024);
+  messages.at(-1).content += 'a';
+  await assert.rejects(model.generate({ messages, tools }), { code: 'invalid_request' });
+  assert.equal(calls, 1);
+});
+
+test('continuations bind unchanged visible results and the full preceding transcript', async () => {
+  const model = provider(async () => response());
+  const first = await model.generate(request);
+  const assistant = model.assistantMessage(first);
+  await assert.rejects(model.generate({ ...request, messages: [{ role: 'system', content: 'Changed policy' }, request.messages[1], assistant] }), { code: 'invalid_request' });
+  await assert.rejects(model.generate({ ...request, messages: [...request.messages, JSON.parse(JSON.stringify(assistant))] }), { code: 'invalid_request' });
+  first.text = 'Changed result';
+  assert.throws(() => model.assistantMessage(first), { code: 'invalid_request' });
+  assert.equal(first.continuation, undefined);
+});

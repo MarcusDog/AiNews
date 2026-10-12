@@ -19,7 +19,9 @@ or network connection; use `FakeProvider({ script: [...] })` with normalized res
 ```
 
 `stopReason` is `end_turn`, `tool_use`, `max_tokens`, or `stop_sequence`.
-`toolCalls` is empty for other stop reasons. Tools use registry declarations
+`toolCalls` is empty for other stop reasons. `max_tokens` may have empty text,
+including when the entire budget was consumed by thinking; empty terminal
+`end_turn`/`stop_sequence` responses remain invalid. Tools use registry declarations
 (`name`, `description`, `inputSchema`); internal execution functions are never sent.
 Messages use `{ role: 'system' | 'user' | 'assistant', content: string }` or
 `{ role: 'tool', toolCallId: string, content: string }`. Returned call IDs and order
@@ -33,18 +35,32 @@ positive integers, up to 120 seconds, 32,768 tokens, 2 MiB, and 10 calls.
 Retry backoff and every HTTP attempt consume the same timeout. A cancellation
 aborts the transport and stops retrying even if an injected transport ignores it.
 Failures contain generic codes/messages, never raw HTTP errors or credentials.
+The complete serialized MiniMax request body has a separate fixed 2 MiB UTF-8
+limit, including messages, system text, tools, and the provider envelope. Exactly
+2 MiB is accepted; larger requests fail with `invalid_request` before HTTP runs.
 
 ## Continuation and thinking
 
 After a response, append `provider.assistantMessage(result)` to the in-memory
-conversation, then append each tool result in order. This preserves complete
-MiniMax assistant blocks, including interleaved thinking, through an opaque,
-non-enumerable continuation token backed by an instance-local WeakMap.
-Do not clone or JSON-roundtrip this assistant message before the next model turn:
-that deliberately removes the private continuation. Store/publicize the four
-normalized result fields only; never persist, log, or expose provider thinking.
-Continuation tokens cannot be replayed across provider instances or process restarts.
-Future run recovery must restart from durable public evidence instead.
+conversation, then append each tool result in exact call order, with no duplicates,
+missing results, unknown IDs, or intervening messages. MiniMax and FakeProvider
+enforce this same sequencing contract.
+
+Complete MiniMax assistant blocks, including interleaved thinking, live only in
+instance-local WeakMaps. There is no exposed continuation token. The exact
+assistant message object returned by `assistantMessage` is bound to its original
+visible text, the first user message object's identity, the complete preceding
+transcript, and the ordered pending tool IDs. Its public `continuation: true`
+marker makes copied or JSON-reconstructed messages fail closed without exposing
+thinking. Mutating the original result or continued assistant message also fails.
+
+Keep the first user message and all genuine continued assistant objects unchanged
+throughout an in-memory run. They can be reused as history in later model turns,
+including multiple completed tool rounds and subsequent user follow-ups. Do not
+clone or JSON-roundtrip these objects. Store/publicize the four normalized result
+fields only; never persist, log, or expose provider thinking. Continuations cannot
+be replayed across conversations, provider instances, or process restarts; future
+run recovery must restart from durable public evidence instead.
 
 ## MiniMax configuration
 

@@ -15,7 +15,7 @@ class FakeProvider extends ModelProvider {
   async _generate({ tools, limits, signal }) {
     if (signal.aborted) throw new ProviderError('aborted');
     if (this.#cursor >= this.#script.length) throw new ProviderError('script_exhausted');
-    return validateResult(this.#script[this.#cursor++], tools, limits);
+    return { result: validateResult(this.#script[this.#cursor++], tools, limits) };
   }
 }
 module.exports = { FakeProvider };

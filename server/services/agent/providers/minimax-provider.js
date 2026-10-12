@@ -4,6 +4,7 @@ const { jsonValue } = require('../tool-schemas');
 
 const DEFAULT_BASE_URL = 'https://api.minimax.io/anthropic';
 const DEFAULT_MODEL = 'MiniMax-M2.5';
+const MAX_REQUEST_BYTES = 2 * 1024 * 1024;
 // api.minimaxi.com is retained solely for existing Aya deployments.
 const ALLOWED_HOSTS = new Set(['api.minimax.io', 'api.minimax.cn', 'api.minimaxi.com']);
 
@@ -73,11 +74,12 @@ class MiniMaxProvider extends ModelProvider {
     }
     const normalized = { text: texts.join('\n').trim(), toolCalls,
       usage: { inputTokens: data.usage?.input_tokens, outputTokens: data.usage?.output_tokens }, stopReason: data.stop_reason };
-    return this.remember(validateResult(normalized, request.tools, request.limits), data.content);
+    return { result: validateResult(normalized, request.tools, request.limits), content: data.content };
   }
 
   async _generate(request) {
     const body = this.buildBody(request);
+    if (Buffer.byteLength(JSON.stringify(body)) > MAX_REQUEST_BYTES) throw new ProviderError('invalid_request');
     for (let attempt = 1; attempt <= this.maxAttempts; attempt++) {
       if (request.signal.aborted) throw new ProviderError('aborted');
       if (!request.remainingMs()) throw new ProviderError('timeout');
@@ -85,7 +87,7 @@ class MiniMaxProvider extends ModelProvider {
         const response = await this.httpClient.post(`${this.baseUrl.replace(/\/$/, '')}/v1/messages`, body, {
           headers: { Authorization: `Bearer ${this.#apiKey}`, 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01' },
           signal: request.signal, timeout: request.remainingMs(), maxRedirects: 0,
-          maxContentLength: request.limits.maxResponseBytes, maxBodyLength: 2 * 1024 * 1024
+          maxContentLength: request.limits.maxResponseBytes, maxBodyLength: MAX_REQUEST_BYTES
         });
         if (request.signal.aborted) throw new ProviderError('aborted');
         return this.parse(response, request);

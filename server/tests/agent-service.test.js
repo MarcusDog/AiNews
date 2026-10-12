@@ -32,6 +32,7 @@ test('legacy chat accepts an injected provider without a MiniMax credential', as
   assert.equal(service.getStatus().provider, 'Offline');
   assert.equal(service.getStatus().enabled, true);
   assert.equal(calls[0].messages[0].role, 'system');
+  assert(!calls[0].messages[0].content.includes('模型由 MiniMax 提供'));
 });
 
 test('legacy diversity review repairs once with a neutral provider and withholds invalid repairs', async () => {

@@ -28,7 +28,8 @@ function validateResult(value, tools, limits) {
     || !isObject(usage) || !Number.isSafeInteger(usage.inputTokens) || usage.inputTokens < 0
     || !Number.isSafeInteger(usage.outputTokens) || usage.outputTokens < 0
     || !['end_turn', 'tool_use', 'max_tokens', 'stop_sequence'].includes(result.stopReason)
-    || (result.stopReason === 'tool_use') !== (calls.length > 0) || (!result.text.trim() && !calls.length)) throw new ProviderError('invalid_response');
+    || (result.stopReason === 'tool_use') !== (calls.length > 0)
+    || (!result.text.trim() && !calls.length && result.stopReason !== 'max_tokens')) throw new ProviderError('invalid_response');
   const ids = new Set(); const names = new Set(tools.map((tool) => tool.name));
   for (const call of calls) {
     if (!isObject(call) || Object.keys(call).some((key) => !['id', 'name', 'input'].includes(key))
@@ -44,6 +45,7 @@ function validateResult(value, tools, limits) {
  * including retries. No provider error object or response metadata escapes.
  */
 class ModelProvider {
+  #results = new WeakMap();
   #continuations = new WeakMap();
   constructor({ name = 'Model', model = 'unknown' } = {}) {
     this.name = name; this.model = model;
@@ -52,20 +54,16 @@ class ModelProvider {
   validateConfig() {}
   get enabled() { return true; }
 
-  // Opaque tokens are intentionally neither JSON-persistable nor inspectable.
-  // Keep the original message object within a run; never persist provider thinking.
-  remember(result, content) {
-    const token = Object.freeze({});
-    this.#continuations.set(token, content);
-    Object.defineProperty(result, 'continuation', { value: token });
-    return result;
-  }
+  // Object identity is the capability. The public boolean marks clones as invalid
+  // without exposing any reusable token or private provider content.
   assistantMessage(result) {
-    const message = { role: 'assistant', content: result.text };
-    if (result.continuation && this.#continuations.has(result.continuation)) {
-      Object.defineProperty(message, 'continuation', { value: result.continuation });
-    }
-    return message;
+    try {
+      const record = this.#results.get(result);
+      if (!record || JSON.stringify(jsonValue(result, { maxBytes: MAX_LIMITS.maxResponseBytes })) !== record.snapshot) throw new Error();
+      const message = { role: 'assistant', content: record.text, continuation: true };
+      this.#continuations.set(message, record);
+      return message;
+    } catch { throw new ProviderError('invalid_request'); }
   }
 
   prepare(input) {
@@ -85,21 +83,31 @@ class ModelProvider {
         assertSchema(tool.inputSchema); names.add(tool.name);
       }
       if (!Array.isArray(messages) || !messages.length || messages.length > 200) throw new Error();
-      const normalized = messages.map((message) => {
-        const token = Object.getOwnPropertyDescriptor(message, 'continuation')?.value;
+      const normalized = [];
+      let anchor; let pending = [];
+      for (const message of messages) {
         const item = jsonValue(message);
-        if (Object.keys(item).some((key) => !['role', 'content', 'toolCallId'].includes(key))) throw new Error();
+        if (Object.keys(item).some((key) => !['role', 'content', 'toolCallId', 'continuation'].includes(key))) throw new Error();
         if (!['system', 'user', 'assistant', 'tool'].includes(item.role) || typeof item.content !== 'string') throw new Error();
-        if (item.role === 'tool' && (typeof item.toolCallId !== 'string' || !/^[a-zA-Z0-9_-]{1,200}$/.test(item.toolCallId))) throw new Error();
-        if (token) {
-          if (item.role !== 'assistant' || !this.#continuations.has(token)) throw new Error();
-          item.providerContent = this.#continuations.get(token);
+        if (item.role === 'user' && !anchor) anchor = message;
+        if (pending.length && item.role !== 'tool') throw new Error();
+        if (item.role === 'tool') {
+          if (!pending.length || item.toolCallId !== pending.shift()) throw new Error();
+        } else if (Object.hasOwn(item, 'toolCallId')) throw new Error();
+        const record = this.#continuations.get(message);
+        if (record || Object.hasOwn(message, 'continuation')) {
+          if (!record || item.continuation !== true || item.role !== 'assistant' || item.content !== record.text
+            || anchor !== record.anchor || JSON.stringify(normalized) !== record.prefix) throw new Error();
+          delete item.continuation;
+          if (record.content !== undefined) item.providerContent = record.content;
+          pending = [...record.pendingIds];
         }
-        return item;
-      });
+        normalized.push(item);
+      }
+      if (pending.length) throw new Error();
       jsonValue(normalized, { maxBytes: 2 * 1024 * 1024 });
       if (!normalized.some((message) => message.role === 'user')) throw new Error();
-      return { messages: normalized, tools: declarations, signal, limits: bounds };
+      return { messages: normalized, tools: declarations, signal, limits: bounds, anchor };
     } catch { throw new ProviderError('invalid_request'); }
   }
 
@@ -119,7 +127,14 @@ class ModelProvider {
       });
       const work = Promise.resolve().then(() => this._generate({ ...request, signal: controller.signal,
         remainingMs: () => Math.max(0, Math.ceil(deadline - performance.now())) }));
-      return await Promise.race([stop, work]);
+      const generated = await Promise.race([stop, work]);
+      const result = generated.result;
+      this.#results.set(result, {
+        snapshot: JSON.stringify(jsonValue(result, { maxBytes: MAX_LIMITS.maxResponseBytes })),
+        text: result.text, content: generated.content, pendingIds: result.toolCalls.map((call) => call.id),
+        prefix: JSON.stringify(request.messages), anchor: request.anchor
+      });
+      return result;
     } catch (error) {
       throw new ProviderError(error instanceof ProviderError ? error.code : 'provider_failed');
     } finally {
