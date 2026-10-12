@@ -16,7 +16,7 @@
 |---|---|---|---|
 | 0. Baseline and plan | Complete | 348 server, 48 client, build passed | Approved |
 | 1. Repository hygiene and dependency security | Complete | 22/22 targeted; 0 high/critical audit | Spec + quality approved |
-| 2. Request security configuration | Pending | CORS/proxy/auth tests | Pending |
+| 2. Request security configuration | Complete | 377/377 server; 26/26 targeted | Spec + quality approved |
 | 3. Typed read-tool registry | Pending | registry/read-tool tests | Pending |
 | 4. Model provider abstraction | Pending | provider/legacy Agent tests | Pending |
 | 5. Agent persistence and evidence ledger | Pending | store/evidence tests | Pending |
@@ -153,14 +153,16 @@ Verified 2026-10-12 on Node 22: initial RED was 0/6; reviewer-driven regression 
 - Modify: `server/.env.example`
 - Modify: `nginx/nginx.conf`
 
-- [ ] **Step 1: Write RED tests for exact Origin allowlists, WebSocket reuse, proxy modes, and spoofed XFF**
-- [ ] **Step 2: Implement a parsed fail-closed security configuration**
+- [x] **Step 1: Write RED tests for exact Origin allowlists, WebSocket reuse, proxy modes, and spoofed XFF**
+- [x] **Step 2: Implement a parsed fail-closed security configuration**
 
 Expose `allowedOrigins`, `publicOrigin`, and an explicit proxy mode. Route code consumes `req.ip`/request context and never reads raw XFF.
 
-- [ ] **Step 3: Remove wildcard CORS and duplicate preflight logic from Nginx**
-- [ ] **Step 4: Run targeted auth, SSE, public-route, Nginx text-contract, and security tests**
-- [ ] **Step 5: Commit and update the delivery ledger**
+- [x] **Step 3: Remove wildcard CORS and duplicate preflight logic from Nginx**
+- [x] **Step 4: Run targeted auth, SSE, public-route, Nginx text-contract, and security tests**
+- [x] **Step 5: Commit and update the delivery ledger**
+
+Verified 2026-10-12 on Node 22.14.0: the initial three-suite RED run had 15/16 expected failures. Final security/proxy/CORS/WebSub targeting passed 26/26 and the full server suite passed 377/377 with `NODE_ENV=test`. Independent review found and the implementation closed an expanded IPv4-mapped IPv6 proxy-trust bypass plus a production template conflict. HTTP, polling, and real WebSocket origin decisions now share one exact allowlist; public discovery and WebSub use the validated public origin; auth/contact persist only normalized Express-derived client identity. Specification and code-quality reviews approved commits through `efe13e25`.
 
 ### Task 3: Build the typed read-tool registry and shared research projections
 
