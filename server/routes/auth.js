@@ -6,6 +6,7 @@ const {
   SESSION_MAX_AGE_MS
 } = require('../services/AuthService');
 const { getSessionToken } = require('../middleware/sessionAuth');
+const { getRequestContext } = require('../middleware/requestContext');
 
 const router = express.Router();
 
@@ -41,16 +42,8 @@ function clearSessionCookie(res) {
   res.setHeader('Set-Cookie', cookie.join('; '));
 }
 
-function getRequestContext(req) {
-  const forwardedFor = req.headers['x-forwarded-for'];
-  const ipAddress = Array.isArray(forwardedFor)
-    ? forwardedFor[0]
-    : String(forwardedFor || req.socket.remoteAddress || '').split(',')[0].trim();
-
-  return {
-    ipAddress: ipAddress || null,
-    userAgent: req.headers['user-agent'] || null
-  };
+function requestContextFor(req) {
+  return req.requestContext || getRequestContext(req);
 }
 
 function sendAuthError(res, error) {
@@ -65,7 +58,7 @@ router.post('/register', async (req, res) => {
     const { email, password, displayName } = req.body || {};
     const result = await authService.register(
       { email, password, displayName },
-      getRequestContext(req)
+      requestContextFor(req)
     );
 
     setSessionCookie(res, result.token, result.maxAgeMs);
@@ -87,7 +80,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body || {};
-    const result = await authService.login({ email, password }, getRequestContext(req));
+    const result = await authService.login({ email, password }, requestContextFor(req));
 
     setSessionCookie(res, result.token, result.maxAgeMs);
 

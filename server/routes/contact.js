@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const DatabaseService = require('../services/DatabaseService');
 const { adminAuth } = require('../middleware/adminAuth');
+const { getRequestContext } = require('../middleware/requestContext');
 
 // 创建 contacts 表（如果不存在）
 async function initContactsTable() {
@@ -40,8 +41,9 @@ router.post('/submit', async (req, res) => {
     await initContactsTable();
 
     const id = `contact_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    const userAgent = req.headers['user-agent'] || '';
+    const requestContext = req.requestContext || getRequestContext(req);
+    const ipAddress = requestContext.ipAddress;
+    const userAgent = requestContext.userAgent || '';
 
     await DatabaseService.run(
       `INSERT INTO contacts (id, role, delivery, problem, timeline, contact_info, language, ip_address, user_agent)

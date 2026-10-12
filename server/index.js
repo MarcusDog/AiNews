@@ -8,10 +8,13 @@ const { Server } = require('socket.io');
 const path = require('node:path');
 require('dotenv').config({ path: path.join(__dirname, '.env.local') });
 require('dotenv').config({ path: path.join(__dirname, '.env') });
+const { loadSecurityConfig } = require('./config/security');
+const { requestContext } = require('./middleware/requestContext');
 
 const app = express();
 const server = http.createServer(app);
 const PORT = process.env.PORT || 3002;
+const securityConfig = loadSecurityConfig(process.env);
 const CreatorStore = require('./services/creators/creator-store');
 const YoutubeWebSubService = require('./services/creators/youtube-websub-service');
 const { CreatorSourceRegistry } = require('./services/creators/creator-source-registry');
@@ -39,18 +42,17 @@ const creatorService = new CreatorService({
 const youtubeWebSubService = new YoutubeWebSubService({
   creatorStore,
   env: process.env,
+  publicBaseUrl: securityConfig.publicOrigin,
   allowLegacySignature: process.env.AYA_YOUTUBE_WEBSUB_ALLOW_SHA1 === '1'
 });
 
-// WebSocket配置 - 允许所有来源（开发环境）
+// HTTP 与 WebSocket 共用同一份精确 Origin allowlist。
 const io = new Server(server, {
   cors: {
-    origin: process.env.NODE_ENV === 'production'
-      ? ['https://yourdomain.com']
-      : ['http://localhost', 'http://localhost:80', 'http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003', 'http://127.0.0.1', '*'],
+    ...securityConfig.corsOptions,
     methods: ['GET', 'POST'],
-    credentials: true
   },
+  allowRequest: (req, callback) => callback(null, securityConfig.isOriginAllowed(req.headers.origin)),
   pingTimeout: 120000,  // 2 分钟超时
   pingInterval: 30000,  // 30 秒心跳
   transports: ['websocket', 'polling'] // 允许轮询作为备选
@@ -72,8 +74,8 @@ const creatorOutboxWorker = new OutboxWorker({
 });
 const creatorMaintenance = new CreatorMaintenance({ store: creatorStore });
 
-// 信任代理设置
-app.set('trust proxy', 1);
+// 仅信任明确配置的代理；默认直连，避免伪造 X-Forwarded-For。
+app.set('trust proxy', securityConfig.trustProxy);
 
 // 安全中间件（放宽CSP以支持WebSocket）
 app.use(helmet({
@@ -88,13 +90,15 @@ app.use(helmet({
   }
 }));
 
-// CORS配置 - 允许所有来源（开发环境）
-app.use(cors({
-  origin: process.env.NODE_ENV === 'production'
-    ? ['https://yourdomain.com']
-    : true, // 开发环境允许所有来源
-  credentials: true
-}));
+// 浏览器 Origin 不在 allowlist 时直接拒绝，而不是继续路由但省略 CORS 响应头。
+app.use((req, res, next) => {
+  if (!securityConfig.isOriginAllowed(req.headers.origin)) {
+    return res.status(403).json({ success: false, error: 'Origin not allowed' });
+  }
+  next();
+});
+app.use(cors(securityConfig.corsOptions));
+app.use(requestContext);
 
 // 基础中间件
 app.use('/api/ingest/v1/youtube/websub', createYoutubeWebSubRouter({ service: youtubeWebSubService }));
@@ -160,7 +164,7 @@ const contactRoutes = require('./routes/contact');
 app.use('/api/contact', contactRoutes);
 
 // 不依赖前端 JavaScript 的公开发现与订阅入口。
-app.use(publicRoutes.createPublicRouter({ signalService }));
+app.use(publicRoutes.createPublicRouter({ signalService, publicOrigin: securityConfig.publicOrigin }));
 
 // 健康检查
 app.get('/health', async (req, res) => {
@@ -556,6 +560,7 @@ module.exports = {
   creatorOutboxWorker,
   creatorMaintenance,
   youtubeWebSubService,
+  securityConfig,
   getLifecycleFlags,
   initializeSystem,
   registerCronJobs,

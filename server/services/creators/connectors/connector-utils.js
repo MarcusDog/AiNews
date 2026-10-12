@@ -107,7 +107,6 @@ async function fetchWithTimeout(fetchImpl, url, options = {}, timeoutMs = 10000)
   const onAbort = () => controller.abort(options.signal.reason || new Error('request aborted'));
   options.signal?.addEventListener('abort', onAbort, { once: true });
   const timer = setTimeout(() => controller.abort(new Error(`request timed out after ${timeoutMs}ms`)), timeoutMs);
-  timer.unref?.();
   try {
     return await fetchImpl(url, { ...options, signal: controller.signal });
   } finally {

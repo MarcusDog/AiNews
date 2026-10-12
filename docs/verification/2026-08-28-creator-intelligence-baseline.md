@@ -32,6 +32,7 @@ These files are outside the Creator Intelligence implementation boundary unless 
 | 文件 | 当前批准 SHA-256 | 原因 |
 |---|---|---|
 | `server/routes/news.js` | `a41a795ed06c384f1fdff00330d6e6c23fb8024e62aaff94b796200b8605a53a` | 国内公开信号接口补齐完整 Topic 扫描；随后修复旧 `/api/news/recommendations` 对缺失服务方法的调用，并为 `limit` 增加 1–30 的显式边界。旧 News 数组响应保持兼容。 |
+| `server/routes/auth.js` | `f927633c8359f29811a5db4db6f97b549dec1133d91a571dd1a25b4b7018fee0` | 2026-10-12 安全配置迁移：认证审计上下文只读取 Express 已按可信代理规则解析的 `req.ip`/`req.ips`，不再直接信任 `X-Forwarded-For`；认证响应与会话流程保持兼容。 |
 
 ## Public compatibility markers
 

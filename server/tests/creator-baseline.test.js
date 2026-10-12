@@ -21,7 +21,8 @@ const protectedFiles = new Map([
 // Later phases may intentionally touch a protected compatibility route. Keep the
 // original baseline above and make every reviewed exception explicit and documented.
 const approvedOverrides = new Map([
-  ['server/routes/news.js', 'a41a795ed06c384f1fdff00330d6e6c23fb8024e62aaff94b796200b8605a53a']
+  ['server/routes/news.js', 'a41a795ed06c384f1fdff00330d6e6c23fb8024e62aaff94b796200b8605a53a'],
+  ['server/routes/auth.js', 'f927633c8359f29811a5db4db6f97b549dec1133d91a571dd1a25b4b7018fee0']
 ]);
 
 function sha256(filePath) {
