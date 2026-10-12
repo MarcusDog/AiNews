@@ -17,7 +17,7 @@ function fixture() {
   const creatorStore = { queryPosts: record('posts', { items: [{ ...article, text: 'Public post', metrics: { likes: 3, raw: SECRET } }], nextCursor: null }), queryTopics: record('creatorTopics', { items: [topic], nextCursor: null }), listSourceCoverage: record('coverage', [{ id: 's1', platform: 'rss', status: 'online', accountCount: 1, lastFailureCode: SECRET, setupHint: SECRET, token: SECRET }]) };
   assert.equal(typeof reads.createReadTools, 'function');
   const declarations = reads.createReadTools({ newsService, signalService, creatorStore, sourceRegistry: { list: () => [] } });
-  return { calls, registry: new ToolRegistry(declarations), newsService, signalService };
+  return { calls, registry: new ToolRegistry(declarations), newsService, signalService, creatorStore };
 }
 const scopes = ['news:read', 'signals:read', 'creators:read', 'content:read'];
 const execute = (registry, name, args = {}) => registry.execute(name, args, { scopes });
@@ -127,4 +127,103 @@ test('opportunities preserve public risk notes and never copy score raw inputs',
   const result = await execute(registry, 'list_creator_opportunities');
   assert.deepEqual(result.data.items[0].opportunity.riskNotes, ['Public evidence is limited.']);
   assert.equal(result.data.items[0].opportunity.rawInputs, undefined);
+});
+
+test('public citations preserve supported destination identity while removing secrets and tracking', () => {
+  const { publicUrl } = require('../services/agent/public-projections');
+  const cases = [
+    ['https://www.youtube.com/feeds/videos.xml?channel_id=UCXuqSBlHAE6Xw-yeJA0Tunw', { channel_id: 'UCXuqSBlHAE6Xw-yeJA0Tunw' }],
+    ['https://s.weibo.com/weibo?q=%23AI%E6%96%B0%E9%97%BB%23', { q: '#AI新闻#' }],
+    ['https://mp.weixin.qq.com/s?__biz=MzA3MDM0NTM3Mg%3D%3D&mid=2650012345&idx=1&sn=0123456789abcdef0123456789abcdef', { __biz: 'MzA3MDM0NTM3Mg==', mid: '2650012345', idx: '1', sn: '0123456789abcdef0123456789abcdef' }],
+    ['https://www.toutiao.com/article?article_id=7412345678901234567', { article_id: '7412345678901234567' }],
+    ['https://www.youtube.com/watch?v=dQw4w9WgXc', { v: 'dQw4w9WgXc' }]
+  ];
+  for (const [original, identity] of cases) {
+    const result = publicUrl(`${original}&token=${SECRET}&auth=${SECRET}&key=${SECRET}&signature=${SECRET}&utm_source=${SECRET}&fbclid=${SECRET}`);
+    assert.ok(result, original);
+    assert.equal(new URL(result).origin + new URL(result).pathname, new URL(original).origin + new URL(original).pathname);
+    assert.deepEqual(Object.fromEntries(new URL(result).searchParams), identity);
+    assert.equal(result.includes(SECRET), false);
+  }
+});
+
+test('unsupported, malformed or ambiguous citation identity is rejected without changing its destination', () => {
+  const { publicUrl } = require('../services/agent/public-projections');
+  for (const value of [
+    'https://example.com/story?document=123',
+    'https://www.youtube.com/feeds/videos.xml?channel_id=bad%2Fchannel',
+    'https://s.weibo.com/weibo?q=AI&q=robotics',
+    'https://s.weibo.com/weibo?q=%00secret',
+    'https://mp.weixin.qq.com/s?__biz=bad%3Chtml%3E&mid=1&idx=1&sn=bad',
+    'https://example.com/article?article_id=',
+    'https://example.com/article?article_id=a%2Fb',
+    'https://example.com/article?keyword=AI',
+    'https://example.com/weibo?q=AI'
+  ]) assert.equal(publicUrl(value), null, value);
+});
+
+test('legacy Agent trend citations resolve URLs using the same sanitization as selected evidence', async (t) => {
+  const NewsService = require('../services/NewsService');
+  const TrendAnalyzer = require('../services/TrendAnalyzer');
+  const { AgentContextService } = require('../services/AgentContextService');
+  const originals = [NewsService.getAnalysisNews, NewsService.getStatistics, NewsService.getDiversityAnalysis, TrendAnalyzer.analyzeTrends];
+  t.after(() => {
+    [NewsService.getAnalysisNews, NewsService.getStatistics, NewsService.getDiversityAnalysis, TrendAnalyzer.analyzeTrends] = originals;
+  });
+  const url = `${article.url}?utm_source=feed`;
+  NewsService.getAnalysisNews = async () => ({ data: [{ ...article, url }] });
+  NewsService.getStatistics = async () => ({ total: 1, today: 1 });
+  NewsService.getDiversityAnalysis = async () => ({});
+  TrendAnalyzer.analyzeTrends = async () => ({ topKeywords: [{ keyword: 'AI', recentCount: 1, previousCount: 0, sources: [{ url }] }] });
+  const result = await new AgentContextService().build('AI');
+  assert.equal(result.sources[0].url, article.url);
+  assert.deepEqual(result.trends[0]?.sourceIds, ['S1']);
+});
+
+test('research deduplicates final citation URLs before deciding evidence sufficiency', async () => {
+  const { registry, newsService } = fixture();
+  newsService.getAnalysisNews = () => ({ data: [
+    { ...article, url: `${article.url}?utm_source=a` },
+    { ...article, id: 'n2', source: 'Research mirror', sourceGroup: 'research', url: `${article.url}?utm_source=b` }
+  ] });
+  const result = await execute(registry, 'build_content_brief');
+  assert.equal(result.ok, true);
+  assert.equal(result.data.status, 'insufficient_evidence');
+  assert.equal(result.data.evidence.length, 1);
+  assert.equal(result.data.evidence[0].url, article.url);
+  assert.equal(result.data.evidence[0].citationId, 'S1');
+  assert.deepEqual(result.data.diversity, { evidenceTypes: 1, regions: 1, sources: 1 });
+});
+
+test('legacy Agent evidence uses one citation per final URL after query sanitization', () => {
+  const { AgentContextService } = require('../services/AgentContextService');
+  const service = new AgentContextService();
+  const selected = service.selectEvidence('AI', [
+    { ...article, url: `${article.url}?utm_source=a` },
+    { ...article, id: 'n2', url: `${article.url}?utm_source=b` }
+  ]);
+  assert.equal(selected.length, 1);
+  assert.equal(service.toSource(selected[0], 0).citationId, 'S1');
+});
+
+test('Signal and Creator nullable metric snapshots preserve unknown versus measured zero', async () => {
+  const { registry, signalService, creatorStore } = fixture();
+  const signalMetrics = require('../services/signals/signal-normalizer').normalizeMetrics({ views: null, likes: 0, comments: null, shares: null, stars: 12, forks: null, rank: null });
+  const creatorMetrics = require('../services/creators/creator-normalizer').normalizeMetrics({ views: 1000, likes: 0, comments: 15, shares: null, bookmarks: null, platformRank: null, followersAtCapture: 10000 });
+  signalService.getTopic = () => ({ ...topic, signals: [{ ...signal, metrics: signalMetrics }] });
+  creatorStore.queryPosts = () => ({ items: [{ ...article, platform: 'youtube', metrics: { ...creatorMetrics, capturedAt: article.publishedAt } }] });
+  const signalResult = await execute(registry, 'get_topic_evidence', { id: 't1' });
+  const creatorResult = await execute(registry, 'list_creator_posts');
+  assert.equal(signalResult.ok, true); assert.equal(creatorResult.ok, true);
+  assert.equal(signalResult.data.signals[0].metrics.views, null);
+  assert.equal(signalResult.data.signals[0].metrics.likes, 0);
+  assert.equal(signalResult.data.signals[0].metrics.stars, 12);
+  assert.equal(signalResult.data.signals[0].metrics.downloads, null);
+  assert.equal(creatorResult.data.items[0].metrics.shares, null);
+  assert.equal(creatorResult.data.items[0].metrics.likes, 0);
+  assert.equal(creatorResult.data.items[0].metrics.views, 1000);
+  assert.equal(creatorResult.data.items[0].metrics.stars, null);
+  assert.equal(creatorResult.data.items[0].metrics.bookmarks, null);
+  assert.equal(creatorResult.data.items[0].metrics.platformRank, null);
+  assert.equal(creatorResult.data.items[0].metrics.followersAtCapture, 10000);
 });

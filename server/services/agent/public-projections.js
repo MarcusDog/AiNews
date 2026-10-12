@@ -3,6 +3,26 @@ const { object, text, count, list } = require('./tool-schemas');
 const ContentService = require('../ContentService');
 const { classifyEvidenceType } = require('../../utils/analytics');
 
+const QUERY_ID = /^[a-zA-Z0-9_-]{1,100}$/;
+const CREDENTIAL_PARAM = /^(?:token|access_token|refresh_token|id_token|api_token|auth|authorization|auth_token|api_key|apikey|key|signature|sig|sign|session|sessionid|session_id|cookie|password|secret)$/;
+const TRACKING_PARAMS = new Set(['fbclid', 'gclid', 'dclid', 'mc_cid', 'mc_eid', 'spm', 'campaign', 'feature', 'si', 'ref', 'source', 'from', 'scene', 'subscene', 'isappinstalled']);
+function identityParams(host, pathname) {
+  const rules = new Map(['v', 'id', 'p', 'article_id'].map((key) => [key, QUERY_ID]));
+  if (['youtube.com', 'www.youtube.com'].includes(host) && pathname === '/feeds/videos.xml') {
+    rules.set('channel_id', /^UC[a-zA-Z0-9_-]{1,98}$/);
+  }
+  if (['weibo.com', 'www.weibo.com', 's.weibo.com'].includes(host)) {
+    rules.set('q', /^[\p{L}\p{N} #@_.+,\-]{1,200}$/u);
+  }
+  if (host === 'mp.weixin.qq.com' && pathname === '/s') {
+    rules.set('__biz', /^[a-zA-Z0-9+/]{1,100}={0,2}$/);
+    rules.set('mid', /^\d{1,30}$/);
+    rules.set('idx', /^\d{1,3}$/);
+    rules.set('sn', /^[a-fA-F0-9]{32}$/);
+  }
+  return rules;
+}
+
 // Evidence links are display-only: HTTPS public DNS names, no credentials, fragments,
 // arbitrary ports or query secrets. No tool accepts a URL or fetches one.
 function publicUrl(value) {
@@ -13,18 +33,25 @@ function publicUrl(value) {
     if (url.protocol !== 'https:' || url.username || url.password || url.port || net.isIP(host)
       || !host.includes('.') || /(^|\.)(localhost|local|internal|lan|home|invalid)$/.test(host)) return null;
     const params = new URLSearchParams();
-    for (const key of ['v', 'id', 'p']) {
-      const item = url.searchParams.get(key);
-      if (item && /^[a-zA-Z0-9_-]{1,100}$/.test(item)) params.set(key, item);
+    const identities = identityParams(host, url.pathname);
+    for (const [key, item] of url.searchParams) {
+      const normalized = key.toLowerCase();
+      if (CREDENTIAL_PARAM.test(normalized) || normalized.startsWith('utm_') || TRACKING_PARAMS.has(normalized)) continue;
+      // Unknown/invalid identity parameters may select another document. Reject
+      // the whole link instead of silently changing its citation destination.
+      if (!identities.has(key) || !identities.get(key).test(item) || params.has(key)) return null;
+      params.set(key, item);
     }
+    params.sort();
     url.search = params.toString(); url.hash = '';
     return url.href;
   } catch { return null; }
 }
 const url = { type: ['string', 'null'], maxLength: 2048 };
 const number = { type: 'number', minimum: -Number.MAX_SAFE_INTEGER, maximum: Number.MAX_SAFE_INTEGER };
+const metric = { type: ['number', 'null'], minimum: 0, maximum: Number.MAX_SAFE_INTEGER };
 const fields = (names, schema = text()) => Object.fromEntries(names.split(' ').map((name) => [name, schema]));
-const metrics = object(fields('views likes comments replies shares reposts stars forks openIssues points rank downloads', count()));
+const metrics = object(fields('views likes comments replies shares reposts stars forks openIssues points rank downloads bookmarks platformRank followersAtCapture', metric));
 const evidence = object({ ...fields('citationId id title source publishedAt category evidenceType region claimBoundary'), summary: text(600), url });
 const news = object({ ...fields('id title source category publishedAt sourceGroup region'), description: text(1000), url });
 const signal = object({ ...fields('id sourceId sourceName sourceTrustClass platform region kind title author language publishedAt'), summary: text(1000), url, canonicalUrl: url, metrics, tags: list(text(80), 20) });
@@ -45,11 +72,21 @@ function read(value, key) {
 }
 function project(schema, value) {
   if (schema === url) return publicUrl(value);
+  if (schema === metric) return typeof value === 'number' && Number.isFinite(value) && value >= 0 && value <= schema.maximum ? value : null;
   if (schema.type === 'object') return Object.fromEntries(Object.entries(schema.properties).map(([key, child]) => [key, project(child, read(value, key))]));
   if (schema.type === 'array') return Array.isArray(value) ? value.slice(0, schema.maxItems).map((item) => project(schema.items, item)) : [];
   if (schema.type === 'string') return typeof value === 'string' ? [...value].slice(0, schema.maxLength).join('') : typeof value === 'number' && Number.isFinite(value) ? String(value) : '';
   if (schema.type === 'integer' || schema.type === 'number') return typeof value === 'number' && Number.isFinite(value) && value >= schema.minimum && value <= schema.maximum && (schema.type !== 'integer' || Number.isSafeInteger(value)) ? value : 0;
   return null;
+}
+
+function uniqueByUrl(items) {
+  const seen = new Set();
+  return items.filter((item) => {
+    if (!item.url || seen.has(item.url)) return false;
+    seen.add(item.url);
+    return true;
+  });
 }
 
 function toEvidence(article, index) {
@@ -62,4 +99,4 @@ function toEvidence(article, index) {
   });
 }
 
-module.exports = { publicUrl, project, toEvidence, schemas: { news, signal, topic, post, creatorTopic, coverage, source, change, brief, evidence } };
+module.exports = { publicUrl, project, toEvidence, uniqueByUrl, schemas: { news, signal, topic, post, creatorTopic, coverage, source, change, brief, evidence } };

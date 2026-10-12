@@ -1,5 +1,5 @@
 const { object, text, count, list } = require('../tool-schemas');
-const { project, schemas } = require('../public-projections');
+const { project, schemas, uniqueByUrl } = require('../public-projections');
 const { ContentResearchService } = require('../../ContentResearchService');
 const { buildSourceHealthSnapshot } = require('../../../utils/source-health');
 
@@ -56,7 +56,7 @@ function createReadTools(dependencies = {}) {
     declare('build_content_brief', 'Build a cited research brief; insufficient evidence remains explicit.', 'content:read', { topic: text(120), topicId: text(120), audience: text(120), goal: text(180), format: { ...text(30), enum: ['article', 'short-video', 'newsletter', 'xiaohongshu'] }, days: { type: 'integer', minimum: 1, maximum: 30 }, limit: { type: 'integer', minimum: 3, maximum: 8 } }, [], schemas.brief, async (args, context) => {
       const result = await research.buildBrief(args, context);
       const brief = project(schemas.brief, result.body.data || { status: 'not_found' });
-      brief.evidence = brief.evidence.filter((item) => item.url);
+      brief.evidence = uniqueByUrl(brief.evidence).map((item, index) => ({ ...item, citationId: `S${index + 1}` }));
       brief.diversity = {
         sources: new Set(brief.evidence.map((item) => item.source)).size,
         regions: new Set(brief.evidence.map((item) => item.region)).size,

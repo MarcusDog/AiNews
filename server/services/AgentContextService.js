@@ -1,6 +1,6 @@
 const ContentService = require('./ContentService');
 const { buildDiversitySnapshot } = require('../utils/analytics');
-const { toEvidence, publicUrl } = require('./agent/public-projections');
+const { toEvidence, publicUrl, uniqueByUrl } = require('./agent/public-projections');
 
 const QUERY_STOP_WORDS = [
   '请你', '请问', '帮我', '给我', '分析', '总结', '介绍', '一下', '最近', '最新', '今天',
@@ -38,7 +38,7 @@ class AgentContextService {
     const relevant = scored.some((item) => item.score > 0)
       ? scored.filter((item) => item.score > 0).map((item) => item.article)
       : scored.map((item) => item.article).slice(0, 40);
-    return ContentService.selectDiverseEvidence(relevant, { topic: '', limit });
+    return ContentService.selectDiverseEvidence(uniqueByUrl(relevant), { topic: '', limit });
   }
 
   toSource(article, index) {
@@ -67,7 +67,7 @@ class AgentContextService {
         previousCount: trend.previousCount,
         growth: trend.growth,
         trend: trend.trend,
-        sourceIds: (trend.sources || []).map((source) => sourceIdByUrl.get(source.url)).filter(Boolean)
+        sourceIds: [...new Set((trend.sources || []).map((source) => sourceIdByUrl.get(publicUrl(source.url))).filter(Boolean))]
       }))
       .filter((trend) => trend.sourceIds.length);
     const evidenceDiversity = buildDiversitySnapshot(selected);

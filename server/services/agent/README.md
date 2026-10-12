@@ -41,13 +41,19 @@ Public projections recursively allowlist fields, including nested metrics and
 evidence. They omit source setup/configuration, raw event payloads, source
 cursors, error details, and generated prompts. Evidence URLs allow public HTTPS
 DNS names without credentials, custom ports, IP literals, fragments, or private
-host suffixes. Only bounded `v`, `id`, and `p` query identifiers survive. Links
+host suffixes. Bounded `v`, `id`, `p`, and `article_id` query identifiers survive,
+along with validated YouTube feed `channel_id`, Weibo search `q`, and WeChat
+article `__biz`/`mid`/`idx`/`sn` identities on their supported hosts and paths.
+Credential and tracking parameters are removed; unknown, invalid, or duplicate
+identity parameters reject the entire URL rather than changing its destination. Links
 are citation data, not network destinations; this is not a DNS/SSRF fetch policy.
-Some unusual valid citation URLs may lose query parameters under this policy.
+Unsupported public URL shapes may be rejected until their identity contract is added.
 External titles and summaries remain untrusted source content for later runtimes.
+Metric snapshots preserve missing/unknown values as null and measured zero as zero.
 
 `ContentResearchService.buildBrief(query, { signal })` preserves the legacy brief
 route's coercion, deduplication, status code, and envelope. The tool further
-projects that response, removes unusable citations, recomputes diversity, and
-returns `insufficient_evidence` when fewer than two public citations remain.
-Legacy Agent context shares the evidence projection and safe link selection.
+projects that response, removes unusable citations, deduplicates final URLs,
+reassigns citation IDs, recomputes diversity, and returns `insufficient_evidence`
+when fewer than two distinct public citations remain. Legacy Agent context shares
+the evidence projection, safe link selection, and final URL deduplication.
