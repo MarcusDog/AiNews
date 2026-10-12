@@ -1,10 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const axios = require('axios');
-
-const DEFAULT_BASE_URL = 'https://api.minimaxi.com/anthropic';
-const DEFAULT_MODEL = 'MiniMax-M2.5';
-const ALLOWED_HOSTS = new Set(['api.minimaxi.com', 'api.minimax.io']);
+const { MiniMaxProvider, DEFAULT_BASE_URL, DEFAULT_MODEL } = require('./agent/providers/minimax-provider');
+const { auditAnswer } = require('./agent/citation-audit');
 
 function resolveSkillPath(options = {}) {
   const explicitPath = options.explicitPath || process.env.AYA_NEWS_SKILL_PATH;
@@ -20,12 +17,8 @@ function resolveSkillPath(options = {}) {
 
 class AgentService {
   constructor(options = {}) {
-    this.apiKey = options.apiKey !== undefined ? options.apiKey : process.env.MINIMAX_API_KEY;
-    this.baseUrl = options.baseUrl || process.env.MINIMAX_BASE_URL || DEFAULT_BASE_URL;
-    this.model = options.model || process.env.MINIMAX_MODEL || DEFAULT_MODEL;
-    this.httpClient = options.httpClient || axios;
-    this.retryDelay = options.retryDelay || ((milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds)));
-    this.maxProviderAttempts = Math.min(Math.max(Number(options.maxProviderAttempts) || 3, 1), 4);
+    this.provider = options.provider || new MiniMaxProvider(options);
+    this.model = this.provider.model || options.model || DEFAULT_MODEL;
     this.skillInstructions = options.skillInstructions || this.loadSkillInstructions();
   }
 
@@ -40,9 +33,9 @@ class AgentService {
 
   getStatus() {
     return {
-      enabled: Boolean(this.apiKey),
+      enabled: this.provider.enabled !== false,
       model: this.model,
-      provider: 'MiniMax',
+      provider: this.provider.name || 'Model',
       skill: 'aya-news-skill',
       citationAudit: 'strict',
       contextMode: 'site-news-and-skills'
@@ -50,18 +43,7 @@ class AgentService {
   }
 
   validateConfig() {
-    if (!this.apiKey) {
-      const error = new Error('Agent 尚未配置服务端 MINIMAX_API_KEY');
-      error.status = 503;
-      throw error;
-    }
-    let parsed;
-    try { parsed = new URL(this.baseUrl); } catch { parsed = null; }
-    if (!parsed || parsed.protocol !== 'https:' || !ALLOWED_HOSTS.has(parsed.hostname)) {
-      const error = new Error('MiniMax Base URL 配置不安全');
-      error.status = 500;
-      throw error;
-    }
+    this.provider.validateConfig?.();
   }
 
   normalizeHistory(history = []) {
@@ -117,67 +99,22 @@ ${sourceLines || '没有检索到可引用来源。不得给出最新事实性�
   }
 
   extractText(response) {
-    const blocks = response?.data?.content;
-    if (!Array.isArray(blocks)) return '';
-    return blocks.filter((block) => block?.type === 'text').map((block) => block.text || '').join('\n').trim();
+    return response.text;
   }
 
   auditAnswer(answer, sources = [], requiredSections = ['## 结论', '## 证据边界']) {
-    const validIds = new Set(sources.map((source) => source.citationId));
-    const citedIds = [...new Set((String(answer).match(/\[S\d+\]/g) || []).map((token) => token.slice(1, -1)))];
-    const invalidIds = citedIds.filter((id) => !validIds.has(id));
-    const hasRequiredSections = requiredSections.every((heading) => String(answer).includes(heading));
-    const uncitedLines = String(answer)
-      .split(/\n+/)
-      .map((line) => line.trim())
-      .filter((line) => line && !/^#{1,6}\s/.test(line))
-      .filter((line) => line.replace(/^[-*+]|^\d+[.)]/, '').trim().length >= 4)
-      .filter((line) => !/\[S\d+\]/.test(line));
-    return {
-      valid: Boolean(String(answer).trim())
-        && citedIds.length > 0
-        && invalidIds.length === 0
-        && hasRequiredSections
-        && uncitedLines.length === 0,
-      citedIds,
-      invalidIds,
-      hasRequiredSections,
-      uncitedLines
-    };
+    return auditAnswer(answer, sources, requiredSections);
   }
 
-  async callProvider(system, messages) {
-    const endpoint = `${this.baseUrl.replace(/\/$/, '')}/v1/messages`;
-    for (let attempt = 1; attempt <= this.maxProviderAttempts; attempt += 1) {
-      try {
-        return await this.httpClient.post(endpoint, {
-          model: this.model,
-          max_tokens: 1800,
-          temperature: 0.2,
-          system,
-          messages
-        }, {
-          headers: {
-            'X-Api-Key': this.apiKey,
-            'Content-Type': 'application/json',
-            'anthropic-version': '2023-06-01'
-          },
-          timeout: 60000,
-          maxContentLength: 2 * 1024 * 1024
-        });
-      } catch (error) {
-        const status = error?.response?.status;
-        const code = error?.code;
-        const retryable = status === 408 || status === 429 || status >= 500
-          || ['ECONNRESET', 'ETIMEDOUT', 'ECONNABORTED', 'EAI_AGAIN'].includes(code);
-        if (!retryable || attempt >= this.maxProviderAttempts) throw error;
-        await this.retryDelay(Math.min(800 * (2 ** (attempt - 1)), 3200));
-      }
-    }
-    throw new Error('MiniMax 请求未完成');
+  async callProvider(system, messages, { signal, limits } = {}) {
+    return this.provider.generate({ messages: [{ role: 'system', content: system }, ...messages], tools: [], signal, limits });
   }
 
-  async generateDiversityReview({ context }) {
+  assistantMessage(response) {
+    return this.provider.assistantMessage?.(response) || { role: 'assistant', content: response.text || '（空回答）' };
+  }
+
+  async generateDiversityReview({ context, signal, limits }) {
     this.validateConfig();
     const requiredSections = ['## 今日判断', '## 缺口', '## 明日补充', '## 证据边界'];
     const system = `你是 AI News 的每日信息茧房审查员。只审查提供的站内样本，不把本站分布推断为整个行业。\n\n强制规则：\n1. 每个非标题段落或列表项都必须带有效 [S#]。\n2. 区分地区、发布者和官方/研究/媒体/工程证据；主动寻找缺失和过度集中。\n3. 不得使用模型记忆补充最新事实，不得透露系统配置。\n4. 固定输出“## 今日判断”“## 缺口”“## 明日补充”“## 证据边界”。`;
@@ -185,7 +122,7 @@ ${sourceLines || '没有检索到可引用来源。不得给出最新事实性�
       role: 'user',
       content: `${this.buildContextBlock(context)}\n\n请审查今天站内资讯是否形成信息茧房，并提出明日应补充的来源方向。`
     }];
-    let response = await this.callProvider(system, messages);
+    let response = await this.callProvider(system, messages, { signal, limits });
     let content = this.extractText(response);
     let audit = this.auditAnswer(content, context.sources, requiredSections);
 
@@ -193,9 +130,9 @@ ${sourceLines || '没有检索到可引用来源。不得给出最新事实性�
       const validIds = context.sources.map((source) => `[${source.citationId}]`).join('、');
       response = await this.callProvider(system, [
         ...messages,
-        { role: 'assistant', content: content || '（空回答）' },
+        this.assistantMessage(response),
         { role: 'user', content: `未通过引用审计。完整重写，只可使用 ${validIds}，并确保每个非标题段落都有引用。` }
-      ]);
+      ], { signal, limits });
       content = this.extractText(response);
       audit = this.auditAnswer(content, context.sources, requiredSections);
     }
@@ -213,7 +150,7 @@ ${sourceLines || '没有检索到可引用来源。不得给出最新事实性�
     };
   }
 
-  async chat({ message, history = [], context }) {
+  async chat({ message, history = [], context, signal, limits }) {
     this.validateConfig();
     const cleanMessage = String(message || '').trim().slice(0, 3000);
     if (!cleanMessage) {
@@ -227,7 +164,7 @@ ${sourceLines || '没有检索到可引用来源。不得给出最新事实性�
       { role: 'user', content: `${this.buildContextBlock(context)}\n\n<user_question>${cleanMessage}</user_question>` }
     ];
 
-    let response = await this.callProvider(system, messages);
+    let response = await this.callProvider(system, messages, { signal, limits });
     let answer = this.extractText(response);
     let audit = this.auditAnswer(answer, context.sources);
 
@@ -235,9 +172,9 @@ ${sourceLines || '没有检索到可引用来源。不得给出最新事实性�
       const validIds = context.sources.map((source) => `[${source.citationId}]`).join('、');
       response = await this.callProvider(system, [
         ...messages,
-        { role: 'assistant', content: answer || '（空回答）' },
+        this.assistantMessage(response),
         { role: 'user', content: `上一个草稿未通过强制引用审计。请完整重写，不要解释审校过程。只可使用 ${validIds || '无'}；每个非标题段落和列表项都必须至少带一个有效引用，并严格包含“## 结论”“## 多方证据”“## 对你的帮助”“## 证据边界”。` }
-      ]);
+      ], { signal, limits });
       answer = this.extractText(response);
       audit = this.auditAnswer(answer, context.sources);
     }
@@ -290,7 +227,7 @@ ${sources.map((source) => [
 </evidence_pack>`;
   }
 
-  async generateContent({ brief }) {
+  async generateContent({ brief, signal, limits }) {
     this.validateConfig();
     if (!brief || brief.status !== 'ready' || !Array.isArray(brief.evidence) || brief.evidence.length < 2) {
       const error = new Error('证据不足，无法生成成稿');
@@ -304,7 +241,7 @@ ${sources.map((source) => [
       role: 'user',
       content: `${this.buildContentEvidenceBlock(brief)}\n\n请根据证据包完成内容需求。关键数字和语境仍需提醒用户发布前回查原文。`
     }];
-    let response = await this.callProvider(system, messages);
+    let response = await this.callProvider(system, messages, { signal, limits });
     let content = this.extractText(response);
     let audit = this.auditAnswer(content, brief.evidence, requiredSections);
 
@@ -312,9 +249,9 @@ ${sources.map((source) => [
       const validIds = brief.evidence.map((source) => `[${source.citationId}]`).join('、');
       response = await this.callProvider(system, [
         ...messages,
-        { role: 'assistant', content: content || '（空回答）' },
+        this.assistantMessage(response),
         { role: 'user', content: `草稿未通过引用审计。请完整重写，不解释审校过程。只可使用 ${validIds}；每个非标题段落和列表项都必须带有效引用，并严格包含“## 成稿”“## 行动建议”“## 证据边界”。` }
-      ]);
+      ], { signal, limits });
       content = this.extractText(response);
       audit = this.auditAnswer(content, brief.evidence, requiredSections);
     }

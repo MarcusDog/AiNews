@@ -6,6 +6,7 @@ const path = require('node:path');
 
 const { AgentService, resolveSkillPath } = require('../services/AgentService');
 const { AgentContextService } = require('../services/AgentContextService');
+const { FakeProvider } = require('../services/agent/providers/fake-provider');
 
 const CONTEXT = {
   generatedAt: '2026-08-06T12:00:00.000Z',
@@ -17,6 +18,52 @@ const CONTEXT = {
   trends: [{ keyword: 'AI Agent', recentCount: 4, previousCount: 2, growth: 100, sourceIds: ['S1', 'S2'] }],
   blindSpots: []
 };
+
+test('legacy chat accepts an injected provider without a MiniMax credential', async () => {
+  const calls = [];
+  const provider = {
+    name: 'Offline', model: 'offline-v1',
+    generate: async (input) => { calls.push(input); return { text: '## 结论\n有来源的结论 [S1]。\n## 证据边界\n有限证据 [S2]。', toolCalls: [], usage: { inputTokens: 1, outputTokens: 1 }, stopReason: 'end_turn' }; }
+  };
+  const service = new AgentService({ apiKey: '', provider });
+  const result = await service.chat({ message: '概况', context: CONTEXT });
+  assert.equal(result.verified, true);
+  assert.equal(result.model, 'offline-v1');
+  assert.equal(service.getStatus().provider, 'Offline');
+  assert.equal(service.getStatus().enabled, true);
+  assert.equal(calls[0].messages[0].role, 'system');
+});
+
+test('legacy diversity review repairs once with a neutral provider and withholds invalid repairs', async () => {
+  const output = (text) => ({ text, toolCalls: [], usage: { inputTokens: 1, outputTokens: 1 }, stopReason: 'end_turn' });
+  const valid = '## 今日判断\n当前来源较多 [S1]。\n## 缺口\n独立证据不足 [S2]。\n## 明日补充\n补充其他来源 [S1]。\n## 证据边界\n仅限站内样本 [S2]。';
+  const service = new AgentService({ provider: new FakeProvider({ script: [output('没有引用的草稿'), output(valid)] }) });
+  assert.equal((await service.generateDiversityReview({ context: CONTEXT })).verified, true);
+  const invalid = new AgentService({ provider: new FakeProvider({ script: [output('无来源'), output('无来源')] }) });
+  assert.deepEqual((await invalid.generateDiversityReview({ context: CONTEXT })).sources, []);
+});
+
+test('legacy repair preserves private continuation but never exposes it in the answer', async () => {
+  const draft = [{ type: 'thinking', thinking: 'PRIVATE-THINKING' }, { type: 'text', text: '没有引用的草稿' }];
+  const calls = [];
+  const service = new AgentService({ apiKey: 'test-key', httpClient: { post: async (...args) => {
+    calls.push(args);
+    return { data: { usage: { input_tokens: 1, output_tokens: 1 }, stop_reason: 'end_turn', content: calls.length === 1 ? draft :
+      [{ type: 'text', text: '## 结论\n有引用的结论 [S1]。\n## 证据边界\n只适用本站 [S2]。' }] } };
+  } } });
+  const answer = await service.chat({ message: '概况', context: CONTEXT });
+  assert.equal(answer.verified, true);
+  assert.deepEqual(calls[1][1].messages[1].content, draft);
+  assert(!JSON.stringify(answer).includes('PRIVATE-THINKING'));
+});
+
+test('legacy entry points forward cancellation to the provider', async () => {
+  const service = new AgentService({ provider: new FakeProvider() });
+  const signal = AbortSignal.abort('PRIVATE');
+  await assert.rejects(service.chat({ message: '概况', context: CONTEXT, signal }), { code: 'aborted' });
+  await assert.rejects(service.generateDiversityReview({ context: CONTEXT, signal }), { code: 'aborted' });
+  await assert.rejects(service.generateContent({ brief: { status: 'ready', evidence: CONTEXT.sources }, signal }), { code: 'aborted' });
+});
 
 test('agent history normalization drops system roles and bounds conversation size', () => {
   const service = new AgentService({ apiKey: 'test-key' });
@@ -45,8 +92,8 @@ test('agent system prompt makes citation, uncertainty and permission boundaries 
 
 test('agent retries an uncited draft and only returns a citation-audited answer', async () => {
   const responses = [
-    { data: { content: [{ type: 'text', text: 'Agent 热度正在上升。' }] } },
-    { data: { content: [{ type: 'text', text: '## 结论\nAgent 相关报道较此前周期增加 [S1][S2]。\n\n## 证据边界\n官方发布不等于独立效果验证 [S1]。' }] } }
+    { data: { usage: { input_tokens: 10, output_tokens: 10 }, stop_reason: 'end_turn', content: [{ type: 'text', text: 'Agent 热度正在上升。' }] } },
+    { data: { usage: { input_tokens: 10, output_tokens: 10 }, stop_reason: 'end_turn', content: [{ type: 'text', text: '## 结论\nAgent 相关报道较此前周期增加 [S1][S2]。\n\n## 证据边界\n官方发布不等于独立效果验证 [S1]。' }] } }
   ];
   const calls = [];
   const httpClient = { post: async (...args) => { calls.push(args); return responses.shift(); } };
@@ -58,8 +105,8 @@ test('agent retries an uncited draft and only returns a citation-audited answer'
   assert.equal(result.verified, true);
   assert.match(result.answer, /\[S1\]\[S2\]/);
   assert.deepEqual(result.sources.map((item) => item.citationId), ['S1', 'S2']);
-  assert.equal(calls[0][2].headers['X-Api-Key'], 'test-key');
-  assert.equal(calls[0][2].headers.Authorization, undefined);
+  assert.equal(calls[0][2].headers.Authorization, 'Bearer test-key');
+  assert.equal(calls[0][2].headers['X-Api-Key'], undefined);
 });
 
 test('agent retries a transient provider failure before returning a cited answer', async () => {
@@ -72,7 +119,7 @@ test('agent retries a transient provider failure before returning a cited answer
         error.response = { status: 503 };
         throw error;
       }
-      return { data: { content: [{ type: 'text', text: '## 结论\nAgent 相关报道增加 [S1]。\n\n## 多方证据\n研究提供了不同视角 [S2]。\n\n## 对你的帮助\n可以先做小范围核验 [S1]。\n\n## 证据边界\n当前只反映站内样本 [S2]。' }] } };
+      return { data: { usage: { input_tokens: 10, output_tokens: 10 }, stop_reason: 'end_turn', content: [{ type: 'text', text: '## 结论\nAgent 相关报道增加 [S1]。\n\n## 多方证据\n研究提供了不同视角 [S2]。\n\n## 对你的帮助\n可以先做小范围核验 [S1]。\n\n## 证据边界\n当前只反映站内样本 [S2]。' }] } };
     }
   };
   const service = new AgentService({ apiKey: 'test-key', httpClient, retryDelay: async () => {} });
@@ -97,7 +144,7 @@ test('skill resolver supports an explicit deployment path and the AyaNewsSkill c
 
 test('agent blocks a second invalid draft instead of returning unsupported claims', async () => {
   const httpClient = {
-    post: async () => ({ data: { content: [{ type: 'text', text: '肯定能降低 70% 成本 [S99]。' }] } })
+    post: async () => ({ data: { usage: { input_tokens: 10, output_tokens: 10 }, stop_reason: 'end_turn', content: [{ type: 'text', text: '肯定能降低 70% 成本 [S99]。' }] } })
   };
   const service = new AgentService({ apiKey: 'test-key', httpClient });
 
@@ -121,8 +168,8 @@ test('agent rejects answers that hide an uncited factual line beside cited parag
 
 test('content generation retries an uncited draft and returns a model-written cited result', async () => {
   const responses = [
-    { data: { content: [{ type: 'text', text: '这是一篇没有来源的成稿。' }] } },
-    { data: { content: [{ type: 'text', text: '## 成稿\n小团队可先做低风险试验 [S1][S2]。\n\n## 行动建议\n先限定只读范围 [S1]。\n\n## 证据边界\n研究样本有限 [S2]。' }] } }
+    { data: { usage: { input_tokens: 10, output_tokens: 10 }, stop_reason: 'end_turn', content: [{ type: 'text', text: '这是一篇没有来源的成稿。' }] } },
+    { data: { usage: { input_tokens: 10, output_tokens: 10 }, stop_reason: 'end_turn', content: [{ type: 'text', text: '## 成稿\n小团队可先做低风险试验 [S1][S2]。\n\n## 行动建议\n先限定只读范围 [S1]。\n\n## 证据边界\n研究样本有限 [S2]。' }] } }
   ];
   const calls = [];
   const httpClient = { post: async (...args) => { calls.push(args); return responses.shift(); } };
