@@ -91,6 +91,20 @@ function serviceFixture(options = {}) {
   return { service, repository };
 }
 
+test('WebSub constructor validates and canonicalizes legacy public origins through shared security config', () => {
+  const repository = repositoryFixture();
+  assert.throws(() => new YoutubeWebSubService({
+    repository,
+    env: { NODE_ENV: 'production', AYA_PUBLIC_BASE_URL: 'http://unsafe.example' }
+  }), /HTTPS/);
+  const service = new YoutubeWebSubService({
+    repository,
+    env: { NODE_ENV: 'production', AYA_PUBLIC_BASE_URL: 'https://NEWS.example:443/' },
+    fetchImpl: async () => new Response('', { status: 202 })
+  });
+  assert.equal(service.publicBaseUrl, 'https://news.example');
+});
+
 async function listen(service) {
   const app = express();
   app.use('/api/ingest/v1/youtube/websub', createYoutubeWebSubRouter({ service }));

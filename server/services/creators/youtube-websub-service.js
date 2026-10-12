@@ -1,5 +1,6 @@
 const crypto = require('node:crypto');
 const cheerio = require('cheerio');
+const { loadSecurityConfig } = require('../../config/security');
 const { normalizeCreatorPost } = require('./creator-normalizer');
 const { createConnectorFetch, fetchWithTimeout } = require('./connectors/connector-utils');
 
@@ -211,7 +212,7 @@ class YoutubeWebSubService {
     this.now = options.now || (() => new Date().toISOString());
     this.allowLegacySignature = options.allowLegacySignature === true;
     this.defaultSecretRef = options.defaultSecretRef || 'AYA_YOUTUBE_WEBSUB_SECRET';
-    this.publicBaseUrl = options.publicBaseUrl || this.env.AYA_PUBLIC_BASE_URL || 'https://ainews.xiaotianaya.com';
+    this.publicBaseUrl = options.publicBaseUrl || loadSecurityConfig(this.env).publicOrigin;
     this.fetchImpl = createConnectorFetch(options);
     this.hubUrl = options.hubUrl || 'https://pubsubhubbub.appspot.com/subscribe';
     this.timeoutMs = options.timeoutMs || 10000;
