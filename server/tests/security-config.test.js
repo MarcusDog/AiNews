@@ -2,6 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const dotenv = require('dotenv');
 
 function loadConfig(env) {
   assert.ok(fs.existsSync(path.join(__dirname, '../config/security.js')), 'shared security config must exist');
@@ -67,8 +68,18 @@ test('proxy trust accepts only direct, loopback, or explicit IP/CIDR allowlists'
   const config = loadConfig({ TRUST_PROXY: '127.0.0.1,10.12.0.0/16,::1' });
   assert.equal(config.proxyMode, 'allowlist');
   assert.deepEqual(config.trustProxy, ['127.0.0.1', '10.12.0.0/16', '::1']);
-  for (const value of ['true', '1', '2', '*', '0.0.0.0/0', '::/0', '10.0.0.0/1',
-    'localhost', 'uniquelocal', '127.0.0.1,', '127.0.0.1/33', '::1/129', '::ffff:0:0/96']) {
+  for (const value of ['true', '1', '2', '*', '0.0.0.0/0', '::/0', '::/64', '10.0.0.0/1',
+    'localhost', 'uniquelocal', '127.0.0.1,', '127.0.0.1/33', '::1/129', '::ffff:0:0/96',
+    '0:0:0:0:0:ffff:0:0/96', '0:0:0:0:0:FFFF:0:0/96', '::ffff:0.0.0.0/96',
+    '127.0.0.1\n', '127.0.0.1\t']) {
     assert.throws(() => loadConfig({ TRUST_PROXY: value }), /TRUST_PROXY/, value);
   }
+});
+
+test('committed environment template remains valid when Compose forces production mode', () => {
+  const template = dotenv.parse(fs.readFileSync(path.join(__dirname, '../.env.example')));
+  const config = loadConfig({ ...template, NODE_ENV: 'production' });
+  assert.match(config.publicOrigin, /^https:\/\//);
+  assert.ok(config.allowedOrigins.every((origin) => origin.startsWith('https://')));
+  assert.equal(config.trustProxy, false);
 });

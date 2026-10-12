@@ -132,6 +132,10 @@ ssh "$AYA_DEPLOY_USER@$AYA_DEPLOY_HOST" \
 ```bash
 NODE_ENV=production
 PORT=3002
+PUBLIC_ORIGIN=https://ainews.xiaotianaya.com
+ALLOWED_ORIGINS=https://ainews.xiaotianaya.com
+# 默认不信任转发头；如需真实客户端 IP，请改为实际 Nginx 代理 IP 或最小 CIDR，不得使用 true/1。
+TRUST_PROXY=direct
 AINEWS_DB_PATH=./data/ainews.db
 AINEWS_API_RATE_LIMIT_PER_MINUTE=300
 MINIMAX_API_KEY=replace_with_a_new_server_side_key

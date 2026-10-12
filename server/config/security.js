@@ -49,7 +49,15 @@ function parseAllowedOrigins(rawValue, publicOrigin, requireHttps) {
 }
 
 function isAllowedProxyEntry(value) {
-  if (/^::ffff:/i.test(value)) return false;
+  const addressPart = value.includes('/') ? value.slice(0, value.lastIndexOf('/')) : value;
+  if (net.isIP(addressPart) === 6) {
+    try {
+      const canonical = new URL(`http://[${addressPart}]`).hostname.slice(1, -1).toLowerCase();
+      if (canonical.startsWith('::ffff:')) return false;
+    } catch {
+      return false;
+    }
+  }
   if (net.isIP(value)) return true;
   const slash = value.lastIndexOf('/');
   if (slash <= 0) return false;
@@ -58,11 +66,14 @@ function isAllowedProxyEntry(value) {
   const version = net.isIP(address);
   if (!version || !Number.isInteger(prefix)) return false;
   if (version === 4) return prefix >= 8 && prefix <= 32;
-  return prefix >= 32 && prefix <= 128;
+  return prefix >= 96 && prefix <= 128;
 }
 
 function parseTrustProxy(rawValue) {
   const raw = rawValue === undefined ? 'direct' : String(rawValue);
+  if (/[\u0000-\u001f\u007f]/.test(raw)) {
+    throw configurationError('TRUST_PROXY', 'must not contain control characters');
+  }
   if (raw === 'direct' || raw === 'false') {
     return { proxyMode: 'direct', trustProxy: false };
   }

@@ -97,6 +97,11 @@ test('WebSub constructor validates and canonicalizes legacy public origins throu
     repository,
     env: { NODE_ENV: 'production', AYA_PUBLIC_BASE_URL: 'http://unsafe.example' }
   }), /HTTPS/);
+  assert.throws(() => new YoutubeWebSubService({
+    repository,
+    env: { NODE_ENV: 'production' },
+    publicBaseUrl: 'http://unsafe.example'
+  }), /HTTPS/);
   const service = new YoutubeWebSubService({
     repository,
     env: { NODE_ENV: 'production', AYA_PUBLIC_BASE_URL: 'https://NEWS.example:443/' },
