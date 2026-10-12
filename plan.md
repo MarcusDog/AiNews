@@ -17,7 +17,7 @@
 | 0. Baseline and plan | Complete | 348 server, 48 client, build passed | Approved |
 | 1. Repository hygiene and dependency security | Complete | 22/22 targeted; 0 high/critical audit | Spec + quality approved |
 | 2. Request security configuration | Complete | 377/377 server; 26/26 targeted | Spec + quality approved |
-| 3. Typed read-tool registry | Pending | registry/read-tool tests | Pending |
+| 3. Typed read-tool registry | Complete | 412/412 server; 35/35 focused | Spec + quality approved |
 | 4. Model provider abstraction | Pending | provider/legacy Agent tests | Pending |
 | 5. Agent persistence and evidence ledger | Pending | store/evidence tests | Pending |
 | 6. Bounded Agent runtime | Pending | runtime/eval tests | Pending |
@@ -177,18 +177,20 @@ Verified 2026-10-12 on Node 22.14.0: the initial three-suite RED run had 15/16 e
 - Modify: `server/routes/content.js`
 - Modify: `server/services/AgentContextService.js`
 
-- [ ] **Step 1: Write RED tests for schemas, bounds, unknown tools, timeout, output limits, and secret/raw-payload exclusion**
-- [ ] **Step 2: Implement one declaration contract**
+- [x] **Step 1: Write RED tests for schemas, bounds, unknown tools, timeout, output limits, and secret/raw-payload exclusion**
+- [x] **Step 2: Implement one declaration contract**
 
 Each tool declares `name`, `version`, `description`, JSON input/output schemas, `effect`, `requiredScope`, `timeoutMs`, `maxOutputBytes`, and `execute`. All validation is fail-closed.
 
-- [ ] **Step 3: Implement first-party read tools**
+- [x] **Step 3: Implement first-party read tools**
 
 Implement latest/search News, Topic list/detail/changes/opportunities, Creator posts/topics/source coverage, source health, and research brief by calling services directly, not localhost HTTP.
 
-- [ ] **Step 4: Extract route-level brief logic into `ContentResearchService` and preserve existing responses**
-- [ ] **Step 5: Run registry, content, Signal, Creator and secret-redaction tests**
-- [ ] **Step 6: Commit and update the delivery ledger**
+- [x] **Step 4: Extract route-level brief logic into `ContentResearchService` and preserve existing responses**
+- [x] **Step 5: Run registry, content, Signal, Creator and secret-redaction tests**
+- [x] **Step 6: Commit and update the delivery ledger**
+
+Verified 2026-10-12 on Node 22.14.0. Initial RED runs covered registry contracts and all first-party read tools; reviewer-driven RED runs added hostile Symbol payloads, real platform URL identities, citation collisions, nullable metrics, and legacy trend citations. The final focused run passed 35/35, related compatibility coverage passed 91/91, and the isolated full server suite passed 412/412. The registry exposes 11 bounded read-only tools with exact scopes, generic failure envelopes, abort/timeout propagation, UTF-8 output budgets, and explicit public projections. Final citation URLs preserve validated YouTube, Weibo, WeChat, and article identities, reject ambiguous identities, strip credentials/tracking, deduplicate before readiness decisions, and preserve unknown metrics as `null`. Specification and code-quality reviews approved commits through `3c2f85ee`.
 
 ### Task 4: Introduce a model-provider abstraction with MiniMax tool-call support
 
