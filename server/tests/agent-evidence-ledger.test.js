@@ -213,7 +213,7 @@ check('answer citation markers must equal the explicit ledger reference set befo
 
 check('ledger rejects malformed DNS and reserved names but preserves canonical IDN identity', (t) => {
   const { ledger, args } = fixture(t);
-  for (const host of ['foo..bar', '-foo.com', 'foo-.com', '.example', 'under_score.com', 'foo.test', 'foo.example', 'foo.onion', 'example.com..', 'example.com...']) {
+  for (const host of ['foo..bar', '-foo.com', 'foo-.com', '.example', 'under_score.com', 'foo.test', 'foo.example', 'foo.onion', 'foo.alt', 'x.foo.alt', 'home.arpa', 'host.home.arpa', 'example.com..', 'example.com...']) {
     assert.throws(() => ledger.registerEvidence({ ...args, source: source(`https://${host}/a`) }), { code: 'invalid_input' });
   }
   assert.equal(ledger.listEvidence(args).length, 0);
@@ -226,7 +226,7 @@ check('completion refuses malformed legacy DNS destinations from durable source 
   const { store, ledger, args } = runningFixture(t);
   ledger.registerEvidence({ ...args, source: source() });
   const original = store.db.prepare('SELECT source_json FROM agent_evidence WHERE run_id=? AND source_number=1').get(args.runId).source_json;
-  for (const host of ['foo..bar', '-foo.com', 'foo-.com', '.example', 'under_score.com', 'foo.test', 'foo.example', 'foo.onion', 'example.com..', 'example.com...']) {
+  for (const host of ['foo..bar', '-foo.com', 'foo-.com', '.example', 'under_score.com', 'foo.test', 'foo.example', 'foo.onion', 'foo.alt', 'x.foo.alt', 'home.arpa', 'host.home.arpa', 'example.com..', 'example.com...']) {
     store.db.prepare('UPDATE agent_evidence SET source_json=? WHERE run_id=? AND source_number=1').run(JSON.stringify({ ...JSON.parse(original), url: `https://${host}/a` }), args.runId);
     assert.throws(() => complete(store, args, { answer: 'Audited evidence [S1]', citationIds: ['S1'] }), { code: 'invalid_evidence_reference' });
     unchanged(store, args);

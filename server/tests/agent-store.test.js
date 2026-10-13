@@ -551,7 +551,7 @@ check('all nested evidence URL fields reject malformed DNS labels and reserved h
   const run = store.createRun(args(session, { requestKey: 'dns-event-boundary', request: {} }));
   const news = project(schemas.news, { title: 'Public source' });
   const topic = project(schemas.topic, {}); const signal = project(schemas.signal, {}); const post = project(schemas.post, {});
-  for (const host of ['foo..bar', '-foo.com', 'foo-.com', '.example', 'under_score.com', 'foo.test', 'foo.example', 'foo.onion', 'example.com..', 'example.com...']) {
+  for (const host of ['foo..bar', '-foo.com', 'foo-.com', '.example', 'under_score.com', 'foo.test', 'foo.example', 'foo.onion', 'foo.alt', 'x.foo.alt', 'home.arpa', 'host.home.arpa', 'example.com..', 'example.com...']) {
     const url = `https://${host}/a`;
     for (const payload of [
       { toolName: 'list_latest_news', result: { ok: true, data: { items: [{ ...news, url }], total: 1 } } },

@@ -38,7 +38,7 @@ function publicUrl(value) {
     if (url.protocol !== 'https:' || url.username || url.password || url.port || net.isIP(host)
       || host.length > 253 || labels.length < 2
       || labels.some(label => label.length < 1 || label.length > 63 || !/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(label))
-      || /(^|\.)(localhost|local|internal|lan|home|invalid|test|example|onion)$/.test(host)) return null;
+      || /(^|\.)(localhost|local|internal|lan|home|invalid|test|example|onion|alt|home\.arpa)$/.test(host)) return null;
     url.hostname = host;
     const params = new URLSearchParams();
     const identities = identityParams(host, url.pathname);
