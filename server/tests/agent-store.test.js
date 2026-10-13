@@ -160,7 +160,7 @@ check('UTF-8 byte, JSON depth/node/list and pagination budgets prevent oversized
   const run = store.createRun(args(session, { requestKey: 'a', request: {} }));
   assert.throws(() => store.appendMessage(args(session, { role: 'user', content: '中'.repeat(Math.floor(LIMITS.textBytes / 3) + 1) })), { code: 'input_too_large' });
   let deep = {}; for (let i = 0; i < LIMITS.depth + 1; i++) deep = { result: deep };
-  for (const payload of [deep, { result: Array(LIMITS.listItems + 1).fill(1) }, { result: { answer: 'a'.repeat(LIMITS.jsonBytes + 1) } }, { result: Object.fromEntries(Array.from({ length: LIMITS.nodes + 1 }, (_, i) => [`k${i}`, i])) }]) {
+  for (const payload of [deep, { result: Array(LIMITS.listItems + 1).fill(1) }, { result: { answer: 'a'.repeat(LIMITS.eventJsonBytes + 1) } }, { result: Object.fromEntries(Array.from({ length: LIMITS.eventNodes + 1 }, (_, i) => [`k${i}`, i])) }]) {
     assert.throws(() => store.appendEvent(runArgs(run, { type: 'tool_result', payload })), { code: 'input_too_large' });
   }
   assert.throws(() => store.listEvents(runArgs(run, { limit: LIMITS.pageItems + 1 })), { code: 'invalid_input' });
@@ -325,14 +325,18 @@ check('event payload roots cannot spoof envelope identity while nested public ID
     assert.throws(() => store.transitionRun(runArgs(run, { status: 'running', payload: { [key]: value } })), { code: 'invalid_input' });
   }
   const event = store.appendEvent(runArgs(run, { type: 'tool_result', payload: {
-    toolName: 'get_topic_changes', sources: [{ id: 'public-news-id', title: 'Public source', url: 'https://example.com/a' }],
+    toolName: 'get_topic_changes',
     data: { items: [{ seq: 7, topicId: 'public-topic-id', changeType: 'updated', changedAt: '2026-10-13' }], expired: false, nextCursor: 7, oldestCursor: 1, latestCursor: 7 }
   } }));
   assert.notEqual(event.id, 'public-news-id');
   assert.equal(event.sequence, 2);
-  assert.equal(event.payload.sources[0].id, 'public-news-id');
   assert.equal(event.payload.data.items[0].seq, 7);
-  assert.equal(store.startRun(runArgs(run)).event.sequence, 3);
+  const { project, schemas } = require('../services/agent/public-projections');
+  const news = store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'list_latest_news', data: {
+    items: [project(schemas.news, { id: 'public-news-id', title: 'Public source', url: 'https://example.com/a' })], total: 1
+  } } }));
+  assert.equal(news.payload.data.items[0].id, 'public-news-id');
+  assert.equal(store.startRun(runArgs(run)).event.sequence, 4);
   const final = store.transitionRun(runArgs(run, { status: 'completed', payload: { answer: 'No evidence found', verified: true, citationIds: [] } }));
   assert.equal(final.event.payload.status, 'completed');
 });
@@ -371,15 +375,15 @@ check('session and run pagination reaches 101+ same-time rows with owner/session
   const { store, session } = fixture(t, { now: () => 1000 });
   const sessions = [session];
   for (let i = 0; i < 111; i++) sessions.push(store.createSession({ userId: 'alice', title: `Session ${i}` }));
-  const allSessions = []; let beforeSessionId;
+  const allSessions = []; let beforeSessionId; let beforeSessionUpdatedAt;
   for (;;) {
-    const input = { userId: 'alice', limit: 19 }; if (beforeSessionId) input.beforeSessionId = beforeSessionId;
+    const input = { userId: 'alice', limit: 19 }; if (beforeSessionId) Object.assign(input, { beforeSessionId, beforeSessionUpdatedAt });
     const page = store.listSessions(input); if (!page.length) break;
-    allSessions.push(...page); beforeSessionId = page.at(-1).id;
+    allSessions.push(...page); beforeSessionId = page.at(-1).id; beforeSessionUpdatedAt = page.at(-1).updatedAt;
   }
   assert.deepEqual(allSessions.map(row => row.id), sessions.map(row => row.id).reverse());
   const foreign = store.createSession({ userId: 'bob', title: 'Other owner' });
-  for (const id of ['forged', foreign.id]) assert.throws(() => store.listSessions({ userId: 'alice', beforeSessionId: id }), { code: 'not_found' });
+  for (const id of ['forged', foreign.id]) assert.throws(() => store.listSessions({ userId: 'alice', beforeSessionId: id, beforeSessionUpdatedAt: 1000 }), { code: 'not_found' });
   const runs = [];
   for (let i = 0; i < 112; i++) {
     const run = store.createRun(args(session, { requestKey: `run-${i}`, request: {} }));
@@ -430,7 +434,95 @@ check('transition payload schemas require audited completion and distinguish run
   assert.equal(store.listEvents(runArgs(run)).length, 2);
   const { EvidenceLedger } = require('../services/agent/evidence-ledger');
   new EvidenceLedger({ store }).registerEvidence({ userId: 'alice', runId: run.id, source: { title: 'Public source', url: 'https://example.com/a' } });
-  assert.equal(store.transitionRun(runArgs(run, { status: 'completed', payload: { answer: 'Audited public answer', verified: true, citationIds: ['S1'] } })).event.sequence, 3);
+  assert.equal(store.transitionRun(runArgs(run, { status: 'completed', payload: { answer: 'Audited public answer [S1]', verified: true, citationIds: ['S1'] } })).event.sequence, 3);
+});
+
+check('ordinary tool events reject root sources and citation IDs despite otherwise valid tool results', (t) => {
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'no-root-citations', request: {} }));
+  for (const extra of [{ sources: [{ title: 'Injected', url: 'https://example.com/a' }] }, { citationIds: ['S999'] }, { sourceIds: ['S999'] }]) {
+    assert.throws(() => store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'list_latest_news', result: { ok: true, data: { items: [], total: 0 } }, ...extra } })), { code: 'invalid_input' });
+  }
+  assert.equal(store.listEvents(runArgs(run)).length, 1);
+});
+
+check('nested event URLs must already be canonical public destinations while null remains valid', (t) => {
+  const { project, schemas } = require('../services/agent/public-projections');
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'event-url-boundary', request: {} }));
+  const news = project(schemas.news, { title: 'Public source', url: 'https://example.com/a' });
+  for (const url of ['https://127.0.0.1/private', 'https://localhost/private', 'https://user:password@example.com/a', 'https://example.com/a?token=secret', 'https://example.com/a?utm_source=tracking', 'https://example.com/a#fragment']) {
+    const result = { ok: true, data: { items: [{ ...news, url }], total: 1 } };
+    assert.throws(() => store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'list_latest_news', result } })), { code: 'invalid_input' });
+  }
+  const signal = project(schemas.signal, {}); const topic = project(schemas.topic, {});
+  assert.throws(() => store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'get_topic_evidence', data: { ...topic, signals: [{ ...signal, canonicalUrl: 'https://127.0.0.1/private' }] } } })), { code: 'invalid_input' });
+  const post = project(schemas.post, {});
+  assert.throws(() => store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'list_creator_posts', data: { items: [{ ...post, provenanceUrl: 'https://localhost/private' }] } } })), { code: 'invalid_input' });
+  assert.equal(store.listEvents(runArgs(run)).length, 1);
+  const event = store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'list_latest_news', result: { ok: true, data: { items: [news, { ...news, url: null }], total: 2 } } } }));
+  assert.deepEqual(event.payload.result.data.items.map(item => item.url), ['https://example.com/a', null]);
+});
+
+check('registry-approved roughly 123KB results fit the bounded durable event budget', async (t) => {
+  const { createReadTools } = require('../services/agent/tools/read-tools');
+  const { ToolRegistry } = require('../services/agent/tool-registry');
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'large-tool-result', request: {} }));
+  const article = { ...Object.fromEntries(['id', 'title', 'source', 'category', 'publishedAt', 'sourceGroup', 'region'].map(key => [key, 'a'.repeat(600)])), description: 'd'.repeat(1000), url: `https://example.com/${'p'.repeat(1880)}` };
+  const registry = new ToolRegistry(createReadTools({ newsService: { getLatestNews: () => ({ data: Array.from({ length: 17 }, () => article), total: 17 }) } }));
+  const result = await registry.execute('list_latest_news', { limit: 17 }, { scopes: ['news:read'] });
+  assert.equal(result.ok, true);
+  const bytes = Buffer.byteLength(JSON.stringify(result), 'utf8');
+  assert(bytes >= 120000 && bytes < 131072, `Actual legitimate registry result: ${bytes} bytes`);
+  const event = store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'list_latest_news', arguments: { limit: 17 }, result } }));
+  assert.deepEqual(event.payload.result, result);
+});
+
+check('registry-approved nested topic results also fit the bounded event node budget', async (t) => {
+  const { createReadTools } = require('../services/agent/tools/read-tools');
+  const { ToolRegistry } = require('../services/agent/tool-registry');
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'nested-topic-result', request: {} }));
+  const topic = { title: 'Public topic', signals: Array.from({ length: 3 }, () => ({ title: 'Public signal', url: 'https://example.com/a', canonicalUrl: 'https://example.com/a' })) };
+  const registry = new ToolRegistry(createReadTools({ signalService: { listTopics: () => Array.from({ length: 50 }, () => topic) } }));
+  const result = await registry.execute('list_hot_topics', { limit: 50 }, { scopes: ['signals:read'] });
+  assert.equal(result.ok, true);
+  assert(Buffer.byteLength(JSON.stringify(result)) <= 131072);
+  assert.equal(store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'list_hot_topics', arguments: { limit: 50 }, result } })).payload.result.data.items.length, 50);
+});
+
+check('event JSON rejects its exact byte-budget plus one and text remains individually bounded', (t) => {
+  const { LIMITS } = require('../services/agent/agent-store');
+  assert.equal(LIMITS.eventJsonBytes, 163840);
+  assert.equal(LIMITS.jsonBytes, 65536);
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'event-byte-boundary', request: {} }));
+  const payload = { message: '', summary: '', notice: '', name: '', toolName: '' };
+  let remaining = LIMITS.eventJsonBytes + 1 - Buffer.byteLength(JSON.stringify(payload));
+  for (const key of Object.keys(payload)) { const size = Math.min(remaining, LIMITS.textBytes); payload[key] = 'a'.repeat(size); remaining -= size; }
+  assert.equal(remaining, 0);
+  assert.equal(Buffer.byteLength(JSON.stringify(payload)), LIMITS.eventJsonBytes + 1);
+  assert.throws(() => store.appendEvent(runArgs(run, { type: 'progress', payload })), { code: 'input_too_large' });
+  assert.throws(() => store.appendEvent(runArgs(run, { type: 'progress', payload: { message: 'a'.repeat(LIMITS.textBytes + 1) } })), { code: 'input_too_large' });
+  assert.equal(store.listEvents(runArgs(run)).length, 1);
+});
+
+check('session cursors retain the prior page timestamp when the anchor session is updated', (t) => {
+  let now = 1000;
+  const { store, session: oldest } = fixture(t, { now: () => now });
+  now = 2000; const c = store.createSession({ userId: 'alice', title: 'C' });
+  now = 3000; const b = store.createSession({ userId: 'alice', title: 'B' });
+  now = 4000; const a = store.createSession({ userId: 'alice', title: 'A' });
+  const first = store.listSessions({ userId: 'alice', limit: 2 });
+  assert.deepEqual(first.map(item => item.id), [a.id, b.id]);
+  now = 5000; store.updateSessionTitle(args(b, { title: 'B updated' }));
+  const next = store.listSessions({ userId: 'alice', limit: 2, beforeSessionId: b.id, beforeSessionUpdatedAt: first[1].updatedAt });
+  assert.deepEqual(next.map(item => item.id), [c.id, oldest.id]);
+  assert.equal(new Set([...first, ...next].map(item => item.id)).size, 4);
+  for (const cursor of [{ beforeSessionId: b.id }, { beforeSessionUpdatedAt: 3000 }, { beforeSessionId: b.id, beforeSessionUpdatedAt: 1.5 }, { beforeSessionId: b.id, beforeSessionUpdatedAt: -1 }]) {
+    assert.throws(() => store.listSessions({ userId: 'alice', ...cursor }), { code: 'invalid_input' });
+  }
 });
 
 check('all eleven real tool contracts and registry result envelopes fit durable tool projections', async (t) => {

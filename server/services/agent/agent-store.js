@@ -7,7 +7,9 @@ const { validate } = require('./tool-schemas');
 const { ERRORS } = require('./tool-registry');
 const { publicUrl, schemas } = require('./public-projections');
 
-const LIMITS = Object.freeze({ textBytes: 32768, jsonBytes: 65536, depth: 8, nodes: 2048, listItems: 100, pageItems: 100 });
+// Events accommodate the registry's 131072-byte / 20000-node result budget
+// plus bounded metadata. Requests and raw evidence retain their smaller budget.
+const LIMITS = Object.freeze({ textBytes: 32768, jsonBytes: 65536, eventJsonBytes: 163840, depth: 8, nodes: 2048, eventNodes: 20128, listItems: 100, pageItems: 100 });
 const ACTIVE = ['queued', 'running', 'awaiting_approval'];
 const TERMINAL = ['completed', 'failed', 'cancelled'];
 const RESERVED_EVENTS = new Set([...ACTIVE, ...TERMINAL, 'recovered']);
@@ -33,7 +35,7 @@ const PUBLIC_KEYS = new Set(`message mode skillId skillIds model provider
   sessionId runId progress durationMs elapsedMs maxSteps maxTokens timeoutMs evidenceUrls`.split(/\s+/).filter(Boolean));
 const REQUEST_KEYS = new Set('message mode skillId skillIds model provider topic audience goal format query category since until limit maxSteps maxTokens timeoutMs'.split(' '));
 const PROGRESS_KEYS = new Set('message summary step count total progress toolName toolCallId name durationMs elapsedMs code notice'.split(' '));
-const TOOL_RESULT_KEYS = new Set([...PROGRESS_KEYS, 'arguments', 'result', 'data', 'sources', 'citationIds', 'sourceIds', 'usage']);
+const TOOL_RESULT_KEYS = new Set([...PROGRESS_KEYS, 'arguments', 'result', 'data', 'usage']);
 const TOOL_STARTED_KEYS = new Set([...PROGRESS_KEYS, 'arguments']);
 const TRANSITION_KEYS = {
   running: new Set('status message summary step progress notice'.split(' ')),
@@ -70,16 +72,16 @@ function fields(input, allowed, required = []) {
   return input;
 }
 
-function publicJson(value, { allowedKeys = PUBLIC_KEYS, rootKeys = allowedKeys } = {}) {
+function publicJson(value, { allowedKeys = PUBLIC_KEYS, rootKeys = allowedKeys, maxBytes = LIMITS.jsonBytes, maxNodes = LIMITS.nodes, validateUrls = false } = {}) {
   let nodes = 0; let bytes = 0;
   const seen = new Set();
   const walk = (item, depth) => {
-    if (++nodes > LIMITS.nodes || depth > LIMITS.depth) throw fail('input_too_large');
+    if (++nodes > maxNodes || depth > LIMITS.depth) throw fail('input_too_large');
     if (item === null || typeof item === 'boolean') return item;
     if (typeof item === 'number') { if (!Number.isFinite(item)) throw fail('invalid_input'); return item; }
     if (typeof item === 'string') {
       bytes += Buffer.byteLength(item, 'utf8');
-      if (bytes > LIMITS.jsonBytes) throw fail('input_too_large');
+      if (bytes > maxBytes) throw fail('input_too_large');
       if (item.includes('\u0000')) throw fail('invalid_input');
       return item;
     }
@@ -100,18 +102,22 @@ function publicJson(value, { allowedKeys = PUBLIC_KEYS, rootKeys = allowedKeys }
     } else {
       if (![Object.prototype, null].includes(Object.getPrototypeOf(item))) throw fail('invalid_input');
       const keys = Reflect.ownKeys(item);
-      if (keys.length + nodes > LIMITS.nodes) throw fail('input_too_large');
+      if (keys.length + nodes > maxNodes) throw fail('input_too_large');
       if (keys.some(key => typeof key !== 'string')) throw fail('invalid_input');
       result = {};
       for (const key of keys.sort()) {
         bytes += Buffer.byteLength(key, 'utf8');
-        if (bytes > LIMITS.jsonBytes) throw fail('input_too_large');
+        if (bytes > maxBytes) throw fail('input_too_large');
         const descriptor = Object.getOwnPropertyDescriptor(item, key);
         if (PRIVATE_KEY.test(key) || CONVERSATION_KEYS.has(key) || !allowedKeys.has(key) || (depth === 0 && !rootKeys.has(key))
           || !descriptor.enumerable || !Object.hasOwn(descriptor, 'value')) throw fail('invalid_input');
         // Scalar display metadata must not become an alternate nested provider
         // or message container under otherwise-public data/result projections.
         if (['provider', 'model', 'message', 'text'].includes(key) && typeof descriptor.value !== 'string') throw fail('invalid_input');
+        // Evidence registration normalizes raw URLs separately. Durable event
+        // trees may contain only already-canonical public destinations or null.
+        if (validateUrls && ['url', 'canonicalUrl', 'provenanceUrl'].includes(key) && descriptor.value !== null
+          && (typeof descriptor.value !== 'string' || publicUrl(descriptor.value) !== descriptor.value)) throw fail('invalid_input');
         result[key] = walk(descriptor.value, depth + 1);
       }
     }
@@ -119,7 +125,7 @@ function publicJson(value, { allowedKeys = PUBLIC_KEYS, rootKeys = allowedKeys }
     return result;
   };
   const result = walk(value, 0);
-  if (Buffer.byteLength(JSON.stringify(result), 'utf8') > LIMITS.jsonBytes) throw fail('input_too_large');
+  if (Buffer.byteLength(JSON.stringify(result), 'utf8') > maxBytes) throw fail('input_too_large');
   return result;
 }
 
@@ -138,10 +144,10 @@ function publicRequest(value) {
 }
 
 function publicEvent(value, rootKeys) {
-  const payload = publicJson(value, { rootKeys });
+  const payload = publicJson(value, { rootKeys, maxBytes: LIMITS.eventJsonBytes, maxNodes: LIMITS.eventNodes, validateUrls: true });
   if (!payload || typeof payload !== 'object' || Array.isArray(payload)) throw fail('invalid_input');
   for (const [key, item] of Object.entries(payload)) {
-    if (EVENT_TEXT_KEYS.has(key)) text(item, LIMITS.jsonBytes, true);
+    if (EVENT_TEXT_KEYS.has(key)) text(item, LIMITS.textBytes, true);
     if (['verified', 'requiresApproval'].includes(key) && typeof item !== 'boolean') throw fail('invalid_input');
   }
   return payload;
@@ -178,7 +184,6 @@ function publicOrdinaryEvent(type, value) {
       } else throw fail('invalid_input');
     }
   }
-  if (Object.hasOwn(payload, 'sources')) publicSources(payload.sources);
   if (Object.hasOwn(payload, 'usage')) publicUsage(payload.usage);
   return payload;
 }
@@ -187,7 +192,7 @@ function publicTransition(status, value) {
   const payload = publicEvent(value, TRANSITION_KEYS[status]);
   if (status === 'completed') {
     if (!Object.hasOwn(payload, 'answer') || payload.verified !== true || !Array.isArray(payload.citationIds)) throw fail('invalid_input');
-    text(payload.answer, LIMITS.jsonBytes);
+    text(payload.answer, LIMITS.textBytes);
   }
   if (Object.hasOwn(payload, 'error')) {
     fields(payload.error, ['code', 'message'], ['code', 'message']); text(payload.error.code, 200); text(payload.error.message, 2000);
@@ -315,13 +320,17 @@ class AgentStore {
   }
   getSession(input) { fields(input, ['userId', 'sessionId'], ['userId', 'sessionId']); return sessionProjection(this._session(input.userId, input.sessionId)); }
   listSessions(input) {
-    fields(input, ['userId', 'limit', 'includeArchived', 'beforeSessionId'], ['userId']); this._owner(input.userId); const limit = page(input);
+    fields(input, ['userId', 'limit', 'includeArchived', 'beforeSessionId', 'beforeSessionUpdatedAt'], ['userId']); this._owner(input.userId); const limit = page(input);
     if (input.includeArchived !== undefined && typeof input.includeArchived !== 'boolean') throw fail('invalid_input');
     this._ready();
-    const anchor = input.beforeSessionId === undefined ? null : this._session(input.userId, input.beforeSessionId);
+    const hasCursor = Object.hasOwn(input, 'beforeSessionId') || Object.hasOwn(input, 'beforeSessionUpdatedAt');
+    if (hasCursor && (!Object.hasOwn(input, 'beforeSessionId') || !Object.hasOwn(input, 'beforeSessionUpdatedAt')
+      || !Number.isSafeInteger(input.beforeSessionUpdatedAt) || input.beforeSessionUpdatedAt < 0)) throw fail('invalid_input');
+    const anchor = hasCursor ? this._session(input.userId, input.beforeSessionId) : null;
+    const cursorTime = hasCursor ? input.beforeSessionUpdatedAt : null;
     return this.db.prepare(`SELECT * FROM agent_sessions WHERE user_id=? AND (?=1 OR archived=0)
       AND (? IS NULL OR updated_at<? OR (updated_at=? AND rowid<?)) ORDER BY updated_at DESC,rowid DESC LIMIT ?`)
-      .all(input.userId, input.includeArchived ? 1 : 0, anchor?.updated_at ?? null, anchor?.updated_at ?? null, anchor?.updated_at ?? null, anchor?.cursor_order ?? null, limit).map(sessionProjection);
+      .all(input.userId, input.includeArchived ? 1 : 0, cursorTime, cursorTime, cursorTime, anchor?.cursor_order ?? null, limit).map(sessionProjection);
   }
   updateSessionTitle(input) {
     fields(input, ['userId', 'sessionId', 'title'], ['userId', 'sessionId', 'title']);
@@ -410,12 +419,16 @@ class AgentStore {
   cancelRun(input) { fields(input, ['userId', 'runId', 'payload'], ['userId', 'runId']); return this.transitionRun({ ...input, status: 'cancelled' }); }
   // Called only inside the same IMMEDIATE transaction as the state and event
   // mutation. A bare S# is meaningful exclusively within its owned run ledger.
-  _completedSources(userId, runId, citationIds) {
+  _completedSources(userId, runId, citationIds, answer) {
     const seen = new Set();
-    const lookup = this.db.prepare('SELECT source_number,source_json FROM agent_evidence WHERE user_id=? AND run_id=? AND source_number=?');
-    return citationIds.map(citationId => {
+    for (const citationId of citationIds) {
       if (typeof citationId !== 'string' || !/^S[1-9][0-9]{0,9}$/.test(citationId) || seen.has(citationId)) throw fail('invalid_evidence_reference');
       seen.add(citationId);
+    }
+    const answerIds = new Set(Array.from(answer.matchAll(/\[(S\d+)\]/g), match => match[1]));
+    if (answerIds.size !== seen.size || [...answerIds].some(id => !seen.has(id))) throw fail('invalid_evidence_reference');
+    const lookup = this.db.prepare('SELECT source_number,source_json FROM agent_evidence WHERE user_id=? AND run_id=? AND source_number=?');
+    return citationIds.map(citationId => {
       const row = lookup.get(userId, runId, Number(citationId.slice(1)));
       if (!row) throw fail('invalid_evidence_reference');
       let source;
@@ -436,7 +449,7 @@ class AgentStore {
         : run.status === 'running' ? TERMINAL : run.status === 'awaiting_approval' ? ['failed', 'cancelled'] : [];
       if (!allowed.includes(input.status)) throw fail('invalid_transition');
       const eventPayload = input.status === 'completed'
-        ? publicJson({ ...payload, status: input.status, sources: this._completedSources(input.userId, input.runId, payload.citationIds) })
+        ? publicJson({ ...payload, status: input.status, sources: this._completedSources(input.userId, input.runId, payload.citationIds, payload.answer) }, { maxBytes: LIMITS.eventJsonBytes, maxNodes: LIMITS.eventNodes, validateUrls: true })
         : { ...payload, status: input.status };
       const now = this._time();
       this.db.prepare('UPDATE agent_runs SET status=?,updated_at=?,completed_at=? WHERE id=? AND user_id=?').run(input.status, now, TERMINAL.includes(input.status) ? now : null, input.runId, input.userId);
