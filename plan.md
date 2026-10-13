@@ -19,7 +19,7 @@
 | 2. Request security configuration | Complete | 377/377 server; 26/26 targeted | Spec + quality approved |
 | 3. Typed read-tool registry | Complete | 412/412 server; 35/35 focused | Spec + quality approved |
 | 4. Model provider abstraction | Complete | 474/474 server; 95/95 focused | Spec + quality approved |
-| 5. Agent persistence and evidence ledger | Pending | store/evidence tests | Pending |
+| 5. Agent persistence and evidence ledger | Complete | 536/536 server; 61/61 focused; 169/169 Agent | Spec + quality approved |
 | 6. Bounded Agent runtime | Pending | runtime/eval tests | Pending |
 | 7. Persistent run API and SSE | Pending | route/stream tests | Pending |
 | 8. `/agent` workbench | Pending | client Agent tests/build | Pending |
@@ -223,20 +223,22 @@ Verified 2026-10-13 on Node 22.14.0 against MiniMax's official Anthropic-compati
 - Create: `server/tests/agent-store.test.js`
 - Create: `server/tests/agent-evidence-ledger.test.js`
 
-- [ ] **Step 1: Write RED tests using temporary SQLite databases**
+- [x] **Step 1: Write RED tests using temporary SQLite databases**
 
 Cover schema idempotency, ownership, transaction rollback, monotonic event sequence, request-key idempotency, one active run per session, restart reconciliation, retention, and stable `S#` assignment.
 
-- [ ] **Step 2: Implement the minimal schema**
+- [x] **Step 2: Implement the minimal schema**
 
 Tables: `agent_sessions`, `agent_messages`, `agent_runs`, `agent_run_events`, and `agent_evidence`. Store structured public projections only.
 
-- [ ] **Step 3: Implement state transitions**
+- [x] **Step 3: Implement state transitions**
 
 `queued -> running -> completed|failed|cancelled`; reserve `awaiting_approval` for Task 9. Persist state and its event in one transaction.
 
-- [ ] **Step 4: Run store/evidence tests twice, including close/reopen recovery**
-- [ ] **Step 5: Commit and update the delivery ledger**
+- [x] **Step 4: Run store/evidence tests twice, including close/reopen recovery**
+- [x] **Step 5: Commit and update the delivery ledger**
+
+Verified 2026-10-13 on Node 22.14.0 with real temporary SQLite databases and no network or production credentials. The final primary runs passed 61/61 store/evidence tests, 169/169 Agent tests, and 536/536 isolated server tests; close/reopen recovery, four-worker concurrency, stable keyset pagination, request-key idempotency, active-run uniqueness, monotonic event sequences, retention, and transaction rollback were exercised directly. The five-table store enforces owner-scoped composite foreign keys, universally opt-in startup recovery, immutable terminal runs, strict state/event transactions, public projection byte/node/depth/list budgets, and stable per-run `S#` allocation. Durable tool events accept only the current registry's closed schemas and exact `{ok,data|error}` envelopes; final sources are reconstructed from the owned evidence ledger, answer markers must match the ledger reference set, and private, malformed, local, alternate, residential, credential-bearing, or non-canonical URLs fail closed. Reviewer-driven RED rounds also fixed shared-process recovery races, unreachable pagination, post-cancel writes, unaudited answer leakage, forged citations, inconsistent tool budgets, mutable cursors, hostile descriptors, outer-transaction lock downgrades, and reserved DNS namespaces. Specification and code-quality reviews approved commits through `a30392d4`.
 
 ### Task 6: Implement the bounded Agent loop and offline evaluations
 
