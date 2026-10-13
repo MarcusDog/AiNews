@@ -5,6 +5,7 @@ const path = require('node:path');
 const { createReadTools } = require('./tools/read-tools');
 const { validate } = require('./tool-schemas');
 const { ERRORS } = require('./tool-registry');
+const { publicUrl, schemas } = require('./public-projections');
 
 const LIMITS = Object.freeze({ textBytes: 32768, jsonBytes: 65536, depth: 8, nodes: 2048, listItems: 100, pageItems: 100 });
 const ACTIVE = ['queued', 'running', 'awaiting_approval'];
@@ -36,11 +37,12 @@ const TOOL_RESULT_KEYS = new Set([...PROGRESS_KEYS, 'arguments', 'result', 'data
 const TOOL_STARTED_KEYS = new Set([...PROGRESS_KEYS, 'arguments']);
 const TRANSITION_KEYS = {
   running: new Set('status message summary step progress notice'.split(' ')),
-  completed: new Set('status answer verified sources citationIds sourceIds usage model provider'.split(' ')),
+  completed: new Set('answer verified citationIds usage model provider'.split(' ')),
   failed: new Set('status code error reason message'.split(' ')),
   cancelled: new Set('status code error reason message'.split(' '))
 };
 const EVENT_TEXT_KEYS = new Set('message text answer reason status code notice toolName toolCallId name summary model provider'.split(' '));
+const EVIDENCE_KEYS = new Set(Object.keys(schemas.evidence.properties).filter(key => key !== 'citationId'));
 // Derive nested public keys from the same closed input/output contracts used by
 // the live registry; validate complete tool arguments/results below as well.
 const TOOL_CONTRACTS = new Map(createReadTools().map(({ name, inputSchema, outputSchema }) => [name, { inputSchema, outputSchema }]));
@@ -183,16 +185,15 @@ function publicOrdinaryEvent(type, value) {
 function publicTransition(status, value) {
   if (!Object.hasOwn(TRANSITION_KEYS, status)) throw fail('invalid_transition');
   const payload = publicEvent(value, TRANSITION_KEYS[status]);
-  if (status === 'completed' && ['answer', 'verified', 'sources', 'citationIds', 'sourceIds'].some(key => Object.hasOwn(payload, key))
-    && payload.verified !== true) throw fail('invalid_input');
+  if (status === 'completed') {
+    if (!Object.hasOwn(payload, 'answer') || payload.verified !== true || !Array.isArray(payload.citationIds)) throw fail('invalid_input');
+    text(payload.answer, LIMITS.jsonBytes);
+  }
   if (Object.hasOwn(payload, 'error')) {
     fields(payload.error, ['code', 'message'], ['code', 'message']); text(payload.error.code, 200); text(payload.error.message, 2000);
   }
   if (Object.hasOwn(payload, 'sources')) publicSources(payload.sources);
   if (Object.hasOwn(payload, 'usage')) publicUsage(payload.usage);
-  for (const key of ['citationIds', 'sourceIds']) if (Object.hasOwn(payload, key)) {
-    if (!Array.isArray(payload[key]) || payload[key].some(id => typeof id !== 'string' || !/^S[1-9][0-9]{0,9}$/.test(id))) throw fail('invalid_input');
-  }
   return payload;
 }
 
@@ -407,6 +408,25 @@ class AgentStore {
   startRun(input) { fields(input, ['userId', 'runId'], ['userId', 'runId']); return this.transitionRun({ ...input, status: 'running' }); }
   claimRun(input) { return this.startRun(input); }
   cancelRun(input) { fields(input, ['userId', 'runId', 'payload'], ['userId', 'runId']); return this.transitionRun({ ...input, status: 'cancelled' }); }
+  // Called only inside the same IMMEDIATE transaction as the state and event
+  // mutation. A bare S# is meaningful exclusively within its owned run ledger.
+  _completedSources(userId, runId, citationIds) {
+    const seen = new Set();
+    const lookup = this.db.prepare('SELECT source_number,source_json FROM agent_evidence WHERE user_id=? AND run_id=? AND source_number=?');
+    return citationIds.map(citationId => {
+      if (typeof citationId !== 'string' || !/^S[1-9][0-9]{0,9}$/.test(citationId) || seen.has(citationId)) throw fail('invalid_evidence_reference');
+      seen.add(citationId);
+      const row = lookup.get(userId, runId, Number(citationId.slice(1)));
+      if (!row) throw fail('invalid_evidence_reference');
+      let source;
+      try {
+        source = publicJson(JSON.parse(row.source_json), { allowedKeys: EVIDENCE_KEYS });
+        publicSources([source]);
+        if (!publicUrl(source.url) || publicUrl(source.url) !== source.url) throw fail('invalid_evidence_reference');
+      } catch { throw fail('invalid_evidence_reference'); }
+      return { ...source, citationId: `S${row.source_number}` };
+    });
+  }
   transitionRun(input) {
     fields(input, ['userId', 'runId', 'status', 'payload'], ['userId', 'runId', 'status']);
     const payload = publicTransition(input.status, input.payload ?? {});
@@ -415,9 +435,12 @@ class AgentStore {
       const allowed = run.status === 'queued' ? ['running', 'failed', 'cancelled']
         : run.status === 'running' ? TERMINAL : run.status === 'awaiting_approval' ? ['failed', 'cancelled'] : [];
       if (!allowed.includes(input.status)) throw fail('invalid_transition');
+      const eventPayload = input.status === 'completed'
+        ? publicJson({ ...payload, status: input.status, sources: this._completedSources(input.userId, input.runId, payload.citationIds) })
+        : { ...payload, status: input.status };
       const now = this._time();
       this.db.prepare('UPDATE agent_runs SET status=?,updated_at=?,completed_at=? WHERE id=? AND user_id=?').run(input.status, now, TERMINAL.includes(input.status) ? now : null, input.runId, input.userId);
-      const event = this._insertEvent(input.userId, input.runId, input.status, { ...payload, status: input.status });
+      const event = this._insertEvent(input.userId, input.runId, input.status, eventPayload);
       this.db.prepare('UPDATE agent_sessions SET updated_at=? WHERE id=? AND user_id=?').run(now, run.session_id, input.userId);
       return { run: this.getRun({ userId: input.userId, runId: input.runId }), event };
     });

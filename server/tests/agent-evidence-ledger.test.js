@@ -103,3 +103,94 @@ check('trailing-dot public hosts normalize to the same source identity', (t) => 
   assert.equal(ledger.listEvidence(args).length, 1);
   assert.equal(ledger.listEvidence(args)[0].url, 'https://example.com/a');
 });
+
+function runningFixture(t) {
+  const result = fixture(t); result.store.startRun(result.args); return result;
+}
+const complete = (store, args, extra = {}) => store.transitionRun({ ...args, status: 'completed', payload: { answer: 'Audited public answer', verified: true, citationIds: [], ...extra } });
+function unchanged(store, args) {
+  assert.equal(store.getRun(args).status, 'running');
+  assert.deepEqual(store.listEvents(args).map(event => event.sequence), [1, 2]);
+}
+
+check('completed requires a nonempty audited answer and an explicit citation ID list', (t) => {
+  const { store, args } = runningFixture(t);
+  for (const payload of [{}, { verified: true, citationIds: [] }, { answer: ' ', verified: true, citationIds: [] }, { answer: 'Draft', verified: false, citationIds: [] }, { answer: 'Audited', verified: true }]) {
+    assert.throws(() => store.transitionRun({ ...args, status: 'completed', payload }), { code: 'invalid_input' });
+    unchanged(store, args);
+  }
+});
+
+check('nonexistent and malformed completed citations cannot consume a transition or sequence', (t) => {
+  const { store, args } = runningFixture(t);
+  for (const citationIds of [['S999'], ['S01'], [1], ['not-a-citation']]) {
+    assert.throws(() => complete(store, args, { citationIds }), { code: 'invalid_evidence_reference' });
+    unchanged(store, args);
+  }
+});
+
+check('another run or owners S1 cannot satisfy a completion citation reference', (t) => {
+  const { store, ledger, args } = runningFixture(t);
+  for (const userId of ['alice', 'bob']) {
+    const session = store.createSession({ userId, title: 'Other session' });
+    const run = store.createRun({ userId, sessionId: session.id, requestKey: 'other', request: {} });
+    ledger.registerEvidence({ userId, runId: run.id, source: source() });
+  }
+  assert.throws(() => complete(store, args, { citationIds: ['S1'] }), { code: 'invalid_evidence_reference' });
+  unchanged(store, args);
+});
+
+check('duplicate current-run citations are rejected before committing completion', (t) => {
+  const { store, ledger, args } = runningFixture(t);
+  ledger.registerEvidence({ ...args, source: source() });
+  assert.throws(() => complete(store, args, { citationIds: ['S1', 'S1'] }), { code: 'invalid_evidence_reference' });
+  unchanged(store, args);
+});
+
+check('callers cannot inject completion sources, source IDs, evidence URLs or state metadata', (t) => {
+  const { store, args } = runningFixture(t);
+  for (const extra of [
+    { sources: [source('https://service.internal/private')] },
+    { sources: [source('https://127.0.0.1/private')] },
+    { sources: [source('https://example.com/a?token=private')] },
+    { sources: [source('https://user:password@example.com/private')] },
+    { sourceIds: ['S1'] }, { evidenceUrls: ['https://127.0.0.1/private'] }, { status: 'forged' }
+  ]) {
+    assert.throws(() => complete(store, args, extra), { code: 'invalid_input' });
+    unchanged(store, args);
+  }
+});
+
+check('completion derives exact public sources from the owned ledger in citation order', (t) => {
+  const { store, ledger, args } = runningFixture(t);
+  const first = ledger.registerEvidence({ ...args, source: source('https://EXAMPLE.com./a#part', { id: 'news-a', summary: 'First public summary' }) });
+  const second = ledger.registerEvidence({ ...args, source: source('https://example.org/b', { id: 'news-b', summary: 'Second public summary' }) });
+  const expected = [structuredClone(second), structuredClone(first)];
+  first.title = 'Modified returned object';
+  const result = complete(store, args, { answer: 'Audited evidence [S2][S1]', citationIds: ['S2', 'S1'] });
+  assert.equal(result.run.status, 'completed');
+  assert.deepEqual(result.event.payload.citationIds, ['S2', 'S1']);
+  assert.deepEqual(result.event.payload.sources, expected);
+  assert.deepEqual(store.listEvents(args).at(-1).payload.sources, expected);
+  assert.equal(result.event.sequence, 3);
+});
+
+check('an audited insufficient-evidence answer may complete with zero citations and sources', (t) => {
+  const { store, args } = runningFixture(t);
+  const result = complete(store, args, { answer: '没有足够公开证据支持结论。' });
+  assert.deepEqual(result.event.payload.citationIds, []);
+  assert.deepEqual(result.event.payload.sources, []);
+  assert.equal(result.run.status, 'completed');
+});
+
+check('derived completion sources obey JSON budgets and durable event failures fully roll back', (t) => {
+  const { store, ledger, args } = runningFixture(t);
+  const citationIds = Array.from({ length: 19 }, (_, index) => ledger.registerEvidence({ ...args, source: source(`https://example.com/${index}`, { summary: 'a'.repeat(4000) }) }).citationId);
+  assert.throws(() => complete(store, args, { citationIds }), { code: 'input_too_large' });
+  unchanged(store, args);
+  store.db.exec("CREATE TRIGGER reject_completion BEFORE INSERT ON agent_run_events WHEN NEW.type='completed' BEGIN SELECT RAISE(ABORT,'completion blocked'); END;");
+  assert.throws(() => complete(store, args, { citationIds: ['S1'] }), /completion blocked/);
+  unchanged(store, args);
+  store.db.exec('DROP TRIGGER reject_completion');
+  assert.equal(complete(store, args, { citationIds: ['S1'] }).event.payload.sources[0].citationId, 'S1');
+});

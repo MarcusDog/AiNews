@@ -101,10 +101,10 @@ check('database unique constraints protect active runs and request keys across c
 check('state transitions and events are atomic and terminal runs cannot restart', (t) => {
   const { store, session } = fixture(t);
   const run = store.createRun(args(session, { requestKey: 'a', request: {} }));
-  assert.throws(() => store.transitionRun(runArgs(run, { status: 'completed' })), { code: 'invalid_transition' });
+  assert.throws(() => store.transitionRun(runArgs(run, { status: 'completed', payload: { answer: 'No evidence found', verified: true, citationIds: [] } })), { code: 'invalid_transition' });
   assert.throws(() => store.transitionRun(runArgs(run, { status: 'awaiting_approval' })), { code: 'invalid_transition' });
   assert.equal(store.startRun(runArgs(run)).run.status, 'running');
-  assert.equal(store.transitionRun(runArgs(run, { status: 'completed', payload: { answer: 'Done', verified: true } })).event.type, 'completed');
+  assert.equal(store.transitionRun(runArgs(run, { status: 'completed', payload: { answer: 'No evidence found', verified: true, citationIds: [] } })).event.type, 'completed');
   assert.throws(() => store.startRun(runArgs(run)), { code: 'invalid_transition' });
   assert.deepEqual(store.listEvents(runArgs(run)).map(event => event.sequence), [1, 2, 3]);
   assert.deepEqual(store.listEvents(runArgs(run, { afterSequence: 1 })).map(event => event.type), ['running', 'completed']);
@@ -202,7 +202,7 @@ check('retention removes only old terminal run trees and keeps active run/sessio
     const run = store.createRun(args(session, { requestKey: status, request: {} }));
     store.appendMessage(args(session, { runId: run.id, role: 'assistant', content: status }));
     if (status !== 'cancelled') store.startRun(runArgs(run));
-    store.transitionRun(runArgs(run, { status }));
+    store.transitionRun(runArgs(run, { status, ...(status === 'completed' ? { payload: { answer: 'No evidence found', verified: true, citationIds: [] } } : {}) }));
   }
   now = 2000;
   store.appendMessage(args(session, { role: 'user', content: 'Keep conversation' }));
@@ -333,7 +333,7 @@ check('event payload roots cannot spoof envelope identity while nested public ID
   assert.equal(event.payload.sources[0].id, 'public-news-id');
   assert.equal(event.payload.data.items[0].seq, 7);
   assert.equal(store.startRun(runArgs(run)).event.sequence, 3);
-  const final = store.transitionRun(runArgs(run, { status: 'completed', payload: { status: 'forged', answer: 'Public answer', verified: true } }));
+  const final = store.transitionRun(runArgs(run, { status: 'completed', payload: { answer: 'No evidence found', verified: true, citationIds: [] } }));
   assert.equal(final.event.payload.status, 'completed');
 });
 
@@ -428,6 +428,8 @@ check('transition payload schemas require audited completion and distinguish run
   for (const status of ['failed', 'cancelled']) assert.throws(() => store.transitionRun(runArgs(run, { status, payload: { answer: 'Draft', verified: true } })), { code: 'invalid_input' });
   for (const payload of [{ answer: 'Draft' }, { answer: 'Draft', verified: false }, { error: { code: 'failed', message: 'Error' } }]) assert.throws(() => store.transitionRun(runArgs(run, { status: 'completed', payload })), { code: 'invalid_input' });
   assert.equal(store.listEvents(runArgs(run)).length, 2);
+  const { EvidenceLedger } = require('../services/agent/evidence-ledger');
+  new EvidenceLedger({ store }).registerEvidence({ userId: 'alice', runId: run.id, source: { title: 'Public source', url: 'https://example.com/a' } });
   assert.equal(store.transitionRun(runArgs(run, { status: 'completed', payload: { answer: 'Audited public answer', verified: true, citationIds: ['S1'] } })).event.sequence, 3);
 });
 
