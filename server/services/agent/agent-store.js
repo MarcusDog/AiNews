@@ -8,9 +8,10 @@ const ACTIVE = ['queued', 'running', 'awaiting_approval'];
 const TERMINAL = ['completed', 'failed', 'cancelled'];
 const RESERVED_EVENTS = new Set([...ACTIVE, ...TERMINAL, 'recovered']);
 const PRIVATE_KEY = /(?:thinking|reasoning|credential|secret|password|authorization|cookie|token$|api.?key|provider.?content|private|raw|headers|payload.?json|request.?json)/i;
-// Only explicitly public structured fields cross the durable boundary. Nested tool
-// results must already have been projected by the read-tool registry.
-const PUBLIC_KEYS = new Set(`message history role content mode skillId skillIds context model provider
+// Conversation containers never cross this boundary, including inside tool
+// results. Public user/assistant messages have their own agent_messages table.
+// Nested tool results must already be projected by the read-tool registry.
+const PUBLIC_KEYS = new Set(`message mode skillId skillIds model provider
   title summary description text answer verified reason status code error notice toolName toolCallId
   name arguments result data sources citationIds sourceIds usage inputTokens outputTokens totalTokens
   step count total items query limit since until category topic audience goal format request evidence
@@ -25,6 +26,11 @@ const PUBLIC_KEYS = new Set(`message history role content mode skillId skillIds 
   diversity regions evidenceTypes citationPolicy site today diversityScore riskLevel trends blindSpots
   keyword recentCount previousCount growth blindSpot blindSpotLabel confidence requiresApproval
   sessionId runId progress durationMs elapsedMs maxSteps maxTokens timeoutMs evidenceUrls`.split(/\s+/).filter(Boolean));
+const REQUEST_KEYS = new Set('message mode skillId skillIds model provider topic audience goal format query category since until limit maxSteps maxTokens timeoutMs'.split(' '));
+const EVENT_KEYS = new Set(`message text answer verified reason status code error notice toolName toolCallId name
+  arguments result data sources citationIds sourceIds usage step count total summary progress durationMs elapsedMs
+  requiresApproval evidenceUrls model provider`.split(/\s+/));
+const EVENT_TEXT_KEYS = new Set('message text answer reason status code notice toolName toolCallId name summary model provider'.split(' '));
 
 function fail(code) { const error = new Error(code); error.code = code; return error; }
 function text(value, max = LIMITS.textBytes, empty = false) {
@@ -42,7 +48,7 @@ function fields(input, allowed, required = []) {
   return input;
 }
 
-function publicJson(value, { allowedKeys = PUBLIC_KEYS } = {}) {
+function publicJson(value, { allowedKeys = PUBLIC_KEYS, rootKeys = allowedKeys } = {}) {
   let nodes = 0; let bytes = 0;
   const seen = new Set();
   const walk = (item, depth) => {
@@ -75,7 +81,11 @@ function publicJson(value, { allowedKeys = PUBLIC_KEYS } = {}) {
         bytes += Buffer.byteLength(key, 'utf8');
         if (bytes > LIMITS.jsonBytes) throw fail('input_too_large');
         const descriptor = Object.getOwnPropertyDescriptor(item, key);
-        if (PRIVATE_KEY.test(key) || !allowedKeys.has(key) || !Object.hasOwn(descriptor, 'value')) throw fail('invalid_input');
+        if (PRIVATE_KEY.test(key) || !allowedKeys.has(key) || (depth === 0 && !rootKeys.has(key))
+          || !Object.hasOwn(descriptor, 'value')) throw fail('invalid_input');
+        // Scalar display metadata must not become an alternate nested provider
+        // or message container under otherwise-public data/result projections.
+        if (['provider', 'model', 'message', 'text'].includes(key) && typeof descriptor.value !== 'string') throw fail('invalid_input');
         result[key] = walk(descriptor.value, depth + 1);
       }
     }
@@ -85,6 +95,30 @@ function publicJson(value, { allowedKeys = PUBLIC_KEYS } = {}) {
   const result = walk(value, 0);
   if (Buffer.byteLength(JSON.stringify(result), 'utf8') > LIMITS.jsonBytes) throw fail('input_too_large');
   return result;
+}
+
+function publicRequest(value) {
+  const request = publicJson(value, { rootKeys: REQUEST_KEYS });
+  if (!request || typeof request !== 'object' || Array.isArray(request)) throw fail('invalid_input');
+  for (const [key, item] of Object.entries(request)) {
+    if (key === 'skillIds') {
+      if (!Array.isArray(item)) throw fail('invalid_input');
+      item.forEach(id => text(id, 200));
+    } else if (['limit', 'maxSteps', 'maxTokens', 'timeoutMs'].includes(key)) {
+      if (!Number.isSafeInteger(item) || item < 1) throw fail('invalid_input');
+    } else text(item, key === 'message' ? LIMITS.textBytes : 2000);
+  }
+  return request;
+}
+
+function publicEvent(value) {
+  const payload = publicJson(value, { rootKeys: EVENT_KEYS });
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) throw fail('invalid_input');
+  for (const [key, item] of Object.entries(payload)) {
+    if (EVENT_TEXT_KEYS.has(key)) text(item, LIMITS.jsonBytes, true);
+    if (['verified', 'requiresApproval'].includes(key) && typeof item !== 'boolean') throw fail('invalid_input');
+  }
+  return payload;
 }
 
 function page(input) {
@@ -100,7 +134,9 @@ const eventProjection = row => ({ id: row.id, runId: row.run_id, sequence: row.s
 /** Synchronous SQLite boundary. All business operations require authenticated userId.
  * Inject a shared DatabaseService.db after its initialization, or use dbPath. A
  * single owning store initializes/reconciles at server startup before accepting
- * work; additional live connections must set recoverOnInitialize: false.
+ * work. Injected connections default to no recovery; an explicit true opt-in
+ * is reserved for the application's single startup coordinator. Additional
+ * independently opened live connections must set recoverOnInitialize: false.
  */
 class AgentStore {
   constructor(options = {}) {
@@ -110,7 +146,8 @@ class AgentStore {
     this.initialized = false;
     this.now = options.now || Date.now;
     this.retentionMs = options.retentionMs ?? 30 * 24 * 60 * 60 * 1000;
-    this.recoverOnInitialize = options.recoverOnInitialize !== false;
+    if (options.recoverOnInitialize !== undefined && typeof options.recoverOnInitialize !== 'boolean') throw fail('invalid_input');
+    this.recoverOnInitialize = options.recoverOnInitialize ?? this.ownsDb;
     this._retention(this.retentionMs);
   }
 
@@ -242,8 +279,7 @@ class AgentStore {
   }
   createRun(input) {
     fields(input, ['userId', 'sessionId', 'requestKey', 'request'], ['userId', 'sessionId', 'requestKey', 'request']);
-    text(input.requestKey, 200); const request = publicJson(input.request);
-    if (!request || typeof request !== 'object' || Array.isArray(request)) throw fail('invalid_input');
+    text(input.requestKey, 200); const request = publicRequest(input.request);
     const json = JSON.stringify(request);
     return this._transaction(() => {
       const session = this._session(input.userId, input.sessionId);
@@ -274,8 +310,7 @@ class AgentStore {
   cancelRun(input) { fields(input, ['userId', 'runId', 'payload'], ['userId', 'runId']); return this.transitionRun({ ...input, status: 'cancelled' }); }
   transitionRun(input) {
     fields(input, ['userId', 'runId', 'status', 'payload'], ['userId', 'runId', 'status']);
-    const payload = publicJson(input.payload ?? {});
-    if (!payload || typeof payload !== 'object' || Array.isArray(payload)) throw fail('invalid_input');
+    const payload = publicEvent(input.payload ?? {});
     return this._transaction(() => {
       const run = this._run(input.userId, input.runId);
       const allowed = run.status === 'queued' ? ['running', 'failed', 'cancelled']
@@ -299,8 +334,7 @@ class AgentStore {
   appendEvent(input) {
     fields(input, ['userId', 'runId', 'type', 'payload'], ['userId', 'runId', 'type', 'payload']);
     if (typeof input.type !== 'string' || !/^[a-z][a-z0-9_.:-]{0,79}$/.test(input.type) || RESERVED_EVENTS.has(input.type)) throw fail('invalid_input');
-    const payload = publicJson(input.payload);
-    if (!payload || typeof payload !== 'object' || Array.isArray(payload)) throw fail('invalid_input');
+    const payload = publicEvent(input.payload);
     return this._transaction(() => {
       if (TERMINAL.includes(this._run(input.userId, input.runId).status)) throw fail('run_terminal');
       return this._insertEvent(input.userId, input.runId, input.type, payload);

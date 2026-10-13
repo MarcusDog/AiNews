@@ -259,6 +259,84 @@ check('injected SQLite connection is reusable and recovery can be disabled for l
   assert.equal(store.getRun(runArgs(run)).status, 'running');
 });
 
+check('shared SQLite connections default to no recovery and preserve active work and ownership', (t) => {
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'shared-default', request: {} }));
+  const shared = new AgentStore({ db: store.db });
+  shared.initialize();
+  assert.equal(shared.getRun(runArgs(run)).status, 'queued');
+  assert.equal(shared.listEvents(runArgs(run)).length, 1);
+  shared.close();
+  assert.equal(store.db.open, true);
+  assert.equal(store.getRun(runArgs(run)).status, 'queued');
+});
+
+check('shared database recovery requires an explicit startup opt-in', (t) => {
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'shared-startup', request: {} }));
+  const shared = new AgentStore({ db: store.db, recoverOnInitialize: true });
+  shared.initialize();
+  assert.equal(shared.getRun(runArgs(run)).status, 'failed');
+  assert.equal(shared.listEvents(runArgs(run)).filter(event => event.type === 'recovered').length, 1);
+  shared.close();
+  assert.equal(store.db.open, true);
+});
+
+check('event JSON rejects provider conversation containers at every nesting level', (t) => {
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'private-event', request: {} }));
+  const containers = [
+    { context: { role: 'assistant', content: 'private provider thought' } },
+    { history: [{ role: 'assistant', content: 'private provider thought' }] },
+    { content: 'private provider thought' }, { role: 'assistant' },
+    { data: { context: { role: 'assistant', content: 'private provider thought' } } },
+    { result: { history: [{ role: 'assistant', content: 'private provider thought' }] } },
+    { sources: [{ content: 'private provider thought' }] },
+    { data: { role: 'assistant', content: 'private provider thought' } },
+    { provider: { message: 'private provider thought' } },
+    { data: { provider: { name: 'provider', message: 'private provider thought' } } },
+    { result: { message: { text: 'private provider thought' } } }
+  ];
+  for (const payload of containers) assert.throws(() => store.appendEvent(runArgs(run, { type: 'progress', payload })), { code: 'invalid_input' });
+  assert.throws(() => store.transitionRun(runArgs(run, { status: 'running', payload: containers[0] })), { code: 'invalid_input' });
+  assert.equal(store.getRun(runArgs(run)).status, 'queued');
+  assert.equal(store.listEvents(runArgs(run)).length, 1);
+});
+
+check('run requests reject provider histories, nested message containers and event-result containers', (t) => {
+  const { store, session } = fixture(t);
+  for (const request of [
+    { message: 'Public task', history: [{ role: 'assistant', content: 'private provider thought' }] },
+    { context: { role: 'assistant', content: 'private provider thought' } },
+    { message: { role: 'assistant', content: 'private provider thought' } },
+    { role: 'assistant', content: 'private provider thought' },
+    { result: { text: 'private provider thought' } },
+    { provider: { message: 'private provider thought' } },
+    { message: { text: 'private provider thought' } }
+  ]) assert.throws(() => store.createRun(args(session, { requestKey: 'private-request', request })), { code: 'invalid_input' });
+  assert.equal(store.listRuns(args(session)).length, 0);
+});
+
+check('event payload roots cannot spoof envelope identity while nested public IDs remain distinct', (t) => {
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'event-identity', request: {} }));
+  for (const [key, value] of Object.entries({ id: 'forged', runId: 'forged', sequence: 99, seq: 99, type: 'forged', createdAt: 0 })) {
+    assert.throws(() => store.appendEvent(runArgs(run, { type: 'progress', payload: { [key]: value } })), { code: 'invalid_input' });
+    assert.throws(() => store.transitionRun(runArgs(run, { status: 'running', payload: { [key]: value } })), { code: 'invalid_input' });
+  }
+  const event = store.appendEvent(runArgs(run, { type: 'tool_result', payload: {
+    toolName: 'get_news', sources: [{ id: 'public-news-id', title: 'Public source', url: 'https://example.com/a' }],
+    data: { id: 'public-topic-id', seq: 7, topicId: 'public-topic-id', changeType: 'updated' }
+  } }));
+  assert.notEqual(event.id, 'public-news-id');
+  assert.equal(event.sequence, 2);
+  assert.equal(event.payload.sources[0].id, 'public-news-id');
+  assert.equal(event.payload.data.seq, 7);
+  assert.equal(store.startRun(runArgs(run)).event.sequence, 3);
+  const final = store.transitionRun(runArgs(run, { status: 'completed', payload: { status: 'forged', answer: 'Public answer', verified: true } }));
+  assert.equal(final.event.payload.status, 'completed');
+});
+
 check('independent SQLite workers serialize duplicate runs, event sequences and source identity allocation', async (t) => {
   const { Worker } = require('node:worker_threads');
   const { store, session, dbPath } = fixture(t);
