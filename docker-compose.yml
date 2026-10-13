@@ -28,6 +28,8 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3002
+      # This compose file runs one fixed backend container; it is the sole startup recovery coordinator.
+      - AYA_AGENT_RECOVER_INTERRUPTED_RUNS=1
       - AYA_NEWS_SKILL_PATH=/opt/aya-news-skill/SKILL.md
       # Signal 的可选 Token、实例、社区与 Bridge 配置统一从 server/.env 透传；未配置时 L2/L3 保持未配置状态。
     env_file:

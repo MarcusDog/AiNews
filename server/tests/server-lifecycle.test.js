@@ -37,12 +37,92 @@ test('lifecycle flags do not infer behavior from NODE_ENV', () => {
   assert.deepEqual(getLifecycleFlags({ NODE_ENV: 'test' }), {
     disableCron: false,
     skipStartupRefresh: false,
+    recoverAgentRuns: false,
     signalSourceLimit: undefined
   });
+  assert.equal(getLifecycleFlags({ AYA_AGENT_RECOVER_INTERRUPTED_RUNS: '1' }).recoverAgentRuns, true);
+  for (const value of ['0', 'true', 'yes', '']) {
+    assert.equal(getLifecycleFlags({ AYA_AGENT_RECOVER_INTERRUPTED_RUNS: value }).recoverAgentRuns, false);
+  }
   assert.deepEqual(getLifecycleFlags({
-    NODE_ENV: 'production', AINEWS_DISABLE_CRON: '1', AINEWS_SKIP_STARTUP_REFRESH: '1',
+    NODE_ENV: 'production', AINEWS_DISABLE_CRON: '1', AINEWS_SKIP_STARTUP_REFRESH: '1', AYA_AGENT_RECOVER_INTERRUPTED_RUNS: '1',
     AINEWS_SIGNAL_SOURCE_LIMIT: '2'
-  }), { disableCron: true, skipStartupRefresh: true, signalSourceLimit: 2 });
+  }), { disableCron: true, skipStartupRefresh: true, recoverAgentRuns: true, signalSourceLimit: 2 });
+});
+
+test('recovery helper is a no-op unless exact explicit opt-in is set', () => {
+  const { recoverAgentRunsOnStartup } = require('../index');
+  let calls = 0;
+  assert.deepEqual(recoverAgentRunsOnStartup({ env: {}, store: { reconcileInterruptedRuns() { calls++; } } }), { recovered: 0, enabled: false });
+  assert.equal(calls, 0);
+  assert.deepEqual(recoverAgentRunsOnStartup({ env: { AYA_AGENT_RECOVER_INTERRUPTED_RUNS: '1' }, store: { reconcileInterruptedRuns() { calls++; return 3; } } }), { recovered: 3, enabled: true });
+  assert.equal(calls, 1);
+});
+
+test('sole-worker restart remains active with recovery off and is durably reconciled with recovery on', t => {
+  const makeInterruptedStore = name => {
+    const dbPath = path.join(lifecycleDirectory, `${name}.db`);
+    const previous = new AgentStore({ dbPath }).initialize();
+    const session = previous.createSession({ userId: name, title: 'Interrupted' });
+    const run = previous.createRun({ userId: name, sessionId: session.id, requestKey: `${name}-old`, request: { message: 'Old work' } });
+    previous.startRun({ userId: name, runId: run.id });
+    previous.close();
+    return { dbPath, run, userId: name };
+  };
+  const { recoverAgentRunsOnStartup } = require('../index');
+  const interruptedOff = makeInterruptedStore('restart-off');
+  const offStore = new AgentStore({ dbPath: interruptedOff.dbPath }).initialize();
+  t.after(() => offStore.close());
+  assert.deepEqual(recoverAgentRunsOnStartup({ env: { AYA_AGENT_RECOVER_INTERRUPTED_RUNS: '0' }, store: offStore }), { recovered: 0, enabled: false });
+  assert.equal(offStore.getRun({ userId: interruptedOff.userId, runId: interruptedOff.run.id }).status, 'running');
+
+  const interruptedOn = makeInterruptedStore('restart-on');
+  const onStore = new AgentStore({ dbPath: interruptedOn.dbPath }).initialize();
+  t.after(() => onStore.close());
+  assert.deepEqual(recoverAgentRunsOnStartup({ env: { AYA_AGENT_RECOVER_INTERRUPTED_RUNS: '1' }, store: onStore }), { recovered: 1, enabled: true });
+  assert.equal(onStore.getRun({ userId: interruptedOn.userId, runId: interruptedOn.run.id }).status, 'failed');
+  assert.equal(onStore.listEvents({ userId: interruptedOn.userId, runId: interruptedOn.run.id }).at(-1).type, 'recovered');
+  const next = onStore.createRun({ userId: interruptedOn.userId, sessionId: interruptedOn.run.sessionId, requestKey: 'restart-on-new', request: { message: 'Fresh work' } });
+  assert.equal(next.status, 'queued');
+});
+
+test('startup recovery errors are sanitized and abort the startup path', () => {
+  const { recoverAgentRunsOnStartup } = require('../index');
+  assert.throws(() => recoverAgentRunsOnStartup({
+    env: { AYA_AGENT_RECOVER_INTERRUPTED_RUNS: '1' },
+    store: { reconcileInterruptedRuns() { throw new Error('database secret detail'); } }
+  }), error => error.code === 'agent_run_recovery_failed' && !error.message.includes('database secret detail'));
+});
+
+test('startServer runs explicit recovery exactly once before accepting traffic', async t => {
+  const { startServer, server } = require('../index');
+  t.after(async () => {
+    if (server.listening) await new Promise(resolve => server.close(resolve));
+  });
+  const { EventEmitter } = require('node:events');
+  let calls = 0;
+  const fakeServer = new EventEmitter();
+  fakeServer.listen = (_port, callback) => {
+    assert.equal(calls, 1, 'recovery must finish before the listener starts');
+    fakeServer.listening = true;
+    callback();
+  };
+  fakeServer.address = () => ({ port: 3002 });
+  await startServer({
+    port: 0,
+    env: { NODE_ENV: 'test', AYA_AGENT_RECOVER_INTERRUPTED_RUNS: '1', AINEWS_DISABLE_CRON: '1', AINEWS_SKIP_STARTUP_REFRESH: '1' },
+    agentStore: { reconcileInterruptedRuns() { calls++; return 0; } },
+    server: fakeServer
+  });
+  assert.equal(calls, 1);
+});
+
+test('single-instance recovery defaults and deployment opt-in are documented', () => {
+  const envExample = fs.readFileSync(path.join(__dirname, '../.env.example'), 'utf8');
+  const compose = fs.readFileSync(path.join(__dirname, '../../docker-compose.yml'), 'utf8');
+  assert.match(envExample, /AYA_AGENT_RECOVER_INTERRUPTED_RUNS=0/);
+  assert.match(envExample, /single coordinator|单一.*协调者/i);
+  assert.match(compose, /AYA_AGENT_RECOVER_INTERRUPTED_RUNS=1/);
 });
 
 test('disabled cron registers no jobs; enabled cron registers all explicit schedules', () => {

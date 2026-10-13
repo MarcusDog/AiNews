@@ -330,8 +330,21 @@ function getLifecycleFlags(env = process.env) {
   return {
     disableCron: env.AINEWS_DISABLE_CRON === '1',
     skipStartupRefresh: env.AINEWS_SKIP_STARTUP_REFRESH === '1',
+    recoverAgentRuns: env.AYA_AGENT_RECOVER_INTERRUPTED_RUNS === '1',
     signalSourceLimit: Number.isInteger(parsedLimit) && parsedLimit > 0 ? parsedLimit : undefined
   };
+}
+
+function recoverAgentRunsOnStartup({ env = process.env, store = agentStore } = {}) {
+  if (!getLifecycleFlags(env).recoverAgentRuns) return { enabled: false, recovered: 0 };
+  try {
+    if (!store || typeof store.reconcileInterruptedRuns !== 'function') throw new Error('recovery unavailable');
+    return { enabled: true, recovered: store.reconcileInterruptedRuns() };
+  } catch {
+    const error = new Error('Agent run startup recovery failed.');
+    error.code = 'agent_run_recovery_failed';
+    throw error;
+  }
 }
 
 let recoveryTimer = null;
@@ -551,16 +564,18 @@ async function shutdown(options = {}) {
 
 async function startServer(options = {}) {
   const env = options.env || process.env;
+  recoverAgentRunsOnStartup({ env, store: options.agentStore || agentStore });
   registerProcessHandlers();
   scheduledJobs = registerCronJobs({ env });
+  const startupServer = options.server || server;
   await new Promise((resolve, reject) => {
-    server.once('error', reject);
-    server.listen(options.port || PORT, () => {
-      server.off('error', reject);
+    startupServer.once('error', reject);
+    startupServer.listen(options.port || PORT, () => {
+      startupServer.off('error', reject);
       resolve();
     });
   });
-  const address = server.address();
+  const address = startupServer.address();
   console.log(`🚀 AI资讯服务器 v2.0 运行在端口 ${address.port}`);
   console.log(`📱 健康检查: http://localhost:${address.port}/health`);
   console.log(`🔌 WebSocket: ws://localhost:${address.port}`);
@@ -592,6 +607,7 @@ module.exports = {
   youtubeWebSubService,
   securityConfig,
   getLifecycleFlags,
+  recoverAgentRunsOnStartup,
   initializeSystem,
   registerCronJobs,
   scheduleRecoveryInit,
