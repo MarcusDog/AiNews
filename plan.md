@@ -18,7 +18,7 @@
 | 1. Repository hygiene and dependency security | Complete | 22/22 targeted; 0 high/critical audit | Spec + quality approved |
 | 2. Request security configuration | Complete | 377/377 server; 26/26 targeted | Spec + quality approved |
 | 3. Typed read-tool registry | Complete | 412/412 server; 35/35 focused | Spec + quality approved |
-| 4. Model provider abstraction | Pending | provider/legacy Agent tests | Pending |
+| 4. Model provider abstraction | Complete | 474/474 server; 95/95 focused | Spec + quality approved |
 | 5. Agent persistence and evidence ledger | Pending | store/evidence tests | Pending |
 | 6. Bounded Agent runtime | Pending | runtime/eval tests | Pending |
 | 7. Persistent run API and SSE | Pending | route/stream tests | Pending |
@@ -203,15 +203,17 @@ Verified 2026-10-12 on Node 22.14.0. Initial RED runs covered registry contracts
 - Modify: `server/services/AgentService.js`
 - Modify: `server/tests/agent-service.test.js`
 
-- [ ] **Step 1: Verify the current MiniMax tool-call protocol from official provider documentation without exposing keys**
-- [ ] **Step 2: Write RED provider contract tests using the deterministic fake provider**
+- [x] **Step 1: Verify the current MiniMax tool-call protocol from official provider documentation without exposing keys**
+- [x] **Step 2: Write RED provider contract tests using the deterministic fake provider**
 
 Contract: `generate({ messages, tools, signal, limits }) -> { text, toolCalls, usage, stopReason }`.
 
-- [ ] **Step 3: Implement abort propagation, bounded retry time, capability flags, tool-call ID/order preservation, and response validation**
-- [ ] **Step 4: Extract citation audit and keep legacy chat/content/diversity behavior green**
-- [ ] **Step 5: Run provider and all legacy Agent/content tests**
-- [ ] **Step 6: Commit and update the delivery ledger**
+- [x] **Step 3: Implement abort propagation, bounded retry time, capability flags, tool-call ID/order preservation, and response validation**
+- [x] **Step 4: Extract citation audit and keep legacy chat/content/diversity behavior green**
+- [x] **Step 5: Run provider and all legacy Agent/content tests**
+- [x] **Step 6: Commit and update the delivery ledger**
+
+Verified 2026-10-13 on Node 22.14.0 against MiniMax's official Anthropic-compatible API and function-calling documentation without reading or exposing local credentials. Initial RED coverage established the provider-neutral result contract, deterministic fake provider, abort/timeout behavior, bounded retries, tool-call ordering, capability flags, response validation, and legacy Agent compatibility. Reviewer-driven RED cases then found and fixed four boundary defects: valid thinking-only `max_tokens` responses, replayable or forged continuation state, complete serialized request bodies exceeding the 2 MiB budget, and provider-specific wording in the shared system prompt. Continuations are now identity-bound, single-use conversation state with exact pending tool-result matching; private thinking blocks remain outside public projections. The primary focused run passed 95/95 and the isolated full server suite passed 474/474. Specification and code-quality reviews approved commits through `3ddc56e5`; no live provider request or API key was used.
 
 ### Task 5: Persist sessions, messages, runs, events, and stable evidence
 
