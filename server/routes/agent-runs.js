@@ -29,6 +29,9 @@ function optionalBoolean(value) {
 function runEventProjection(event) {
   return { sequence: event.sequence, type: event.type, payload: event.payload, createdAt: event.createdAt };
 }
+function hasOnlyEmptyBody(body) {
+  return body === undefined || (body !== null && typeof body === 'object' && !Array.isArray(body) && Object.keys(body).length === 0);
+}
 
 function createAgentRunsRouter({ store, runtime, requireUser = requireSessionUser, scopesForUser, eventStream, heartbeatMs } = {}) {
   if (!store || typeof store.createSession !== 'function') throw new TypeError('Agent routes require an AgentStore');
@@ -84,6 +87,7 @@ function createAgentRunsRouter({ store, runtime, requireUser = requireSessionUse
     catch (error) { safeError(res, error); }
   });
   router.post('/sessions/:sessionId/archive', (req, res) => {
+    if (!hasOnlyEmptyBody(req.body)) return res.status(400).json({ success: false, error: 'invalid_request' });
     try { res.status(200).json({ success: true, data: store.archiveSession({ userId: req.agentUserId, sessionId: req.params.sessionId }) }); }
     catch (error) { safeError(res, error); }
   });
@@ -148,9 +152,17 @@ function createAgentRunsRouter({ store, runtime, requireUser = requireSessionUse
   });
   router.get('/runs/:runId/events', (req, res) => {
     try {
+      const format = req.query.format;
+      const isJson = format === 'json';
+      const allowedKeys = isJson ? new Set(['format', 'since', 'limit']) : new Set(['format', 'since']);
+      if ((format !== undefined && format !== 'sse' && format !== 'json') ||
+          Object.keys(req.query).some(key => !allowedKeys.has(key)) ||
+          Object.values(req.query).some(value => typeof value !== 'string')) {
+        return res.status(400).json({ success: false, error: 'invalid_request' });
+      }
       // Ownership is checked before either representation starts.
       store.getRun({ userId: req.agentUserId, runId: req.params.runId });
-      if (req.query.format === 'json') {
+      if (isJson) {
         const limit = integer(req.query.limit, 100, 1, MAX_PAGE);
         let afterSequence;
         try { afterSequence = stream.parseCursor({ lastEventId: req.get('Last-Event-ID'), since: req.query.since }); }
@@ -165,6 +177,7 @@ function createAgentRunsRouter({ store, runtime, requireUser = requireSessionUse
     } catch (error) { safeError(res, error); }
   });
   router.post('/runs/:runId/cancel', (req, res) => {
+    if (!hasOnlyEmptyBody(req.body)) return res.status(400).json({ success: false, error: 'invalid_request' });
     try {
       const userId = req.agentUserId;
       const current = store.getRun({ userId, runId: req.params.runId });

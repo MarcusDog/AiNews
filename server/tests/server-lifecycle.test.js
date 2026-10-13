@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
+const { AgentStore } = require('../services/agent/agent-store');
 
 const indexPath = path.join(__dirname, '../index.js');
 const lifecycleDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'aya-server-lifecycle-'));
@@ -11,6 +12,24 @@ process.env.AINEWS_DB_PATH = path.join(lifecycleDirectory, 'lifecycle.db');
 test('server entrypoint guards listening behind require.main', () => {
   const source = fs.readFileSync(indexPath, 'utf8');
   assert.match(source, /if\s*\(require\.main\s*===\s*module\)/);
+});
+
+test('a second default server store does not recover a run owned by a live SQLite collaborator', t => {
+  const liveWorkerStore = new AgentStore({ dbPath: process.env.AINEWS_DB_PATH }).initialize();
+  const session = liveWorkerStore.createSession({ userId: 'live-worker', title: 'Still active' });
+  const run = liveWorkerStore.createRun({ userId: 'live-worker', sessionId: session.id, requestKey: 'live', request: { message: 'Keep running' } });
+  liveWorkerStore.startRun({ userId: 'live-worker', runId: run.id });
+  t.after(() => liveWorkerStore.close());
+
+  const previousNodeEnv = process.env.NODE_ENV;
+  process.env.NODE_ENV = 'test';
+  try { require('../index'); }
+  finally {
+    if (previousNodeEnv === undefined) delete process.env.NODE_ENV;
+    else process.env.NODE_ENV = previousNodeEnv;
+  }
+  assert.equal(liveWorkerStore.getRun({ userId: 'live-worker', runId: run.id }).status, 'running');
+  assert.equal(liveWorkerStore.listEvents({ userId: 'live-worker', runId: run.id }).some(event => event.type === 'recovered'), false);
 });
 
 test('lifecycle flags do not infer behavior from NODE_ENV', () => {

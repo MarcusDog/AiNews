@@ -66,6 +66,7 @@ test('session list, create, rename, archive, and message pagination are owner sc
   assert.equal((await f.request('GET', `/api/agent/sessions/${f.bob.id}`)).status, 404);
   assert.equal((await f.request('PATCH', `/api/agent/sessions/${f.bob.id}`, { body: { title: 'intrude' } })).status, 404);
   assert.equal((await f.request('POST', `/api/agent/sessions/${f.bob.id}/archive`)).status, 404);
+  assert.equal((await f.request('POST', `/api/agent/sessions/${id}/archive`, { body: { archive: true } })).status, 400);
   assert.equal((await f.request('POST', `/api/agent/sessions/${id}/archive`)).status, 200);
   assert.equal((await f.request('GET', `/api/agent/sessions/${id}`)).body.data.archived, true);
 });
@@ -104,7 +105,9 @@ test('run status, event pagination, cancellation and cross owner/run session acc
   const events = await f.request('GET', `/api/agent/runs/${run.id}/events?format=json&since=0&limit=1`);
   assert.equal(events.status, 200);
   assert.equal(events.body.data.items[0].sequence, 1);
-  assert.equal((await f.request('POST', `/api/agent/runs/${run.id}/cancel`)).status, 200);
+  assert.equal((await f.request('POST', `/api/agent/runs/${run.id}/cancel`, { body: { force: true } })).status, 400);
+  assert.equal(f.store.getRun({ userId: 'alice', runId: run.id }).status, 'queued');
+  assert.equal((await f.request('POST', `/api/agent/runs/${run.id}/cancel`, { body: {} })).status, 200);
   assert.equal(f.store.getRun({ userId: 'alice', runId: run.id }).status, 'cancelled');
   assert.equal((await f.request('POST', `/api/agent/runs/${run.id}/cancel`, { user: 'bob' })).status, 404);
 });
@@ -118,6 +121,11 @@ test('invalid bounds, malformed cursors, untrusted body scopes, and event cursor
   assert.equal((await f.request('GET', `/api/agent/runs/${run.id}/events?format=json&since=-1`)).status, 400);
   assert.equal((await f.request('GET', `/api/agent/runs/${run.id}/events?format=json&since=`)).status, 400);
   assert.equal((await f.request('GET', `/api/agent/runs/${run.id}/events?format=json&since=1`, { headers: { 'Last-Event-ID': '2' } })).status, 400);
+  for (const query of ['format=', 'format=nope', 'unknown=1', 'format=sse&limit=1', 'format=json&unknown=1']) {
+    const response = await fetch(`${await f.origin()}/api/agent/runs/${run.id}/events?${query}`, { headers: { 'x-test-user': 'alice' } });
+    assert.equal(response.status, 400, query);
+    await response.body?.cancel();
+  }
   const untrustedSession = f.store.createSession({ userId: 'alice', title: 'Untrusted body' });
   for (const body of [
     { message: 'Hi', userId: 'bob' }, { message: 'Hi', scopes: ['admin:*'] },
@@ -142,13 +150,17 @@ test('HTTP event endpoint serves owned resumable SSE with no-store', async t => 
   const f = fixture(t);
   const session = f.store.createSession({ userId: 'alice', title: 'SSE' });
   const run = f.store.createRun({ userId: 'alice', sessionId: session.id, requestKey: 'sse', request: { message: 'Question' } });
+  const jsonEvents = await f.request('GET', `/api/agent/runs/${run.id}/events?format=json&since=0`);
   const response = await fetch(`${await f.origin()}/api/agent/runs/${run.id}/events?since=0`, { headers: { 'x-test-user': 'alice' } });
   assert.equal(response.status, 200);
   assert.match(response.headers.get('content-type'), /text\/event-stream/);
   assert.match(response.headers.get('cache-control'), /no-store/);
   const reader = response.body.getReader();
   const first = await reader.read();
-  assert.match(new TextDecoder().decode(first.value), /id: 1\nevent: queued/);
+  const frame = new TextDecoder().decode(first.value);
+  assert.match(frame, /id: 1\nevent: queued/);
+  const event = JSON.parse(frame.match(/data: (.+)\n\n/)[1]);
+  assert.deepEqual(event, jsonEvents.body.data.items[0]);
   await reader.cancel();
 });
 

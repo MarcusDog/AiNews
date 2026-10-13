@@ -9,12 +9,13 @@ const { RunEventStream } = require('../services/agent/run-event-stream');
 
 function fixture(t, options = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'agent-stream-'));
-  const store = new AgentStore({ dbPath: path.join(dir, 'agent.db') }).initialize();
+  const dbPath = path.join(dir, 'agent.db');
+  const store = new AgentStore({ dbPath }).initialize();
   const session = store.createSession({ userId: 'alice', title: 'Stream' });
   const run = store.createRun({ userId: 'alice', sessionId: session.id, requestKey: 'stream', request: { message: 'Question' } });
   const stream = new RunEventStream({ store, heartbeatMs: 15, ...options });
   t.after(() => { stream.close?.(); store.close(); fs.rmSync(dir, { recursive: true, force: true }); });
-  return { store, session, run, stream };
+  return { dir, dbPath, store, session, run, stream };
 }
 class Request extends EventEmitter {}
 class Response extends EventEmitter {
@@ -37,9 +38,28 @@ test('SSE replays only durable owned events with sequence IDs and stable named p
   const { res, cleanup } = connect(f);
   assert.equal(res.headers['content-type'], 'text/event-stream; charset=utf-8');
   assert.match(res.headers['cache-control'], /no-store/);
-  assert.match(res.frames[0], /id: 1\nevent: queued\ndata: \{"sequence":1,"type":"queued","payload":\{"status":"queued"\}\}/);
+  assert.match(res.frames[0], /id: 1\nevent: queued\ndata: \{"sequence":1,"type":"queued","payload":\{"status":"queued"\},"createdAt":\d+\}/);
   assert.match(res.frames[1], /id: 2\nevent: progress/);
   assert.doesNotMatch(res.frames.join(''), /userId|requestKey|sessionId|secret/);
+  cleanup();
+});
+
+test('SSE polling sees other-store commits without duplicates or owner leakage', async t => {
+  const f = fixture(t, { pollMs: 10 });
+  const otherStore = new AgentStore({ dbPath: f.dbPath }).initialize();
+  t.after(() => otherStore.close());
+  const bobSession = otherStore.createSession({ userId: 'bob', title: 'Other owner' });
+  const bobRun = otherStore.createRun({ userId: 'bob', sessionId: bobSession.id, requestKey: 'private', request: { message: 'Private' } });
+  // Drain initial local wakeups before subscribing so only the new second-store
+  // commit can cause delivery; external writers have no shared listener set.
+  await new Promise(resolve => setImmediate(resolve));
+  const { res, cleanup } = connect(f, { afterSequence: 1 });
+  otherStore.startRun({ userId: 'alice', runId: f.run.id });
+  otherStore.appendEvent({ userId: 'alice', runId: f.run.id, type: 'progress', payload: { message: 'from second store' } });
+  otherStore.appendEvent({ userId: 'bob', runId: bobRun.id, type: 'progress', payload: { message: 'bob private event' } });
+  await waitFor(() => res.frames.some(frame => /from second store/.test(frame)));
+  assert.equal(res.frames.filter(frame => /from second store/.test(frame)).length, 1);
+  assert.doesNotMatch(res.frames.join(''), /bob private event|userId|requestKey/);
   cleanup();
 });
 
@@ -71,6 +91,27 @@ test('Last-Event-ID and query cursor accept only safe integers and reject confli
   assert.equal(f.stream.parseCursor({ lastEventId: '2', since: '2' }), 2);
 });
 
+test('SSE event projection includes the durable creation timestamp', t => {
+  const f = fixture(t);
+  const event = f.store.appendEvent({ userId: 'alice', runId: f.run.id, type: 'progress', payload: { message: 'Timed' } });
+  const { res, cleanup } = connect(f);
+  const frame = res.frames.find(item => item.includes('event: progress'));
+  const data = JSON.parse(frame.match(/data: (.+)\n\n/)[1]);
+  const jsonEvent = f.store.listEvents({ userId: 'alice', runId: f.run.id, afterSequence: 1, limit: 1 })[0];
+  assert.equal(data.createdAt, jsonEvent.createdAt);
+  assert.equal(data.createdAt, event.createdAt);
+  cleanup();
+});
+
+test('RunEventStream stops its polling timer on close', t => {
+  const f = fixture(t, { pollMs: 10 });
+  const { cleanup } = connect(f);
+  assert(f.stream.pollTimer);
+  f.stream.close();
+  assert.equal(f.stream.pollTimer, null);
+  cleanup();
+});
+
 test('heartbeats are comments and disconnect only removes listeners without cancelling execution', async t => {
   const f = fixture(t, { heartbeatMs: 10 });
   f.store.startRun({ userId: 'alice', runId: f.run.id });
@@ -85,20 +126,28 @@ test('heartbeats are comments and disconnect only removes listeners without canc
 });
 
 test('backpressure pauses database reads until drain and concurrent subscriptions clean up independently', async t => {
-  const f = fixture(t);
+  const f = fixture(t, { pollMs: 10 });
   f.store.appendEvent({ userId: 'alice', runId: f.run.id, type: 'progress', payload: { message: 'one' } });
-  const first = connect(f); const second = connect(f);
+  await new Promise(resolve => setImmediate(resolve));
+  let reads = 0;
+  const listEvents = f.store.listEvents.bind(f.store);
+  f.store.listEvents = (...args) => { reads++; return listEvents(...args); };
+  const first = connect(f);
   first.res.accept = false;
   f.store.appendEvent({ userId: 'alice', runId: f.run.id, type: 'progress', payload: { message: 'two' } });
-  await new Promise(resolve => setTimeout(resolve, 10));
+  await new Promise(resolve => setImmediate(resolve));
+  const readsAtBackpressure = reads;
+  await new Promise(resolve => setTimeout(resolve, 30));
+  assert.equal(reads, readsAtBackpressure);
   const firstBeforeDrain = first.res.frames.length;
-  second.req.emit('aborted');
   f.store.appendEvent({ userId: 'alice', runId: f.run.id, type: 'progress', payload: { message: 'three' } });
   first.res.accept = true;
   first.res.emit('drain');
   await waitFor(() => first.res.frames.some(frame => /event: progress/.test(frame) && /three/.test(frame)));
   assert(firstBeforeDrain <= 3);
   assert.match(first.res.frames.at(-1), /three/);
+  const second = connect(f);
+  second.req.emit('aborted');
   first.cleanup(); second.cleanup();
 });
 

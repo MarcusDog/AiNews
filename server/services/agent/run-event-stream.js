@@ -19,13 +19,15 @@ function cursor(value) {
 }
 
 class RunEventStream {
-  constructor({ store, heartbeatMs = 15_000, batchLimit = 100 } = {}) {
+  constructor({ store, heartbeatMs = 15_000, batchLimit = 100, pollMs = 1_000 } = {}) {
     if (!store || typeof store.listEvents !== 'function' || typeof store.getRun !== 'function') throw new TypeError('Run event stream requires an AgentStore');
-    if (!Number.isSafeInteger(heartbeatMs) || heartbeatMs < 10 || !Number.isSafeInteger(batchLimit) || batchLimit < 1 || batchLimit > 100) throw new TypeError('Invalid stream bounds');
+    if (!Number.isSafeInteger(heartbeatMs) || heartbeatMs < 10 || !Number.isSafeInteger(batchLimit) || batchLimit < 1 || batchLimit > 100 || !Number.isSafeInteger(pollMs) || pollMs < 10) throw new TypeError('Invalid stream bounds');
     this.store = store;
     this.heartbeatMs = heartbeatMs;
     this.batchLimit = batchLimit;
+    this.pollMs = pollMs;
     this.listeners = new Set();
+    this.pollTimer = null;
     this.unsubscribeStore = typeof store.onRunEvent === 'function' ? store.onRunEvent(event => this._notify(event)) : () => {};
   }
 
@@ -40,6 +42,21 @@ class RunEventStream {
     for (const listener of this.listeners) {
       if (listener.userId === event.userId && listener.runId === event.runId) listener.wake();
     }
+  }
+
+  _startPolling() {
+    if (this.pollTimer || this.listeners.size === 0) return;
+    this.pollTimer = setInterval(() => {
+      // The durable event table remains authoritative. Polling only wakes each
+      // subscriber to reread its own user/run-scoped page from the store.
+      for (const listener of this.listeners) listener.wake();
+    }, this.pollMs);
+    this.pollTimer.unref?.();
+  }
+
+  _stopPolling() {
+    if (this.pollTimer) clearInterval(this.pollTimer);
+    this.pollTimer = null;
   }
 
   connect({ userId, runId, req, res, afterSequence = 0 } = {}) {
@@ -58,6 +75,7 @@ class RunEventStream {
       closed = true;
       clearInterval(heartbeat);
       this.listeners.delete(listener);
+      if (this.listeners.size === 0) this._stopPolling();
       req?.removeListener('aborted', onRequestAborted);
       res.removeListener('close', cleanup);
       res.removeListener('drain', onDrain);
@@ -67,7 +85,7 @@ class RunEventStream {
     const end = () => { if (!closed) { cleanup(); res.end(); } };
     const write = event => {
       // The DB projection deliberately omits owner/session/request metadata.
-      const frame = `id: ${event.sequence}\nevent: ${event.type}\ndata: ${JSON.stringify({ sequence: event.sequence, type: event.type, payload: event.payload })}\n\n`;
+      const frame = `id: ${event.sequence}\nevent: ${event.type}\ndata: ${JSON.stringify({ sequence: event.sequence, type: event.type, payload: event.payload, createdAt: event.createdAt })}\n\n`;
       lastSent = event.sequence;
       if (res.write(frame) === false) {
         waitingDrain = true;
@@ -109,6 +127,7 @@ class RunEventStream {
     res.setHeader('X-Accel-Buffering', 'no');
     res.flushHeaders?.();
     this.listeners.add(listener);
+    this._startPolling();
     req?.once('aborted', onRequestAborted);
     res.once('close', cleanup);
     heartbeat = setInterval(() => {
@@ -129,6 +148,7 @@ class RunEventStream {
 
   close() {
     this.unsubscribeStore();
+    this._stopPolling();
     for (const listener of [...this.listeners]) listener.close();
   }
 }

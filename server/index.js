@@ -145,7 +145,9 @@ const { createSignalsRouter } = require('./routes/signals');
 const { newsSchedules } = require('./config/schedules');
 const cronOptions = { timezone: newsSchedules.timezone };
 const signalService = new SignalService();
-const agentStore = new AgentStore({ recoverOnInitialize: true });
+// Startup recovery is coordinated opt-in: multiple live workers may share this
+// database, so the default store must not mark another worker's runs failed.
+const agentStore = new AgentStore();
 agentStore.initialize();
 const agentRegistry = new ToolRegistry(createReadTools({
   newsService: require('./services/NewsService'),
