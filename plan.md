@@ -20,7 +20,7 @@
 | 3. Typed read-tool registry | Complete | 412/412 server; 35/35 focused | Spec + quality approved |
 | 4. Model provider abstraction | Complete | 474/474 server; 95/95 focused | Spec + quality approved |
 | 5. Agent persistence and evidence ledger | Complete | 536/536 server; 61/61 focused; 169/169 Agent | Spec + quality approved |
-| 6. Bounded Agent runtime | Pending | runtime/eval tests | Pending |
+| 6. Bounded Agent runtime | Complete | 619/619 server; 92/92 focused; 252/252 Agent | Spec + quality approved |
 | 7. Persistent run API and SSE | Pending | route/stream tests | Pending |
 | 8. `/agent` workbench | Pending | client Agent tests/build | Pending |
 | 9. Approval-gated subscription tool | Pending | approval/write-tool tests | Pending |
@@ -249,18 +249,20 @@ Verified 2026-10-13 on Node 22.14.0 with real temporary SQLite databases and no 
 - Create: `server/tests/agent-runtime.test.js`
 - Create: `server/tests/agent-evals.test.js`
 
-- [ ] **Step 1: Write RED scenarios for multi-step research, malformed calls, injection, errors, cancellation, loop detection, and citation failure**
-- [ ] **Step 2: Implement bounded orchestration**
+- [x] **Step 1: Write RED scenarios for multi-step research, malformed calls, injection, errors, cancellation, loop detection, and citation failure**
+- [x] **Step 2: Implement bounded orchestration**
 
 Initial hard limits: 6 model turns, 10 tool calls, 24 KiB per tool result, 120 seconds per run; repair attempts consume the same budget. Execute tools serially and cache identical read calls within a run.
 
-- [ ] **Step 3: Enforce policy outside prompts**
+- [x] **Step 3: Enforce policy outside prompts**
 
 Only registry tools are callable; scope/effect checks happen before execution. Prompt text cannot grant tools or permissions.
 
-- [ ] **Step 4: Preserve evidence identities and audit the final answer before storing `answer.completed`**
-- [ ] **Step 5: Run the deterministic evaluation suite and targeted regressions**
-- [ ] **Step 6: Commit and update the delivery ledger**
+- [x] **Step 4: Preserve evidence identities and audit the final answer before storing `answer.completed`**
+- [x] **Step 5: Run the deterministic evaluation suite and targeted regressions**
+- [x] **Step 6: Commit and update the delivery ledger**
+
+Verified 2026-10-13 on Node 22.14.0 with deterministic providers, temporary SQLite databases, no network, and no production credentials. The initial RED run established 59 scenarios with the runtime, policy, and atomic finalization APIs absent; the implementation reached 67/67 focused tests before independent review. Reviewer-driven RED rounds then reproduced unsupported claims being mislabeled as fact-verified, conflicting tool-local versus run-level `S#` identities, four successful URL-less platform-data tools collapsing to an insufficient-evidence response, and cached transient failures blocking recovery. The final runtime separates factual verification (`verified: false`) from internally derived citation-structure verification, removes local citation markers only from model-visible projections while preserving durable registry envelopes, retries failed identical reads while caching successful ones, and atomically derives bounded unverified structured answers from owned durable schema-valid tool results. Hard limits remain six model turns, ten serial tool calls, 24 KiB per model-visible tool result, and 120 seconds total; repair, cancellation, loop, scope, usage, timeout, rollback, ownership, and stable evidence behavior are covered. Final primary runs passed 92/92 focused tests, 252/252 Agent tests, and 619/619 isolated server tests with zero failures or skips. Specification and code-quality reviews approved commits through `4d98d76c` with no remaining P1/P2/P3 findings.
 
 ### Task 7: Expose authenticated persistent-run APIs and recoverable SSE
 
