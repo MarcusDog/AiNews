@@ -253,6 +253,7 @@ class AgentStore {
     this.db = options.db || null;
     this.ownsDb = !options.db;
     this.initialized = false;
+    this.runEventListeners = new Set();
     this.now = options.now || Date.now;
     this.retentionMs = options.retentionMs ?? 30 * 24 * 60 * 60 * 1000;
     if (options.recoverOnInitialize !== undefined && typeof options.recoverOnInitialize !== 'boolean') throw fail('invalid_input');
@@ -549,7 +550,21 @@ class AgentStore {
     const id = crypto.randomUUID(); const now = this._time();
     this.db.prepare('INSERT INTO agent_run_events(id,user_id,run_id,sequence,type,payload_json,created_at) VALUES(?,?,?,?,?,?,?)').run(id, userId, runId, sequence, type, JSON.stringify(payload), now);
     this.db.prepare('UPDATE agent_runs SET last_event_sequence=? WHERE id=? AND user_id=?').run(sequence, runId, userId);
-    return { id, runId, sequence, type, payload: JSON.parse(JSON.stringify(payload)), createdAt: now };
+    const event = { id, runId, sequence, type, payload: JSON.parse(JSON.stringify(payload)), createdAt: now };
+    // SQLite operations are synchronous: this microtask runs after the enclosing
+    // transaction commits. Subscribers receive only a wakeup hint; they reread
+    // the durable event table and never depend on an in-memory event copy.
+    queueMicrotask(() => {
+      for (const listener of this.runEventListeners) {
+        try { listener({ userId, runId, sequence }); } catch { /* notification is best effort */ }
+      }
+    });
+    return event;
+  }
+  onRunEvent(listener) {
+    if (typeof listener !== 'function') throw fail('invalid_input');
+    this.runEventListeners.add(listener);
+    return () => this.runEventListeners.delete(listener);
   }
   appendEvent(input) {
     fields(input, ['userId', 'runId', 'type', 'payload'], ['userId', 'runId', 'type', 'payload']);

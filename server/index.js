@@ -112,6 +112,10 @@ app.use(
     mountRawParser: false
   })
 );
+app.use('/api/agent', (req, res, next) => {
+  res.set('Cache-Control', 'no-store');
+  next();
+});
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
@@ -127,6 +131,12 @@ const authRoutes = require('./routes/auth');
 const userDataRoutes = require('./routes/userData');
 const { createContentRouter } = require('./routes/content');
 const agentRoutes = require('./routes/agent');
+const { createAgentRunsRouter } = require('./routes/agent-runs');
+const { AgentStore } = require('./services/agent/agent-store');
+const { AgentRuntime } = require('./services/agent/agent-runtime');
+const { MiniMaxProvider } = require('./services/agent/providers/minimax-provider');
+const { ToolRegistry } = require('./services/agent/tool-registry');
+const { createReadTools } = require('./services/agent/tools/read-tools');
 const adminRoutes = require('./routes/admin');
 const publicRoutes = require('./routes/public');
 const SignalService = require('./services/signals/signal-service');
@@ -135,6 +145,21 @@ const { createSignalsRouter } = require('./routes/signals');
 const { newsSchedules } = require('./config/schedules');
 const cronOptions = { timezone: newsSchedules.timezone };
 const signalService = new SignalService();
+const agentStore = new AgentStore({ recoverOnInitialize: true });
+agentStore.initialize();
+const agentRegistry = new ToolRegistry(createReadTools({
+  newsService: require('./services/NewsService'),
+  signalService,
+  creatorStore,
+  sourceRegistry: creatorSourceRegistry
+}));
+const agentRuntime = new AgentRuntime({ store: agentStore, provider: new MiniMaxProvider(), registry: agentRegistry });
+const agentScopes = [...new Set(agentRegistry.list().map(tool => tool.requiredScope))];
+const agentRunsRoutes = createAgentRunsRouter({
+  store: agentStore,
+  runtime: agentRuntime,
+  scopesForUser: () => agentScopes
+});
 const dailyRefreshService = new DailyRefreshService({
   newsService: require('./services/NewsService'),
   signalService,
@@ -150,6 +175,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/user-data', userDataRoutes);
 app.use('/api/content/v1', createContentRouter({ signalService }));
 app.use('/api/agent', agentRoutes);
+app.use('/api/agent', agentRunsRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/signals/v1', createSignalsRouter({ service: signalService }));
 app.use('/api/creators/v1/stream', createCreatorStreamRouter({ store: creatorStore }));
@@ -505,12 +531,14 @@ async function shutdown(options = {}) {
   scheduledJobs.forEach((job) => job.stop?.());
   scheduledJobs = [];
   io.close();
+  agentRunsRoutes.close();
   signalService.close();
   creatorStore.close();
   try {
     const DatabaseService = require('./services/DatabaseService');
-    await DatabaseService.close();
     if (server.listening) await new Promise((resolve) => server.close(resolve));
+    agentStore.close();
+    await DatabaseService.close();
     console.log('服务器已关闭');
     if (options.exit) process.exit(0);
   } catch (error) {
