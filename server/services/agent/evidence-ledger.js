@@ -26,7 +26,8 @@ class EvidenceLedger {
     if (!url) throw fail('invalid_input');
     data.url = url;
     return this.store._transaction(() => {
-      this.store._run(input.userId, input.runId);
+      const run = this.store._run(input.userId, input.runId);
+      if (['completed', 'failed', 'cancelled'].includes(run.status)) throw fail('run_terminal');
       const existing = this.store.db.prepare('SELECT * FROM agent_evidence WHERE user_id=? AND run_id=? AND source_identity=?').get(input.userId, input.runId, url);
       if (existing) return projection(existing);
       const number = this.store.db.prepare('SELECT COALESCE(MAX(source_number),0)+1 AS n FROM agent_evidence WHERE user_id=? AND run_id=?').get(input.userId, input.runId).n;

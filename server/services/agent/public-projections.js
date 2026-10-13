@@ -32,6 +32,7 @@ function publicUrl(value) {
     const host = url.hostname.replace(/^\[|\]$/g, '').replace(/\.$/, '');
     if (url.protocol !== 'https:' || url.username || url.password || url.port || net.isIP(host)
       || !host.includes('.') || /(^|\.)(localhost|local|internal|lan|home|invalid)$/.test(host)) return null;
+    url.hostname = host;
     const params = new URLSearchParams();
     const identities = identityParams(host, url.pathname);
     for (const [key, item] of url.searchParams) {

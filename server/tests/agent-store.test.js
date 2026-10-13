@@ -160,14 +160,14 @@ check('UTF-8 byte, JSON depth/node/list and pagination budgets prevent oversized
   const run = store.createRun(args(session, { requestKey: 'a', request: {} }));
   assert.throws(() => store.appendMessage(args(session, { role: 'user', content: '中'.repeat(Math.floor(LIMITS.textBytes / 3) + 1) })), { code: 'input_too_large' });
   let deep = {}; for (let i = 0; i < LIMITS.depth + 1; i++) deep = { result: deep };
-  for (const payload of [deep, { result: Array(LIMITS.listItems + 1).fill(1) }, { answer: 'a'.repeat(LIMITS.jsonBytes + 1) }, { result: Object.fromEntries(Array.from({ length: LIMITS.nodes + 1 }, (_, i) => [`k${i}`, i])) }]) {
-    assert.throws(() => store.appendEvent(runArgs(run, { type: 'progress', payload })), { code: 'input_too_large' });
+  for (const payload of [deep, { result: Array(LIMITS.listItems + 1).fill(1) }, { result: { answer: 'a'.repeat(LIMITS.jsonBytes + 1) } }, { result: Object.fromEntries(Array.from({ length: LIMITS.nodes + 1 }, (_, i) => [`k${i}`, i])) }]) {
+    assert.throws(() => store.appendEvent(runArgs(run, { type: 'tool_result', payload })), { code: 'input_too_large' });
   }
   assert.throws(() => store.listEvents(runArgs(run, { limit: LIMITS.pageItems + 1 })), { code: 'invalid_input' });
 });
 
-check('close/reopen recovers queued/running/awaiting approval exactly once', (t) => {
-  const { store, session } = fixture(t);
+check('close/reopen recovers queued/running/awaiting approval exactly once with coordinated opt-in', (t) => {
+  const { store, session } = fixture(t, { recoverOnInitialize: true });
   const runs = [store.createRun(args(session, { requestKey: 'a', request: {} }))];
   for (const status of ['running', 'awaiting_approval']) {
     const other = store.createSession({ userId: 'alice', title: status });
@@ -325,16 +325,166 @@ check('event payload roots cannot spoof envelope identity while nested public ID
     assert.throws(() => store.transitionRun(runArgs(run, { status: 'running', payload: { [key]: value } })), { code: 'invalid_input' });
   }
   const event = store.appendEvent(runArgs(run, { type: 'tool_result', payload: {
-    toolName: 'get_news', sources: [{ id: 'public-news-id', title: 'Public source', url: 'https://example.com/a' }],
-    data: { id: 'public-topic-id', seq: 7, topicId: 'public-topic-id', changeType: 'updated' }
+    toolName: 'get_topic_changes', sources: [{ id: 'public-news-id', title: 'Public source', url: 'https://example.com/a' }],
+    data: { items: [{ seq: 7, topicId: 'public-topic-id', changeType: 'updated', changedAt: '2026-10-13' }], expired: false, nextCursor: 7, oldestCursor: 1, latestCursor: 7 }
   } }));
   assert.notEqual(event.id, 'public-news-id');
   assert.equal(event.sequence, 2);
   assert.equal(event.payload.sources[0].id, 'public-news-id');
-  assert.equal(event.payload.data.seq, 7);
+  assert.equal(event.payload.data.items[0].seq, 7);
   assert.equal(store.startRun(runArgs(run)).event.sequence, 3);
   const final = store.transitionRun(runArgs(run, { status: 'completed', payload: { status: 'forged', answer: 'Public answer', verified: true } }));
   assert.equal(final.event.payload.status, 'completed');
+});
+
+check('two default owning live connections never recover each others active runs', (t) => {
+  const { store, session, dbPath } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'live-owned', request: {} }));
+  store.startRun(runArgs(run));
+  const second = new AgentStore({ dbPath }); t.after(() => second.close());
+  second.initialize();
+  assert.equal(second.getRun(runArgs(run)).status, 'running');
+  assert.equal(second.listEvents(runArgs(run)).length, 2);
+  second.close(); second.initialize();
+  assert.equal(store.getRun(runArgs(run)).status, 'running');
+});
+
+check('message pagination returns recent messages in insertion order and reaches all older messages', (t) => {
+  const { store, session } = fixture(t, { now: () => 1000 });
+  const messages = Array.from({ length: 123 }, (_, i) => store.appendMessage(args(session, { role: 'user', content: `message ${i}` })));
+  const recent = store.listMessages(args(session));
+  assert.deepEqual(recent.map(row => row.id), messages.slice(-50).map(row => row.id));
+  const all = []; let beforeMessageId;
+  for (;;) {
+    const input = args(session, { limit: 17 }); if (beforeMessageId) input.beforeMessageId = beforeMessageId;
+    const page = store.listMessages(input); if (!page.length) break;
+    all.unshift(...page); beforeMessageId = page[0].id;
+  }
+  assert.deepEqual(all.map(row => row.id), messages.map(row => row.id));
+  const other = store.createSession({ userId: 'alice', title: 'Other' });
+  const foreign = store.appendMessage(args(other, { role: 'user', content: 'Other' }));
+  for (const id of ['forged', foreign.id]) assert.throws(() => store.listMessages(args(session, { beforeMessageId: id })), { code: 'not_found' });
+  assert.throws(() => store.listMessages({ userId: 'bob', sessionId: session.id, beforeMessageId: messages[0].id }), { code: 'not_found' });
+});
+
+check('session and run pagination reaches 101+ same-time rows with owner/session scoped cursors', (t) => {
+  const { store, session } = fixture(t, { now: () => 1000 });
+  const sessions = [session];
+  for (let i = 0; i < 111; i++) sessions.push(store.createSession({ userId: 'alice', title: `Session ${i}` }));
+  const allSessions = []; let beforeSessionId;
+  for (;;) {
+    const input = { userId: 'alice', limit: 19 }; if (beforeSessionId) input.beforeSessionId = beforeSessionId;
+    const page = store.listSessions(input); if (!page.length) break;
+    allSessions.push(...page); beforeSessionId = page.at(-1).id;
+  }
+  assert.deepEqual(allSessions.map(row => row.id), sessions.map(row => row.id).reverse());
+  const foreign = store.createSession({ userId: 'bob', title: 'Other owner' });
+  for (const id of ['forged', foreign.id]) assert.throws(() => store.listSessions({ userId: 'alice', beforeSessionId: id }), { code: 'not_found' });
+  const runs = [];
+  for (let i = 0; i < 112; i++) {
+    const run = store.createRun(args(session, { requestKey: `run-${i}`, request: {} }));
+    runs.push(run); store.cancelRun(runArgs(run));
+  }
+  const allRuns = []; let beforeRunId;
+  for (;;) {
+    const input = args(session, { limit: 23 }); if (beforeRunId) input.beforeRunId = beforeRunId;
+    const page = store.listRuns(input); if (!page.length) break;
+    allRuns.push(...page); beforeRunId = page.at(-1).id;
+  }
+  assert.deepEqual(allRuns.map(row => row.id), runs.map(row => row.id).reverse());
+  const otherRun = store.createRun(args(sessions[1], { requestKey: 'other', request: {} }));
+  for (const id of ['forged', otherRun.id]) assert.throws(() => store.listRuns(args(session, { beforeRunId: id })), { code: 'not_found' });
+  assert.throws(() => store.listRuns({ userId: 'bob', sessionId: foreign.id, beforeRunId: runs[0].id }), { code: 'not_found' });
+});
+
+check('terminal runs reject associated messages while unrelated user conversation remains writable', (t) => {
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'terminal-message', request: {} }));
+  store.cancelRun(runArgs(run));
+  assert.throws(() => store.appendMessage(args(session, { runId: run.id, role: 'assistant', content: 'Too late' })), { code: 'run_terminal' });
+  assert.equal(store.listMessages(args(session)).length, 0);
+  store.appendMessage(args(session, { role: 'user', content: 'New question' }));
+  assert.equal(store.listMessages(args(session)).length, 1);
+});
+
+check('ordinary events cannot smuggle terminal state or unaudited drafts under any event type', (t) => {
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'no-draft', request: {} }));
+  for (const type of ['progress', 'tool_result', 'something_custom']) {
+    for (const payload of [{ status: 'completed' }, { answer: 'Unaudited draft' }, { verified: true }, { text: 'Unaudited draft' }, { error: { code: 'failed', message: 'Terminal error' } }]) {
+      assert.throws(() => store.appendEvent(runArgs(run, { type, payload })), { code: 'invalid_input' });
+    }
+  }
+  assert.throws(() => store.appendEvent(runArgs(run, { type: 'something_custom', payload: { result: { answer: 'Draft' } } })), { code: 'invalid_input' });
+  assert.equal(store.listEvents(runArgs(run)).length, 1);
+  assert.equal(store.appendEvent(runArgs(run, { type: 'something_custom', payload: { message: 'Searching public sources', step: 1 } })).sequence, 2);
+});
+
+check('transition payload schemas require audited completion and distinguish running/failure/cancellation', (t) => {
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'transition-contract', request: {} }));
+  assert.throws(() => store.transitionRun(runArgs(run, { status: 'running', payload: { answer: 'Draft', verified: true } })), { code: 'invalid_input' });
+  store.startRun(runArgs(run));
+  for (const status of ['failed', 'cancelled']) assert.throws(() => store.transitionRun(runArgs(run, { status, payload: { answer: 'Draft', verified: true } })), { code: 'invalid_input' });
+  for (const payload of [{ answer: 'Draft' }, { answer: 'Draft', verified: false }, { error: { code: 'failed', message: 'Error' } }]) assert.throws(() => store.transitionRun(runArgs(run, { status: 'completed', payload })), { code: 'invalid_input' });
+  assert.equal(store.listEvents(runArgs(run)).length, 2);
+  assert.equal(store.transitionRun(runArgs(run, { status: 'completed', payload: { answer: 'Audited public answer', verified: true, citationIds: ['S1'] } })).event.sequence, 3);
+});
+
+check('all eleven real tool contracts and registry result envelopes fit durable tool projections', async (t) => {
+  const { createReadTools } = require('../services/agent/tools/read-tools');
+  const { ToolRegistry } = require('../services/agent/tool-registry');
+  const { validate } = require('../services/agent/tool-schemas');
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'all-tools', request: {} }));
+  const sample = (schema, key = '') => {
+    if (schema.enum) return schema.enum[0];
+    const type = (Array.isArray(schema.type) ? schema.type : [schema.type]).find(item => item !== 'null');
+    if (type === 'object') return Object.fromEntries(Object.entries(schema.properties).map(([name, child]) => [name, sample(child, name)]));
+    if (type === 'array') return Array.from({ length: Math.max(schema.minItems || 0, Math.min(1, schema.maxItems)) }, () => sample(schema.items));
+    if (type === 'string') return /url$/i.test(key) ? 'https://example.com/public' : 'public';
+    if (type === 'boolean') return false;
+    if (type === 'integer' || type === 'number') return Math.max(0, schema.minimum);
+    return null;
+  };
+  const declarations = createReadTools().map(tool => ({ ...tool, execute: () => sample(tool.outputSchema) }));
+  assert.equal(declarations.length, 11);
+  const registry = new ToolRegistry(declarations);
+  for (const tool of registry.list()) {
+    const input = sample(tool.inputSchema);
+    assert(validate(tool.inputSchema, input), tool.name);
+    const result = await registry.execute(tool.name, input, { scopes: [tool.requiredScope] });
+    assert.equal(result.ok, true, tool.name);
+    const event = store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: tool.name, arguments: input, result } }));
+    assert.deepEqual(event.payload.result, result, tool.name);
+  }
+  const actualChanges = new ToolRegistry(createReadTools({ signalService: { listChanges: () => ({ items: [{ seq: 4, topicId: 't1', changeType: 'updated', changedAt: '2026-10-13' }], expired: false, nextCursor: 4, oldestCursor: 1, latestCursor: 4 }) } }));
+  const result = await actualChanges.execute('get_topic_changes', { since: 1, limit: 2 }, { scopes: ['signals:read'] });
+  assert.equal(result.ok, true);
+  assert.equal(store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'get_topic_changes', arguments: { since: 1, limit: 2 }, result } })).payload.result.data.items[0].seq, 4);
+});
+
+check('symbols, hidden fields and getters are rejected without reading accessors', (t) => {
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'descriptor-boundary', request: {} }));
+  const ownerGetter = { title: 'Owned' }; let reads = 0;
+  Object.defineProperty(ownerGetter, 'userId', { get() { reads++; return reads > 1 ? 'bob' : 'alice'; } });
+  assert.throws(() => store.createSession(ownerGetter), { code: 'invalid_input' });
+  assert.equal(reads, 0);
+  const hidden = { message: 'Public' }; Object.defineProperty(hidden, 'secret', { value: 'Private', enumerable: false });
+  const symbol = { message: 'Public', [Symbol('secret')]: 'Private' };
+  const array = ['Public']; Object.defineProperty(array, 'hidden', { value: 'Private' });
+  for (const payload of [hidden, symbol, { data: hidden }, { data: symbol }, { data: array }]) assert.throws(() => store.appendEvent(runArgs(run, { type: 'tool_result', payload })), { code: 'invalid_input' });
+  const input = args(session, { role: 'user', content: 'Public', [Symbol('owner')]: 'bob' });
+  assert.throws(() => store.appendMessage(input), { code: 'invalid_input' });
+});
+
+check('outer transactions are rejected instead of silently downgrading IMMEDIATE to SAVEPOINT', (t) => {
+  const { store, session } = fixture(t);
+  store.db.exec('BEGIN');
+  try { assert.throws(() => store.createRun(args(session, { requestKey: 'nested', request: {} })), { code: 'unsupported_transaction_context' }); }
+  finally { store.db.exec('ROLLBACK'); }
+  assert.equal(store.listRuns(args(session)).length, 0);
 });
 
 check('independent SQLite workers serialize duplicate runs, event sequences and source identity allocation', async (t) => {

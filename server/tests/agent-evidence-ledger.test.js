@@ -86,3 +86,20 @@ check('evidence counts are included in atomic retention and active evidence is p
   assert.equal(store.pruneRetention({ now: Date.now() + 100000000, retentionMs: 0 }).evidence, 1);
   assert.deepEqual(store.db.pragma('foreign_key_check'), []);
 });
+
+check('terminal evidence writes are rejected transactionally without assigning a source number', (t) => {
+  const { store, ledger, args, run } = fixture(t);
+  ledger.registerEvidence({ ...args, source: source() });
+  store.cancelRun({ userId: 'alice', runId: run.id });
+  assert.throws(() => ledger.registerEvidence({ ...args, source: source('https://example.com/b') }), { code: 'run_terminal' });
+  assert.throws(() => ledger.registerEvidence({ ...args, source: source() }), { code: 'run_terminal' });
+  assert.equal(ledger.listEvidence(args).length, 1);
+});
+
+check('trailing-dot public hosts normalize to the same source identity', (t) => {
+  const { ledger, args } = fixture(t);
+  assert.equal(ledger.registerEvidence({ ...args, source: source('https://example.com./a') }).citationId, 'S1');
+  assert.equal(ledger.registerEvidence({ ...args, source: source('https://example.com/a') }).citationId, 'S1');
+  assert.equal(ledger.listEvidence(args).length, 1);
+  assert.equal(ledger.listEvidence(args)[0].url, 'https://example.com/a');
+});

@@ -2,12 +2,16 @@ const Database = require('better-sqlite3');
 const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
+const { createReadTools } = require('./tools/read-tools');
+const { validate } = require('./tool-schemas');
+const { ERRORS } = require('./tool-registry');
 
 const LIMITS = Object.freeze({ textBytes: 32768, jsonBytes: 65536, depth: 8, nodes: 2048, listItems: 100, pageItems: 100 });
 const ACTIVE = ['queued', 'running', 'awaiting_approval'];
 const TERMINAL = ['completed', 'failed', 'cancelled'];
 const RESERVED_EVENTS = new Set([...ACTIVE, ...TERMINAL, 'recovered']);
 const PRIVATE_KEY = /(?:thinking|reasoning|credential|secret|password|authorization|cookie|token$|api.?key|provider.?content|private|raw|headers|payload.?json|request.?json)/i;
+const CONVERSATION_KEYS = new Set(['context', 'history', 'role', 'content', 'messages']);
 // Conversation containers never cross this boundary, including inside tool
 // results. Public user/assistant messages have their own agent_messages table.
 // Nested tool results must already be projected by the read-tool registry.
@@ -27,10 +31,25 @@ const PUBLIC_KEYS = new Set(`message mode skillId skillIds model provider
   keyword recentCount previousCount growth blindSpot blindSpotLabel confidence requiresApproval
   sessionId runId progress durationMs elapsedMs maxSteps maxTokens timeoutMs evidenceUrls`.split(/\s+/).filter(Boolean));
 const REQUEST_KEYS = new Set('message mode skillId skillIds model provider topic audience goal format query category since until limit maxSteps maxTokens timeoutMs'.split(' '));
-const EVENT_KEYS = new Set(`message text answer verified reason status code error notice toolName toolCallId name
-  arguments result data sources citationIds sourceIds usage step count total summary progress durationMs elapsedMs
-  requiresApproval evidenceUrls model provider`.split(/\s+/));
+const PROGRESS_KEYS = new Set('message summary step count total progress toolName toolCallId name durationMs elapsedMs code notice'.split(' '));
+const TOOL_RESULT_KEYS = new Set([...PROGRESS_KEYS, 'arguments', 'result', 'data', 'sources', 'citationIds', 'sourceIds', 'usage']);
+const TOOL_STARTED_KEYS = new Set([...PROGRESS_KEYS, 'arguments']);
+const TRANSITION_KEYS = {
+  running: new Set('status message summary step progress notice'.split(' ')),
+  completed: new Set('status answer verified sources citationIds sourceIds usage model provider'.split(' ')),
+  failed: new Set('status code error reason message'.split(' ')),
+  cancelled: new Set('status code error reason message'.split(' '))
+};
 const EVENT_TEXT_KEYS = new Set('message text answer reason status code notice toolName toolCallId name summary model provider'.split(' '));
+// Derive nested public keys from the same closed input/output contracts used by
+// the live registry; validate complete tool arguments/results below as well.
+const TOOL_CONTRACTS = new Map(createReadTools().map(({ name, inputSchema, outputSchema }) => [name, { inputSchema, outputSchema }]));
+function collectKeys(schema) {
+  if (schema.properties) for (const [key, child] of Object.entries(schema.properties)) { PUBLIC_KEYS.add(key); collectKeys(child); }
+  if (schema.items) collectKeys(schema.items);
+}
+for (const tool of TOOL_CONTRACTS.values()) { collectKeys(tool.inputSchema); collectKeys(tool.outputSchema); }
+PUBLIC_KEYS.add('ok');
 
 function fail(code) { const error = new Error(code); error.code = code; return error; }
 function text(value, max = LIMITS.textBytes, empty = false) {
@@ -41,9 +60,10 @@ function text(value, max = LIMITS.textBytes, empty = false) {
 function fields(input, allowed, required = []) {
   if (!input || typeof input !== 'object' || Array.isArray(input)
     || ![Object.prototype, null].includes(Object.getPrototypeOf(input))) throw fail('invalid_input');
-  const keys = Object.keys(input);
+  const keys = Reflect.ownKeys(input);
   if (keys.length > LIMITS.nodes) throw fail('input_too_large');
-  if (keys.some(key => !allowed.includes(key) || !Object.hasOwn(Object.getOwnPropertyDescriptor(input, key), 'value'))
+  if (keys.some(key => typeof key !== 'string' || !allowed.includes(key)
+      || !Object.getOwnPropertyDescriptor(input, key).enumerable || !Object.hasOwn(Object.getOwnPropertyDescriptor(input, key), 'value'))
     || required.some(key => !Object.hasOwn(input, key))) throw fail('invalid_input');
   return input;
 }
@@ -66,6 +86,9 @@ function publicJson(value, { allowedKeys = PUBLIC_KEYS, rootKeys = allowedKeys }
     let result;
     if (Array.isArray(item)) {
       if (item.length > LIMITS.listItems) throw fail('input_too_large');
+      const keys = Reflect.ownKeys(item);
+      if (keys.length !== item.length + 1 || keys.some(key => typeof key !== 'string'
+        || (key !== 'length' && (!/^(0|[1-9][0-9]*)$/.test(key) || !Object.getOwnPropertyDescriptor(item, key).enumerable)))) throw fail('invalid_input');
       result = [];
       for (let i = 0; i < item.length; i++) {
         const descriptor = Object.getOwnPropertyDescriptor(item, String(i));
@@ -74,15 +97,16 @@ function publicJson(value, { allowedKeys = PUBLIC_KEYS, rootKeys = allowedKeys }
       }
     } else {
       if (![Object.prototype, null].includes(Object.getPrototypeOf(item))) throw fail('invalid_input');
-      const keys = Object.keys(item);
+      const keys = Reflect.ownKeys(item);
       if (keys.length + nodes > LIMITS.nodes) throw fail('input_too_large');
+      if (keys.some(key => typeof key !== 'string')) throw fail('invalid_input');
       result = {};
       for (const key of keys.sort()) {
         bytes += Buffer.byteLength(key, 'utf8');
         if (bytes > LIMITS.jsonBytes) throw fail('input_too_large');
         const descriptor = Object.getOwnPropertyDescriptor(item, key);
-        if (PRIVATE_KEY.test(key) || !allowedKeys.has(key) || (depth === 0 && !rootKeys.has(key))
-          || !Object.hasOwn(descriptor, 'value')) throw fail('invalid_input');
+        if (PRIVATE_KEY.test(key) || CONVERSATION_KEYS.has(key) || !allowedKeys.has(key) || (depth === 0 && !rootKeys.has(key))
+          || !descriptor.enumerable || !Object.hasOwn(descriptor, 'value')) throw fail('invalid_input');
         // Scalar display metadata must not become an alternate nested provider
         // or message container under otherwise-public data/result projections.
         if (['provider', 'model', 'message', 'text'].includes(key) && typeof descriptor.value !== 'string') throw fail('invalid_input');
@@ -111,12 +135,63 @@ function publicRequest(value) {
   return request;
 }
 
-function publicEvent(value) {
-  const payload = publicJson(value, { rootKeys: EVENT_KEYS });
+function publicEvent(value, rootKeys) {
+  const payload = publicJson(value, { rootKeys });
   if (!payload || typeof payload !== 'object' || Array.isArray(payload)) throw fail('invalid_input');
   for (const [key, item] of Object.entries(payload)) {
     if (EVENT_TEXT_KEYS.has(key)) text(item, LIMITS.jsonBytes, true);
     if (['verified', 'requiresApproval'].includes(key) && typeof item !== 'boolean') throw fail('invalid_input');
+  }
+  return payload;
+}
+
+function publicSources(value) {
+  if (!Array.isArray(value)) throw fail('invalid_input');
+  for (const source of value) {
+    fields(source, ['id', 'title', 'url', 'source', 'summary', 'publishedAt', 'category', 'evidenceType', 'region', 'claimBoundary', 'citationId'], ['title', 'url']);
+    for (const [key, item] of Object.entries(source)) text(item, key === 'url' ? 2048 : 4000, true);
+  }
+}
+function publicUsage(value) {
+  fields(value, ['inputTokens', 'outputTokens', 'totalTokens']);
+  if (Object.values(value).some(item => !Number.isSafeInteger(item) || item < 0)) throw fail('invalid_input');
+}
+function publicOrdinaryEvent(type, value) {
+  const roots = type === 'tool_result' ? TOOL_RESULT_KEYS : ['tool_started', 'tool_call'].includes(type) ? TOOL_STARTED_KEYS : PROGRESS_KEYS;
+  const payload = publicEvent(value, roots);
+  if (['tool_result', 'tool_started', 'tool_call'].includes(type)) {
+    const tool = TOOL_CONTRACTS.get(payload.toolName);
+    if (!tool) throw fail('invalid_input');
+    if (Object.hasOwn(payload, 'arguments') && !validate(tool.inputSchema, payload.arguments)) throw fail('invalid_input');
+    if (Object.hasOwn(payload, 'data') && !validate(tool.outputSchema, payload.data)) throw fail('invalid_input');
+    if (Object.hasOwn(payload, 'result')) {
+      const result = payload.result;
+      fields(result, ['ok', 'data', 'error'], ['ok']);
+      if (result.ok === true) {
+        fields(result, ['ok', 'data'], ['ok', 'data']);
+        if (!validate(tool.outputSchema, result.data)) throw fail('invalid_input');
+      } else if (result.ok === false) {
+        fields(result, ['ok', 'error'], ['ok', 'error']); fields(result.error, ['code', 'message'], ['code', 'message']);
+        if (!Object.hasOwn(ERRORS, result.error.code) || result.error.message !== ERRORS[result.error.code]) throw fail('invalid_input');
+      } else throw fail('invalid_input');
+    }
+  }
+  if (Object.hasOwn(payload, 'sources')) publicSources(payload.sources);
+  if (Object.hasOwn(payload, 'usage')) publicUsage(payload.usage);
+  return payload;
+}
+function publicTransition(status, value) {
+  if (!Object.hasOwn(TRANSITION_KEYS, status)) throw fail('invalid_transition');
+  const payload = publicEvent(value, TRANSITION_KEYS[status]);
+  if (status === 'completed' && ['answer', 'verified', 'sources', 'citationIds', 'sourceIds'].some(key => Object.hasOwn(payload, key))
+    && payload.verified !== true) throw fail('invalid_input');
+  if (Object.hasOwn(payload, 'error')) {
+    fields(payload.error, ['code', 'message'], ['code', 'message']); text(payload.error.code, 200); text(payload.error.message, 2000);
+  }
+  if (Object.hasOwn(payload, 'sources')) publicSources(payload.sources);
+  if (Object.hasOwn(payload, 'usage')) publicUsage(payload.usage);
+  for (const key of ['citationIds', 'sourceIds']) if (Object.hasOwn(payload, key)) {
+    if (!Array.isArray(payload[key]) || payload[key].some(id => typeof id !== 'string' || !/^S[1-9][0-9]{0,9}$/.test(id))) throw fail('invalid_input');
   }
   return payload;
 }
@@ -133,10 +208,10 @@ const eventProjection = row => ({ id: row.id, runId: row.run_id, sequence: row.s
 
 /** Synchronous SQLite boundary. All business operations require authenticated userId.
  * Inject a shared DatabaseService.db after its initialization, or use dbPath. A
- * single owning store initializes/reconciles at server startup before accepting
- * work. Injected connections default to no recovery; an explicit true opt-in
- * is reserved for the application's single startup coordinator. Additional
- * independently opened live connections must set recoverOnInitialize: false.
+ * recovery is universally opt-in. Only a coordinated single startup process
+ * may explicitly reconcile interrupted work before accepting requests. Rolling
+ * deployments and concurrent live connections must never opt in casually:
+ * without a lease this would terminate runs owned by another live process.
  */
 class AgentStore {
   constructor(options = {}) {
@@ -147,7 +222,7 @@ class AgentStore {
     this.now = options.now || Date.now;
     this.retentionMs = options.retentionMs ?? 30 * 24 * 60 * 60 * 1000;
     if (options.recoverOnInitialize !== undefined && typeof options.recoverOnInitialize !== 'boolean') throw fail('invalid_input');
-    this.recoverOnInitialize = options.recoverOnInitialize ?? this.ownsDb;
+    this.recoverOnInitialize = options.recoverOnInitialize ?? false;
     this._retention(this.retentionMs);
   }
 
@@ -215,15 +290,20 @@ class AgentStore {
   _owner(userId) { return text(userId, 200); }
   _session(userId, sessionId) {
     this._ready(); this._owner(userId); text(sessionId, 200);
-    const row = this.db.prepare('SELECT * FROM agent_sessions WHERE id=? AND user_id=?').get(sessionId, userId);
+    const row = this.db.prepare('SELECT rowid AS cursor_order,* FROM agent_sessions WHERE id=? AND user_id=?').get(sessionId, userId);
     if (!row) throw fail('not_found'); return row;
   }
   _run(userId, runId) {
     this._ready(); this._owner(userId); text(runId, 200);
-    const row = this.db.prepare('SELECT * FROM agent_runs WHERE id=? AND user_id=?').get(runId, userId);
+    const row = this.db.prepare('SELECT rowid AS cursor_order,* FROM agent_runs WHERE id=? AND user_id=?').get(runId, userId);
     if (!row) throw fail('not_found'); return row;
   }
-  _transaction(callback) { this._ready(); return this.db.transaction(callback).immediate(); }
+  _transaction(callback) {
+    if (this.db?.inTransaction) throw fail('unsupported_transaction_context');
+    this._ready();
+    if (this.db.inTransaction) throw fail('unsupported_transaction_context');
+    return this.db.transaction(callback).immediate();
+  }
 
   createSession(input) {
     fields(input, ['userId', 'title'], ['userId']); this._owner(input.userId);
@@ -234,10 +314,13 @@ class AgentStore {
   }
   getSession(input) { fields(input, ['userId', 'sessionId'], ['userId', 'sessionId']); return sessionProjection(this._session(input.userId, input.sessionId)); }
   listSessions(input) {
-    fields(input, ['userId', 'limit', 'includeArchived'], ['userId']); this._owner(input.userId); const limit = page(input);
+    fields(input, ['userId', 'limit', 'includeArchived', 'beforeSessionId'], ['userId']); this._owner(input.userId); const limit = page(input);
     if (input.includeArchived !== undefined && typeof input.includeArchived !== 'boolean') throw fail('invalid_input');
     this._ready();
-    return this.db.prepare('SELECT * FROM agent_sessions WHERE user_id=? AND (?=1 OR archived=0) ORDER BY updated_at DESC,id LIMIT ?').all(input.userId, input.includeArchived ? 1 : 0, limit).map(sessionProjection);
+    const anchor = input.beforeSessionId === undefined ? null : this._session(input.userId, input.beforeSessionId);
+    return this.db.prepare(`SELECT * FROM agent_sessions WHERE user_id=? AND (?=1 OR archived=0)
+      AND (? IS NULL OR updated_at<? OR (updated_at=? AND rowid<?)) ORDER BY updated_at DESC,rowid DESC LIMIT ?`)
+      .all(input.userId, input.includeArchived ? 1 : 0, anchor?.updated_at ?? null, anchor?.updated_at ?? null, anchor?.updated_at ?? null, anchor?.cursor_order ?? null, limit).map(sessionProjection);
   }
   updateSessionTitle(input) {
     fields(input, ['userId', 'sessionId', 'title'], ['userId', 'sessionId', 'title']);
@@ -261,7 +344,11 @@ class AgentStore {
     const content = text(input.content); if (!['user', 'assistant'].includes(input.role)) throw fail('invalid_input');
     return this._transaction(() => {
       this._session(input.userId, input.sessionId);
-      if (input.runId !== undefined && this._run(input.userId, input.runId).session_id !== input.sessionId) throw fail('not_found');
+      if (input.runId !== undefined) {
+        const run = this._run(input.userId, input.runId);
+        if (run.session_id !== input.sessionId) throw fail('not_found');
+        if (TERMINAL.includes(run.status)) throw fail('run_terminal');
+      }
       const id = crypto.randomUUID(); const now = this._time();
       this.db.prepare('INSERT INTO agent_messages(id,user_id,session_id,run_id,role,content,created_at) VALUES(?,?,?,?,?,?,?)').run(id, input.userId, input.sessionId, input.runId ?? null, input.role, content, now);
       this.db.prepare('UPDATE agent_sessions SET updated_at=? WHERE id=? AND user_id=?').run(now, input.sessionId, input.userId);
@@ -274,8 +361,16 @@ class AgentStore {
     if (!row) throw fail('not_found'); return messageProjection(row);
   }
   listMessages(input) {
-    fields(input, ['userId', 'sessionId', 'limit'], ['userId', 'sessionId']); this._session(input.userId, input.sessionId);
-    return this.db.prepare('SELECT * FROM agent_messages WHERE user_id=? AND session_id=? ORDER BY created_at,rowid LIMIT ?').all(input.userId, input.sessionId, page(input)).map(messageProjection);
+    fields(input, ['userId', 'sessionId', 'limit', 'beforeMessageId'], ['userId', 'sessionId']); this._session(input.userId, input.sessionId);
+    let anchor = null;
+    if (input.beforeMessageId !== undefined) {
+      text(input.beforeMessageId, 200);
+      anchor = this.db.prepare('SELECT rowid AS cursor_order,* FROM agent_messages WHERE id=? AND user_id=? AND session_id=?').get(input.beforeMessageId, input.userId, input.sessionId);
+      if (!anchor) throw fail('not_found');
+    }
+    return this.db.prepare(`SELECT * FROM (SELECT rowid AS cursor_order,* FROM agent_messages WHERE user_id=? AND session_id=?
+      AND (? IS NULL OR created_at<? OR (created_at=? AND rowid<?)) ORDER BY created_at DESC,rowid DESC LIMIT ?)
+      ORDER BY created_at,cursor_order`).all(input.userId, input.sessionId, anchor?.created_at ?? null, anchor?.created_at ?? null, anchor?.created_at ?? null, anchor?.cursor_order ?? null, page(input)).map(messageProjection);
   }
   createRun(input) {
     fields(input, ['userId', 'sessionId', 'requestKey', 'request'], ['userId', 'sessionId', 'requestKey', 'request']);
@@ -296,8 +391,12 @@ class AgentStore {
   }
   getRun(input) { fields(input, ['userId', 'runId'], ['userId', 'runId']); return runProjection(this._run(input.userId, input.runId)); }
   listRuns(input) {
-    fields(input, ['userId', 'sessionId', 'limit'], ['userId', 'sessionId']); this._session(input.userId, input.sessionId);
-    return this.db.prepare('SELECT * FROM agent_runs WHERE user_id=? AND session_id=? ORDER BY created_at DESC,id LIMIT ?').all(input.userId, input.sessionId, page(input)).map(runProjection);
+    fields(input, ['userId', 'sessionId', 'limit', 'beforeRunId'], ['userId', 'sessionId']); this._session(input.userId, input.sessionId);
+    const anchor = input.beforeRunId === undefined ? null : this._run(input.userId, input.beforeRunId);
+    if (anchor && anchor.session_id !== input.sessionId) throw fail('not_found');
+    return this.db.prepare(`SELECT * FROM agent_runs WHERE user_id=? AND session_id=?
+      AND (? IS NULL OR created_at<? OR (created_at=? AND rowid<?)) ORDER BY created_at DESC,rowid DESC LIMIT ?`)
+      .all(input.userId, input.sessionId, anchor?.created_at ?? null, anchor?.created_at ?? null, anchor?.created_at ?? null, anchor?.cursor_order ?? null, page(input)).map(runProjection);
   }
   findRunByRequestKey(input) {
     fields(input, ['userId', 'sessionId', 'requestKey'], ['userId', 'sessionId', 'requestKey']);
@@ -310,7 +409,7 @@ class AgentStore {
   cancelRun(input) { fields(input, ['userId', 'runId', 'payload'], ['userId', 'runId']); return this.transitionRun({ ...input, status: 'cancelled' }); }
   transitionRun(input) {
     fields(input, ['userId', 'runId', 'status', 'payload'], ['userId', 'runId', 'status']);
-    const payload = publicEvent(input.payload ?? {});
+    const payload = publicTransition(input.status, input.payload ?? {});
     return this._transaction(() => {
       const run = this._run(input.userId, input.runId);
       const allowed = run.status === 'queued' ? ['running', 'failed', 'cancelled']
@@ -334,7 +433,7 @@ class AgentStore {
   appendEvent(input) {
     fields(input, ['userId', 'runId', 'type', 'payload'], ['userId', 'runId', 'type', 'payload']);
     if (typeof input.type !== 'string' || !/^[a-z][a-z0-9_.:-]{0,79}$/.test(input.type) || RESERVED_EVENTS.has(input.type)) throw fail('invalid_input');
-    const payload = publicEvent(input.payload);
+    const payload = publicOrdinaryEvent(input.type, input.payload);
     return this._transaction(() => {
       if (TERMINAL.includes(this._run(input.userId, input.runId).status)) throw fail('run_terminal');
       return this._insertEvent(input.userId, input.runId, input.type, payload);
