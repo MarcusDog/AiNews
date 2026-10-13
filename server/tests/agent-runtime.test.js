@@ -42,6 +42,14 @@ test('runtime and policy implement the offline orchestration contract', () => {
   assert.equal(typeof ToolPolicy, 'function', 'ToolPolicy is missing');
 });
 
+check('runtime reports its successful durable claim exactly once', async t => {
+  const f = fixture(t, [response()]);
+  let claims = 0;
+  const result = await f.runtime.run({ ...f.input, onClaim() { claims++; } });
+  assert.equal(result.run.status, 'completed');
+  assert.equal(claims, 1);
+});
+
 check('multi-step research persists owned public events, final message, exact citations and usage', async t => {
   const f = fixture(t, [response('', [call()]), response('', [call('c2', 'search_news', { q: 'AI' })]), response()]);
   const result = await f.runtime.run(f.input);

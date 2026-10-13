@@ -3,6 +3,7 @@ const { requireSessionUser } = require('../middleware/sessionAuth');
 const { RunEventStream } = require('../services/agent/run-event-stream');
 
 const MAX_PAGE = 100;
+const RUN_STATUS_POLL_MS = 100;
 const TERMINAL = new Set(['completed', 'failed', 'cancelled']);
 const errorStatus = Object.freeze({
   invalid_input: 400, input_too_large: 413, not_found: 404, active_run_exists: 409,
@@ -128,19 +129,40 @@ function createAgentRunsRouter({ store, runtime, requireUser = requireSessionUse
       const run = store.createRun({ userId, sessionId: req.params.sessionId, requestKey, request: { message: body.message } });
       if (run.status === 'queued' && !controllers.has(run.id)) {
         const controller = new AbortController();
-        controllers.set(run.id, controller);
-        setImmediate(() => Promise.resolve().then(() => runtime.run({ userId, sessionId: run.sessionId, runId: run.id, scopes, signal: controller.signal }))
+        const execution = { controller, claimed: false, statusPoll: null };
+        controllers.set(run.id, execution);
+        const onClaim = () => {
+          if (execution.claimed) return;
+          execution.claimed = true;
+          execution.statusPoll = setInterval(() => {
+            try {
+              if (store.getRun({ userId, runId: run.id }).status !== 'running') controller.abort();
+            } catch { controller.abort(); }
+          }, RUN_STATUS_POLL_MS);
+          execution.statusPoll.unref?.();
+        };
+        const failIfOwnedOrUnclaimed = () => {
+          const current = store.getRun({ userId, runId: run.id });
+          // A durable row is terminalized only by the worker that received its
+          // successful atomic-claim callback. An unclaimed queued row stays
+          // retryable; a running row may belong to a different process.
+          if (execution.claimed && !TERMINAL.has(current.status)) {
+            store.transitionRun({ userId, runId: run.id, status: 'failed', payload: { code: 'runtime_failed', message: 'Agent execution failed.' } });
+          }
+        };
+        setImmediate(() => Promise.resolve().then(() => runtime.run({ userId, sessionId: run.sessionId, runId: run.id, scopes, signal: controller.signal, onClaim }))
           .then(() => {
-            const current = store.getRun({ userId, runId: run.id });
-            if (!TERMINAL.has(current.status)) store.transitionRun({ userId, runId: run.id, status: 'failed', payload: { code: 'runtime_failed', message: 'Agent execution failed.' } });
+            failIfOwnedOrUnclaimed();
           })
           .catch(() => {
             try {
-              const current = store.getRun({ userId, runId: run.id });
-              if (!TERMINAL.has(current.status)) store.transitionRun({ userId, runId: run.id, status: 'failed', payload: { code: 'runtime_failed', message: 'Agent execution failed.' } });
+              failIfOwnedOrUnclaimed();
             } catch { /* keep runtime failures private */ }
           })
-          .finally(() => controllers.delete(run.id)));
+          .finally(() => {
+            clearInterval(execution.statusPoll);
+            if (controllers.get(run.id) === execution) controllers.delete(run.id);
+          }));
       }
       res.status(202).json({ success: true, data: run });
     } catch (error) { safeError(res, error); }
@@ -184,7 +206,7 @@ function createAgentRunsRouter({ store, runtime, requireUser = requireSessionUse
       if (!TERMINAL.has(current.status)) {
         try {
           store.cancelRun({ userId, runId: req.params.runId, payload: { code: 'cancelled', message: 'Agent run cancelled.' } });
-          controllers.get(current.id)?.abort();
+          controllers.get(current.id)?.controller.abort();
         } catch (error) {
           if (error.code !== 'invalid_transition') throw error;
           const latest = store.getRun({ userId, runId: req.params.runId });
@@ -196,7 +218,10 @@ function createAgentRunsRouter({ store, runtime, requireUser = requireSessionUse
   });
 
   router.close = () => {
-    for (const controller of controllers.values()) controller.abort();
+    for (const execution of controllers.values()) {
+      execution.controller.abort();
+      clearInterval(execution.statusPoll);
+    }
     controllers.clear();
     stream.close?.();
   };

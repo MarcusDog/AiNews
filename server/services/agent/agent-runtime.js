@@ -100,8 +100,9 @@ class AgentRuntime {
   async run(input) {
     let limits; let scopes;
     try {
-      fields(input, ['userId', 'sessionId', 'runId', 'scopes', 'signal', 'limits'], ['userId', 'sessionId', 'runId', 'scopes']);
+      fields(input, ['userId', 'sessionId', 'runId', 'scopes', 'signal', 'limits', 'onClaim'], ['userId', 'sessionId', 'runId', 'scopes']);
       if (input.signal !== undefined && !(input.signal instanceof AbortSignal)) throw new Error();
+      if (input.onClaim !== undefined && typeof input.onClaim !== 'function') throw new Error();
       scopes = jsonValue(input.scopes);
       this.#policy.declarations({ scopes }); limits = bounds(input.limits);
     } catch { throw new RuntimeError('invalid_input'); }
@@ -117,6 +118,7 @@ class AgentRuntime {
     }
     // Claim is atomic. Losing a claim must not fail somebody else's running run.
     try { this.#store.startRun(owner); } catch { throw new RuntimeError('invalid_run_state'); }
+    input.onClaim?.();
     const controller = new AbortController();
     const started = performance.now(); const deadline = started + limits.timeoutMs;
     let expired = false;

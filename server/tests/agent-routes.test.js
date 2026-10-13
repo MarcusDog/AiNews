@@ -8,23 +8,20 @@ const path = require('node:path');
 const { AgentStore } = require('../services/agent/agent-store');
 const { createAgentRunsRouter } = require('../routes/agent-runs');
 
-function fixture(t, { runtime } = {}) {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'agent-routes-'));
-  const store = new AgentStore({ dbPath: path.join(dir, 'agent.db') }).initialize();
-  const alice = store.createSession({ userId: 'alice', title: 'Alice research' });
-  const bob = store.createSession({ userId: 'bob', title: 'Bob secret' });
+function workerFixture(t, dbPath, { runtime } = {}) {
+  const store = new AgentStore({ dbPath }).initialize();
+  const workerRuntime = typeof runtime === 'function' ? runtime(store) : runtime;
   const app = express();
   app.use(express.json());
   const router = createAgentRunsRouter({
     store,
-    runtime: runtime || { async run(input) { store.startRun({ userId: input.userId, runId: input.runId }); } },
+    runtime: workerRuntime || { async run(input) { store.startRun({ userId: input.userId, runId: input.runId }); input.onClaim?.(); } },
     requireUser: (req, res, next) => { if (req.headers['x-test-user']) req.authUser = { id: req.headers['x-test-user'] }; next(); },
     scopesForUser: () => ['news:read', 'signals:read', 'content:read', 'creators:read']
   });
   app.use('/api/agent', router);
   const server = http.createServer(app);
   server.listen(0);
-  t.after(() => { server.close(); store.close(); fs.rmSync(dir, { recursive: true, force: true }); });
   const origin = async () => {
     await new Promise(resolve => server.listening ? resolve() : server.once('listening', resolve));
     return `http://127.0.0.1:${server.address().port}`;
@@ -36,7 +33,21 @@ function fixture(t, { runtime } = {}) {
     });
     return { status: response.status, headers: response.headers, body: response.status === 204 ? null : await response.json() };
   };
-  return { store, alice, bob, request, origin, router };
+  return { store, request, origin, router, server };
+}
+
+function fixture(t, { runtime } = {}) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'agent-routes-'));
+  const dbPath = path.join(dir, 'agent.db');
+  const worker = workerFixture(t, dbPath, { runtime });
+  const alice = worker.store.createSession({ userId: 'alice', title: 'Alice research' });
+  const bob = worker.store.createSession({ userId: 'bob', title: 'Bob secret' });
+  const workers = [worker];
+  t.after(() => {
+    for (const current of workers) { current.router.close(); current.server.close(); current.store.close(); }
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+  return { ...worker, alice, bob, createWorker: options => { const next = workerFixture(t, dbPath, options); workers.push(next); return next; } };
 }
 
 test('persistent run routes require an authenticated user', async t => {
@@ -92,6 +103,58 @@ test('run creation is 202, idempotent, ignores body scopes, and rejects active o
   assert.equal(runInput.signal.aborted, true);
 });
 
+test('a worker that loses the shared idempotent run claim cannot fail the winning worker run', async t => {
+  const claims = [];
+  const attempts = [];
+  const runtimeFor = store => ({ async run(input) {
+    attempts.push(input.runId);
+    await new Promise(resolve => setTimeout(resolve, 20));
+    store.startRun({ userId: input.userId, runId: input.runId });
+    input.onClaim?.();
+    claims.push(input.signal);
+    return new Promise(resolve => input.signal.addEventListener('abort', resolve, { once: true }));
+  } });
+  const shared = fixture(t);
+  const a = shared.createWorker({ runtime: store => runtimeFor(store) });
+  const b = shared.createWorker({ runtime: store => runtimeFor(store) });
+  const session = shared.alice;
+  const options = { body: { message: 'Race' }, headers: { 'Idempotency-Key': 'same' } };
+  const results = await Promise.all([
+    a.request('POST', `/api/agent/sessions/${session.id}/runs`, options),
+    b.request('POST', `/api/agent/sessions/${session.id}/runs`, options)
+  ]);
+  assert.deepEqual(results.map(result => result.status), [202, 202]);
+  const runId = results[0].body.data.id;
+  for (let i = 0; i < 50 && attempts.length < 2; i++) await new Promise(resolve => setTimeout(resolve, 5));
+  await new Promise(resolve => setTimeout(resolve, 30));
+  assert.equal(attempts.filter(id => id === runId).length, 2);
+  assert.equal(shared.store.getRun({ userId: 'alice', runId }).status, 'running');
+  assert.equal(claims.length, 1);
+  assert.equal(claims[0].aborted, false);
+});
+
+test('cancelling a run on another worker promptly aborts its provider signal', async t => {
+  let providerSignal;
+  const shared = fixture(t);
+  const owner = shared.createWorker({ runtime: { run(input) {
+    shared.store.startRun({ userId: input.userId, runId: input.runId });
+    input.onClaim?.();
+    providerSignal = input.signal;
+    return new Promise(resolve => input.signal.addEventListener('abort', resolve, { once: true }));
+  } } });
+  const canceller = shared.createWorker();
+  const started = await owner.request('POST', `/api/agent/sessions/${shared.alice.id}/runs`, {
+    body: { message: 'Cancel remotely' }, headers: { 'Idempotency-Key': 'remote-cancel' }
+  });
+  for (let i = 0; i < 30 && !providerSignal; i++) await new Promise(resolve => setTimeout(resolve, 5));
+  assert(providerSignal, 'the owning worker runtime should start');
+  assert.equal(shared.store.getRun({ userId: 'alice', runId: started.body.data.id }).status, 'running');
+  const cancelled = await canceller.request('POST', `/api/agent/runs/${started.body.data.id}/cancel`);
+  assert.equal(cancelled.status, 200);
+  for (let i = 0; i < 60 && !providerSignal.aborted; i++) await new Promise(resolve => setTimeout(resolve, 5));
+  assert.equal(providerSignal.aborted, true, 'durable cancellation should abort the remote provider promptly');
+});
+
 test('run status, event pagination, cancellation and cross owner/run session access are hidden', async t => {
   const f = fixture(t);
   const session = f.store.createSession({ userId: 'alice', title: 'Run' });
@@ -134,8 +197,24 @@ test('invalid bounds, malformed cursors, untrusted body scopes, and event cursor
   assert.equal((await f.request('POST', `/api/agent/sessions/${session.id}/runs`, { body: { message: 'Hi' } })).status, 400);
 });
 
-test('runtime launch rejection is persisted as a generic failed run', async t => {
+test('an unclaimed runtime launch rejection leaves the queued run available for retry', async t => {
   const f = fixture(t, { runtime: { async run() { throw new Error('provider key leaked'); } } });
+  const session = f.store.createSession({ userId: 'alice', title: 'Run' });
+  const started = await f.request('POST', `/api/agent/sessions/${session.id}/runs`, { headers: { 'Idempotency-Key': 'failure' }, body: { message: 'Question' } });
+  assert.equal(started.status, 202);
+  await new Promise(resolve => setTimeout(resolve, 20));
+  assert.equal(f.store.getRun({ userId: 'alice', runId: started.body.data.id }).status, 'queued');
+  assert.doesNotMatch(JSON.stringify(f.store.listEvents({ userId: 'alice', runId: started.body.data.id })), /provider key leaked/);
+});
+
+test('a runtime failure after its successful claim is persisted generically', async t => {
+  let store;
+  const f = fixture(t, { runtime: { async run(input) {
+    store.startRun({ userId: input.userId, runId: input.runId });
+    input.onClaim?.();
+    throw new Error('provider key leaked');
+  } } });
+  store = f.store;
   const session = f.store.createSession({ userId: 'alice', title: 'Run' });
   const started = await f.request('POST', `/api/agent/sessions/${session.id}/runs`, { headers: { 'Idempotency-Key': 'failure' }, body: { message: 'Question' } });
   assert.equal(started.status, 202);
