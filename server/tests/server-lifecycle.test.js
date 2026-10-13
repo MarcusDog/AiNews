@@ -121,7 +121,11 @@ test('single-instance recovery defaults and deployment opt-in are documented', (
   const envExample = fs.readFileSync(path.join(__dirname, '../.env.example'), 'utf8');
   const compose = fs.readFileSync(path.join(__dirname, '../../docker-compose.yml'), 'utf8');
   assert.match(envExample, /AYA_AGENT_RECOVER_INTERRUPTED_RUNS=0/);
-  assert.match(envExample, /single coordinator|单一.*协调者/i);
+  assert.match(envExample, /无其他 Agent 执行 worker 的单副本部署/);
+  assert.match(envExample, /全体 worker 已 quiesced 的维护启动/);
+  assert.match(envExample, /普通\/滚动多副本必须全部保持 0/);
+  assert.match(envExample, /没有 per-run lease/);
+  assert.match(envExample, /租约实现前不得在多副本启用/);
   assert.match(compose, /AYA_AGENT_RECOVER_INTERRUPTED_RUNS=1/);
 });
 
