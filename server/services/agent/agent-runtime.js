@@ -31,6 +31,15 @@ function boundedText(value, maxBytes) {
   }
   return result;
 }
+const LOCAL_CITATION_KEYS = new Set(['citationId', 'citationIds', 'sourceIds', 'evidenceUrls', 'citationPolicy', 'verified', 'citationVerified']);
+function modelPublicValue(value, { keepCitationId = false } = {}) {
+  if (typeof value === 'string') return value.replace(/\[S\d+\]/g, '');
+  if (Array.isArray(value)) return value.map(item => modelPublicValue(item, { keepCitationId }));
+  if (!value || typeof value !== 'object') return value;
+  return Object.fromEntries(Object.entries(value)
+    .filter(([key]) => !LOCAL_CITATION_KEYS.has(key) || (keepCitationId && key === 'citationId'))
+    .map(([key, item]) => [key, modelPublicValue(item, { keepCitationId })]));
+}
 function bounds(limits = {}) {
   let input;
   try { input = jsonValue(limits); fields(input, Object.keys(HARD_LIMITS)); }
@@ -202,9 +211,10 @@ class AgentRuntime {
                   });
                 }
               }
-              const content = JSON.stringify({ result: envelope, evidence: mapping });
+              const content = JSON.stringify({ result: modelPublicValue(envelope), evidence: mapping.map(source => modelPublicValue(source, { keepCitationId: true })) });
               if (Buffer.byteLength(content, 'utf8') > limits.maxToolResultBytes) throw new RuntimeError('result_budget_exceeded');
-              entry = { envelope, content }; cache.set(key, entry);
+              entry = { envelope, content };
+              if (envelope.ok === true) cache.set(key, entry);
             }
             check();
             this.#store.appendEvent({ ...owner, type: 'tool_result', payload: { toolName: call.name, toolCallId: call.id, arguments: args, result: entry.envelope } });
@@ -213,11 +223,15 @@ class AgentRuntime {
           continue;
         }
         check();
-        if (!evidence.size) return this.#store.finalizeRun({ ...session, runId: run.id, payload: { answer: INSUFFICIENT_EVIDENCE, verified: false, citationIds: [], usage } });
+        if (!evidence.size) {
+          const hasSuccessfulToolResult = this.#store.listEvents({ ...owner, limit: 100 }).some(event => event.type === 'tool_result' && event.payload.result?.ok === true);
+          if (hasSuccessfulToolResult) return this.#store.finalizeStructuredRun({ ...session, runId: run.id, usage });
+          return this.#store.finalizeRun({ ...session, runId: run.id, payload: { answer: INSUFFICIENT_EVIDENCE, verified: false, citationIds: [], usage } });
+        }
         const audit = auditAnswer(result.text, [...evidence.values()]);
         if (audit.valid && Buffer.byteLength(result.text, 'utf8') <= STORE_LIMITS.textBytes) {
           check();
-          return this.#store.finalizeRun({ ...session, runId: run.id, payload: { answer: result.text, verified: true, citationIds: audit.citedIds, usage } });
+          return this.#store.finalizeRun({ ...session, runId: run.id, payload: { answer: result.text, verified: false, citationIds: audit.citedIds, usage } });
         }
         // The bounded repair instruction contains only format rules and public
         // run citation IDs. Neither raw failures nor provider-private state can

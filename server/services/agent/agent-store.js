@@ -6,6 +6,7 @@ const { createReadTools } = require('./tools/read-tools');
 const { validate } = require('./tool-schemas');
 const { ERRORS } = require('./tool-registry');
 const { publicUrl, schemas } = require('./public-projections');
+const { auditAnswer } = require('./citation-audit');
 
 // Events accommodate the registry's 131072-byte / 20000-node result budget
 // plus bounded metadata. Requests and raw evidence retain their smaller budget.
@@ -20,7 +21,7 @@ const CONVERSATION_KEYS = new Set(['context', 'history', 'role', 'content', 'mes
 // results. Public user/assistant messages have their own agent_messages table.
 // Nested tool results must already be projected by the read-tool registry.
 const PUBLIC_KEYS = new Set(`message mode skillId skillIds model provider
-  title summary description text answer verified reason status code error notice toolName toolCallId
+  title summary description text answer verified citationVerified reason status code error notice toolName toolCallId
   name arguments result data sources citationIds sourceIds usage inputTokens outputTokens totalTokens
   step count total items query limit since until category topic audience goal format request evidence
   generatedAt publishedAt createdAt updatedAt date id url canonicalUrl source sourceName sourceId
@@ -46,6 +47,7 @@ const TRANSITION_KEYS = {
 };
 const EVENT_TEXT_KEYS = new Set('message text answer reason status code notice toolName toolCallId name summary model provider'.split(' '));
 const EVIDENCE_KEYS = new Set(Object.keys(schemas.evidence.properties).filter(key => key !== 'citationId'));
+const LOCAL_CITATION_KEYS = new Set(['citationId', 'citationIds', 'sourceIds', 'evidenceUrls', 'citationPolicy', 'verified', 'citationVerified']);
 // Derive nested public keys from the same closed input/output contracts used by
 // the live registry; validate complete tool arguments/results below as well.
 const TOOL_CONTRACTS = new Map(createReadTools().map(({ name, inputSchema, outputSchema }) => [name, { inputSchema, outputSchema }]));
@@ -202,6 +204,30 @@ function publicTransition(status, value) {
   if (Object.hasOwn(payload, 'sources')) publicSources(payload.sources);
   if (Object.hasOwn(payload, 'usage')) publicUsage(payload.usage);
   return payload;
+}
+
+// New model publication has separate semantics from legacy transitions:
+// citation/reference checks never establish the factual truth of model text.
+// The public citationVerified flag is derived internally, never caller input.
+function publicFinalAnswer(value) {
+  const payload = publicEvent(value, TRANSITION_KEYS.completed);
+  if (payload.verified !== false || !Array.isArray(payload.citationIds)) throw fail('invalid_input');
+  text(payload.answer, LIMITS.textBytes);
+  if (!payload.citationIds.length && payload.answer !== INSUFFICIENT_EVIDENCE) throw fail('invalid_input');
+  if (Object.hasOwn(payload, 'usage')) publicUsage(payload.usage);
+  return payload;
+}
+
+function structuredPublicValue(value) {
+  if (typeof value === 'string') return value.replace(/\[S\d+\]/g, '');
+  if (Array.isArray(value)) return value.map(structuredPublicValue);
+  if (!value || typeof value !== 'object') return value;
+  return Object.fromEntries(Object.entries(value).filter(([key]) => !LOCAL_CITATION_KEYS.has(key))
+    .map(([key, item]) => [key, structuredPublicValue(item)]));
+}
+
+function structuredAnswer(results, omittedResults) {
+  return `## 平台结构化结果\n以下为平台结构化结果，未经外部来源核验。\n${JSON.stringify({ results, omittedResults })}\n## 证据边界\n这些结果反映平台公开接口返回的数据，未经过外部来源核验。`;
 }
 
 function page(input) {
@@ -465,18 +491,52 @@ class AgentStore {
   // back, and cancellation checked under the transaction cannot publish late.
   finalizeRun(input) {
     fields(input, ['userId', 'sessionId', 'runId', 'payload'], ['userId', 'sessionId', 'runId', 'payload']);
-    const payload = publicTransition('completed', input.payload);
-    // The new publication path permits zero references only for the exact
-    // deterministic unverified insufficiency response. Legacy transitions keep
-    // their existing contract for already-integrated consumers.
-    if (payload.citationIds.length === 0 && (payload.verified !== false || payload.answer !== INSUFFICIENT_EVIDENCE)) throw fail('invalid_input');
+    const payload = publicFinalAnswer(input.payload);
     return this._transaction(() => {
       const run = this._run(input.userId, input.runId);
       if (run.session_id !== input.sessionId) throw fail('not_found');
       if (run.status !== 'running') throw fail('invalid_transition');
-      const eventPayload = publicJson({ ...payload, status: 'completed', sources: this._completedSources(input.userId, input.runId, payload.citationIds, payload.answer) }, { maxBytes: LIMITS.eventJsonBytes, maxNodes: LIMITS.eventNodes, validateUrls: true });
+      const sources = this._completedSources(input.userId, input.runId, payload.citationIds, payload.answer);
+      const citationVerified = sources.length > 0 && auditAnswer(payload.answer, sources).valid;
+      if (sources.length && !citationVerified) throw fail('invalid_input');
+      const eventPayload = publicJson({ ...payload, status: 'completed', citationVerified, sources }, { maxBytes: LIMITS.eventJsonBytes, maxNodes: LIMITS.eventNodes, validateUrls: true });
       const now = this._time(); const id = crypto.randomUUID();
       this.db.prepare('INSERT INTO agent_messages(id,user_id,session_id,run_id,role,content,created_at) VALUES(?,?,?,?,?,?,?)').run(id, input.userId, input.sessionId, input.runId, 'assistant', payload.answer, now);
+      this.db.prepare("UPDATE agent_runs SET status='completed',updated_at=?,completed_at=? WHERE id=? AND user_id=?").run(now, now, input.runId, input.userId);
+      const event = this._insertEvent(input.userId, input.runId, 'completed', eventPayload);
+      this.db.prepare('UPDATE agent_sessions SET updated_at=? WHERE id=? AND user_id=?').run(now, input.sessionId, input.userId);
+      return { run: this.getRun({ userId: input.userId, runId: input.runId }), event, message: this.getMessage({ userId: input.userId, messageId: id }) };
+    });
+  }
+  // Publish only already-durable, schema-validated public tool results. The
+  // caller cannot supply text, results, citations or verification flags.
+  finalizeStructuredRun(input) {
+    fields(input, ['userId', 'sessionId', 'runId', 'usage'], ['userId', 'sessionId', 'runId', 'usage']);
+    publicUsage(input.usage);
+    return this._transaction(() => {
+      const run = this._run(input.userId, input.runId);
+      if (run.session_id !== input.sessionId) throw fail('not_found');
+      if (run.status !== 'running') throw fail('invalid_transition');
+      if (this.db.prepare('SELECT 1 FROM agent_evidence WHERE user_id=? AND run_id=? LIMIT 1').get(input.userId, input.runId)) throw fail('invalid_input');
+      const rows = this.db.prepare("SELECT payload_json FROM agent_run_events WHERE user_id=? AND run_id=? AND type='tool_result' ORDER BY sequence").all(input.userId, input.runId);
+      const results = [];
+      for (const row of rows) {
+        let payload;
+        try { payload = publicOrdinaryEvent('tool_result', JSON.parse(row.payload_json)); }
+        catch { throw fail('invalid_input'); }
+        if (payload.result.ok === true) results.push(structuredPublicValue({ toolName: payload.toolName, data: payload.result.data }));
+      }
+      if (!results.length) throw fail('invalid_input');
+      const selected = [];
+      for (const result of results) {
+        const candidate = structuredAnswer([...selected, result], results.length - selected.length - 1);
+        if (Buffer.byteLength(candidate, 'utf8') <= LIMITS.textBytes) selected.push(result);
+      }
+      const answer = text(structuredAnswer(selected, results.length - selected.length), LIMITS.textBytes);
+      const payload = { answer, verified: false, citationVerified: false, citationIds: [], sources: [], usage: input.usage };
+      const eventPayload = publicJson({ ...payload, status: 'completed' }, { maxBytes: LIMITS.eventJsonBytes, maxNodes: LIMITS.eventNodes });
+      const now = this._time(); const id = crypto.randomUUID();
+      this.db.prepare('INSERT INTO agent_messages(id,user_id,session_id,run_id,role,content,created_at) VALUES(?,?,?,?,?,?,?)').run(id, input.userId, input.sessionId, input.runId, 'assistant', answer, now);
       this.db.prepare("UPDATE agent_runs SET status='completed',updated_at=?,completed_at=? WHERE id=? AND user_id=?").run(now, now, input.runId, input.userId);
       const event = this._insertEvent(input.userId, input.runId, 'completed', eventPayload);
       this.db.prepare('UPDATE agent_sessions SET updated_at=? WHERE id=? AND user_id=?').run(now, input.sessionId, input.userId);

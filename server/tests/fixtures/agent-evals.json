@@ -24,7 +24,10 @@
   { "id": "uncited-factual-lines", "kind": "uncited", "limits": { "maxTurns": 2 }, "expectedStatus": "failed", "expectedCode": "turn_budget_exceeded" },
   { "id": "citation-repair-success", "kind": "repair", "expectedStatus": "completed" },
   { "id": "citation-repair-failure", "kind": "repair-failure", "expectedStatus": "failed", "expectedCode": "turn_budget_exceeded" },
-  { "id": "zero-evidence-safe-fallback", "kind": "zero", "expectedStatus": "completed", "expectedEvidence": 0 },
+  { "id": "zero-evidence-safe-fallback", "kind": "zero", "expectedStatus": "completed", "expectedEvidence": 0, "expectedVerified": false, "expectedCitationVerified": false },
+  { "id": "unrelated-claim-has-valid-citations", "kind": "unrelated", "expectedStatus": "completed", "expectedVerified": false, "expectedCitationVerified": true },
+  { "id": "same-input-transient-error-retry", "kind": "tool-retry", "expectedStatus": "completed", "expectedExecutions": 2, "expectedCitationVerified": true },
+  { "id": "same-input-timeout-retry", "kind": "timeout-retry", "expectedStatus": "completed", "expectedExecutions": 2, "expectedCitationVerified": true },
   { "id": "reused-tool-call-id", "kind": "duplicate-id", "expectedStatus": "failed", "expectedCode": "invalid_model_response", "expectedExecutions": 1 },
   { "id": "tool-content-prompt-injection", "kind": "tool-injection", "expectedStatus": "failed", "expectedExecutions": 1 }
 ]

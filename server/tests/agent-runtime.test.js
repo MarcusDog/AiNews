@@ -17,7 +17,7 @@ const response = (text = answer, toolCalls = [], usage = { inputTokens: 2, outpu
 const call = (id = 'c1', name = 'list_latest_news', input = {}) => ({ id, name, input });
 const article = (id = 'a', url = 'https://public.org/a') => ({ id, title: `Public ${id}`, url, source: 'Public', description: 'Public evidence', publishedAt: '2026-10-13', category: 'ai', region: 'global' });
 
-function fixture(t, script, { news, provider, registry, request = { message: 'Research public AI news' }, scopes = ['news:read', 'signals:read'] } = {}) {
+function fixture(t, script, { news, provider, registry, toolTimeoutMs, request = { message: 'Research public AI news' }, scopes = ['news:read', 'signals:read'] } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'agent-runtime-'));
   const store = new AgentStore({ dbPath: path.join(dir, 'agent.db') }).initialize();
   t.after(() => { store.close(); fs.rmSync(dir, { recursive: true, force: true }); });
@@ -27,7 +27,7 @@ function fixture(t, script, { news, provider, registry, request = { message: 'Re
   const tools = registry || new ToolRegistry(createReadTools({
     newsService: { async getLatestNews(options) { executions++; return news ? news(options, executions) : { data: [article()], total: 1 }; } },
     signalService: { async listTopics() { return [{ id: 'topic', title: 'Topic', signals: [{ title: 'Public a', url: 'https://public.org/a', sourceName: 'Public' }] }]; } }
-  }));
+  }).map(tool => toolTimeoutMs ? { ...tool, timeoutMs: toolTimeoutMs } : tool));
   const model = provider || new FakeProvider({ script });
   const runtime = AgentRuntime && new AgentRuntime({ store, provider: model, registry: tools });
   const input = { userId: 'alice', sessionId: session.id, runId: run.id, scopes };
@@ -50,6 +50,8 @@ check('multi-step research persists owned public events, final message, exact ci
   const complete = f.events().at(-1).payload;
   assert.deepEqual(complete.usage, { inputTokens: 6, outputTokens: 9, totalTokens: 15 });
   assert.deepEqual(complete.citationIds, ['S1']);
+  assert.equal(complete.verified, false);
+  assert.equal(complete.citationVerified, true);
   assert.equal(complete.sources[0].url, 'https://public.org/a');
   assert.deepEqual(f.messages().map(m => [m.role, m.content]), [['user', f.run.request.message], ['assistant', answer]]);
   assert.doesNotMatch(JSON.stringify(f.events()), /continuation|providerContent|thinking/);
@@ -71,6 +73,53 @@ check('cross-tool URL deduplication produces stable evidence mapping without cha
   assert.equal((await f.runtime.run(f.input)).run.status, 'completed');
   assert.equal(new EvidenceLedger({ store: f.store }).listEvidence({ userId: 'alice', runId: f.run.id }).length, 1);
   for (const event of f.events().filter(e => e.type === 'tool_result')) assert.deepEqual(Object.keys(event.payload.result).sort(), ['data', 'ok']);
+});
+
+check('model tool envelope strips tool-local citation fields and markers while durable result stays exact', async t => {
+  const sourceA = { title: 'Ledger Source A', url: 'https://public.org/a' };
+  const sourceB = { title: 'Tool Source B [S1]', url: 'https://public.org/b', citationId: 'S1', summary: 'nested marker [S1]' };
+  const researchService = { async buildBrief() { return { body: { data: { status: 'ready', generatedAt: '2026-10-13', request: {}, evidence: [sourceB], diversity: { sources: 1, regions: 1, evidenceTypes: 1 }, citationPolicy: 'brief-local [S1]', notice: 'local [S1]' } } }; } };
+  class Inspect extends FakeProvider {
+    async _generate(input) {
+      const toolMessage = input.messages.find(message => message.role === 'tool');
+      if (toolMessage) this.visibleTool = JSON.parse(toolMessage.content);
+      return super._generate(input);
+    }
+  }
+  const provider = new Inspect({ script: [response('', [call('brief', 'build_content_brief', { topic: 'AI' })]), response()] });
+  const registry = new ToolRegistry(createReadTools({ researchService }));
+  const f = fixture(t, [], { registry, provider, scopes: ['content:read'] });
+  new EvidenceLedger({ store: f.store }).registerEvidence({ userId: 'alice', runId: f.run.id, source: sourceA });
+  const outcome = await f.runtime.run(f.input);
+  assert.equal(outcome.run.status, 'completed');
+  const modelJson = JSON.stringify(provider.visibleTool.result);
+  assert.doesNotMatch(modelJson, /citationId|citationIds|sourceIds|evidenceUrls|citationPolicy|verified|citationVerified|\[S\d+\]/);
+  assert.deepEqual(provider.visibleTool.evidence.map(source => source.citationId), ['S2']);
+  assert.equal(provider.visibleTool.evidence[0].title, 'Tool Source B ');
+  const durable = f.events().find(event => event.type === 'tool_result').payload.result;
+  assert.equal(durable.data.evidence[0].citationId, 'S1');
+  assert.equal(durable.data.evidence[0].title, 'Tool Source B [S1]');
+  assert.equal(durable.data.evidence[0].summary, 'nested marker [S1]');
+  assert.equal(durable.data.citationPolicy, 'brief-local [S1]');
+});
+
+for (const toolName of ['get_topic_changes', 'get_creator_source_coverage']) check(`${toolName} can complete with useful structured data and no URL evidence`, async t => {
+  const creatorStore = { async listSourceCoverage() { return [{ id: 'rss-main', platform: 'rss', tier: 'public', status: 'online', lastSuccessAt: '2026-10-13', lastAttemptAt: '2026-10-13', latestPostAt: null, accountCount: 4, enabledAccountCount: 3, postCount: 21 }]; } };
+  const signalService = { async listChanges() { return { items: [{ seq: 7, topicId: 't1', changeType: 'growth', changedAt: '2026-10-13', summary: '讨论增加' }], expired: false, nextCursor: 7, oldestCursor: 1, latestCursor: 7 }; } };
+  const registry = new ToolRegistry(createReadTools({ creatorStore, signalService }));
+  const args = toolName === 'get_topic_changes' ? { since: 0, limit: 5 } : { limit: 5 };
+  const scope = toolName === 'get_topic_changes' ? 'signals:read' : 'creators:read';
+  const f = fixture(t, [response('', [call('c1', toolName, args)]), response('UNTRUSTED_NO_EVIDENCE_MODEL_TEXT')], { registry, scopes: [scope] });
+  assert.equal((await f.runtime.run(f.input)).run.status, 'completed');
+  const final = f.events().at(-1).payload;
+  assert.equal(final.verified, false);
+  assert.equal(final.citationVerified, false);
+  assert.deepEqual(final.citationIds, []);
+  assert.deepEqual(final.sources, []);
+  assert.match(final.answer, /平台结构化结果/);
+  assert.match(final.answer, /未经外部来源核验/);
+  assert.match(final.answer, toolName === 'get_topic_changes' ? /"seq":7/ : /rss-main/);
+  assert.doesNotMatch(final.answer, /UNTRUSTED_NO_EVIDENCE_MODEL_TEXT/);
 });
 
 check('multibyte source titles fit the ledger byte contract without losing public evidence', async t => {
@@ -201,10 +250,44 @@ check('zero evidence replaces model claims with deterministic unverified insuffi
   assert.equal((await f.runtime.run(f.input)).run.status, 'completed');
   const payload = f.events().at(-1).payload;
   assert.equal(payload.verified, false);
+  assert.equal(payload.citationVerified, false);
   assert.deepEqual(payload.citationIds, []);
   assert.deepEqual(payload.sources, []);
   assert.equal(payload.answer, '没有足够的公开来源支持可靠回答。');
   assert.doesNotMatch(f.messages().at(-1).content, /launch|\[S\d+\]/);
+});
+
+check('valid citation syntax never represents an unrelated model claim as fact-verified', async t => {
+  const unrelated = '## 结论\n火星已有百万常住居民。[S1]\n## 证据边界\n人口数据已被权威证实。[S1]';
+  const f = fixture(t, [response('', [call()]), response(unrelated)]);
+  assert.equal((await f.runtime.run(f.input)).run.status, 'completed');
+  assert.equal(f.events().at(-1).payload.verified, false);
+  assert.equal(f.events().at(-1).payload.citationVerified, true);
+  assert.equal(f.events().at(-1).payload.answer, unrelated);
+});
+
+for (const errorCode of ['tool_failed', 'timeout']) check(`identical read retries after ${errorCode} execute again and can recover`, async t => {
+  const f = fixture(t, [response('', [call('a')]), response('', [call('b')]), response()], { toolTimeoutMs: 5, news: (options, count) => {
+    if (count === 1 && errorCode === 'tool_failed') throw new Error('PRIVATE_TRANSIENT_ERROR');
+    if (count === 1) return new Promise((_resolve, reject) => options.signal.addEventListener('abort', () => reject(new Error('PRIVATE_TRANSIENT_TIMEOUT')), { once: true }));
+    return { data: [article()], total: 1 };
+  } });
+  assert.equal((await f.runtime.run({ ...f.input, limits: { maxToolCalls: 2 } })).run.status, 'completed');
+  assert.equal(f.executions(), 2);
+  assert.deepEqual(f.events().filter(event => event.type === 'tool_result').map(event => event.payload.result.ok ? 'ok' : event.payload.result.error.code), [errorCode, 'ok']);
+  assert.equal(f.events().at(-1).payload.citationVerified, true);
+});
+
+check('failed reads still consume call budgets and stop a third identical loop before execution', async t => {
+  const f = fixture(t, Array.from({ length: 3 }, (_, i) => response('', [call(`c${i}`)])), { news: () => { throw new Error('TRANSIENT'); } });
+  assert.equal((await f.runtime.run(f.input)).run.status, 'failed');
+  assert.equal(f.executions(), 2);
+  assert.equal(f.events().at(-1).payload.code, 'loop_detected');
+  assert.equal(f.events().filter(event => event.type === 'tool_result').length, 2);
+  const budget = fixture(t, [response('', [call('a')]), response('', [call('b')])], { news: () => { throw new Error('TRANSIENT'); } });
+  assert.equal((await budget.runtime.run({ ...budget.input, limits: { maxToolCalls: 1 } })).run.status, 'failed');
+  assert.equal(budget.executions(), 1);
+  assert.equal(budget.events().at(-1).payload.code, 'tool_budget_exceeded');
 });
 
 check('tool errors remain public and allow recovery through another tool', async t => {
@@ -356,13 +439,32 @@ test('finalization atomically persists completion and assistant message with SQL
     new EvidenceLedger({ store: f.store }).registerEvidence({ userId: 'alice', runId: f.run.id, source: { title: 'Public', url: 'https://public.org/a' } });
     assert.equal(typeof f.store.finalizeRun, 'function', 'Atomic finalizeRun is missing');
     f.store.db.exec(`CREATE TRIGGER fail_final BEFORE INSERT ON ${table} WHEN ${table === 'agent_messages' ? "NEW.role='assistant'" : "NEW.type='completed'"} BEGIN SELECT RAISE(ABORT,'forced finalization failure'); END;`);
-    assert.throws(() => f.store.finalizeRun({ ...f.input, scopes: undefined, payload: { answer, verified: true, citationIds: ['S1'] } }));
+    assert.throws(() => f.store.finalizeRun({ ...f.input, scopes: undefined, payload: { answer, verified: false, citationIds: ['S1'] } }));
     // Use an exact object so the SQL trigger, not argument validation, fails.
-    assert.throws(() => f.store.finalizeRun({ userId: 'alice', sessionId: f.session.id, runId: f.run.id, payload: { answer, verified: true, citationIds: ['S1'] } }), /forced finalization failure/);
+    assert.throws(() => f.store.finalizeRun({ userId: 'alice', sessionId: f.session.id, runId: f.run.id, payload: { answer, verified: false, citationIds: ['S1'] } }), /forced finalization failure/);
     assert.equal(f.store.getRun({ userId: 'alice', runId: f.run.id }).status, 'running');
     assert.equal(f.messages().length, 0);
     assert.equal(f.events().at(-1).type, 'running');
   }
+});
+
+test('finalize derives citation-only state itself while legacy transitions refuse forged audit flags', t => {
+  const f = fixture(t, []);
+  f.store.startRun({ userId: 'alice', runId: f.run.id });
+  new EvidenceLedger({ store: f.store }).registerEvidence({ userId: 'alice', runId: f.run.id, source: { title: 'Public', url: 'https://public.org/a' } });
+  const owner = { userId: 'alice', runId: f.run.id };
+  const input = { ...owner, sessionId: f.session.id };
+  for (const citationVerified of [true, false, 'true', 1]) {
+    assert.throws(() => f.store.finalizeRun({ ...input, payload: { answer, verified: false, citationIds: ['S1'], citationVerified } }), { code: 'invalid_input' });
+    assert.throws(() => f.store.transitionRun({ ...owner, status: 'completed', payload: { answer, verified: true, citationIds: ['S1'], citationVerified } }), { code: 'invalid_input' });
+  }
+  assert.throws(() => f.store.transitionRun({ ...owner, status: 'completed', payload: { answer, verified: false, citationIds: ['S1'] } }), { code: 'invalid_input' });
+  assert.throws(() => f.store.finalizeRun({ ...input, payload: { answer, verified: true, citationIds: ['S1'] } }), { code: 'invalid_input' });
+  assert.throws(() => f.store.finalizeRun({ ...input, payload: { answer: 'Uncited unsupported fact [S1]', verified: false, citationIds: ['S1'] } }), { code: 'invalid_input' });
+  const final = f.store.finalizeRun({ ...input, payload: { answer, verified: false, citationIds: ['S1'] } });
+  assert.equal(final.event.payload.verified, false);
+  assert.equal(final.event.payload.citationVerified, true);
+  assert.equal(typeof final.event.payload.citationVerified, 'boolean');
 });
 
 test('atomic finalize rejects cancelled runs and fabricated unverified completions', t => {

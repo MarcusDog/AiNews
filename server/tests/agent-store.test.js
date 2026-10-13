@@ -20,6 +20,95 @@ const args = (session, extra = {}) => ({ userId: 'alice', sessionId: session.id,
 const runArgs = (run, extra = {}) => ({ userId: 'alice', runId: run.id, ...extra });
 const check = (name, fn) => test(name, { skip: !AgentStore }, fn);
 
+check('finalizeStructuredRun derives a no-evidence answer from durable successful tool results', t => {
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'structured', request: {} }));
+  store.startRun(runArgs(run));
+  const result = { ok: true, data: { items: [{ seq: 7, topicId: 't1', changeType: 'growth', changedAt: '2026-10-13' }], expired: false, nextCursor: 7, oldestCursor: 1, latestCursor: 7 } };
+  store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'get_topic_changes', arguments: { since: 0, limit: 5 }, result } }));
+  const final = store.finalizeStructuredRun({ userId: 'alice', sessionId: session.id, runId: run.id, usage: { inputTokens: 1, outputTokens: 1, totalTokens: 2 } });
+  assert.equal(final.run.status, 'completed');
+  assert.equal(final.event.payload.verified, false);
+  assert.equal(final.event.payload.citationVerified, false);
+  assert.deepEqual(final.event.payload.citationIds, []);
+  assert.deepEqual(final.event.payload.sources, []);
+  assert.match(final.message.content, /平台结构化结果/);
+  assert.match(final.message.content, /未经外部来源核验/);
+  const json = JSON.parse(final.message.content.split('\n')[2]);
+  assert.deepEqual(json.results, [{ toolName: 'get_topic_changes', data: result.data }]);
+  assert.equal(json.omittedResults, 0);
+  assert.deepEqual(store.listEvents(runArgs(run)).at(-1).payload, final.event.payload);
+});
+
+check('finalizeStructuredRun rejects caller answer, result and audit flags plus evidence-bearing runs', t => {
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'structured-input', request: {} }));
+  store.startRun(runArgs(run));
+  store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'get_topic_changes', result: { ok: true, data: { items: [], expired: false, nextCursor: null, oldestCursor: null, latestCursor: null } } } }));
+  for (const extra of [{ answer: 'forged' }, { result: {} }, { verified: true }, { citationVerified: true }, { citationIds: ['S1'] }, { sources: [] }]) {
+    assert.throws(() => store.finalizeStructuredRun({ userId: 'alice', sessionId: session.id, runId: run.id, usage: {}, ...extra }), { code: 'invalid_input' });
+  }
+  const otherSession = store.createSession({ userId: 'alice', title: 'Evidence' });
+  const withEvidence = store.createRun(args(otherSession, { requestKey: 'structured-evidence', request: {} }));
+  store.startRun(runArgs(withEvidence));
+  new (require('../services/agent/evidence-ledger').EvidenceLedger)({ store }).registerEvidence({ userId: 'alice', runId: withEvidence.id, source: { title: 'Public', url: 'https://example.com/a' } });
+  store.appendEvent(runArgs(withEvidence, { type: 'tool_result', payload: { toolName: 'get_topic_changes', result: { ok: true, data: { items: [], expired: false, nextCursor: null, oldestCursor: null, latestCursor: null } } } }));
+  assert.throws(() => store.finalizeStructuredRun({ userId: 'alice', sessionId: otherSession.id, runId: withEvidence.id, usage: {} }), { code: 'invalid_input' });
+  assert.equal(store.getRun(runArgs(withEvidence)).status, 'running');
+});
+
+check('finalizeStructuredRun needs a successful schema-valid result and remains cancellation safe', t => {
+  const { store, session } = fixture(t);
+  const empty = store.createRun(args(session, { requestKey: 'structured-empty', request: {} }));
+  store.startRun(runArgs(empty));
+  store.appendEvent(runArgs(empty, { type: 'tool_result', payload: { toolName: 'get_topic_changes', result: { ok: false, error: { code: 'tool_failed', message: 'Tool execution failed.' } } } }));
+  assert.throws(() => store.finalizeStructuredRun({ userId: 'alice', sessionId: session.id, runId: empty.id, usage: {} }), { code: 'invalid_input' });
+  assert.equal(store.getRun(runArgs(empty)).status, 'running');
+  const cancelSession = store.createSession({ userId: 'alice', title: 'Cancellation' });
+  const cancelled = store.createRun(args(cancelSession, { requestKey: 'structured-cancelled', request: {} }));
+  store.startRun(runArgs(cancelled));
+  store.appendEvent(runArgs(cancelled, { type: 'tool_result', payload: { toolName: 'get_topic_changes', result: { ok: true, data: { items: [], expired: false, nextCursor: null, oldestCursor: null, latestCursor: null } } } }));
+  store.cancelRun(runArgs(cancelled));
+  assert.throws(() => store.finalizeStructuredRun({ userId: 'alice', sessionId: cancelSession.id, runId: cancelled.id, usage: {} }), { code: 'invalid_transition' });
+  assert.equal(store.listMessages(args(cancelSession)).some(message => message.runId === cancelled.id && message.role === 'assistant'), false);
+});
+
+check('finalizeStructuredRun limits complete result items and emits valid bounded JSON with omission count', t => {
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'structured-size', request: {} }));
+  store.startRun(runArgs(run));
+  const source = { id: 'health', name: 'Source ' + '证'.repeat(100), category: 'public', language: 'zh', sourceGroup: 'rss', status: 'online', lastFetchAt: '2026-10-13', lastSuccessAt: '2026-10-13', failureCount: 0, articleCount: 10 };
+  for (let index = 0; index < 10; index++) store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'get_source_health', result: { ok: true, data: { items: Array.from({ length: 50 }, (_, itemIndex) => ({ ...source, id: `health-${itemIndex}` })) } } } }));
+  const final = store.finalizeStructuredRun({ userId: 'alice', sessionId: session.id, runId: run.id, usage: {} });
+  assert(Buffer.byteLength(final.message.content, 'utf8') <= 32768);
+  const json = JSON.parse(final.message.content.split('\n')[2]);
+  assert(json.results.length > 0 && json.results.length < 10);
+  assert.equal(json.omittedResults, 10 - json.results.length);
+  assert(json.results.every(item => item.data.items.length === 50 && item.data.items[0].name === 'Source ' + '证'.repeat(100)));
+});
+
+check('finalizeStructuredRun revalidates durable schemas and rolls back message/event failures atomically', t => {
+  for (const table of ['agent_messages', 'agent_run_events']) {
+    const { store, session } = fixture(t);
+    const run = store.createRun(args(session, { requestKey: `structured-rollback-${table}`, request: {} }));
+    store.startRun(runArgs(run));
+    const event = store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'get_topic_changes', result: { ok: true, data: { items: [], expired: false, nextCursor: null, oldestCursor: null, latestCursor: null } } } }));
+    if (table === 'agent_run_events') {
+      const unsafe = { ...event.payload, result: { ok: true, data: { ...event.payload.result.data, unexpected: 'untrusted' } } };
+      store.db.prepare('UPDATE agent_run_events SET payload_json=? WHERE id=?').run(JSON.stringify(unsafe), event.id);
+      assert.throws(() => store.finalizeStructuredRun({ userId: 'alice', sessionId: session.id, runId: run.id, usage: {} }), { code: 'invalid_input' });
+      assert.equal(store.getRun(runArgs(run)).status, 'running');
+      assert.equal(store.listMessages(args(session)).some(message => message.role === 'assistant'), false);
+      continue;
+    }
+    store.db.exec(`CREATE TRIGGER fail_structured BEFORE INSERT ON ${table} BEGIN SELECT RAISE(ABORT,'forced structured finalization failure'); END;`);
+    assert.throws(() => store.finalizeStructuredRun({ userId: 'alice', sessionId: session.id, runId: run.id, usage: {} }), /forced structured finalization failure/);
+    assert.equal(store.getRun(runArgs(run)).status, 'running');
+    assert.equal(store.listEvents(runArgs(run)).at(-1).type, 'tool_result');
+    assert.equal(store.listMessages(args(session)).some(message => message.role === 'assistant'), false);
+  }
+});
+
 test('AgentStore implements the persistence contract on a real temporary SQLite database', (t) => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aya-agent-red-'));
   const db = new Database(path.join(dir, 'red.db'));
