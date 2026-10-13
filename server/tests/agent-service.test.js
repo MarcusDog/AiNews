@@ -12,8 +12,8 @@ const CONTEXT = {
   generatedAt: '2026-08-06T12:00:00.000Z',
   site: { total: 120, today: 8, diversityScore: 72, riskLevel: 'low' },
   sources: [
-    { citationId: 'S1', title: 'Agent 官方发布', source: 'Qwen 官方博客', url: 'https://qwen.test/agent', publishedAt: '2026-08-06T03:00:00Z', evidenceType: 'official', region: 'cn', claimBoundary: '官方陈述' },
-    { citationId: 'S2', title: 'Agent benchmark', source: 'arXiv', url: 'https://arxiv.test/agent', publishedAt: '2026-08-05T03:00:00Z', evidenceType: 'research', region: 'global', claimBoundary: '研究结论' }
+    { citationId: 'S1', title: 'Agent 官方发布', source: 'Qwen 官方博客', url: 'https://qwen.example.com/agent', publishedAt: '2026-08-06T03:00:00Z', evidenceType: 'official', region: 'cn', claimBoundary: '官方陈述' },
+    { citationId: 'S2', title: 'Agent benchmark', source: 'arXiv', url: 'https://arxiv.example.com/agent', publishedAt: '2026-08-05T03:00:00Z', evidenceType: 'research', region: 'global', claimBoundary: '研究结论' }
   ],
   trends: [{ keyword: 'AI Agent', recentCount: 4, previousCount: 2, growth: 100, sourceIds: ['S1', 'S2'] }],
   blindSpots: []
@@ -205,10 +205,10 @@ test('content audit rejects a draft with the wrong structure or uncited claims',
 test('agent context ranks relevant news then keeps publishers, regions and evidence types diverse', () => {
   const contextService = new AgentContextService();
   const articles = [
-    { id: '1', title: 'Agent 官方发布', description: '智能体更新', source: 'Qwen 官方博客', url: 'https://qwen.test/1', publishedAt: '2026-08-06T03:00:00Z', region: 'cn', sourceGroup: 'product' },
-    { id: '2', title: 'Agent benchmark paper', description: 'agent evaluation', source: 'arXiv', url: 'https://arxiv.test/2', publishedAt: '2026-08-05T03:00:00Z', region: 'global', sourceGroup: 'research' },
-    { id: '3', title: 'Agent industry report', description: 'agent adoption', source: 'MIT Technology Review AI', url: 'https://media.test/3', publishedAt: '2026-08-04T03:00:00Z', region: 'global', sourceGroup: 'investment' },
-    { id: '4', title: 'Unrelated chip news', description: 'GPU market', source: 'Media B', url: 'https://media.test/4', publishedAt: '2026-08-06T01:00:00Z', region: 'global', sourceGroup: 'investment' }
+    { id: '1', title: 'Agent 官方发布', description: '智能体更新', source: 'Qwen 官方博客', url: 'https://qwen.example.com/1', publishedAt: '2026-08-06T03:00:00Z', region: 'cn', sourceGroup: 'product' },
+    { id: '2', title: 'Agent benchmark paper', description: 'agent evaluation', source: 'arXiv', url: 'https://arxiv.example.com/2', publishedAt: '2026-08-05T03:00:00Z', region: 'global', sourceGroup: 'research' },
+    { id: '3', title: 'Agent industry report', description: 'agent adoption', source: 'MIT Technology Review AI', url: 'https://media.example.com/3', publishedAt: '2026-08-04T03:00:00Z', region: 'global', sourceGroup: 'investment' },
+    { id: '4', title: 'Unrelated chip news', description: 'GPU market', source: 'Media B', url: 'https://media.example.com/4', publishedAt: '2026-08-06T01:00:00Z', region: 'global', sourceGroup: 'investment' }
   ];
 
   const selected = contextService.selectEvidence('请分析 Agent 最近趋势', articles, 3);

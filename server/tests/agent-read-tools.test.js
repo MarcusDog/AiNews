@@ -147,6 +147,20 @@ test('public citations preserve supported destination identity while removing se
   }
 });
 
+test('public citation DNS names have valid bounded ASCII labels and reject reserved suffixes', () => {
+  const { publicUrl } = require('../services/agent/public-projections');
+  const tooLongHost = [63, 63, 63, 58].map(size => 'a'.repeat(size)).concat('com').join('.');
+  for (const host of ['foo..bar', '-foo.com', 'foo-.com', '.example', 'under_score.com', 'foo.test', 'foo.example', 'foo.onion', 'localhost', 'foo.local', 'foo.internal', 'foo.lan', 'foo.home', 'foo.invalid', 'example.com..', 'example.com...', `${'a'.repeat(64)}.com`, tooLongHost]) {
+    assert.equal(publicUrl(`https://${host}/a`), null, host);
+  }
+  const maxHost = [63, 63, 63, 57].map(size => 'a'.repeat(size)).concat('com').join('.');
+  assert.equal(maxHost.length, 253);
+  assert.equal(publicUrl(`https://${maxHost}/a`), `https://${maxHost}/a`);
+  assert.equal(publicUrl('https://example.com./a'), 'https://example.com/a');
+  assert.equal(publicUrl('https://例子.中国/a'), 'https://xn--fsqu00a.xn--fiqs8s/a');
+  assert.equal(publicUrl('https://xn--fsqu00a.xn--fiqs8s/a'), 'https://xn--fsqu00a.xn--fiqs8s/a');
+});
+
 test('unsupported, malformed or ambiguous citation identity is rejected without changing its destination', () => {
   const { publicUrl } = require('../services/agent/public-projections');
   for (const value of [

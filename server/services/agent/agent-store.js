@@ -35,7 +35,7 @@ const PUBLIC_KEYS = new Set(`message mode skillId skillIds model provider
   sessionId runId progress durationMs elapsedMs maxSteps maxTokens timeoutMs evidenceUrls`.split(/\s+/).filter(Boolean));
 const REQUEST_KEYS = new Set('message mode skillId skillIds model provider topic audience goal format query category since until limit maxSteps maxTokens timeoutMs'.split(' '));
 const PROGRESS_KEYS = new Set('message summary step count total progress toolName toolCallId name durationMs elapsedMs code notice'.split(' '));
-const TOOL_RESULT_KEYS = new Set([...PROGRESS_KEYS, 'arguments', 'result', 'data', 'usage']);
+const TOOL_RESULT_KEYS = new Set([...PROGRESS_KEYS, 'arguments', 'result', 'usage']);
 const TOOL_STARTED_KEYS = new Set([...PROGRESS_KEYS, 'arguments']);
 const TRANSITION_KEYS = {
   running: new Set('status message summary step progress notice'.split(' ')),
@@ -167,11 +167,11 @@ function publicUsage(value) {
 function publicOrdinaryEvent(type, value) {
   const roots = type === 'tool_result' ? TOOL_RESULT_KEYS : ['tool_started', 'tool_call'].includes(type) ? TOOL_STARTED_KEYS : PROGRESS_KEYS;
   const payload = publicEvent(value, roots);
+  if (type === 'tool_result' && !Object.hasOwn(payload, 'result')) throw fail('invalid_input');
   if (['tool_result', 'tool_started', 'tool_call'].includes(type)) {
     const tool = TOOL_CONTRACTS.get(payload.toolName);
     if (!tool) throw fail('invalid_input');
     if (Object.hasOwn(payload, 'arguments') && !validate(tool.inputSchema, payload.arguments)) throw fail('invalid_input');
-    if (Object.hasOwn(payload, 'data') && !validate(tool.outputSchema, payload.data)) throw fail('invalid_input');
     if (Object.hasOwn(payload, 'result')) {
       const result = payload.result;
       fields(result, ['ok', 'data', 'error'], ['ok']);

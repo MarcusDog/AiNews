@@ -326,16 +326,16 @@ check('event payload roots cannot spoof envelope identity while nested public ID
   }
   const event = store.appendEvent(runArgs(run, { type: 'tool_result', payload: {
     toolName: 'get_topic_changes',
-    data: { items: [{ seq: 7, topicId: 'public-topic-id', changeType: 'updated', changedAt: '2026-10-13' }], expired: false, nextCursor: 7, oldestCursor: 1, latestCursor: 7 }
+    result: { ok: true, data: { items: [{ seq: 7, topicId: 'public-topic-id', changeType: 'updated', changedAt: '2026-10-13' }], expired: false, nextCursor: 7, oldestCursor: 1, latestCursor: 7 } }
   } }));
   assert.notEqual(event.id, 'public-news-id');
   assert.equal(event.sequence, 2);
-  assert.equal(event.payload.data.items[0].seq, 7);
+  assert.equal(event.payload.result.data.items[0].seq, 7);
   const { project, schemas } = require('../services/agent/public-projections');
-  const news = store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'list_latest_news', data: {
+  const news = store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'list_latest_news', result: { ok: true, data: {
     items: [project(schemas.news, { id: 'public-news-id', title: 'Public source', url: 'https://example.com/a' })], total: 1
-  } } }));
-  assert.equal(news.payload.data.items[0].id, 'public-news-id');
+  } } } }));
+  assert.equal(news.payload.result.data.items[0].id, 'public-news-id');
   assert.equal(store.startRun(runArgs(run)).event.sequence, 4);
   const final = store.transitionRun(runArgs(run, { status: 'completed', payload: { answer: 'No evidence found', verified: true, citationIds: [] } }));
   assert.equal(final.event.payload.status, 'completed');
@@ -456,9 +456,9 @@ check('nested event URLs must already be canonical public destinations while nul
     assert.throws(() => store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'list_latest_news', result } })), { code: 'invalid_input' });
   }
   const signal = project(schemas.signal, {}); const topic = project(schemas.topic, {});
-  assert.throws(() => store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'get_topic_evidence', data: { ...topic, signals: [{ ...signal, canonicalUrl: 'https://127.0.0.1/private' }] } } })), { code: 'invalid_input' });
+  assert.throws(() => store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'get_topic_evidence', result: { ok: true, data: { ...topic, signals: [{ ...signal, canonicalUrl: 'https://127.0.0.1/private' }] } } } })), { code: 'invalid_input' });
   const post = project(schemas.post, {});
-  assert.throws(() => store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'list_creator_posts', data: { items: [{ ...post, provenanceUrl: 'https://localhost/private' }] } } })), { code: 'invalid_input' });
+  assert.throws(() => store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'list_creator_posts', result: { ok: true, data: { items: [{ ...post, provenanceUrl: 'https://localhost/private' }] } } } })), { code: 'invalid_input' });
   assert.equal(store.listEvents(runArgs(run)).length, 1);
   const event = store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'list_latest_news', result: { ok: true, data: { items: [news, { ...news, url: null }], total: 2 } } } }));
   assert.deepEqual(event.payload.result.data.items.map(item => item.url), ['https://example.com/a', null]);
@@ -525,6 +525,45 @@ check('session cursors retain the prior page timestamp when the anchor session i
   }
 });
 
+check('tool_result has exactly one mandatory success or failure registry envelope', (t) => {
+  const { ERRORS } = require('../services/agent/tool-registry');
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'tool-envelope', request: {} }));
+  const data = { items: [], total: 0 };
+  const error = { code: 'tool_failed', message: ERRORS.tool_failed };
+  for (const payload of [
+    { toolName: 'list_latest_news' }, { toolName: 'list_latest_news', data },
+    { toolName: 'list_latest_news', data, result: { ok: true, data } },
+    { toolName: 'list_latest_news', result: { ok: true, data, error } },
+    { toolName: 'list_latest_news', result: { ok: false, error, data } },
+    { toolName: 'list_latest_news', result: { ok: false } }
+  ]) assert.throws(() => store.appendEvent(runArgs(run, { type: 'tool_result', payload })), { code: 'invalid_input' });
+  assert.equal(store.listEvents(runArgs(run)).length, 1);
+  for (const result of [{ ok: true, data }, { ok: false, error }]) {
+    assert.deepEqual(store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'list_latest_news', result } })).payload.result, result);
+  }
+  for (const type of ['tool_started', 'tool_call']) assert.equal(store.appendEvent(runArgs(run, { type, payload: { toolName: 'search_news', arguments: { q: 'Public' } } })).type, type);
+});
+
+check('all nested evidence URL fields reject malformed DNS labels and reserved hostnames', (t) => {
+  const { project, schemas } = require('../services/agent/public-projections');
+  const { store, session } = fixture(t);
+  const run = store.createRun(args(session, { requestKey: 'dns-event-boundary', request: {} }));
+  const news = project(schemas.news, { title: 'Public source' });
+  const topic = project(schemas.topic, {}); const signal = project(schemas.signal, {}); const post = project(schemas.post, {});
+  for (const host of ['foo..bar', '-foo.com', 'foo-.com', '.example', 'under_score.com', 'foo.test', 'foo.example', 'foo.onion', 'example.com..', 'example.com...']) {
+    const url = `https://${host}/a`;
+    for (const payload of [
+      { toolName: 'list_latest_news', result: { ok: true, data: { items: [{ ...news, url }], total: 1 } } },
+      { toolName: 'get_topic_evidence', result: { ok: true, data: { ...topic, signals: [{ ...signal, canonicalUrl: url }] } } },
+      { toolName: 'list_creator_posts', result: { ok: true, data: { items: [{ ...post, provenanceUrl: url }] } } }
+    ]) assert.throws(() => store.appendEvent(runArgs(run, { type: 'tool_result', payload })), { code: 'invalid_input' });
+  }
+  assert.equal(store.listEvents(runArgs(run)).length, 1);
+  const result = { ok: true, data: { items: [{ ...news, url: 'https://xn--fsqu00a.xn--fiqs8s/a' }], total: 1 } };
+  assert.equal(store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: 'list_latest_news', result } })).payload.result.data.items[0].url, result.data.items[0].url);
+});
+
 check('all eleven real tool contracts and registry result envelopes fit durable tool projections', async (t) => {
   const { createReadTools } = require('../services/agent/tools/read-tools');
   const { ToolRegistry } = require('../services/agent/tool-registry');
@@ -551,6 +590,9 @@ check('all eleven real tool contracts and registry result envelopes fit durable 
     assert.equal(result.ok, true, tool.name);
     const event = store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: tool.name, arguments: input, result } }));
     assert.deepEqual(event.payload.result, result, tool.name);
+    const failure = await registry.execute(tool.name, input, { scopes: [] });
+    assert.equal(failure.ok, false);
+    assert.deepEqual(store.appendEvent(runArgs(run, { type: 'tool_result', payload: { toolName: tool.name, arguments: input, result: failure } })).payload.result, failure, tool.name);
   }
   const actualChanges = new ToolRegistry(createReadTools({ signalService: { listChanges: () => ({ items: [{ seq: 4, topicId: 't1', changeType: 'updated', changedAt: '2026-10-13' }], expired: false, nextCursor: 4, oldestCursor: 1, latestCursor: 4 }) } }));
   const result = await actualChanges.execute('get_topic_changes', { since: 1, limit: 2 }, { scopes: ['signals:read'] });
@@ -568,7 +610,7 @@ check('symbols, hidden fields and getters are rejected without reading accessors
   const hidden = { message: 'Public' }; Object.defineProperty(hidden, 'secret', { value: 'Private', enumerable: false });
   const symbol = { message: 'Public', [Symbol('secret')]: 'Private' };
   const array = ['Public']; Object.defineProperty(array, 'hidden', { value: 'Private' });
-  for (const payload of [hidden, symbol, { data: hidden }, { data: symbol }, { data: array }]) assert.throws(() => store.appendEvent(runArgs(run, { type: 'tool_result', payload })), { code: 'invalid_input' });
+  for (const payload of [hidden, symbol, { result: hidden }, { result: symbol }, { result: array }]) assert.throws(() => store.appendEvent(runArgs(run, { type: 'tool_result', payload })), { code: 'invalid_input' });
   const input = args(session, { role: 'user', content: 'Public', [Symbol('owner')]: 'bob' });
   assert.throws(() => store.appendMessage(input), { code: 'invalid_input' });
 });

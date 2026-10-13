@@ -29,9 +29,16 @@ function publicUrl(value) {
   if (typeof value !== 'string' || value.length > 2048) return null;
   try {
     const url = new URL(value);
-    const host = url.hostname.replace(/^\[|\]$/g, '').replace(/\.$/, '');
+    // URL converts IDN to ASCII/punycode. Remove only one DNS root dot;
+    // malformed multi-dot suffixes must never normalize into public identity.
+    const originalHost = url.hostname;
+    if (originalHost.endsWith('..')) return null;
+    const host = originalHost.endsWith('.') ? originalHost.slice(0, -1) : originalHost;
+    const labels = host.split('.');
     if (url.protocol !== 'https:' || url.username || url.password || url.port || net.isIP(host)
-      || !host.includes('.') || /(^|\.)(localhost|local|internal|lan|home|invalid)$/.test(host)) return null;
+      || host.length > 253 || labels.length < 2
+      || labels.some(label => label.length < 1 || label.length > 63 || !/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(label))
+      || /(^|\.)(localhost|local|internal|lan|home|invalid|test|example|onion)$/.test(host)) return null;
     url.hostname = host;
     const params = new URLSearchParams();
     const identities = identityParams(host, url.pathname);
