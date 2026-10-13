@@ -1,6 +1,8 @@
-# Aya Creator Intelligence Radar
+# AyaNews — Creator Intelligence Radar & Evidence Agent
 
-> 当前正从「AI 新闻聚合站」迁移为「AI 热点发现 + 创作选题 + 素材情报平台」。所有当前范围、决策、进度、验证结果和下一步统一记录在 [PROJECT_REBUILD_STATUS.md](./PROJECT_REBUILD_STATUS.md)。
+> AyaNews 正从「AI 新闻聚合站」演进为「AI 热点发现 + Creator Intelligence + 可核验证据 Agent」平台。系统把公开资讯、趋势、创作者内容和来源健康度统一为可追溯证据，并让受限 Agent 在同一数据边界内完成研究、选题和内容简报。
+
+所有当前范围、架构决策、逐模块进度与真实验证结果记录在 [Agent Platform Completion Plan](./plan.md)；产品重建背景仍见 [PROJECT_REBUILD_STATUS.md](./PROJECT_REBUILD_STATUS.md)。
 
 完整安装、页面、来源、观察名单、回填、选题、推送、API、维护与上线流程见 [AyaNews 整个系统使用方案](./docs/SYSTEM_USAGE_GUIDE.md)。
 
@@ -11,6 +13,7 @@
 - 数据链路：公开 Signal → Topic 聚类 → 窗口化 `trend-v1` → 核验博主公开帖子 → `creator-hotness-v1` / 跨博主共题 → 证据型选题与推送。
 - 来源：新闻/官方发布、GitHub、Hacker News、Mastodon、Reddit、Hugging Face、Bilibili；Creator 主干支持 YouTube Atom、Bluesky、Mastodon、GitHub、RSS，可选 Reddit、X、Instagram、抖音官方 API 和签名 Sidecar。
 - 核心交互：首页雷达、`/topics`、`/research`、`/creators`、`/verticals/:id`、`/sources`、`/alerts` 和 `/skills`。
+- Agent 后端：登录态会话、持久化运行、耐久事件流、取消与恢复、引用审计，以及 11 个只读数据工具；首方 `/agent` 工作台仍在开发中。
 - 开放能力：REST、OpenAPI 3.1（2.4）、Topic JSON Feed、RSS、登录态 SSE、安全签名 Webhook 与 AyaNewsSkill。MCP、A2A 尚未实现，文档不会冒充可用。
 - Node.js 要求：`>=20.19.0`。
 
@@ -23,6 +26,71 @@ cd client && npm test
 
 # 生产构建（输出 client/dist）
 cd client && npm run build
+```
+
+## Evidence Agent（当前后端能力）
+
+AyaNews Agent 不是一个可访问任意网络或执行任意代码的通用机器人。它是一个运行在现有新闻、Signal、Topic、Creator 与内容研究服务之上的**有边界研究运行时**：模型只能调用服务端注册、带版本、闭合 JSON Schema 和权限范围的工具；所有重要进度先写入 SQLite，再通过 SSE 对已登录用户播放。
+
+### 已实现
+
+- **持久化会话与运行**：会话、消息、运行、事件和证据分表保存；所有读取均按登录用户所有权隔离。
+- **幂等与并发约束**：运行创建要求 `Idempotency-Key`，同一会话仅允许一个活动运行；状态迁移和事件序号在事务内完成。
+- **可恢复事件流**：`Last-Event-ID` / `since` 支持断线重放；慢客户端背压、心跳、终态自动关闭和跨 Store 轮询均有测试覆盖。SSE 断开不会取消后台运行。
+- **受限 Agent 循环**：每次运行最多 6 个模型轮次、10 次串行工具调用、120 秒总时限；模型可见的单个工具结果最多 24 KiB。
+- **证据优先输出**：最终来源从运行自身的耐久证据账本重建，引用 ID 稳定分配；引用结构验证与事实核验明确分离，系统不会把格式正确冒充为事实正确。
+- **安全模型接入**：当前提供 MiniMax Anthropic-compatible 适配器与完全离线的 Fake Provider。模型私有 thinking 不持久化、不返回给客户端。
+- **只读工具集**：最新新闻、新闻搜索、热点 Topic、Topic 证据与变化、创作者机会/帖子/Topic、来源覆盖与健康度、带证据的内容 Brief。
+- **失败隔离**：工具输入、输出、深度、节点数、字节数、超时和权限均在注册表边界验证；内部异常、堆栈、原始配置与凭据不会进入公开结果。
+
+当前尚未完成的 Agent 能力包括首方 `/agent` 前端工作台、审批后写操作、MCP 和 A2A 适配器。请以 [plan.md](./plan.md) 的 Delivery ledger 为准，不要把计划项当作已交付功能。
+
+### Agent API 快速体验
+
+持久化 Agent API 使用现有登录 Cookie。先通过站点登录，再创建会话和运行：
+
+```bash
+# 1. 创建会话
+curl -sS -X POST http://localhost:3002/api/agent/sessions \
+  -H 'Content-Type: application/json' \
+  -H 'Cookie: ainews_session=YOUR_SESSION_COOKIE' \
+  -d '{"title":"AI Agent 趋势研究"}'
+
+# 2. 创建运行（SESSION_ID 来自上一步）
+curl -sS -X POST http://localhost:3002/api/agent/sessions/SESSION_ID/runs \
+  -H 'Content-Type: application/json' \
+  -H 'Cookie: ainews_session=YOUR_SESSION_COOKIE' \
+  -H 'Idempotency-Key: research-2026-10-14-001' \
+  -d '{"message":"总结最近 48 小时值得关注的 AI Agent 话题，并列出来源。"}'
+
+# 3. 获取运行状态或以 SSE 订阅耐久事件
+curl -sS http://localhost:3002/api/agent/runs/RUN_ID \
+  -H 'Cookie: ainews_session=YOUR_SESSION_COOKIE'
+curl -N http://localhost:3002/api/agent/runs/RUN_ID/events \
+  -H 'Cookie: ainews_session=YOUR_SESSION_COOKIE'
+
+# 4. 取消运行
+curl -sS -X POST http://localhost:3002/api/agent/runs/RUN_ID/cancel \
+  -H 'Content-Type: application/json' \
+  -H 'Cookie: ainews_session=YOUR_SESSION_COOKIE' \
+  -d '{}'
+```
+
+生产环境模型配置只放在 `server/.env`：
+
+```dotenv
+MINIMAX_API_KEY=replace_with_a_server_side_key
+MINIMAX_BASE_URL=https://api.minimax.io/anthropic
+MINIMAX_MODEL=MiniMax-M2.5
+```
+
+中国区可使用 `https://api.minimax.cn/anthropic`。允许的端点、请求预算、重试和 continuation 约束详见 [模型提供商运行说明](./docs/operations/MODEL_PROVIDER.md)。`AYA_AGENT_RECOVER_INTERRUPTED_RUNS=1` 仅适用于固定单实例，或确认没有其他 Agent worker 存活的维护启动；滚动发布和多副本部署必须保持 `0`，直到实现每个运行的租约/所有权协调。
+
+Agent 后端专项测试可直接运行：
+
+```bash
+env PATH="/usr/local/bin:$PATH" NODE_ENV=test \
+  /usr/local/bin/node --test server/tests/agent-*.test.js
 ```
 
 ## Signal 来源与运维

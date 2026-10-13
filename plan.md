@@ -21,7 +21,7 @@
 | 4. Model provider abstraction | Complete | 474/474 server; 95/95 focused | Spec + quality approved |
 | 5. Agent persistence and evidence ledger | Complete | 536/536 server; 61/61 focused; 169/169 Agent | Spec + quality approved |
 | 6. Bounded Agent runtime | Complete | 619/619 server; 92/92 focused; 252/252 Agent | Spec + quality approved |
-| 7. Persistent run API and SSE | Pending | route/stream tests | Pending |
+| 7. Persistent run API and SSE | Complete | 648/648 server; 134/134 focused; 275/275 Agent | Spec + quality approved |
 | 8. `/agent` workbench | Pending | client Agent tests/build | Pending |
 | 9. Approval-gated subscription tool | Pending | approval/write-tool tests | Pending |
 | 10. MCP adapter | Pending | official-client integration | Pending |
@@ -275,12 +275,14 @@ Verified 2026-10-13 on Node 22.14.0 with deterministic providers, temporary SQLi
 - Modify: `nginx/nginx.conf`
 - Modify: `server/routes/agent.js`
 
-- [ ] **Step 1: Write RED tests for session CRUD, 202 run start, status, events, cancel, ownership, and idempotency**
-- [ ] **Step 2: Write RED SSE tests for replay, Last-Event-ID, heartbeat, terminal reconnect, cleanup, and slow clients**
-- [ ] **Step 3: Implement APIs while preserving legacy `/api/agent/chat`**
-- [ ] **Step 4: Persist before broadcasting; SSE disconnect does not cancel a run**
-- [ ] **Step 5: Add the exact Nginx no-buffer route and run route/stream/auth tests**
-- [ ] **Step 6: Commit and update the delivery ledger**
+- [x] **Step 1: Write RED tests for session CRUD, 202 run start, status, events, cancel, ownership, and idempotency**
+- [x] **Step 2: Write RED SSE tests for replay, Last-Event-ID, heartbeat, terminal reconnect, cleanup, and slow clients**
+- [x] **Step 3: Implement APIs while preserving legacy `/api/agent/chat`**
+- [x] **Step 4: Persist before broadcasting; SSE disconnect does not cancel a run**
+- [x] **Step 5: Add the exact Nginx no-buffer route and run route/stream/auth tests**
+- [x] **Step 6: Commit and update the delivery ledger**
+
+Verified 2026-10-14 on Node 22.14.0 with real temporary SQLite databases, deterministic providers, shared-database multi-worker fixtures, no network, and no production credentials. The authenticated API now exposes owner-scoped session, message, run, event, cancel, JSON replay, and resumable SSE operations while preserving the legacy chat route. Durable events are replayed before live notifications, cross-Store commits are observed by polling, slow clients pause reads under backpressure, and disconnecting an SSE client never cancels its run. Startup recovery is disabled by default and may be enabled only for a fixed single worker or an exclusive quiesced maintenance startup; rolling multi-replica deployments remain disabled until per-run leases exist. Independent review reproduced and fixed two multi-worker defects: an idempotent claim loser could previously fail the winner's active run, and cancellation on a different worker did not abort the owning worker's provider/tool. The final design gives terminalization rights only after the runtime's successful atomic claim and polls the durable run status every 100 ms for remote cancellation, with interval cleanup on completion and shutdown. Primary verification passed 134/134 route/stream/lifecycle/runtime/store/auth tests, 275/275 Agent tests, 648/648 isolated server tests, 48/48 client regressions, and the production client build. Specification and code-quality reviews approved commits through `a1b63659` with no remaining P1/P2/P3 findings.
 
 ### Task 8: Build the `/agent` workbench
 
