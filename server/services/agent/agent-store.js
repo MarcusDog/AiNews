@@ -12,6 +12,7 @@ const { publicUrl, schemas } = require('./public-projections');
 const LIMITS = Object.freeze({ textBytes: 32768, jsonBytes: 65536, eventJsonBytes: 163840, depth: 8, nodes: 2048, eventNodes: 20128, listItems: 100, pageItems: 100 });
 const ACTIVE = ['queued', 'running', 'awaiting_approval'];
 const TERMINAL = ['completed', 'failed', 'cancelled'];
+const INSUFFICIENT_EVIDENCE = '没有足够的公开来源支持可靠回答。';
 const RESERVED_EVENTS = new Set([...ACTIVE, ...TERMINAL, 'recovered']);
 const PRIVATE_KEY = /(?:thinking|reasoning|credential|secret|password|authorization|cookie|token$|api.?key|provider.?content|private|raw|headers|payload.?json|request.?json)/i;
 const CONVERSATION_KEYS = new Set(['context', 'history', 'role', 'content', 'messages']);
@@ -191,7 +192,8 @@ function publicTransition(status, value) {
   if (!Object.hasOwn(TRANSITION_KEYS, status)) throw fail('invalid_transition');
   const payload = publicEvent(value, TRANSITION_KEYS[status]);
   if (status === 'completed') {
-    if (!Object.hasOwn(payload, 'answer') || payload.verified !== true || !Array.isArray(payload.citationIds)) throw fail('invalid_input');
+    if (!Object.hasOwn(payload, 'answer') || !Array.isArray(payload.citationIds)
+      || (payload.verified !== true && !(payload.verified === false && payload.answer === INSUFFICIENT_EVIDENCE && payload.citationIds.length === 0))) throw fail('invalid_input');
     text(payload.answer, LIMITS.textBytes);
   }
   if (Object.hasOwn(payload, 'error')) {
@@ -458,6 +460,29 @@ class AgentStore {
       return { run: this.getRun({ userId: input.userId, runId: input.runId }), event };
     });
   }
+  // Final assistant publication and completed state/event share one IMMEDIATE
+  // transaction. Any message/event/sequence failure rolls the whole operation
+  // back, and cancellation checked under the transaction cannot publish late.
+  finalizeRun(input) {
+    fields(input, ['userId', 'sessionId', 'runId', 'payload'], ['userId', 'sessionId', 'runId', 'payload']);
+    const payload = publicTransition('completed', input.payload);
+    // The new publication path permits zero references only for the exact
+    // deterministic unverified insufficiency response. Legacy transitions keep
+    // their existing contract for already-integrated consumers.
+    if (payload.citationIds.length === 0 && (payload.verified !== false || payload.answer !== INSUFFICIENT_EVIDENCE)) throw fail('invalid_input');
+    return this._transaction(() => {
+      const run = this._run(input.userId, input.runId);
+      if (run.session_id !== input.sessionId) throw fail('not_found');
+      if (run.status !== 'running') throw fail('invalid_transition');
+      const eventPayload = publicJson({ ...payload, status: 'completed', sources: this._completedSources(input.userId, input.runId, payload.citationIds, payload.answer) }, { maxBytes: LIMITS.eventJsonBytes, maxNodes: LIMITS.eventNodes, validateUrls: true });
+      const now = this._time(); const id = crypto.randomUUID();
+      this.db.prepare('INSERT INTO agent_messages(id,user_id,session_id,run_id,role,content,created_at) VALUES(?,?,?,?,?,?,?)').run(id, input.userId, input.sessionId, input.runId, 'assistant', payload.answer, now);
+      this.db.prepare("UPDATE agent_runs SET status='completed',updated_at=?,completed_at=? WHERE id=? AND user_id=?").run(now, now, input.runId, input.userId);
+      const event = this._insertEvent(input.userId, input.runId, 'completed', eventPayload);
+      this.db.prepare('UPDATE agent_sessions SET updated_at=? WHERE id=? AND user_id=?').run(now, input.sessionId, input.userId);
+      return { run: this.getRun({ userId: input.userId, runId: input.runId }), event, message: this.getMessage({ userId: input.userId, messageId: id }) };
+    });
+  }
   _insertEvent(userId, runId, type, payload) {
     const run = this._run(userId, runId); const sequence = run.last_event_sequence + 1;
     if (!Number.isSafeInteger(sequence)) throw fail('input_too_large');
@@ -512,4 +537,4 @@ class AgentStore {
   }
 }
 
-module.exports = { AgentStore, LIMITS, publicJson, fields, text, page, fail };
+module.exports = { AgentStore, LIMITS, INSUFFICIENT_EVIDENCE, publicJson, fields, text, page, fail };
