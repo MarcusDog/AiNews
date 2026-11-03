@@ -70,7 +70,7 @@ health_check() {
     local delay=$3
     
     for i in $(seq 1 $max_attempts); do
-        if curl -s "$url" > /dev/null 2>&1; then
+        if curl -fsS "$url" > /dev/null 2>&1; then
             return 0
         fi
         sleep $delay
@@ -158,7 +158,7 @@ start_monitor() {
             sleep 60
             
             # 检查后端健康
-            if ! curl -s "http://localhost:${SERVER_PORT}/health" > /dev/null 2>&1; then
+            if ! curl -fsS "http://localhost:${SERVER_PORT}/health" > /dev/null 2>&1; then
                 log_warn "后端服务异常，尝试重启..."
                 
                 if [ -f "$SCRIPT_DIR/server/server.pid" ]; then
@@ -171,7 +171,7 @@ start_monitor() {
                 
                 sleep 10
                 
-                if curl -s "http://localhost:${SERVER_PORT}/health" > /dev/null 2>&1; then
+                if curl -fsS "http://localhost:${SERVER_PORT}/health" > /dev/null 2>&1; then
                     log_info "后端服务已恢复"
                 else
                     log_error "后端服务恢复失败"
