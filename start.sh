@@ -144,8 +144,8 @@ start_frontend() {
         log_info "前端服务启动成功"
         return 0
     else
-        log_warn "前端服务启动较慢，请稍候..."
-        return 0
+        log_error "前端服务未能在规定时间内就绪，请检查 client/client.log"
+        return 1
     fi
 }
 
