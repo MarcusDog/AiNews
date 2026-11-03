@@ -104,7 +104,7 @@ start_backend() {
     fi
     
     # 启动服务
-    nohup node index.js > server.log 2>&1 &
+    PORT="$SERVER_PORT" nohup node index.js > server.log 2>&1 &
     echo $! > server.pid
     
     log_info "后端进程ID: $(cat server.pid)"
@@ -166,7 +166,7 @@ start_monitor() {
                 fi
                 
                 cd "$SCRIPT_DIR/server"
-                nohup node index.js >> server.log 2>&1 &
+                PORT="$SERVER_PORT" nohup node index.js >> server.log 2>&1 &
                 echo $! > server.pid
                 
                 sleep 10

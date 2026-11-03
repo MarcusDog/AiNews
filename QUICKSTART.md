@@ -12,6 +12,12 @@ chmod +x start.sh
 ./start.sh
 ```
 
+自定义后端端口时使用 `SERVER_PORT`；启动脚本会把它传给 Node.js 服务的 `PORT`，并用同一端口检查健康状态：
+
+```bash
+SERVER_PORT=3102 ./start.sh
+```
+
 ## 手动启动
 
 ### 1. 安装依赖
