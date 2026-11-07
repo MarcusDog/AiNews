@@ -1,11 +1,11 @@
 /**
- * Docker 健康检查脚本
+ * Docker 健康检查脚本；使用与服务进程一致的 PORT。
  */
 const http = require('http');
 
 const options = {
-  host: 'localhost',
-  port: 3002,
+  host: '127.0.0.1',
+  port: process.env.PORT || 3002,
   path: '/health',
   method: 'GET',
   timeout: 2000
