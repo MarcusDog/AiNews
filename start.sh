@@ -57,7 +57,7 @@ cleanup() {
     fi
     
     log_info "服务已停止"
-    exit 0
+    exit "${1:-0}"
 }
 
 # 捕获退出信号
@@ -248,11 +248,11 @@ main() {
             wait
         else
             log_error "前端服务启动失败"
-            cleanup
+            cleanup 1
         fi
     else
         log_error "后端服务启动失败"
-        cleanup
+        cleanup 1
     fi
 }
 
