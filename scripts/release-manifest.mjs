@@ -30,7 +30,7 @@ function readManifest() {
 }
 
 function checksumList(files) {
-  return checksumList(files);
+  return `${files.map((file) => `${file.sha256}  ${file.path}`).join('\n')}\n`;
 }
 
 if (command === 'create') {
@@ -50,10 +50,7 @@ if (command === 'create') {
     files
   };
   fs.writeFileSync(path.join(root, 'release-manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
-  fs.writeFileSync(
-    path.join(root, 'SHA256SUMS'),
-    `${files.map((file) => `${file.sha256}  ${file.path}`).join('\n')}\n`
-  );
+  fs.writeFileSync(path.join(root, 'SHA256SUMS'), checksumList(files));
   process.stdout.write(`${releaseIdArg}\n`);
 } else if (command === 'verify') {
   const manifest = readManifest();
