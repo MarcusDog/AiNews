@@ -7,6 +7,7 @@ import path from 'node:path';
 const [command = 'create', rootArg, releaseIdArg] = process.argv.slice(2);
 const root = path.resolve(rootArg || '.');
 const ignored = new Set(['release-manifest.json', 'SHA256SUMS']);
+const validReleaseId = (id) => typeof id === 'string' && /^[a-zA-Z0-9._-]{8,80}$/.test(id);
 
 function digest(file) {
   return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
@@ -28,8 +29,12 @@ function readManifest() {
   return JSON.parse(fs.readFileSync(path.join(root, 'release-manifest.json'), 'utf8'));
 }
 
+function checksumList(files) {
+  return checksumList(files);
+}
+
 if (command === 'create') {
-  if (!releaseIdArg || !/^[a-zA-Z0-9._-]{8,80}$/.test(releaseIdArg)) {
+  if (!validReleaseId(releaseIdArg)) {
     throw new Error('release id must be 8-80 safe characters');
   }
   const files = listFiles(root).map((relativePath) => ({
@@ -52,10 +57,17 @@ if (command === 'create') {
   process.stdout.write(`${releaseIdArg}\n`);
 } else if (command === 'verify') {
   const manifest = readManifest();
+  if (manifest.schemaVersion !== 1 || !validReleaseId(manifest.releaseId) ||
+      !Array.isArray(manifest.files) || manifest.fileCount !== manifest.files.length) {
+    throw new Error('invalid release manifest metadata');
+  }
   const actualFiles = listFiles(root);
   const expectedFiles = manifest.files.map((file) => file.path);
   if (JSON.stringify(actualFiles) !== JSON.stringify(expectedFiles)) {
     throw new Error('release file list does not match manifest');
+  }
+  if (fs.readFileSync(path.join(root, 'SHA256SUMS'), 'utf8') !== checksumList(manifest.files)) {
+    throw new Error('SHA256SUMS does not match release manifest');
   }
   for (const file of manifest.files) {
     const absolute = path.join(root, file.path);
