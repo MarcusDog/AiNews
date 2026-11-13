@@ -13,14 +13,21 @@ function digest(file) {
   return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 }
 
-function listFiles(directory, prefix = '') {
+function listFiles(directory, prefix = '', rejectUnsafe = false) {
   return fs.readdirSync(directory, { withFileTypes: true })
     .sort((left, right) => left.name.localeCompare(right.name, 'en'))
     .flatMap((entry) => {
       const relative = path.posix.join(prefix, entry.name);
       const absolute = path.join(directory, entry.name);
-      if (entry.isSymbolicLink()) return [];
-      if (entry.isDirectory()) return listFiles(absolute, relative);
+      if (entry.isSymbolicLink()) {
+        if (rejectUnsafe) throw new Error(`release contains symbolic link: ${relative}`);
+        return [];
+      }
+      if (entry.isDirectory()) return listFiles(absolute, relative, rejectUnsafe);
+      if (!entry.isFile()) {
+        if (rejectUnsafe) throw new Error(`release contains unsupported file type: ${relative}`);
+        return [];
+      }
       return ignored.has(relative) ? [] : [relative];
     });
 }
@@ -53,12 +60,13 @@ if (command === 'create') {
   fs.writeFileSync(path.join(root, 'SHA256SUMS'), checksumList(files));
   process.stdout.write(`${releaseIdArg}\n`);
 } else if (command === 'verify') {
+  // Reject links (including checksum/manifest symlinks) before reading any files.
+  const actualFiles = listFiles(root, '', true);
   const manifest = readManifest();
   if (manifest.schemaVersion !== 1 || !validReleaseId(manifest.releaseId) ||
       !Array.isArray(manifest.files) || manifest.fileCount !== manifest.files.length) {
     throw new Error('invalid release manifest metadata');
   }
-  const actualFiles = listFiles(root);
   const expectedFiles = manifest.files.map((file) => file.path);
   if (JSON.stringify(actualFiles) !== JSON.stringify(expectedFiles)) {
     throw new Error('release file list does not match manifest');

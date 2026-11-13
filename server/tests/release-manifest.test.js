@@ -39,3 +39,30 @@ test('release verification rejects altered checksum list and unsafe manifest met
   fs.writeFileSync(path.join(root, 'app.txt'), 'modified release content\n');
   assert.notEqual(run(root, 'verify').status, 0, 'modified file must fail content verification');
 });
+
+test('verification rejects unlisted symlinks and linked checksum metadata', (t) => {
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'ainews-symlinks-'));
+  t.after(() => fs.rmSync(temp, { recursive: true, force: true }));
+  const root = path.join(temp, 'release');
+  fs.mkdirSync(root);
+  fs.writeFileSync(path.join(root, 'app.txt'), 'safe release');
+  assert.equal(run(root, 'create', 'aya-test-20261113').status, 0);
+  assert.equal(run(root, 'verify').status, 0);
+
+  const outside = path.join(temp, 'outside.txt');
+  fs.writeFileSync(outside, 'outside content');
+  fs.symlinkSync(outside, path.join(root, 'leak.txt'));
+  const extra = run(root, 'verify');
+  assert.notEqual(extra.status, 0);
+  assert.match(extra.stderr, /symbolic link/);
+  fs.unlinkSync(path.join(root, 'leak.txt'));
+
+  const sums = path.join(root, 'SHA256SUMS');
+  const copy = path.join(temp, 'checksum.txt');
+  fs.copyFileSync(sums, copy);
+  fs.unlinkSync(sums);
+  fs.symlinkSync(copy, sums);
+  const metadata = run(root, 'verify');
+  assert.notEqual(metadata.status, 0);
+  assert.match(metadata.stderr, /symbolic link/);
+});
