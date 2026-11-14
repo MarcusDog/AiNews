@@ -66,3 +66,22 @@ test('verification rejects unlisted symlinks and linked checksum metadata', (t) 
   assert.notEqual(metadata.status, 0);
   assert.match(metadata.stderr, /symbolic link/);
 });
+
+test('release creation rejects symbolic links instead of silently omitting them', (t) => {
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'ainews-create-link-'));
+  t.after(() => fs.rmSync(temp, { recursive: true, force: true }));
+  const root = path.join(temp, 'release');
+  fs.mkdirSync(root);
+  fs.writeFileSync(path.join(root, 'app.txt'), 'expected release content');
+  const external = path.join(temp, 'external.txt');
+  fs.writeFileSync(external, 'not a release file');
+  fs.symlinkSync(external, path.join(root, 'unexpected-link'));
+  const rejected = run(root, 'create', 'aya-test-20261114');
+  assert.notEqual(rejected.status, 0);
+  assert.match(rejected.stderr, /symbolic link/);
+  assert.equal(fs.existsSync(path.join(root, 'release-manifest.json')), false,
+    'creation must stop before writing incomplete release metadata');
+  fs.unlinkSync(path.join(root, 'unexpected-link'));
+  assert.equal(run(root, 'create', 'aya-test-20261114').status, 0);
+  assert.equal(run(root, 'verify').status, 0);
+});

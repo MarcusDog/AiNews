@@ -44,7 +44,8 @@ if (command === 'create') {
   if (!validReleaseId(releaseIdArg)) {
     throw new Error('release id must be 8-80 safe characters');
   }
-  const files = listFiles(root).map((relativePath) => ({
+  // Abort creation if staging contains links or unusual file types; do not silently omit them.
+  const files = listFiles(root, '', true).map((relativePath) => ({
     path: relativePath,
     bytes: fs.statSync(path.join(root, relativePath)).size,
     sha256: digest(path.join(root, relativePath))
