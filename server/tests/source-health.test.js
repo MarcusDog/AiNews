@@ -11,6 +11,9 @@ test('source health status is derived from configured and recorded fetch state',
   assert.equal(getSourceHealthStatus({ configured_enabled: true, is_active: true, fail_count: 2, last_success: '2026-08-26T10:00:00Z' }, NOW), 'delayed');
   assert.equal(getSourceHealthStatus({ configured_enabled: true, is_active: true, fail_count: 0, last_success: null }, NOW), 'pending');
   assert.equal(getSourceHealthStatus({ configured_enabled: true, is_active: true, fail_count: 0, last_success: '2026-08-26T10:00:00Z' }, NOW), 'healthy');
+  assert.equal(getSourceHealthStatus({ configured_enabled: true, is_active: true, fail_count: 0, last_success: '2026-08-26T12:04:00Z' }, NOW), 'healthy');
+  assert.equal(getSourceHealthStatus({ configured_enabled: true, is_active: true, fail_count: 0, last_success: '2026-08-26T12:06:00Z' }, NOW), 'delayed');
+  assert.equal(getSourceHealthStatus({ configured_enabled: true, is_active: true, fail_count: 0, last_success: '2026-08-27T12:00:00Z' }, NOW), 'delayed');
 });
 
 test('stale last success is delayed even when the collector has not recorded failures', () => {

@@ -19,7 +19,9 @@ function getSourceHealthStatus(source = {}, now = new Date(), staleAfterHours = 
   const lastSuccess = parseTimestamp(source.last_success);
   if (!lastSuccess) return 'pending';
   const ageHours = (now.getTime() - lastSuccess.getTime()) / 3600000;
-  return ageHours > staleAfterHours ? 'delayed' : 'healthy';
+  // A clearly future-dated success cannot prove the collector is currently healthy.
+  // Allow up to five minutes of clock skew between the feed and the server.
+  return ageHours < -(5 / 60) || ageHours > staleAfterHours ? 'delayed' : 'healthy';
 }
 
 function toPublicSource(source, options = {}) {
