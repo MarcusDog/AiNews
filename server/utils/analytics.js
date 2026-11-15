@@ -6,7 +6,11 @@ const EVIDENCE_LABELS = {
 };
 
 function parseBoundedInteger(value, { fallback, min, max }) {
-  const parsed = Number.parseInt(value, 10);
+  const input = typeof value === 'string' ? value.trim() : value;
+  const isInteger = (typeof input === 'string' && /^[+-]?\d+$/.test(input)) ||
+    (typeof input === 'number' && Number.isInteger(input));
+  if (!isInteger) return fallback;
+  const parsed = Number(input);
   if (!Number.isFinite(parsed)) return fallback;
   return Math.min(Math.max(parsed, min), max);
 }

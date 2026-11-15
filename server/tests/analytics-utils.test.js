@@ -32,6 +32,12 @@ test('daily trend series fills missing dates in Asia/Shanghai and groups categor
 test('bounded integer parsing rejects invalid and oversized analytics windows', () => {
   assert.equal(parseBoundedInteger('999', { fallback: 7, min: 1, max: 30 }), 30);
   assert.equal(parseBoundedInteger('nope', { fallback: 7, min: 1, max: 30 }), 7);
+  assert.equal(parseBoundedInteger('12days', { fallback: 7, min: 1, max: 30 }), 7);
+  assert.equal(parseBoundedInteger('1e2', { fallback: 7, min: 1, max: 30 }), 7);
+  assert.equal(parseBoundedInteger('4.5', { fallback: 7, min: 1, max: 30 }), 7);
+  assert.equal(parseBoundedInteger('', { fallback: 7, min: 1, max: 30 }), 7);
+  assert.equal(parseBoundedInteger(' -10 ', { fallback: 7, min: 1, max: 30 }), 1);
+  assert.equal(parseBoundedInteger(8, { fallback: 7, min: 1, max: 30 }), 8);
 });
 
 test('diversity snapshot exposes regional and evidence blind spots with source links', () => {
