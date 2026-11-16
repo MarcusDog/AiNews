@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
-const { buildSourceHealthSnapshot, getSourceHealthStatus } = require('../utils/source-health');
+const { buildSourceHealthSnapshot, getSourceHealthStatus, parseTimestamp } = require('../utils/source-health');
 
 const NOW = new Date('2026-08-26T12:00:00.000Z');
 
@@ -57,4 +57,16 @@ test('public source health snapshot strips internal error details and returns re
   assert.equal(snapshot.sources[0].status, 'healthy');
   assert.equal('errorMessage' in snapshot.sources[0], false);
   assert.equal(snapshot.generatedAt, NOW.toISOString());
+});
+
+
+test('health timestamps reject impossible calendar dates instead of rolling into a healthy day', () => {
+  assert.equal(parseTimestamp('2026-02-30 10:00:00'), null);
+  assert.equal(parseTimestamp('2026-02-30T10:00:00Z'), null);
+  assert.equal(parseTimestamp('2026-02-29T10:00:00+08:00'), null);
+  assert.equal(parseTimestamp('2024-02-29 10:00:00').toISOString(), '2024-02-29T10:00:00.000Z');
+  assert.equal(getSourceHealthStatus({
+    configured_enabled: true, is_active: true, fail_count: 0,
+    last_success: '2026-02-30T10:00:00Z'
+  }, new Date('2026-03-02T10:30:00Z')), 'pending');
 });
