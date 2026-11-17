@@ -14,6 +14,8 @@ function canonicalizeUrl(rawUrl) {
   try {
     const url = new URL(rawUrl.trim());
     if (!['https:', 'http:'].includes(url.protocol)) return null;
+    // Never persist embedded credentials in normalized public signal URLs.
+    if (url.username || url.password) return null;
     url.protocol = 'https:';
     url.hostname = url.hostname.toLowerCase();
     url.hash = '';

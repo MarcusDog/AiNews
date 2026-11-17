@@ -19,6 +19,8 @@ test('canonical URLs remove tracking noise and reject unsafe schemes', () => {
     canonicalizeUrl('https://EXAMPLE.com/story/?utm_source=x&ref=home&b=2&a=1#section'),
     'https://example.com/story?a=1&b=2'
   );
+  assert.equal(canonicalizeUrl('https://user:secret@example.com/story'), null);
+  assert.equal(canonicalizeUrl('http://user@example.com/story'), null);
   assert.equal(canonicalizeUrl('javascript:alert(1)'), null);
   assert.equal(canonicalizeUrl('file:///etc/passwd'), null);
   assert.equal(canonicalizeUrl('not a url'), null);
@@ -69,6 +71,7 @@ test('fingerprints are deterministic across tracking URLs and object key order',
 test('normalizer rejects incomplete signals and negative metrics', () => {
   assert.throws(() => normalizeSignal({ title: '', url: 'https://example.com' }, SOURCE), /title/);
   assert.throws(() => normalizeSignal({ title: 'Unsafe', url: 'javascript:alert(1)' }, SOURCE), /URL/);
+  assert.throws(() => normalizeSignal({ title: 'Credential URL', url: 'https://user:pass@example.com/a' }, SOURCE), /URL/);
   assert.throws(() => normalizeSignal({
     title: 'Bad metric',
     url: 'https://example.com/story',
