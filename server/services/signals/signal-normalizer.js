@@ -47,9 +47,14 @@ function normalizeTimestamp(value, fallback = null) {
 }
 
 function normalizeMetrics(metrics = {}) {
+  const values = metrics && typeof metrics === 'object' && !Array.isArray(metrics) ? metrics : {};
   return Object.fromEntries(METRIC_FIELDS.map((field) => {
-    const raw = metrics[field];
-    if (raw === undefined || raw === null || raw === '') return [field, null];
+    const raw = values[field];
+    if (raw === undefined || raw === null || (typeof raw === 'string' && raw.trim() === '')) return [field, null];
+    // Boolean and array coercion would invent numbers that the source did not report.
+    if (typeof raw !== 'number' && typeof raw !== 'string') {
+      throw new TypeError(`metric ${field} 必须是非负数字`);
+    }
     const parsed = Number(raw);
     if (!Number.isFinite(parsed) || parsed < 0) {
       throw new TypeError(`metric ${field} 必须是非负数字`);

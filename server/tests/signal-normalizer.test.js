@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 
 const {
   canonicalizeUrl,
+  normalizeMetrics,
   normalizeSignal,
   signalFingerprint
 } = require('../services/signals/signal-normalizer');
@@ -97,4 +98,14 @@ test('legacy News signals preserve trusted per-article domestic metadata', () =>
 
   assert.equal(signal.region, 'cn');
   assert.equal(signal.language, 'zh');
+});
+
+test('missing metrics remain unknown and non-numeric metric types are rejected', () => {
+  assert.equal(normalizeMetrics(null).views, null);
+  assert.equal(normalizeMetrics({ views: '   ' }).views, null);
+  assert.equal(normalizeMetrics({ views: '25', likes: 0 }).views, 25);
+  assert.equal(normalizeMetrics({ views: '25', likes: 0 }).likes, 0);
+  for (const invalid of [true, false, [], { value: 10 }]) {
+    assert.throws(() => normalizeMetrics({ views: invalid }), /views/);
+  }
 });
