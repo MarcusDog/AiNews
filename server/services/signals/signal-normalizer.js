@@ -41,6 +41,16 @@ function normalizeText(value) {
 }
 
 function normalizeTimestamp(value, fallback = null) {
+  if (typeof value === 'string') {
+    // Date accepts and rolls impossible ISO dates (2026-02-30 -> March 2).
+    const fields = /^(\d{4})-(\d{2})-(\d{2})(?:$|[Tt ])/.exec(value.trim());
+    if (fields) {
+      const [year, month, day] = fields.slice(1).map(Number);
+      const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+      const days = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month - 1];
+      if (!days || day < 1 || day > days) return null;
+    }
+  }
   const date = value ? new Date(value) : fallback ? new Date(fallback) : null;
   if (!date || Number.isNaN(date.getTime())) return null;
   return date.toISOString();

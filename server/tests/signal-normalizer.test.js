@@ -5,7 +5,8 @@ const {
   canonicalizeUrl,
   normalizeMetrics,
   normalizeSignal,
-  signalFingerprint
+  signalFingerprint,
+  normalizeTimestamp
 } = require('../services/signals/signal-normalizer');
 
 const SOURCE = {
@@ -108,4 +109,16 @@ test('missing metrics remain unknown and non-numeric metric types are rejected',
   for (const invalid of [true, false, [], { value: 10 }]) {
     assert.throws(() => normalizeMetrics({ views: invalid }), /views/);
   }
+});
+
+test('invalid ISO calendar dates are rejected rather than rolled into the next month', () => {
+  assert.equal(normalizeTimestamp('2026-02-30T08:00:00Z'), null);
+  assert.equal(normalizeTimestamp('2026-11-31T12:00:00+08:00'), null);
+  assert.equal(normalizeTimestamp('2025-02-29T00:00:00Z'), null);
+  assert.equal(normalizeTimestamp('2024-02-29T00:00:00Z'), '2024-02-29T00:00:00.000Z');
+  assert.throws(() => normalizeSignal({
+    title: 'Invalid calendar date',
+    url: 'https://example.com/news',
+    publishedAt: '2026-02-30T08:00:00Z'
+  }, SOURCE), /publishedAt/);
 });
