@@ -103,6 +103,8 @@ function parseRetryAfter(value, now = new Date()) {
 
 async function fetchWithTimeout(fetchImpl, url, options = {}, timeoutMs = 10000) {
   if (typeof fetchImpl !== 'function') throw new TypeError('fetch implementation is required');
+  // A caller may have cancelled before this request is constructed.
+  if (options.signal?.aborted) throw options.signal.reason ?? new Error('request aborted');
   const controller = new AbortController();
   const onAbort = () => controller.abort(options.signal.reason || new Error('request aborted'));
   options.signal?.addEventListener('abort', onAbort, { once: true });
