@@ -75,3 +75,21 @@ test('diversity snapshot treats severe concentration as a blind spot even when e
   assert.equal(new Set(result.blindSpots.map((item) => item.id)).size, result.blindSpots.length);
   assert(result.recommendations.some((item) => item.includes('过度集中')));
 });
+
+
+test('daily trends aggregate repeated day/category rows rather than overwrite earlier counts', () => {
+  const date = '2026-08-06';
+  const result = buildDailyTrendSeries({
+    daily: [{ date, count: 2 }, { date, count: 3 }],
+    dailyCategory: [
+      { date, category: 'AI新闻', count: 2 },
+      { date, category: 'AI新闻', count: 3 }
+    ],
+    days: 1,
+    today: new Date('2026-08-06T00:00:00Z'),
+    timeZone: 'Asia/Shanghai'
+  });
+  assert.deepEqual(result.daily, [{ date, count: 5, categories: { AI新闻: 5 } }]);
+  assert.equal(result.total, 5);
+  assert.equal(result.average, 5);
+});

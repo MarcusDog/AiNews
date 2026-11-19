@@ -28,12 +28,17 @@ function formatDateInTimeZone(date, timeZone = 'Asia/Shanghai') {
 
 function buildDailyTrendSeries({ daily = [], dailyCategory = [], days = 7, today = new Date(), timeZone = 'Asia/Shanghai' }) {
   const safeDays = parseBoundedInteger(days, { fallback: 7, min: 1, max: 30 });
-  const dateCounts = new Map(daily.map((row) => [row.date, Number(row.count || 0)]));
+  const dateCounts = new Map();
+  daily.forEach((row) => {
+    dateCounts.set(row.date, (dateCounts.get(row.date) || 0) + Number(row.count || 0));
+  });
   const categoryCounts = new Map();
 
   dailyCategory.forEach((row) => {
     if (!categoryCounts.has(row.date)) categoryCounts.set(row.date, {});
-    categoryCounts.get(row.date)[row.category || '未分类'] = Number(row.count || 0);
+    const category = row.category || '未分类';
+    const counts = categoryCounts.get(row.date);
+    counts[category] = (counts[category] || 0) + Number(row.count || 0);
   });
 
   const localToday = formatDateInTimeZone(today, timeZone);
