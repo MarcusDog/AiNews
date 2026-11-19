@@ -9,11 +9,11 @@ function parseTimestamp(value) {
   // Date.parse may normalize an impossible date (e.g. February 30) into March.
   // A normalized collector timestamp must refer to a real calendar day.
   const fields = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/i.exec(normalized);
-  if (fields) {
-    const [year, month, day, hour, minute, second] = fields.slice(1, 7).map(Number);
-    const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
-    if (month < 1 || month > 12 || day < 1 || day > daysInMonth || hour > 23 || minute > 59 || second > 59) return null;
-  }
+  // Do not let Date's permissive parser interpret locale-specific or date-only strings.
+  if (!fields) return null;
+  const [year, month, day, hour, minute, second] = fields.slice(1, 7).map(Number);
+  const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  if (month < 1 || month > 12 || day < 1 || day > daysInMonth || hour > 23 || minute > 59 || second > 59) return null;
   const date = new Date(normalized);
   return Number.isNaN(date.getTime()) ? null : date;
 }

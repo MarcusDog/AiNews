@@ -70,3 +70,12 @@ test('health timestamps reject impossible calendar dates instead of rolling into
     last_success: '2026-02-30T10:00:00Z'
   }, new Date('2026-03-02T10:30:00Z')), 'pending');
 });
+
+
+test('source health rejects ambiguous date-only and locale-dependent timestamps', () => {
+  for (const value of ['2026-08-26', '08/26/2026 10:00:00', 'Aug 26 2026', 'not-a-time']) {
+    assert.equal(parseTimestamp(value), null, `unexpectedly accepted ${value}`);
+  }
+  assert.equal(parseTimestamp('2026-08-26T10:00:00Z').toISOString(), '2026-08-26T10:00:00.000Z');
+  assert.equal(parseTimestamp('2026-08-26 10:00:00').toISOString(), '2026-08-26T10:00:00.000Z');
+});
