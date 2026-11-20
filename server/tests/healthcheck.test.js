@@ -53,7 +53,7 @@ test('healthcheck rejects unhealthy HTTP responses', async () => {
 
 
 test('healthcheck exits cleanly on malformed or out-of-range PORT', async () => {
-  for (const value of ['not-a-port', '3002junk', '0', '65536']) {
+  for (const value of ['', 'not-a-port', '3002junk', '0', '65536']) {
     const result = await check(value);
     assert.equal(result.code, 1, result.output);
     assert.match(result.output, /PORT must be an integer between 1 and 65535/);

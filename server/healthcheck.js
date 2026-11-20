@@ -4,7 +4,8 @@
 const http = require('http');
 
 // A malformed Docker PORT must fail the health check cleanly, not throw from http.request.
-const portValue = process.env.PORT || '3002';
+// Only default when PORT is unset; an explicitly empty value is invalid.
+const portValue = process.env.PORT ?? '3002';
 const port = /^\d+$/.test(portValue) ? Number(portValue) : NaN;
 if (!Number.isInteger(port) || port < 1 || port > 65535) {
   console.error('Health check configuration error: PORT must be an integer between 1 and 65535');
