@@ -35,7 +35,7 @@ function buildDailyTrendSeries({ daily = [], dailyCategory = [], days = 7, today
   const categoryCounts = new Map();
 
   dailyCategory.forEach((row) => {
-    if (!categoryCounts.has(row.date)) categoryCounts.set(row.date, {});
+    if (!categoryCounts.has(row.date)) categoryCounts.set(row.date, Object.create(null));
     const category = row.category || '未分类';
     const counts = categoryCounts.get(row.date);
     counts[category] = (counts[category] || 0) + Number(row.count || 0);
@@ -51,7 +51,7 @@ function buildDailyTrendSeries({ daily = [], dailyCategory = [], days = 7, today
     fullDays.push({
       date,
       count: dateCounts.get(date) || 0,
-      categories: categoryCounts.get(date) || {}
+      // Spread creates a plain JSON-facing object while preserving keys like __proto__.\n      categories: { ...(categoryCounts.get(date) || {}) }
     });
   }
 

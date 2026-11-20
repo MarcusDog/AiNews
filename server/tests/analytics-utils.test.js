@@ -93,3 +93,22 @@ test('daily trends aggregate repeated day/category rows rather than overwrite ea
   assert.equal(result.total, 5);
   assert.equal(result.average, 5);
 });
+
+
+test('daily trends retain reserved JavaScript property names as category labels', () => {
+  const date = '2026-11-20';
+  const result = buildDailyTrendSeries({
+    daily: [{ date, count: 9 }],
+    dailyCategory: [
+      { date, category: '__proto__', count: 2 },
+      { date, category: 'toString', count: 3 },
+      { date, category: 'AI新闻', count: 4 }
+    ],
+    days: 1,
+    today: new Date('2026-11-20T01:00:00Z')
+  });
+  const categories = result.daily[0].categories;
+  assert.deepEqual(categories, { ['__proto__']: 2, toString: 3, AI新闻: 4 });
+  assert.equal(Object.getPrototypeOf(categories), Object.prototype);
+  assert.equal(result.total, 9);
+});
