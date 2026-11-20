@@ -51,7 +51,8 @@ function buildDailyTrendSeries({ daily = [], dailyCategory = [], days = 7, today
     fullDays.push({
       date,
       count: dateCounts.get(date) || 0,
-      // Spread creates a plain JSON-facing object while preserving keys like __proto__.\n      categories: { ...(categoryCounts.get(date) || {}) }
+      // Spread creates a plain JSON-facing object while preserving keys like __proto__.
+      categories: { ...(categoryCounts.get(date) || {}) }
     });
   }
 
