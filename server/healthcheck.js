@@ -21,13 +21,40 @@ const options = {
 };
 
 const req = http.request(options, (res) => {
-  if (res.statusCode === 200) {
-    console.log('Health check passed');
-    process.exit(0);
-  } else {
-    console.log(`Health check failed with status ${res.statusCode}`);
+  if (res.statusCode !== 200) {
+    console.log('Health check failed with status ' + res.statusCode);
+    res.resume();
     process.exit(1);
+    return;
   }
+
+  let body = '';
+  res.setEncoding('utf8');
+  res.on('data', (chunk) => {
+    body += chunk;
+    if (body.length > 65536) {
+      console.log('Health check failed: response too large');
+      req.destroy();
+      process.exit(1);
+    }
+  });
+  res.on('end', () => {
+    let health;
+    try {
+      health = JSON.parse(body);
+    } catch {
+      console.log('Health check failed: invalid JSON response');
+      process.exit(1);
+      return;
+    }
+    // NewsService.healthCheck() returns "ok" or "updating" while the service is available.
+    if (health && (health.status === 'ok' || health.status === 'updating')) {
+      console.log('Health check passed');
+      process.exit(0);
+    }
+    console.log('Health check failed: unexpected application status');
+    process.exit(1);
+  });
 });
 
 req.on('error', (err) => {

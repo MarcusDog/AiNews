@@ -19,13 +19,13 @@ function check(port) {
   });
 }
 
-async function withHealthServer(status, callback) {
+async function withHealthServer(status, callback, body = status === 200 ? JSON.stringify({ status: 'ok' }) : '') {
   const server = http.createServer((req, res) => {
     if (req.url !== '/health') {
       res.writeHead(404).end();
       return;
     }
-    res.writeHead(status).end();
+    res.writeHead(status).end(body);
   });
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
   try {
@@ -59,4 +59,25 @@ test('healthcheck exits cleanly on malformed or out-of-range PORT', async () => 
     assert.match(result.output, /PORT must be an integer between 1 and 65535/);
     assert.doesNotMatch(result.output, /RangeError|ERR_SOCKET_BAD_PORT/);
   }
+});
+
+test('healthcheck accepts updating application state', async () => {
+  await withHealthServer(200, async (port) => {
+    const result = await check(port);
+    assert.equal(result.code, 0, result.output);
+  }, JSON.stringify({ status: 'updating' }));
+});
+
+test('healthcheck rejects HTTP 200 with an invalid application response', async () => {
+  for (const body of ['<html>OK</html>', '{}', '{', 'null', JSON.stringify({ status: 'ERROR' })]) {
+    await withHealthServer(200, async (port) => {
+      const result = await check(port);
+      assert.equal(result.code, 1, result.output);
+    }, body);
+  }
+  await withHealthServer(200, async (port) => {
+    const result = await check(port);
+    assert.equal(result.code, 1, result.output);
+    assert.match(result.output, /too large/);
+  }, 'x'.repeat(70000));
 });
