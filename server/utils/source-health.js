@@ -8,8 +8,9 @@ function parseTimestamp(value) {
     : source;
   // Date.parse may normalize an impossible date (e.g. February 30) into March.
   // A normalized collector timestamp must refer to a real calendar day.
-  const fields = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/i.exec(normalized);
-  // Do not let Date's permissive parser interpret locale-specific or date-only strings.
+  const fields = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/i.exec(normalized);
+  // ISO timestamps must include a timezone to avoid host-local interpretation.
+  // SQLite-style timestamps above are explicitly normalized to UTC.
   if (!fields) return null;
   const [year, month, day, hour, minute, second] = fields.slice(1, 7).map(Number);
   const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();

@@ -79,3 +79,11 @@ test('source health rejects ambiguous date-only and locale-dependent timestamps'
   assert.equal(parseTimestamp('2026-08-26T10:00:00Z').toISOString(), '2026-08-26T10:00:00.000Z');
   assert.equal(parseTimestamp('2026-08-26 10:00:00').toISOString(), '2026-08-26T10:00:00.000Z');
 });
+
+test('ISO source timestamps require a timezone to avoid host-local interpretation', () => {
+  assert.equal(parseTimestamp('2026-08-26T10:00:00'), null);
+  assert.equal(parseTimestamp('2026-08-26T10:00:00.123'), null);
+  assert.equal(parseTimestamp('2026-08-26T10:00:00Z').toISOString(), '2026-08-26T10:00:00.000Z');
+  assert.equal(parseTimestamp('2026-08-26T10:00:00+08:00').toISOString(), '2026-08-26T02:00:00.000Z');
+  assert.equal(parseTimestamp('2026-08-26 10:00:00').toISOString(), '2026-08-26T10:00:00.000Z');
+});
