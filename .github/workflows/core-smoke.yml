@@ -1,0 +1,27 @@
+name: Node core smoke tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  core-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run dependency-free server tests
+        run: |
+          node --test \
+            server/tests/healthcheck.test.js \
+            server/tests/source-health.test.js \
+            server/tests/analytics-utils.test.js \
+            server/tests/release-manifest.test.js
